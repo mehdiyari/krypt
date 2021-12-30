@@ -18,6 +18,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        // Enables Jetpack Compose for this module
+        compose true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,9 +33,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.5'
+    }
+
 }
 
 dependencies {
@@ -64,6 +75,13 @@ dependencies {
     def hilt_version = "2.38.1"
     implementation "com.google.dagger:hilt-android:${hilt_version}"
     kapt "com.google.dagger:hilt-compiler:${hilt_version}"
+
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation 'androidx.compose.material:material:1.0.5'
+    implementation 'androidx.compose.animation:animation:1.0.5'
+    implementation 'androidx.compose.ui:ui-tooling:1.0.5'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.5'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
