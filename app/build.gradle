@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -60,6 +61,12 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:1.0.0-alpha32"
 
+    def hilt_version = "2.38.1"
+    implementation "com.google.dagger:hilt-android:${hilt_version}"
+    kapt "com.google.dagger:hilt-compiler:${hilt_version}"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
 
     implementation "androidx.browser:browser:1.4.0"
     implementation "androidx.cardview:cardview:1.0.0"
