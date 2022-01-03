@@ -7,6 +7,21 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="ir.mehdiyari.krypt.ui.splash.SplashFragment"
-        android:label="fragment_splash" />
+        android:label="fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ir.mehdiyari.krypt.ui.login.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="ir.mehdiyari.krypt.ui.logout.CreateAccountFragment"
+        android:label="CreateAccountFragment" />
 
 </navigation>

@@ -8,7 +8,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ir.mehdiyari.krypt.R
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -31,9 +33,9 @@ class SplashFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.isAnyAccountsExists.collect {
                 if (it) {
-                    TODO("navigate to select account fragment")
+                    findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                 } else {
-                    TODO("navigate to create account fragment")
+                    findNavController().navigate(R.id.action_splashFragment_to_createAccountFragment)
                 }
             }
         }
