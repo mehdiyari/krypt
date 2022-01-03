@@ -1,9 +1,11 @@
 package ir.mehdiyari.krypt.data.account
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+@Dao
 interface AccountsDao {
 
     @Insert(entity = AccountEntity::class, onConflict = OnConflictStrategy.REPLACE)
