@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="ir.mehdiyari.krypt.splash.SplashFragment"
+        android:name="ir.mehdiyari.krypt.ui.splash.SplashFragment"
         android:label="fragment_splash" />
 
 </navigation>

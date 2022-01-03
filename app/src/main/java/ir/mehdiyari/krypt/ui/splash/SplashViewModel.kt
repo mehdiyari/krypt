@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.splash
+package ir.mehdiyari.krypt.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

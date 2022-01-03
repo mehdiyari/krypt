@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.splash
+package ir.mehdiyari.krypt.ui.splash
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.splash
+package ir.mehdiyari.krypt.ui.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
