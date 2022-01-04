@@ -11,12 +11,16 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpTo="@id/krypt_navigation"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpTo="@id/krypt_navigation"
             app:popUpToInclusive="true" />
