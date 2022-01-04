@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(ioDispatcher) {
+            delay(1000)
             _isAnyAccountsExists.emit(accountsRepository.isAccountExists())
         }
     }
