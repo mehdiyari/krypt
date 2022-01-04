@@ -17,13 +17,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable
@@ -75,25 +75,7 @@ fun CreateAccountComposeScreen(
                 textStyle = TextStyle(color = MaterialTheme.colors.onBackground)
             )
 
-            TextField(
-                singleLine = true,
-                value = passwordValue.value,
-                onValueChange = {
-                    passwordValue.value = it
-                },
-                label = { Text(stringResource(id = R.string.account_password)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp, 3.dp, 20.dp, 3.dp)
-                    .padding(20.dp, 3.dp, 20.dp, 3.dp),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    autoCorrect = false,
-                    imeAction = ImeAction.Go
-                ),
-                visualTransformation = PasswordVisualTransformation(),
-                textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
-            )
+            PasswordTextField(passwordValue)
         }
 
         Column(
