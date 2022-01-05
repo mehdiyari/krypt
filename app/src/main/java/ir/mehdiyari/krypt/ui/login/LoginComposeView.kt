@@ -34,7 +34,7 @@ fun LoginComposeScreen(
 ) {
     KryptTheme {
         val passwordValue = remember { mutableStateOf(TextFieldValue()) }
-        val expanded = remember { mutableStateOf(true) }
+        val expanded = remember { mutableStateOf(false) }
         val accountNameState = remember { mutableStateOf(TextFieldValue()) }
 
         Column(
