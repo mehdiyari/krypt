@@ -6,4 +6,8 @@
     <string name="create_account">Welcome to Krypt. Let\'s get started!</string>
     <string name="button_create_account">Create Account</string>
     <string name="button_login">Login</string>
+    <string name="password_length_error">Password length must be greater than twelve characters</string>
+    <string name="account_length_error">Account name length must be greater than four characters</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="successfully_create_account">Account created successfully</string>
 </resources>
