@@ -8,8 +8,5 @@ import androidx.room.PrimaryKey
 )
 class AccountEntity(
     @PrimaryKey val name: String,
-    val encryptedName: String,
-    @Transient val password: String = "" /** We doesn't store the password in database */
-) {
-    constructor(name: String, encryptedName: String) : this(name, encryptedName, "")
-}
+    val encryptedName: String
+)
