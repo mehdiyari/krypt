@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,9 +22,18 @@ class LoginViewModel @Inject constructor(
     private val _allAccountsNameState = MutableStateFlow<List<String>>(listOf())
     val allAccountsNameState: StateFlow<List<String>> = _allAccountsNameState
 
+    private val _closeLoginState = MutableSharedFlow<Boolean>()
+    val closeLoginState: SharedFlow<Boolean> = _closeLoginState
+
     init {
         viewModelScope.launch(dispatcherIO) {
-            _allAccountsNameState.emit(accountsRepository.getAllAccountsName())
+            accountsRepository.getAllAccountsName().also {
+                if (it.isEmpty()) {
+                    _closeLoginState.emit(true)
+                } else {
+                    _allAccountsNameState.emit(it)
+                }
+            }
         }
     }
 }

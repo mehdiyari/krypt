@@ -30,8 +30,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.allAccountsNameState.collect {
-                if (it.isEmpty()) {
+            viewModel.closeLoginState.collect {
+                if (it) {
                     findNavController().navigate(R.id.action_loginFragment_to_createAccountFragment)
                 }
             }
