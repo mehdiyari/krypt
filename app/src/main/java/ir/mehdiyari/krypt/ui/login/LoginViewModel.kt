@@ -3,6 +3,7 @@ package ir.mehdiyari.krypt.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    accountsRepository: AccountsRepository,
-    @DispatcherIO dispatcherIO: CoroutineDispatcher
+    private val accountsRepository: AccountsRepository,
+    @DispatcherIO private val dispatcherIO: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _allAccountsNameState = MutableStateFlow<List<String>>(listOf())
@@ -24,6 +25,9 @@ class LoginViewModel @Inject constructor(
 
     private val _closeLoginState = MutableSharedFlow<Boolean>()
     val closeLoginState: SharedFlow<Boolean> = _closeLoginState
+
+    private val _loginState = MutableSharedFlow<LoginViewState>()
+    val loginState: SharedFlow<LoginViewState> = _loginState
 
     init {
         viewModelScope.launch(dispatcherIO) {
@@ -33,6 +37,24 @@ class LoginViewModel @Inject constructor(
                 } else {
                     _allAccountsNameState.emit(it)
                 }
+            }
+        }
+    }
+
+    fun login(
+        accountName: String,
+        password: String
+    ) {
+        viewModelScope.launch(dispatcherIO) {
+            try {
+                if (accountsRepository.login(accountName, password)) {
+                    _loginState.emit(LoginViewState.SuccessfulLogin)
+                } else {
+                    _loginState.emit(LoginViewState.FailureLogin(R.string.name_password_invalid))
+                }
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                _loginState.emit(LoginViewState.FailureLogin(R.string.something_went_wrong))
             }
         }
     }

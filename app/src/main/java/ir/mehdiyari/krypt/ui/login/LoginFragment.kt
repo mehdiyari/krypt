@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import kotlinx.coroutines.launch
@@ -17,13 +18,16 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
+    private val loginClick: (String, String) -> Unit = { name, password ->
+        viewModel.login(name, password)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            LoginComposeScreen(viewModel)
+            LoginComposeScreen(viewModel, loginClick)
         }
     }
 
@@ -36,5 +40,18 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.loginState.collect {
+                when (it) {
+                    is LoginViewState.FailureLogin -> showErrorWithSnackBar(it.errorId)
+                    LoginViewState.SuccessfulLogin -> TODO("Navigate To HomeFragment")
+                }
+            }
+        }
+    }
+
+    private fun showErrorWithSnackBar(errorId: Int) {
+        Snackbar.make(requireView(), errorId, Snackbar.LENGTH_LONG).show()
     }
 }

@@ -10,4 +10,5 @@
     <string name="account_length_error">Account name length must be greater than four characters</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="successfully_create_account">Account created successfully</string>
+    <string name="name_password_invalid">Account Name or Password is wrong</string>
 </resources>
