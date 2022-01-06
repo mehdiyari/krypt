@@ -43,4 +43,36 @@ class AccountsRepository @Inject constructor(
     suspend fun getAllAccountsName(): List<String> = accountsDao.getAccounts().map { it.name }
 
     suspend fun isAccountExists(): Boolean = accountsDao.isAnyAccountExist()
+
+    suspend fun login(
+        accountName: String,
+        password: String
+    ): Boolean {
+        val account = accountsDao.getAccountWithName(accountName) ?: return false
+        val nameData = Base64.decode(account.encryptedName)
+        val iv = nameData.getAfterIndex(nameData.size - 16)
+        val salt = nameData.getBytesBetweenIndexes(
+            nameData.size - 32, nameData.size - 16
+        )
+
+        val encryptedName = nameData.getBeforeIndex(nameData.size - 32)
+        val secretKey = SecretKeySpec(
+            passwordKeyGenerator.generate32BytesKeyFromPassword(password, salt),
+            "AES"
+        )
+
+        val decryptedName = try {
+            symmetricHelper.decrypt(
+                encryptedData = encryptedName,
+                key = secretKey,
+                initVector = iv
+            ) ?: return false
+        } catch (t: Throwable) {
+            return false
+        }
+
+        val decryptedStrName = String(decryptedName)
+
+        return decryptedStrName.trim() == accountName.trim()
+    }
 }

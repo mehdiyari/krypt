@@ -18,4 +18,7 @@ interface AccountsDao {
     suspend fun getAccountsSize(): Int
 
     suspend fun isAnyAccountExist(): Boolean = getAccountsSize() > 0
+
+    @Query("SELECT * from accounts where name = :accountName")
+    suspend fun getAccountWithName(accountName: String): AccountEntity?
 }
