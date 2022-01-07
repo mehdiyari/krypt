@@ -11,4 +11,20 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="successfully_create_account">Account created successfully</string>
     <string name="name_password_invalid">Account Name or Password is wrong</string>
+
+    <string name="add_photo">Photo</string>
+    <string name="add_video">Video</string>
+    <string name="add_audio">Audio</string>
+    <string name="add_text">Text</string>
+    <string name="add_music">Music</string>
+    <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
+    <string name="krypt_main_menu">Krypt Main Menu</string>
+    <string name="lock_app_content_description">Lock Krypt</string>
+
+    <string name="menu_data_usage">Data Usage</string>
+    <string name="menu_backup">Backup</string>
+    <string name="menu_change_password">Change Password</string>
+    <string name="menu_customize">Customize</string>
+    <string name="menu_help">Help</string>
+    <string name="app_menu_subtitle">Safe house for your files</string>
 </resources>
