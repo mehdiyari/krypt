@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
             viewModel.loginState.collect {
                 when (it) {
                     is LoginViewState.FailureLogin -> showErrorWithSnackBar(it.errorId)
-                    LoginViewState.SuccessfulLogin -> TODO("Navigate To HomeFragment")
+                    LoginViewState.SuccessfulLogin -> findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
             }
         }
