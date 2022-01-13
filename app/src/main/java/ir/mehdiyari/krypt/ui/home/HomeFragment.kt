@@ -52,7 +52,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun onClickOnHomeCards(fileTypeEnum: FileTypeEnum) {
-        TODO()
+        when (fileTypeEnum) {
+            FileTypeEnum.Photo -> openFalleryWithCustomPhotoGallery()
+            FileTypeEnum.Video -> openFalleryWithCustomVideoGallery()
+            FileTypeEnum.Audio, FileTypeEnum.Music -> navigateToAudioFragment()
+            FileTypeEnum.Text -> navigateToTextsFragment()
+        }
     }
 
     private fun clickOnLockItem() {
@@ -92,6 +97,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDataUsageFragment() {
+        TODO("Not yet implemented")
+    }
+
+    private fun openFalleryWithCustomPhotoGallery() {
+        TODO("Not yet implemented")
+    }
+
+    private fun openFalleryWithCustomVideoGallery() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToTextsFragment() {
         TODO("Not yet implemented")
     }
 }
