@@ -12,6 +12,7 @@ class AccountsRepository @Inject constructor(
     private val accountsDao: AccountsDao,
     private val symmetricHelper: SymmetricHelper,
     private val passwordKeyGenerator: PasswordKeyGenerator,
+    private val currentUser: CurrentUser
 ) {
     suspend fun addAccount(name: String, password: String): Pair<Boolean, Throwable?> {
         if (name.trim().length < 5) return false to BadAccountNameThrowable()
@@ -48,6 +49,7 @@ class AccountsRepository @Inject constructor(
         accountName: String,
         password: String
     ): Boolean {
+        currentUser.clear()
         val account = accountsDao.getAccountWithName(accountName) ?: return false
         val nameData = Base64.decode(account.encryptedName)
         val iv = nameData.getAfterIndex(nameData.size - 16)
@@ -56,8 +58,10 @@ class AccountsRepository @Inject constructor(
         )
 
         val encryptedName = nameData.getBeforeIndex(nameData.size - 32)
+
+        val keyAsBytes = passwordKeyGenerator.generate32BytesKeyFromPassword(password, salt)
         val secretKey = SecretKeySpec(
-            passwordKeyGenerator.generate32BytesKeyFromPassword(password, salt),
+            keyAsBytes,
             "AES"
         )
 
@@ -73,6 +77,12 @@ class AccountsRepository @Inject constructor(
 
         val decryptedStrName = String(decryptedName)
 
-        return decryptedStrName.trim() == accountName.trim()
+        return if (decryptedStrName.trim() == accountName.trim()) {
+            currentUser.accountName = accountName.trim()
+            currentUser.key = keyAsBytes
+            true
+        } else {
+            false
+        }
     }
 }

@@ -36,4 +36,12 @@ class LocalModule {
         kryptDataBase: KryptDataBase
     ): AccountsDao = kryptDataBase.accountsDAO()
 
+
+    @Provides
+    @Singleton
+    fun provideCurrentUser(): CurrentUser = CurrentUser()
+
+    @Provides
+    @AccountName
+    fun provideCurrentAccountName(currentUser: CurrentUser): String? = currentUser.accountName
 }
