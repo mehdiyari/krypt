@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         when (item) {
             R.string.add_photo -> openPhotoPicker()
             R.string.add_video -> openVideoPicker()
-            R.string.add_audio -> navigateToAudioFragment()
+            R.string.add_audio -> navigateToAudioRecorderFragment()
             R.string.add_music -> openAudioPicker()
             R.string.add_text -> navigateToNewTextFragment()
         }
@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
         when (fileTypeEnum) {
             FileTypeEnum.Photo -> openFalleryWithCustomPhotoGallery()
             FileTypeEnum.Video -> openFalleryWithCustomVideoGallery()
-            FileTypeEnum.Audio, FileTypeEnum.Music -> navigateToAudioFragment()
+            FileTypeEnum.Audio, FileTypeEnum.Music -> navigateToMusicAndAudioFragment()
             FileTypeEnum.Text -> navigateToTextsFragment()
         }
     }
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
         TODO("Not yet implemented")
     }
 
-    private fun navigateToAudioFragment() {
+    private fun navigateToAudioRecorderFragment() {
         TODO("Not yet implemented")
     }
 
@@ -109,6 +109,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToTextsFragment() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToMusicAndAudioFragment() {
         TODO("Not yet implemented")
     }
 }
