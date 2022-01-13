@@ -33,7 +33,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun mainMenuItemSelected(item: Int) {
-        TODO()
+        when (item) {
+            R.string.menu_data_usage -> navigateToDataUsageFragment()
+            R.string.menu_change_password -> navigateToChangePasswordFragment()
+            R.string.menu_customize -> navigateToCustomizeFragment()
+            R.string.menu_help -> navigateToHelpFragment()
+        }
     }
 
     private fun addItemMenuSelected(item: Int) {
@@ -71,6 +76,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToAudioFragment() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToHelpFragment() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToCustomizeFragment() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToChangePasswordFragment() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToDataUsageFragment() {
         TODO("Not yet implemented")
     }
 }
