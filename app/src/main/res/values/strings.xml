@@ -17,6 +17,13 @@
     <string name="add_audio">Audio</string>
     <string name="add_text">Text</string>
     <string name="add_music">Music</string>
+
+    <string name="photos_library">Photos Library</string>
+    <string name="videos_library">Videos Library</string>
+    <string name="audios_library">Audios Library</string>
+    <string name="texts_library">Texts Library</string>
+    <string name="musics_library">Music Library</string>
+
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
     <string name="krypt_main_menu">Krypt Main Menu</string>
     <string name="lock_app_content_description">Lock Krypt</string>
@@ -27,4 +34,7 @@
     <string name="menu_customize">Customize</string>
     <string name="menu_help">Help</string>
     <string name="app_menu_subtitle">Safe house for your files</string>
+
+    <string name="no_encrypted_file_found">No encrypted files found</string>
+    <string name="encrypted_file_found">Encrypted files found</string>
 </resources>

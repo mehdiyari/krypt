@@ -1,11 +1,12 @@
 package ir.mehdiyari.krypt.ui.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,9 +14,11 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -23,7 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.launch
 
@@ -32,9 +37,11 @@ import kotlinx.coroutines.launch
 @Composable
 @Preview
 fun HomeComposeScreen(
+    viewModel: HomeViewModel = viewModel(),
     onSelectAddItemMenuItem: (Int) -> Unit = { },
     onSelectMainMenuItem: (Int) -> Unit = { },
-    clickOnLockItem: () -> Unit = { }
+    clickOnLockItem: () -> Unit = { },
+    clickOnCards: (FileTypeEnum) -> Unit = { }
 ) {
     KryptTheme {
         val addItemsBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -90,7 +97,15 @@ fun HomeComposeScreen(
                 }
             }
         ) {
-            // Screen content
+            val homeCardsModelList = viewModel.filesCounts.collectAsState().value
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 85.dp),
+            ) {
+                items(homeCardsModelList) { homeCardsModel ->
+                    HomeItemCard(homeCardsModel, clickOnCards)
+                }
+            }
+
             ModalBottomSheetLayout(
                 sheetState = addItemsBottomSheetState,
                 sheetContent = {
@@ -155,4 +170,62 @@ fun HomeComposeScreen(
             }
         ) { }
     }
+}
+
+@Composable
+private fun HomeItemCard(
+    homeCardsModel: HomeCardsModel,
+    clickOnCards: (FileTypeEnum) -> Unit = { }
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp, 8.dp, 16.dp, 4.dp)
+            .height(90.dp)
+            .selectable(selected = false, onClick = { clickOnCards(getFileTypeEnumBasedOnStringRes(homeCardsModel.name)) }),
+        shape = RoundedCornerShape(8.dp),
+        elevation = 5.dp,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row {
+                Image(
+                    painter = painterResource(id = homeCardsModel.icon),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(55.dp)
+                        .padding(10.dp, 0.dp, 0.dp, 0.dp),
+                    colorFilter = ColorFilter.tint(Color.Gray)
+                )
+
+                Column(
+                    modifier = Modifier
+                        .padding(3.dp, 9.dp, 4.dp, 0.dp),
+                ) {
+                    Text(text = stringResource(id = homeCardsModel.name))
+                    Text(
+                        text = if (homeCardsModel.counts == 0L) stringResource(id = R.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${stringResource(
+                            id = R.string.encrypted_file_found
+                        )}",
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                }
+
+            }
+        }
+    }
+}
+
+private fun getFileTypeEnumBasedOnStringRes(name: Int): FileTypeEnum = when(name) {
+    R.string.photos_library -> FileTypeEnum.Photo
+    R.string.videos_library -> FileTypeEnum.Video
+    R.string.audios_library -> FileTypeEnum.Audio
+    R.string.musics_library -> FileTypeEnum.Music
+    R.string.texts_library -> FileTypeEnum.Text
+    else -> throw IllegalArgumentException()
 }
