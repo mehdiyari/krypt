@@ -13,6 +13,6 @@ val ADD_ITEMS = listOf(
 val MAIN_MENU_ITEMS = listOf(
     R.drawable.ic_data_usage_24 to R.string.menu_data_usage,
     R.drawable.ic_backup_24 to R.string.menu_backup,
-    R.drawable.ic_customize_24 to R.string.menu_help,
+    R.drawable.ic_customize_24 to R.string.menu_customize,
     R.drawable.ic_help_24 to R.string.menu_help,
 )
