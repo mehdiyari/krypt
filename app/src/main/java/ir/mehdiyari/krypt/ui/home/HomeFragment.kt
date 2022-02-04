@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
+import ir.mehdiyari.krypt.ui.photo.PhotosFragmentAction
+import ir.mehdiyari.krypt.ui.photo.PhotosFragmentArgs
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -43,7 +46,7 @@ class HomeFragment : Fragment() {
 
     private fun addItemMenuSelected(item: Int) {
         when (item) {
-            R.string.add_photo -> openPhotoPicker()
+            R.string.add_photo -> navigateToPhotosFragment()
             R.string.add_video -> openVideoPicker()
             R.string.add_audio -> navigateToAudioRecorderFragment()
             R.string.add_music -> openAudioPicker()
@@ -64,8 +67,14 @@ class HomeFragment : Fragment() {
         TODO()
     }
 
-    private fun openPhotoPicker() {
-        TODO("Not yet implemented")
+    private fun navigateToPhotosFragment() {
+        findNavController().navigate(
+            R.id.action_homeFragment_to_photosFragment,
+            PhotosFragmentArgs.Builder().apply {
+                action = PhotosFragmentAction.PICK_PHOTO
+            }.build().toBundle(),
+            null
+        )
     }
 
     private fun openVideoPicker() {
