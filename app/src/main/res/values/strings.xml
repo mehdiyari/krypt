@@ -37,4 +37,9 @@
 
     <string name="no_encrypted_file_found">No encrypted files found</string>
     <string name="encrypted_file_found">Encrypted files found</string>
+    <string name="x_photos_selected_for_encryption">We\'ve ready to encrypt %d selected photos.</string>
+    <string name="x_photos_selected_for_decryption">We\'ve ready to decrypt %d selected photos.</string>
+    <string name="encrypt_action">Encrypt</string>
+    <string name="delete_files_after_encrypts">Delete photos after encryption</string>
+    <string name="decrypt_action">Decrypt</string>
 </resources>
