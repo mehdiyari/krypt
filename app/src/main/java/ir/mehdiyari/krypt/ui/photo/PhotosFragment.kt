@@ -38,7 +38,9 @@ class PhotosFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         viewModel.onActionReceived(args.action)
         setContent {
-            PhotosComposeScreen(viewModel)
+            PhotosComposeScreen(viewModel) {
+                findNavController().popBackStack()
+            }
         }
     }
 

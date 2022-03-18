@@ -55,11 +55,26 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpTo="@id/krypt_navigation"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="ir.mehdiyari.krypt.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_photosFragment"
+            app:destination="@id/photosFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/photosFragment"
+        android:name="ir.mehdiyari.krypt.ui.photo.PhotosFragment"
+        android:label="PhotosFragment">
+        <argument
+            android:name="Action"
+            app:argType="ir.mehdiyari.krypt.ui.photo.PhotosFragmentAction"
+            android:defaultValue="DEFAULT" />
+    </fragment>
 
 </navigation>

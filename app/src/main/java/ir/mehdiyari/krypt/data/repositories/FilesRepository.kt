@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.data.repositories
 
+import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.file.FilesDao
 import ir.mehdiyari.krypt.di.qualifiers.AccountName
@@ -21,7 +22,7 @@ class FilesRepository @Inject constructor(
                             currentAccountName.get(),
                             fileType
                         )
-                    } catch (t:Throwable) {
+                    } catch (t: Throwable) {
                         0
                     }
                 )
@@ -29,4 +30,9 @@ class FilesRepository @Inject constructor(
         }.toList()
 
 
+    suspend fun insertFiles(
+        files: List<FileEntity>
+    ) {
+        filedDao.insertFiles(files)
+    }
 }
