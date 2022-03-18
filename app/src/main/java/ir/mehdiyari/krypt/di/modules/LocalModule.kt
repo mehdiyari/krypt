@@ -12,6 +12,8 @@ import ir.mehdiyari.krypt.data.database.KryptDataBase
 import ir.mehdiyari.krypt.data.file.FilesDao
 import ir.mehdiyari.krypt.data.repositories.CurrentUser
 import ir.mehdiyari.krypt.di.qualifiers.AccountName
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
 import javax.inject.Singleton
 
 @Module
@@ -43,5 +45,11 @@ class LocalModule {
 
     @Provides
     @AccountName
-    fun provideCurrentAccountName(currentUser: CurrentUser): String? = currentUser.accountName
+    fun provideCurrentAccountName(currentUser: CurrentUser): String = currentUser.accountName!!
+
+    @Provides
+    fun provideCurrentAccountKey(currentUser: CurrentUser): SecretKey = SecretKeySpec(
+        currentUser.key!!,
+        "AES"
+    )
 }
