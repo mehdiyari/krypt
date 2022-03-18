@@ -13,6 +13,11 @@ interface FilesDao {
         file: FileEntity
     )
 
+    @Insert(entity = FileEntity::class, onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertFiles(
+        files: List<FileEntity>
+    )
+
     @Query("DELETE from files where filePath = :path")
     suspend fun deleteFileByPath(
         path: String
