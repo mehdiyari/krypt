@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class SymmetricHelper @Inject constructor() {
 
     companion object {
-        private const val AES_CBC_PKS7PADDING = "AES/CBC/PKCS7Padding"
+        const val AES_CBC_PKS7PADDING = "AES/CBC/PKCS7Padding"
         const val AES_CBC_PKS5PADDING = "AES/CBC/PKCS5Padding"
 
         /**
@@ -28,7 +28,7 @@ class SymmetricHelper @Inject constructor() {
          * Init Vector Size
          * @see <a href="https://en.wikipedia.org/wiki/Initialization_vector">Initialization Vector</a>
          */
-        private const val INITIALIZE_VECTOR_SIZE = 16
+        const val INITIALIZE_VECTOR_SIZE = 16
         private const val DEFAULT_AES_KEY_SIZE = 256
     }
 
