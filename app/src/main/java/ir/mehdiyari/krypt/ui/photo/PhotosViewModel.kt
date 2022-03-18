@@ -3,13 +3,27 @@ package ir.mehdiyari.krypt.ui.photo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.data.file.FileEntity
+import ir.mehdiyari.krypt.data.file.FileTypeEnum
+import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.di.qualifiers.AccountName
+import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PhotosViewModel @Inject constructor() : ViewModel() {
+class PhotosViewModel @Inject constructor(
+    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    private val fileCrypt: FileCrypt,
+    private val filePathGenerator: FilePathGenerator,
+    private val filesRepository: FilesRepository,
+    @AccountName private val currentAccountName: String?,
+    private val mediaStoreManager: MediaStoreManager
+) : ViewModel() {
 
     private val _photosViewState = MutableStateFlow<PhotosViewState>(
         PhotosViewState.Default
@@ -50,7 +64,41 @@ class PhotosViewModel @Inject constructor() : ViewModel() {
         photos: Array<String>,
         deleteAfterEncrypt: Boolean
     ) {
-        TODO()
+        viewModelScope.launch(ioDispatcher) {
+            _photosViewState.emit(PhotosViewState.OperationStart)
+            val encryptedResults = mutableListOf<String>()
+            photos.forEach { photoPath ->
+                val destinationPath = filePathGenerator.generateFilePathForPhotos(photoPath)
+                if (fileCrypt.encryptFileToPath(photoPath, destinationPath)) {
+                    encryptedResults.add(destinationPath)
+                } else {
+                    return@forEach
+                }
+            }
+
+            if (photos.size == encryptedResults.size) {
+                if (deleteAfterEncrypt) {
+                    try {
+                        mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(photos.toList())
+                    } catch (t: Throwable) {
+                        t.printStackTrace()
+                    }
+                }
+
+                filesRepository.insertFiles(encryptedResults.map {
+                    FileEntity(
+                        type = FileTypeEnum.Photo,
+                        filePath = it,
+                        metaData = "",
+                        accountName = currentAccountName!!
+                    )
+                })
+
+                _photosViewState.emit(PhotosViewState.OperationFinished)
+            } else {
+                _photosViewState.emit(PhotosViewState.OperationFailed)
+            }
+        }
     }
 
     private fun decrypt(

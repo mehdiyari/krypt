@@ -8,4 +8,8 @@ sealed class PhotosViewState {
     ) : PhotosViewState()
 
     object Default : PhotosViewState()
+
+    object OperationStart : PhotosViewState()
+    object OperationFinished : PhotosViewState()
+    object OperationFailed : PhotosViewState()
 }
