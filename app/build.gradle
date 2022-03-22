@@ -24,6 +24,11 @@ android {
         compose true
     }
 
+    composeOptions {
+        kotlinCompilerVersion "1.6.10"
+        kotlinCompilerExtensionVersion "1.2.0-alpha02"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -38,11 +43,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.0.5'
-    }
-
 }
 
 dependencies {
