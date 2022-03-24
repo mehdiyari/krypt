@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.photo
+package ir.mehdiyari.krypt.utils
 
 import android.content.Context
 import android.media.MediaScannerConnection
