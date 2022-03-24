@@ -9,7 +9,7 @@ import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
-import ir.mehdiyari.krypt.utils.FilePathGenerator
+import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class PhotosViewModel @Inject constructor(
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val fileCrypt: FileCrypt,
-    private val filePathGenerator: FilePathGenerator,
+    private val filesUtilities: FilesUtilities,
     private val filesRepository: FilesRepository,
     @AccountName private val currentAccountName: String?,
     private val mediaStoreManager: MediaStoreManager,
@@ -73,8 +73,8 @@ class PhotosViewModel @Inject constructor(
             _photosViewState.emit(PhotosViewState.OperationStart)
             val encryptedResults = mutableListOf<Pair<String, String?>>()
             photos.forEach { photoPath ->
-                val destinationPath = filePathGenerator.generateFilePathForPhotos(photoPath)
-                var thumbnailPath: String? = createThumbnailPath(destinationPath)
+                val destinationPath = filesUtilities.generateFilePathForPhotos(photoPath)
+                var thumbnailPath: String? = filesUtilities.createThumbnailPath(destinationPath)
                 try {
                     thumbsUtils.createThumbnailFromPath(photoPath, thumbnailPath!!)
                 } catch (t: Throwable) {
@@ -124,7 +124,7 @@ class PhotosViewModel @Inject constructor(
     private fun encryptThumbnail(thumbnailPath: String?): String? = if (thumbnailPath != null) {
         try {
             val thumbEncryptedPath =
-                filePathGenerator.generateFilePathForPhotosThumbnail(thumbnailPath)
+                filesUtilities.generateEncryptedFilePathForPhotosThumbnail(thumbnailPath)
             if (fileCrypt.encryptFileToPath(thumbnailPath, thumbEncryptedPath)) {
                 thumbEncryptedPath
             } else {
@@ -137,15 +137,40 @@ class PhotosViewModel @Inject constructor(
         null
     }
 
-    private fun createThumbnailPath(destinationPath: String): String =
-        "${filePathGenerator.getCashDir()}/thumb_${
-            filePathGenerator.getNameOfFile(destinationPath)
-        }.jpg"
-
     private fun decrypt(
         photos: Array<String>,
         deleteAfterEncrypt: Boolean
     ) {
-        TODO()
+        viewModelScope.launch(ioDispatcher) {
+            _photosViewState.emit(PhotosViewState.OperationStart)
+            val decryptedResult = mutableListOf<Pair<String, Long>>()
+            val encryptedPhotos = filesRepository.mapThumbnailsAndNameToFileEntity(photos)
+
+            encryptedPhotos.forEach { encryptedPhoto ->
+                val destinationPath = filesUtilities.generateDecryptedPhotoPathInKryptFolder(
+                    encryptedPhoto.filePath
+                )
+
+                if (fileCrypt.decryptFileToPath(encryptedPhoto.filePath, destinationPath)) {
+                    decryptedResult.add(destinationPath to encryptedPhoto.id)
+                }
+            }
+
+            if (photos.isNotEmpty() && decryptedResult.isEmpty()) {
+                _photosViewState.emit(PhotosViewState.OperationFailed)
+            } else {
+                mediaStoreManager.scanAddedMedia(decryptedResult.map { it.first })
+                if (deleteAfterEncrypt) {
+                    val ids = decryptedResult.map { it.second }
+                    filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(encryptedPhotos.filter {
+                        ids.contains(it.id)
+                    })
+                }
+
+                _photosViewState.emit(PhotosViewState.OperationFinished)
+            }
+        }
     }
+
+    suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getPhotosCount() > 0L
 }

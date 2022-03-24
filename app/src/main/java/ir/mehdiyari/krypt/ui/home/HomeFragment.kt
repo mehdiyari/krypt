@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
 
     private fun addItemMenuSelected(item: Int) {
         when (item) {
-            R.string.add_photo -> navigateToPhotosFragment()
+            R.string.add_photo -> navigateToPhotosFragment(PhotosFragmentAction.PICK_PHOTO)
             R.string.add_video -> openVideoPicker()
             R.string.add_audio -> navigateToAudioRecorderFragment()
             R.string.add_music -> openAudioPicker()
@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
 
     private fun onClickOnHomeCards(fileTypeEnum: FileTypeEnum) {
         when (fileTypeEnum) {
-            FileTypeEnum.Photo -> openFalleryWithCustomPhotoGallery()
+            FileTypeEnum.Photo -> navigateToPhotosFragment(PhotosFragmentAction.DECRYPT_PHOTO)
             FileTypeEnum.Video -> openFalleryWithCustomVideoGallery()
             FileTypeEnum.Audio, FileTypeEnum.Music -> navigateToMusicAndAudioFragment()
             FileTypeEnum.Text -> navigateToTextsFragment()
@@ -67,11 +67,11 @@ class HomeFragment : Fragment() {
         TODO()
     }
 
-    private fun navigateToPhotosFragment() {
+    private fun navigateToPhotosFragment(photosAction: PhotosFragmentAction) {
         findNavController().navigate(
             R.id.action_homeFragment_to_photosFragment,
             PhotosFragmentArgs.Builder().apply {
-                action = PhotosFragmentAction.PICK_PHOTO
+                action = photosAction
             }.build().toBundle(),
             null
         )
@@ -106,10 +106,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDataUsageFragment() {
-        TODO("Not yet implemented")
-    }
-
-    private fun openFalleryWithCustomPhotoGallery() {
         TODO("Not yet implemented")
     }
 

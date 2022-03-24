@@ -85,7 +85,10 @@ fun PhotosComposeScreen(
 fun OperationFailedView(value: PhotosFragmentAction) {
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
         val text = when (value) {
             PICK_PHOTO, TAKE_PHOTO -> {
@@ -168,6 +171,7 @@ fun OperationStartView() {
 fun BaseEncryptDecryptView(
     mainText: String,
     buttonText: String,
+    deleteFileDialogTestResId: Int,
     onButtonClick: (delete: Boolean) -> Unit
 ) {
     Column(
@@ -192,7 +196,7 @@ fun BaseEncryptDecryptView(
             shape = CircleShape,
             onClick = {
                 androidx.appcompat.app.AlertDialog.Builder(context)
-                    .setMessage(context.getString(R.string.delete_photos_after_encrypt_dialog_message))
+                    .setMessage(context.getString(deleteFileDialogTestResId))
                     .setPositiveButton(context.getString(R.string.YES)) { d, _ ->
                         d.dismiss()
                         onButtonClick(true)
@@ -219,6 +223,7 @@ fun EncryptSelectedPhotosView(
             encryptDecryptState.selectedPhotosCount
         ),
         buttonText = stringResource(id = R.string.encrypt_action),
+        deleteFileDialogTestResId = R.string.delete_photos_after_encrypt_dialog_message,
         onButtonClick = encryptDecryptState.onEncryptOrDecryptAction
     )
 }
@@ -233,6 +238,7 @@ fun DecryptSelectedPhotosView(
             encryptDecryptState.selectedPhotosCount
         ),
         buttonText = stringResource(id = R.string.decrypt_action),
+        deleteFileDialogTestResId = R.string.delete_photos_after_decrypt_dialog_message,
         onButtonClick = encryptDecryptState.onEncryptOrDecryptAction
     )
 }

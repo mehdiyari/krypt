@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,6 +32,12 @@ class PhotosFragment : Fragment() {
     @field:Inject
     lateinit var deviceGalleryImageLoader: DeviceGalleryImageLoader
 
+    @field:Inject
+    lateinit var encryptedPhotosBucketProvider: EncryptedPhotosBucketProvider
+
+    @field:Inject
+    lateinit var encryptedPhotosBucketContentProvider: EncryptedPhotosBucketContentProvider
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +57,18 @@ class PhotosFragment : Fragment() {
             viewModel.viewAction.collect {
                 when (it) {
                     PhotosFragmentAction.PICK_PHOTO -> openPhotoPicker()
-                    PhotosFragmentAction.DECRYPT_PHOTO -> TODO()
+                    PhotosFragmentAction.DECRYPT_PHOTO -> {
+                        if (viewModel.checkForOpenPickerForDecryptMode()) {
+                            openPhotoPickerForDecrypting()
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                R.string.no_encrypted_file_found,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            findNavController().popBackStack()
+                        }
+                    }
                     PhotosFragmentAction.TAKE_PHOTO -> TODO()
                     PhotosFragmentAction.DEFAULT -> TODO()
                 }
@@ -58,31 +76,43 @@ class PhotosFragment : Fragment() {
         }
     }
 
-    private fun openPhotoPicker() {
-        FalleryBuilder()
-            .setImageLoader(deviceGalleryImageLoader)
-            .mediaTypeFiltering(BucketType.ONLY_PHOTO_BUCKETS)
-            .setFalleryToolbarTitleText(R.string.app_name)
-            .setMediaCountEnabled(true)
-            .setGrantExternalStoragePermission(true)
-            .setGrantSharedStoragePermission(true)
-            .setMediaObserverEnabled(true)
-            .setCaptionEnabledOptions(CaptionEnabledOptions(false))
-            .setCameraEnabledOptions(
-                CameraEnabledOptions(
-                    true,
-                    getFileProviderAuthority(requireActivity().application.packageName)
-                )
+    private fun getBaseOptionsOfFallery(): FalleryBuilder = FalleryBuilder()
+        .setImageLoader(deviceGalleryImageLoader)
+        .mediaTypeFiltering(BucketType.ONLY_PHOTO_BUCKETS)
+        .setFalleryToolbarTitleText(R.string.app_name)
+        .setMediaCountEnabled(true)
+        .setGrantExternalStoragePermission(true)
+        .setGrantSharedStoragePermission(true)
+        .setMediaObserverEnabled(true)
+        .setCaptionEnabledOptions(CaptionEnabledOptions(false))
+        .setCameraEnabledOptions(
+            CameraEnabledOptions(
+                true,
+                getFileProviderAuthority(requireActivity().application.packageName)
             )
-            .setTheme(if (requireContext().isInDarkTheme()) ir.mehdiyari.fallery.R.style.Fallery_Dracula else ir.mehdiyari.fallery.R.style.Fallery_Light)
+        )
+        .setTheme(if (requireContext().isInDarkTheme()) ir.mehdiyari.fallery.R.style.Fallery_Dracula else ir.mehdiyari.fallery.R.style.Fallery_Light)
+
+    private fun openPhotoPickerForDecrypting() {
+        getBaseOptionsOfFallery()
+            .setContentProviders(
+                encryptedPhotosBucketContentProvider,
+                encryptedPhotosBucketProvider
+            )
             .build().also { options ->
-                startFalleryWithOptions(1, options)
+                startFalleryWithOptions(2, options)
             }
+    }
+
+    private fun openPhotoPicker() {
+        getBaseOptionsOfFallery().build().also { options ->
+            startFalleryWithOptions(1, options)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
+        if (requestCode == 1 || requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 handleSelectedPhotos(data?.getFalleryResultMediasFromIntent())
             } else {

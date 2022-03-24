@@ -1,9 +1,6 @@
 package ir.mehdiyari.krypt.data.file
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface FilesDao {
@@ -36,4 +33,6 @@ interface FilesDao {
         type: FileTypeEnum
     ): Long
 
+    @Delete(entity = FileEntity::class)
+    suspend fun deleteFiles(files: List<FileEntity>)
 }
