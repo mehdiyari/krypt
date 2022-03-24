@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToNewTextFragment() {
-        TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_homeFragment_to_addTextFragment)
     }
 
     private fun openAudioPicker() {
@@ -116,7 +116,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToTextsFragment() {
-        TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_homeFragment_to_textsFragment)
     }
 
     private fun navigateToMusicAndAudioFragment() {

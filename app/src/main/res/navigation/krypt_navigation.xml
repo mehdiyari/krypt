@@ -66,6 +66,16 @@
             app:destination="@id/photosFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_addTextFragment"
+            app:destination="@id/addTextFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_textsFragment"
+            app:destination="@id/textsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/photosFragment"
@@ -76,5 +86,19 @@
             app:argType="ir.mehdiyari.krypt.ui.photo.PhotosFragmentAction"
             android:defaultValue="DEFAULT" />
     </fragment>
+    <fragment
+        android:id="@+id/textsFragment"
+        android:name="ir.mehdiyari.krypt.ui.text.list.TextsFragment"
+        android:label="TextsFragment">
+        <action
+            android:id="@+id/action_textsFragment_to_addTextFragment"
+            app:destination="@id/addTextFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTextFragment"
+        android:name="ir.mehdiyari.krypt.ui.text.add.AddTextFragment"
+        android:label="AddTextFragment" />
 
 </navigation>
