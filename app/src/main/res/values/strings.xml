@@ -53,4 +53,7 @@
     <string name="decrypt_failed">Failed to decrypt files</string>
     <string name="operation_failed">Operation failed</string>
     <string name="loading">Loading…</string>
+    <string name="text_title">Title</string>
+    <string name="save_text">Save</string>
+    <string name="text_content">Content</string>
 </resources>
