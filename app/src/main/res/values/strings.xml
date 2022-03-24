@@ -43,6 +43,7 @@
     <string name="delete_files_after_encrypts">Delete photos after encryption</string>
     <string name="decrypt_action">Decrypt</string>
     <string name="delete_photos_after_encrypt_dialog_message">Do you want to delete these selected files permanently after encrypting?</string>
+    <string name="delete_photos_after_decrypt_dialog_message">Do you want to delete these selected encrypted files permanently after decrypting?</string>
     <string name="NO">No</string>
     <string name="YES">Yes</string>
     <string name="encrypt_successfully">All files encrypted successfully</string>
