@@ -98,19 +98,32 @@ fun HomeComposeScreen(
                 }
             }
         ) {
-            val homeCardsModelList = viewModel.filesCounts.collectAsState().value
-            LazyColumn(
-                contentPadding = PaddingValues(bottom = 85.dp),
-            ) {
-                items(homeCardsModelList) { homeCardsModel ->
-                    HomeItemCard(homeCardsModel, clickOnCards)
-                }
+            Row {
+                HomeCards(
+                    viewModel,
+                    clickOnCards
+                )
             }
 
             AddBottomSheet(addItemsBottomSheetState, onSelectAddItemMenuItem, scope)
         }
 
         MainMenuBottomSheet(mainMenuBottomSheetState, onSelectMainMenuItem, scope)
+    }
+}
+
+@Composable
+private fun HomeCards(
+    viewModel: HomeViewModel,
+    clickOnCards: (FileTypeEnum) -> Unit
+) {
+    val homeCardsModelList = viewModel.filesCounts.collectAsState().value
+    LazyColumn(
+        contentPadding = PaddingValues(bottom = 85.dp),
+    ) {
+        items(homeCardsModelList) { homeCardsModel ->
+            HomeItemCard(homeCardsModel, clickOnCards)
+        }
     }
 }
 
@@ -203,7 +216,9 @@ private fun HomeItemCard(
             .fillMaxWidth()
             .padding(16.dp, 8.dp, 16.dp, 4.dp)
             .height(90.dp)
-            .selectable(selected = false, onClick = { clickOnCards(getFileTypeEnumBasedOnStringRes(homeCardsModel.name)) }),
+            .selectable(
+                selected = false,
+                onClick = { clickOnCards(getFileTypeEnumBasedOnStringRes(homeCardsModel.name)) }),
         shape = RoundedCornerShape(8.dp),
         elevation = 5.dp,
     ) {
