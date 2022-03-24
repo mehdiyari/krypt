@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.photo
+package ir.mehdiyari.krypt.utils
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,7 +15,7 @@ class FilePathGenerator @Inject constructor(
     }
 
     fun generateFilePathForPhotos(photoPath: String): String =
-        "${context.cacheDir.path}/${CRYPT_FILES_PREFIX}${System.currentTimeMillis()}.${
+        "${context.cacheDir.path}/$CRYPT_FILES_PREFIX${System.currentTimeMillis()}.${
             photoPath.split(".").lastOrNull() ?: ".jpg"
         }"
 
