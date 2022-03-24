@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.app.MainActivity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.ui.photo.PhotosFragmentAction
 import ir.mehdiyari.krypt.ui.photo.PhotosFragmentArgs
@@ -64,7 +65,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun clickOnLockItem() {
-        TODO()
+        viewModel.lockKrypt()
+        (requireActivity() as MainActivity).restartApp()
     }
 
     private fun navigateToPhotosFragment(photosAction: PhotosFragmentAction) {
