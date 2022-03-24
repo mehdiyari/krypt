@@ -41,10 +41,14 @@ class FilesUtilities @Inject constructor(
 
     fun getFilesDir(): String = context.filesDir.path
 
-    fun getNameOfFile(path: String): String = path.substring(
-        path.lastIndexOf("/") + 1,
-        path.lastIndexOf(".")
-    )
+    fun getNameOfFile(path: String): String = try {
+        path.substring(
+            path.lastIndexOf("/") + 1,
+            path.lastIndexOf(".")
+        )
+    } catch (t: Throwable) {
+        File(path).nameWithoutExtension
+    }
 
     fun generateDecryptedPhotoPathInKryptFolder(encryptedPhoto: String): String =
         "${Environment.getExternalStorageDirectory().path}/Krypt/Photos/".also {
