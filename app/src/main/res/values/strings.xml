@@ -49,7 +49,7 @@
     <string name="decrypt_successfully">All files decrypted successfully</string>
     <string name="operation_successfully">Operation finished successfully</string>
     <string name="encrypt_failed">Failed to encrypt files</string>
-    <string name="decrypt_failed">Failed to decrypt filed</string>
+    <string name="decrypt_failed">Failed to decrypt files</string>
     <string name="operation_failed">Operation failed</string>
     <string name="loading">Loading…</string>
 </resources>
