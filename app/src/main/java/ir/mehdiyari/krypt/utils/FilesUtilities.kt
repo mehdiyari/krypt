@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FilePathGenerator @Inject constructor(
+class FilesUtilities @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
