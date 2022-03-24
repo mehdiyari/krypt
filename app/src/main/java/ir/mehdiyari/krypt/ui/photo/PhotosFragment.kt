@@ -85,12 +85,6 @@ class PhotosFragment : Fragment() {
         .setGrantSharedStoragePermission(true)
         .setMediaObserverEnabled(true)
         .setCaptionEnabledOptions(CaptionEnabledOptions(false))
-        .setCameraEnabledOptions(
-            CameraEnabledOptions(
-                true,
-                getFileProviderAuthority(requireActivity().application.packageName)
-            )
-        )
         .setTheme(if (requireContext().isInDarkTheme()) ir.mehdiyari.fallery.R.style.Fallery_Dracula else ir.mehdiyari.fallery.R.style.Fallery_Light)
 
     private fun openPhotoPickerForDecrypting() {
@@ -105,7 +99,12 @@ class PhotosFragment : Fragment() {
     }
 
     private fun openPhotoPicker() {
-        getBaseOptionsOfFallery().build().also { options ->
+        getBaseOptionsOfFallery().setCameraEnabledOptions(
+            CameraEnabledOptions(
+                true,
+                getFileProviderAuthority(requireActivity().application.packageName)
+            )
+        ).build().also { options ->
             startFalleryWithOptions(1, options)
         }
     }
