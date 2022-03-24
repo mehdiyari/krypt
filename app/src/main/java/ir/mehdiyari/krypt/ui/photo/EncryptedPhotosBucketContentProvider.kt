@@ -30,29 +30,29 @@ class EncryptedPhotosBucketContentProvider @Inject constructor(
                 filesRepository.getAllPhotosForCurrentUser(accountName).map {
                     if (it.metaData.isNotBlank()) {
                         val finalPath =
-                            filesUtilities.generateTemporaryFilePathForPhotosThumbnail(it.metaData)
+                            filesUtilities.generateStableNameFilePathForPhotosThumbnail(it.metaData)
 
                         if (!File(finalPath).exists()) {
                             if (fileCrypt.decryptFileToPath(it.metaData, finalPath)) {
                                 it to finalPath
                             } else {
-                                it to null
+                                it to filesUtilities.getNameOfFile(it.filePath)
                             }
                         } else {
                             it to finalPath
                         }
                     } else {
-                        it to null
+                        it to filesUtilities.getNameOfFile(it.filePath)
                     }
                 }.map {
                     val dimension =
-                        if (it.second == null) null else {
-                            thumbsUtils.getPhotoDimension(it.second!!)
+                        if (!it.second.contains("/")) null else {
+                            thumbsUtils.getPhotoDimension(it.second)
                         }
 
                     Media.Photo(
                         id = it.first.id,
-                        path = it.second ?: "",
+                        path = it.second,
                         width = dimension?.first ?: 0,
                         height = dimension?.second ?: 0
                     )
