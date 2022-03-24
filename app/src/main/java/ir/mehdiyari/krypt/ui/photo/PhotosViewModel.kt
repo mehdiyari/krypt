@@ -9,10 +9,14 @@ import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.utils.FilePathGenerator
+import ir.mehdiyari.krypt.utils.MediaStoreManager
+import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +26,8 @@ class PhotosViewModel @Inject constructor(
     private val filePathGenerator: FilePathGenerator,
     private val filesRepository: FilesRepository,
     @AccountName private val currentAccountName: String?,
-    private val mediaStoreManager: MediaStoreManager
+    private val mediaStoreManager: MediaStoreManager,
+    private val thumbsUtils: ThumbsUtils
 ) : ViewModel() {
 
     private val _photosViewState = MutableStateFlow<PhotosViewState>(
@@ -49,7 +54,7 @@ class PhotosViewModel @Inject constructor(
                 ) { delete ->
                     val action = viewAction.value
                     if (action == PhotosFragmentAction.PICK_PHOTO ||
-                        action == PhotosFragmentAction.PICK_PHOTO
+                        action == PhotosFragmentAction.TAKE_PHOTO
                     ) {
                         encrypt(photos, delete)
                     } else if (action == PhotosFragmentAction.DECRYPT_PHOTO) {
@@ -66,13 +71,28 @@ class PhotosViewModel @Inject constructor(
     ) {
         viewModelScope.launch(ioDispatcher) {
             _photosViewState.emit(PhotosViewState.OperationStart)
-            val encryptedResults = mutableListOf<String>()
+            val encryptedResults = mutableListOf<Pair<String, String?>>()
             photos.forEach { photoPath ->
                 val destinationPath = filePathGenerator.generateFilePathForPhotos(photoPath)
+                var thumbnailPath: String? = createThumbnailPath(destinationPath)
+                try {
+                    thumbsUtils.createThumbnailFromPath(photoPath, thumbnailPath!!)
+                } catch (t: Throwable) {
+                    thumbnailPath = null
+                }
+
                 if (fileCrypt.encryptFileToPath(photoPath, destinationPath)) {
-                    encryptedResults.add(destinationPath)
+                    encryptedResults.add(destinationPath to encryptThumbnail(thumbnailPath))
                 } else {
                     return@forEach
+                }
+
+                if (thumbnailPath != null) {
+                    try {
+                        File(thumbnailPath).delete()
+                    } catch (t: Throwable) {
+                        t.printStackTrace()
+                    }
                 }
             }
 
@@ -88,8 +108,8 @@ class PhotosViewModel @Inject constructor(
                 filesRepository.insertFiles(encryptedResults.map {
                     FileEntity(
                         type = FileTypeEnum.Photo,
-                        filePath = it,
-                        metaData = "",
+                        filePath = it.first,
+                        metaData = it.second ?: "",
                         accountName = currentAccountName!!
                     )
                 })
@@ -100,6 +120,27 @@ class PhotosViewModel @Inject constructor(
             }
         }
     }
+
+    private fun encryptThumbnail(thumbnailPath: String?): String? = if (thumbnailPath != null) {
+        try {
+            val thumbEncryptedPath =
+                filePathGenerator.generateFilePathForPhotosThumbnail(thumbnailPath)
+            if (fileCrypt.encryptFileToPath(thumbnailPath, thumbEncryptedPath)) {
+                thumbEncryptedPath
+            } else {
+                null
+            }
+        } catch (t: Throwable) {
+            null
+        }
+    } else {
+        null
+    }
+
+    private fun createThumbnailPath(destinationPath: String): String =
+        "${filePathGenerator.getCashDir()}/thumb_${
+            filePathGenerator.getNameOfFile(destinationPath)
+        }.jpg"
 
     private fun decrypt(
         photos: Array<String>,
