@@ -124,7 +124,7 @@ private fun TopBarSurface(
                     disabledIndicatorColor = Color.Transparent
                 ),
                 singleLine = true,
-                enabled = !isPreviewMode
+                readOnly = isPreviewMode
             )
         }
     }
@@ -158,7 +158,7 @@ private fun ContentTextField(
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
         ),
-        enabled = !isPreviewMode
+        readOnly = isPreviewMode
     )
 }
 
