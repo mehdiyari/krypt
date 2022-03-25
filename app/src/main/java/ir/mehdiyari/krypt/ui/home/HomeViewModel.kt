@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
     private val _filesCounts = MutableStateFlow<List<HomeCardsModel>>(listOf())
     val filesCounts: StateFlow<List<HomeCardsModel>> = _filesCounts
 
-    init {
+    fun getHomeData() {
         viewModelScope.launch(ioDispatcher) {
             _filesCounts.emit(
                 filesRepository.getAllFilesTypeCounts().map {
