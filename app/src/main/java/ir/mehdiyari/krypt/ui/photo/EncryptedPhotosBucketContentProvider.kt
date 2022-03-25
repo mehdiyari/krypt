@@ -5,7 +5,6 @@ import ir.mehdiyari.fallery.models.Media
 import ir.mehdiyari.fallery.repo.AbstractBucketContentProvider
 import ir.mehdiyari.krypt.crypto.FileCrypt
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +13,6 @@ import java.io.File
 import javax.inject.Inject
 
 class EncryptedPhotosBucketContentProvider @Inject constructor(
-    @AccountName private val accountName: String,
     private val filesRepository: FilesRepository,
     private val fileCrypt: FileCrypt,
     private val filesUtilities: FilesUtilities,
@@ -27,7 +25,7 @@ class EncryptedPhotosBucketContentProvider @Inject constructor(
     ): Flow<List<Media>> {
         return if (bucketId == EncryptedPhotosBucketProvider.KRYPT_SAFE_FOLDER_ID) {
             flow {
-                filesRepository.getAllPhotosForCurrentUser(accountName).map {
+                filesRepository.getAllPhotosForCurrentUser().map {
                     if (it.metaData.isNotBlank()) {
                         val finalPath =
                             filesUtilities.generateStableNameFilePathForPhotosThumbnail(it.metaData)

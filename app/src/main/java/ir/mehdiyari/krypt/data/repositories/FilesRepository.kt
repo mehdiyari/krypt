@@ -7,12 +7,13 @@ import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Singleton
 class FilesRepository @Inject constructor(
     private val filedDao: FilesDao,
-    @AccountName private val currentAccountName: dagger.Lazy<String>,
+    @AccountName private val currentAccountName: Provider<String>,
     private val filesUtilities: FilesUtilities
 ) {
 
@@ -52,12 +53,15 @@ class FilesRepository @Inject constructor(
             it.metaData.isNotBlank()
         }?.metaData
 
-    suspend fun getAllPhotosForCurrentUser(accountName: String): List<FileEntity> =
-        filedDao.getAllFilesOfCurrentAccountBasedOnType(accountName, FileTypeEnum.Photo)
+    suspend fun getAllPhotosForCurrentUser(): List<FileEntity> =
+        filedDao.getAllFilesOfCurrentAccountBasedOnType(
+            currentAccountName.get(),
+            FileTypeEnum.Photo
+        )
 
     suspend fun mapThumbnailsAndNameToFileEntity(photos: Array<String>): List<FileEntity> =
         mutableListOf<FileEntity>().apply {
-            getAllPhotosForCurrentUser(currentAccountName.get()).filter {
+            getAllPhotosForCurrentUser().filter {
                 photos.any { currentPhoto ->
                     if (!currentPhoto.contains("/")) {
                         it.filePath.contains(currentPhoto)
