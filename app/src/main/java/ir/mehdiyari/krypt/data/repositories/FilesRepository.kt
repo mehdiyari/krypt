@@ -81,4 +81,7 @@ class FilesRepository @Inject constructor(
                 File(it.metaData).delete()
         }
     }
+
+    suspend fun getAllTextFiles(): List<FileEntity> =
+        filedDao.getAllFilesOfCurrentAccountBasedOnType(currentAccountName.get(), FileTypeEnum.Text)
 }

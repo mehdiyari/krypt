@@ -60,4 +60,5 @@
     <string name="failed_to_encrypt_note">We failed to encrypt your note</string>
     <string name="title_must_not_empty">Title must not be empty</string>
     <string name="content_must_not_empty">Content must not be empty</string>
+    <string name="add_new_text">New Note</string>
 </resources>
