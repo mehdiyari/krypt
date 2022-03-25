@@ -45,12 +45,9 @@ class TextFilesUtils @Inject constructor(
             text += "${it.toInt().toChar()}"
         }
 
-        return text.substring(0, text.indexOf("\n")) to text.substring(
-            text.indexOf(
-                "\n",
-                text.length
-            )
-        )
+        val title = text.substring(0, text.indexOf("\n"))
+        val content = text.substring(text.indexOf("\n") + 1, text.length - 1)
+        return title to content
     }
 
     private fun getFirst64CharacterOfContent(content: String): String =
