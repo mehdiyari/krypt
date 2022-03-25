@@ -142,7 +142,7 @@ private fun ContentTextField(
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .padding(bottom = 55.dp),
+            .padding(bottom = if (isPreviewMode) 0.dp else 55.dp),
         textStyle = TextStyle(
             color = MaterialTheme.colors.onBackground,
             fontSize = 18.sp,
