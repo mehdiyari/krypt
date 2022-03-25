@@ -56,4 +56,8 @@
     <string name="text_title">Title</string>
     <string name="save_text">Save</string>
     <string name="text_content">Content</string>
+    <string name="successfully_encrypt_note">Your note was successfully encrypted</string>
+    <string name="failed_to_encrypt_note">We failed to encrypt your note</string>
+    <string name="title_must_not_empty">Title must not be empty</string>
+    <string name="content_must_not_empty">Content must not be empty</string>
 </resources>

@@ -15,6 +15,7 @@ class FilesUtilities @Inject constructor(
     companion object {
         const val KRYPT_FILES_PREFIX = "krypt_"
         const val KRYPT_THUMBS_FILES_PREFIX = "thumb_"
+        const val KRYPT_EXT = "krp"
     }
 
     fun generateFilePathForPhotos(photoPath: String): String =
@@ -58,4 +59,10 @@ class FilesUtilities @Inject constructor(
                 encryptedPhoto.split(".").lastOrNull() ?: ".jpg"
             }"
         }
+
+    fun generateTextFilePath(): String =
+        "${getFilesDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}.${KRYPT_EXT}"
+
+    fun generateTextFileCachePath(): String =
+        "${getCashDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}"
 }

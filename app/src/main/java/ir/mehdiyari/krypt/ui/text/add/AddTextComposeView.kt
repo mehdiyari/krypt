@@ -49,7 +49,9 @@ fun AddTextComposeView(
                 }
             })
 
-        SaveTextFab()
+        SaveTextFab {
+            viewModel.saveNote(textTitleField.value.text.trim(), textContentField.value.text)
+        }
     }
 }
 
@@ -135,14 +137,16 @@ private fun ContentTextField(textContentField: MutableState<TextFieldValue>) {
 }
 
 @Composable
-private fun SaveTextFab() {
+private fun SaveTextFab(
+    onSaveClick: () -> Unit = {}
+) {
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.padding(15.dp)
     ) {
         ExtendedFloatingActionButton(
-            onClick = { },
+            onClick = { onSaveClick() },
             icon = {
                 Icon(
                     Icons.Filled.Done,
