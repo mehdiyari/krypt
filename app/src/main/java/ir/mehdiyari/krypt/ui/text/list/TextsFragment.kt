@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
 
 @AndroidEntryPoint
 class TextsFragment : Fragment() {
@@ -27,6 +28,14 @@ class TextsFragment : Fragment() {
                     findNavController().popBackStack()
                 }, newNoteClick = {
                     findNavController().navigate(R.id.action_textsFragment_to_addTextFragment)
+                }, onCardsClick = { clickedTextId ->
+                    findNavController().navigate(
+                        resId = R.id.action_textsFragment_to_addTextFragment,
+                        args = AddTextFragmentArgs.Builder().apply {
+                            textId = clickedTextId
+                        }.build().toBundle(),
+                        navOptions = null
+                    )
                 })
         }
     }

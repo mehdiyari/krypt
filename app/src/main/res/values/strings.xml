@@ -61,4 +61,6 @@
     <string name="title_must_not_empty">Title must not be empty</string>
     <string name="content_must_not_empty">Content must not be empty</string>
     <string name="add_new_text">New Note</string>
+    <string name="cant_find_these_text">We can\'t find these text</string>
+    <string name="error_while_decrypting">Error while decrypting text file</string>
 </resources>

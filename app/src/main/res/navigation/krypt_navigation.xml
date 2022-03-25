@@ -99,6 +99,11 @@
     <fragment
         android:id="@+id/addTextFragment"
         android:name="ir.mehdiyari.krypt.ui.text.add.AddTextFragment"
-        android:label="AddTextFragment" />
+        android:label="AddTextFragment">
+        <argument
+            android:name="textId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

@@ -29,7 +29,8 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 fun TextsComposeView(
     viewModel: TextsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onNavigationClickIcon: () -> Unit = {},
-    newNoteClick: () -> Unit = {}
+    newNoteClick: () -> Unit = {},
+    onCardsClick: (id: Long) -> Unit = { _ -> }
 ) {
     KryptTheme {
         Scaffold(
@@ -49,7 +50,7 @@ fun TextsComposeView(
             }, content = {
                 val textLists = viewModel.textFilesList.collectAsState()
                 Row {
-                    TextsLazyList(textLists)
+                    TextsLazyList(textLists, onCardsClick)
                 }
             })
 
@@ -85,13 +86,16 @@ private fun NewNoteFab(
 }
 
 @Composable
-fun TextsLazyList(textLists: State<List<TextEntity>>) {
+fun TextsLazyList(
+    textLists: State<List<TextEntity>>,
+    onCardsClick: (id: Long) -> Unit = { _ -> }
+) {
     LazyColumn(
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         contentPadding = PaddingValues(bottom = 85.dp),
     ) {
         items(textLists.value) { textEntity ->
-            TextCard(textEntity)
+            TextCard(textEntity, onCardsClick)
         }
     }
 }
@@ -99,7 +103,8 @@ fun TextsLazyList(textLists: State<List<TextEntity>>) {
 @Composable
 @Preview
 fun TextCard(
-    textEntity: TextEntity = TextEntity(1, "Hello World", "This is Test Content....")
+    textEntity: TextEntity = TextEntity(1, "Hello World", "This is Test Content...."),
+    onCardsClick: (id: Long) -> Unit = { _ -> }
 ) {
     Card(
         modifier = Modifier
@@ -107,7 +112,7 @@ fun TextCard(
             .padding(8.dp, 6.dp, 8.dp, 6.dp)
             .selectable(
                 selected = false,
-                onClick = { }),
+                onClick = { onCardsClick.invoke(textEntity.id) }),
         shape = RoundedCornerShape(8.dp),
         elevation = 5.dp,
     ) {

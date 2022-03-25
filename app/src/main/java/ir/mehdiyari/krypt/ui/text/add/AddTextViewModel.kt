@@ -9,6 +9,7 @@ import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.ui.text.list.TextEntity
 import ir.mehdiyari.krypt.utils.TextFilesUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,9 @@ class AddTextViewModel @Inject constructor(
 
     private val _saveNoteValidation = MutableStateFlow<Int?>(null)
     val saveNoteValidation: StateFlow<Int?> = _saveNoteValidation
+
+    private val _argsTextViewState = MutableStateFlow<AddTextArgsViewState?>(null)
+    val argsTextViewState: StateFlow<AddTextArgsViewState?> = _argsTextViewState
 
     fun saveNote(title: String, content: String) {
         viewModelScope.launch(ioDispatcher) {
@@ -64,6 +68,45 @@ class AddTextViewModel @Inject constructor(
                     _saveNoteState.emit(true)
                 } else {
                     _saveNoteState.emit(false)
+                }
+            }
+        }
+    }
+
+    fun handleInputTextID(textId: Long) {
+        if (textId != -1L) {
+            viewModelScope.launch(ioDispatcher) {
+                filesRepository.getFileById(textId).also {
+                    handleInputTextFileEntity(it, textId)
+                }
+            }
+        }
+    }
+
+    private suspend fun handleInputTextFileEntity(
+        it: FileEntity?,
+        textId: Long
+    ) {
+        if (it == null) {
+            _argsTextViewState.emit(
+                AddTextArgsViewState.Error(R.string.cant_find_these_text)
+            )
+        } else {
+            textFilesUtils.decryptTextFile(it.filePath).also { titleContentPair ->
+                if (titleContentPair != null) {
+                    _argsTextViewState.emit(
+                        AddTextArgsViewState.TextArg(
+                            TextEntity(
+                                textId,
+                                titleContentPair.first,
+                                titleContentPair.second
+                            )
+                        )
+                    )
+                } else {
+                    _argsTextViewState.emit(
+                        AddTextArgsViewState.Error(R.string.error_while_decrypting)
+                    )
                 }
             }
         }

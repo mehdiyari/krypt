@@ -31,14 +31,14 @@ class TextFilesUtils @Inject constructor(
     fun getEncryptedBase64MetaDataFromTitleAndContent(title: String, content: String): String? =
         try {
             val str = "${title.replace("\n", "")}\n${getFirst64CharacterOfContent(content)}"
-            Base64.encodeBytes(fileCrypt.encryptString(str.toUtf8Bytes()))
+            Base64.encodeBytes(fileCrypt.encryptDataWithIVAtFirst(str.toUtf8Bytes()))
         } catch (t: Throwable) {
             t.printStackTrace()
             null
         }
 
     fun decryptMetaData(string: String): Pair<String, String>? {
-        val decryptedText = fileCrypt.decryptString(Base64.decode(string))
+        val decryptedText = fileCrypt.decryptDataWithIVAtFirst(Base64.decode(string))
         decryptedText ?: return null
         var text = ""
         decryptedText.forEach {
@@ -55,4 +55,28 @@ class TextFilesUtils @Inject constructor(
             content.substring(0, 63)
         else
             content
+
+    fun decryptTextFile(filePath: String): Pair<String, String>? {
+        val encryptedFile = File(filePath)
+        if (!encryptedFile.exists()) {
+            return null
+        }
+
+        return try {
+            val fileContentByteArray = encryptedFile.readBytes()
+            val decryptedByteArray = fileCrypt.decryptDataWithIVAtFirst(fileContentByteArray)
+            var text = ""
+            decryptedByteArray!!.forEach {
+                text += "${it.toInt().toChar()}"
+            }
+
+            val title = text.substring(0, text.indexOf("\n"))
+            val content = text.substring(text.indexOf("\n") + 1, text.length - 1)
+
+            title to content
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            null
+        }
+    }
 }

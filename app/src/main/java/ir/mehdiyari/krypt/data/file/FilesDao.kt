@@ -35,4 +35,7 @@ interface FilesDao {
 
     @Delete(entity = FileEntity::class)
     suspend fun deleteFiles(files: List<FileEntity>)
+
+    @Query("select * from files where id = :id and accountName = :accountName LIMIT 1")
+    suspend fun getFileById(accountName: String, id: Long): FileEntity?
 }

@@ -5,10 +5,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,23 +31,46 @@ fun AddTextComposeView(
     onNavigationClickIcon: () -> Unit = {}
 ) {
     KryptTheme {
+        val argsState = viewModel.argsTextViewState.collectAsState().value
+        if (argsState is AddTextArgsViewState.Error) {
+            return@KryptTheme
+        }
+
         val textTitleField = remember { mutableStateOf(TextFieldValue()) }
         val textContentField = remember { mutableStateOf(TextFieldValue()) }
+
+        val isPreviewMode = argsState is AddTextArgsViewState.TextArg
+
+        if (isPreviewMode) {
+            argsState as AddTextArgsViewState.TextArg
+            textTitleField.value = TextFieldValue(argsState.textEntity.title)
+            textContentField.value = TextFieldValue(argsState.textEntity.content)
+        }
+
         Scaffold(
             topBar = {
-                TopBarSurface(onNavigationClickIcon, textTitleField)
+                TopBarSurface(
+                    onNavigationClickIcon,
+                    textTitleField,
+                    isPreviewMode = isPreviewMode
+                )
             }, content = {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
                 ) {
-                    ContentTextField(textContentField)
+                    ContentTextField(
+                        textContentField,
+                        isPreviewMode = isPreviewMode
+                    )
                 }
             })
 
-        SaveTextFab {
-            viewModel.saveNote(textTitleField.value.text.trim(), textContentField.value.text)
+        if (!isPreviewMode) {
+            SaveTextFab {
+                viewModel.saveNote(textTitleField.value.text.trim(), textContentField.value.text)
+            }
         }
     }
 }
@@ -58,7 +78,8 @@ fun AddTextComposeView(
 @Composable
 private fun TopBarSurface(
     onNavigationClickIcon: () -> Unit,
-    textTitleField: MutableState<TextFieldValue>
+    textTitleField: MutableState<TextFieldValue>,
+    isPreviewMode: Boolean
 ) {
     Surface(
         modifier = Modifier
@@ -102,14 +123,18 @@ private fun TopBarSurface(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
                 ),
-                singleLine = true
+                singleLine = true,
+                enabled = !isPreviewMode
             )
         }
     }
 }
 
 @Composable
-private fun ContentTextField(textContentField: MutableState<TextFieldValue>) {
+private fun ContentTextField(
+    textContentField: MutableState<TextFieldValue>,
+    isPreviewMode: Boolean
+) {
     TextField(
         value = textContentField.value,
         onValueChange = { textContentField.value = it },
@@ -132,7 +157,8 @@ private fun ContentTextField(textContentField: MutableState<TextFieldValue>) {
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
-        )
+        ),
+        enabled = !isPreviewMode
     )
 }
 

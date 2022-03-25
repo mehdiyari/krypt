@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import kotlinx.coroutines.launch
@@ -18,14 +19,31 @@ import kotlinx.coroutines.launch
 class AddTextFragment : Fragment() {
 
     private val viewModel: AddTextViewModel by viewModels()
+    private val args: AddTextFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
+        viewModel.handleInputTextID(args.textId)
+        lifecycleScope.launch {
+            viewModel.argsTextViewState.collect {
+                handleArgsViewState(it)
+            }
+        }
         setContent {
             AddTextComposeView(viewModel) {
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun handleArgsViewState(argsViewState: AddTextArgsViewState?) {
+        if (argsViewState != null) {
+            if (argsViewState is AddTextArgsViewState.Error) {
+                Toast.makeText(context, argsViewState.errorResId, Toast.LENGTH_LONG)
+                    .show()
                 findNavController().popBackStack()
             }
         }

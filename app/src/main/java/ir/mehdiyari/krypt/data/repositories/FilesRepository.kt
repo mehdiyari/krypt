@@ -84,4 +84,7 @@ class FilesRepository @Inject constructor(
 
     suspend fun getAllTextFiles(): List<FileEntity> =
         filedDao.getAllFilesOfCurrentAccountBasedOnType(currentAccountName.get(), FileTypeEnum.Text)
+
+    suspend fun getFileById(id: Long): FileEntity? =
+        filedDao.getFileById(currentAccountName.get(), id)
 }

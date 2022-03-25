@@ -80,7 +80,7 @@ class FileCrypt @Inject constructor(
         }
     }
 
-    fun encryptString(data: ByteArray): ByteArray {
+    fun encryptDataWithIVAtFirst(data: ByteArray): ByteArray {
         val initVector = symmetricHelper.createInitVector()
         val encryptedTexts = symmetricHelper.encrypt(
             algorithmName = SymmetricHelper.AES_CBC_PKS5PADDING,
@@ -92,7 +92,7 @@ class FileCrypt @Inject constructor(
         return initVector.combineWith(encryptedTexts)
     }
 
-    fun decryptString(data: ByteArray): ByteArray? {
+    fun decryptDataWithIVAtFirst(data: ByteArray): ByteArray? {
         val initVector = data.getBeforeIndex(INITIALIZE_VECTOR_SIZE)
         return symmetricHelper.decrypt(
             algorithmName = SymmetricHelper.AES_CBC_PKS5PADDING,
