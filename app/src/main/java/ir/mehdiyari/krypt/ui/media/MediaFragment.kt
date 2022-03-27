@@ -56,10 +56,10 @@ class MediaFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.viewAction.collect {
                 when (it) {
-                    MediaFragmentAction.PICK_MEDIA -> openPhotoPicker()
+                    MediaFragmentAction.PICK_MEDIA -> openMediaPicker()
                     MediaFragmentAction.DECRYPT_MEDIA -> {
                         if (viewModel.checkForOpenPickerForDecryptMode()) {
-                            openPhotoPickerForDecrypting()
+                            openMediaPickerForDecrypting()
                         } else {
                             Toast.makeText(
                                 requireContext(),
@@ -87,7 +87,7 @@ class MediaFragment : Fragment() {
         .setCaptionEnabledOptions(CaptionEnabledOptions(false))
         .setTheme(if (requireContext().isInDarkTheme()) ir.mehdiyari.fallery.R.style.Fallery_Dracula else ir.mehdiyari.fallery.R.style.Fallery_Light)
 
-    private fun openPhotoPickerForDecrypting() {
+    private fun openMediaPickerForDecrypting() {
         getBaseOptionsOfFallery()
             .setContentProviders(
                 encryptedMediasBucketContentProvider,
@@ -98,7 +98,7 @@ class MediaFragment : Fragment() {
             }
     }
 
-    private fun openPhotoPicker() {
+    private fun openMediaPicker() {
         getBaseOptionsOfFallery().setCameraEnabledOptions(
             CameraEnabledOptions(
                 true,
@@ -113,14 +113,14 @@ class MediaFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 || requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                handleSelectedPhotos(data?.getFalleryResultMediasFromIntent())
+                handleSelectedMedia(data?.getFalleryResultMediasFromIntent())
             } else {
                 findNavController().popBackStack()
             }
         }
     }
 
-    private fun handleSelectedPhotos(result: Array<String>?) {
+    private fun handleSelectedMedia(result: Array<String>?) {
         if (result.isNullOrEmpty()) {
             findNavController().popBackStack()
         } else {
