@@ -26,33 +26,53 @@ class HomeViewModel @Inject constructor(
 
     fun getHomeData() {
         viewModelScope.launch(ioDispatcher) {
-            _filesCounts.emit(
-                filesRepository.getAllFilesTypeCounts().map {
-                    when (it.first) {
-                        FileTypeEnum.Photo, FileTypeEnum.Video -> HomeCardsModel(
-                            R.drawable.ic_gallery_50,
-                            R.string.medias_library,
-                            it.second
-                        )
-                        FileTypeEnum.Audio -> HomeCardsModel(
-                            R.drawable.ic_add_audio_24,
-                            R.string.audios_library,
-                            it.second
-                        )
-                        FileTypeEnum.Music -> HomeCardsModel(
-                            R.drawable.ic_add_music_24,
-                            R.string.musics_library,
-                            it.second
-                        )
-                        FileTypeEnum.Text -> HomeCardsModel(
-                            R.drawable.ic_editor_50,
-                            R.string.texts_library,
-                            it.second
+            _filesCounts.emit(mapFileTypeCountToHomeCardsModel())
+        }
+    }
+
+    private suspend fun mapFileTypeCountToHomeCardsModel(): List<HomeCardsModel> {
+        val homeCardList = mutableListOf<HomeCardsModel>()
+        var mediaCount = -1L
+        filesRepository.getAllFilesTypeCounts().forEach {
+            when (it.first) {
+                FileTypeEnum.Audio -> homeCardList.add(
+                    HomeCardsModel(
+                        R.drawable.ic_add_audio_24,
+                        R.string.audios_library,
+                        it.second
+                    )
+                )
+                FileTypeEnum.Music -> homeCardList.add(
+                    HomeCardsModel(
+                        R.drawable.ic_add_music_24,
+                        R.string.musics_library,
+                        it.second
+                    )
+                )
+                FileTypeEnum.Text -> homeCardList.add(
+                    HomeCardsModel(
+                        R.drawable.ic_editor_50,
+                        R.string.texts_library,
+                        it.second
+                    )
+                )
+                else -> {
+                    if (mediaCount == -1L) {
+                        mediaCount = it.second
+                    } else {
+                        homeCardList.add(
+                            HomeCardsModel(
+                                R.drawable.ic_gallery_50,
+                                R.string.medias_library,
+                                mediaCount + it.second
+                            )
                         )
                     }
                 }
-            )
+            }
         }
+
+        return homeCardList
     }
 
     fun lockKrypt() {

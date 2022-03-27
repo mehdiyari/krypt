@@ -27,10 +27,10 @@ interface FilesDao {
     ): List<FileEntity>
 
 
-    @Query("SELECT count(*) from files where accountName = :accountName AND type in (:typeList)")
+    @Query("SELECT count(*) from files where accountName = :accountName AND type = :type")
     suspend fun getFilesCountBasedOnType(
         accountName: String,
-        vararg typeList: FileTypeEnum
+        type: FileTypeEnum
     ): Long
 
     @Delete(entity = FileEntity::class)

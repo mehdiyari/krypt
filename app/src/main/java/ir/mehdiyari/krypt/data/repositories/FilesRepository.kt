@@ -43,6 +43,9 @@ class FilesRepository @Inject constructor(
     suspend fun getMediasCount(): Long = filedDao.getFilesCountBasedOnType(
         currentAccountName.get(),
         FileTypeEnum.Photo
+    ) + filedDao.getFilesCountBasedOnType(
+        currentAccountName.get(),
+        FileTypeEnum.Video
     )
 
     suspend fun getLastEncryptedPhotoThumbnail(): String? =
