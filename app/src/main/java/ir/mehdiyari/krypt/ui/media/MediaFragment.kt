@@ -78,7 +78,7 @@ class MediaFragment : Fragment() {
 
     private fun getBaseOptionsOfFallery(): FalleryBuilder = FalleryBuilder()
         .setImageLoader(deviceGalleryImageLoader)
-        .mediaTypeFiltering(BucketType.ONLY_PHOTO_BUCKETS)
+        .mediaTypeFiltering(BucketType.VIDEO_PHOTO_BUCKETS)
         .setFalleryToolbarTitleText(R.string.app_name)
         .setMediaCountEnabled(true)
         .setGrantExternalStoragePermission(true)
