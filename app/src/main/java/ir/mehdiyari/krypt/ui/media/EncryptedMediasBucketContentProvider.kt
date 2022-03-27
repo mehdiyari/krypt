@@ -28,7 +28,7 @@ class EncryptedMediasBucketContentProvider @Inject constructor(
                 filesRepository.getAllEncryptedMedia().map {
                     if (it.metaData.isNotBlank()) {
                         val finalPath =
-                            filesUtilities.generateStableNameFilePathForPhotosThumbnail(it.metaData)
+                            filesUtilities.generateStableNameFilePathForMediaThumbnail(it.metaData)
 
                         if (!File(finalPath).exists()) {
                             if (fileCrypt.decryptFileToPath(it.metaData, finalPath)) {

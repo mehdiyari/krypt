@@ -36,7 +36,7 @@ class EncryptedMediasBucketProvider @Inject constructor(
 
     private suspend fun getFirstThumbnail(): String? =
         filesRepository.getLastEncryptedPhotoThumbnail()?.let {
-            val finalPath = filesUtilities.generateStableNameFilePathForPhotosThumbnail(it)
+            val finalPath = filesUtilities.generateStableNameFilePathForMediaThumbnail(it)
             if (!File(finalPath).exists()) {
                 if (fileCrypt.decryptFileToPath(it, finalPath)) {
                     finalPath

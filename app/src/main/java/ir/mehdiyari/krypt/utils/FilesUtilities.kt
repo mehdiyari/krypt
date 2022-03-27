@@ -18,19 +18,19 @@ class FilesUtilities @Inject constructor(
         const val KRYPT_EXT = "krp"
     }
 
-    fun generateFilePathForPhotos(photoPath: String): String =
+    fun generateFilePathForMedia(photoPath: String): String =
         "${getFilesDir()}/$KRYPT_FILES_PREFIX${System.currentTimeMillis()}.${
-            photoPath.split(".").lastOrNull() ?: ".jpg"
+            photoPath.split(".").lastOrNull() ?: ".${KRYPT_EXT}"
         }"
 
-    fun generateEncryptedFilePathForPhotosThumbnail(thumbnailPath: String): String =
+    fun generateEncryptedFilePathForMediaThumbnail(thumbnailPath: String): String =
         "${getFilesDir()}/${getNameOfFile(thumbnailPath)}.${
-            thumbnailPath.split(".").lastOrNull() ?: ".jpg"
+            thumbnailPath.split(".").lastOrNull() ?: ".${KRYPT_EXT}"
         }"
 
-    fun generateStableNameFilePathForPhotosThumbnail(thumbnailPath: String): String =
+    fun generateStableNameFilePathForMediaThumbnail(thumbnailPath: String): String =
         "${getCashDir()}/${getNameOfFile(thumbnailPath)}.${
-            thumbnailPath.split(".").lastOrNull() ?: ".jpg"
+            thumbnailPath.split(".").lastOrNull() ?: ".${KRYPT_EXT}"
         }"
 
     fun createThumbnailPath(path: String): String =
@@ -51,12 +51,12 @@ class FilesUtilities @Inject constructor(
         File(path).nameWithoutExtension
     }
 
-    fun generateDecryptedPhotoPathInKryptFolder(encryptedPhoto: String): String =
+    fun generateDecryptedPhotoMediaInKryptFolder(encryptedPhoto: String): String =
         "${Environment.getExternalStorageDirectory().path}/Krypt/Photos/".also {
             File(it).mkdirs()
         }.let {
             "$it${getNameOfFile(encryptedPhoto)}.${
-                encryptedPhoto.split(".").lastOrNull() ?: ".jpg"
+                encryptedPhoto.split(".").lastOrNull() ?: ".$KRYPT_EXT"
             }"
         }
 

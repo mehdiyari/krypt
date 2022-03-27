@@ -73,7 +73,7 @@ class MediasViewModel @Inject constructor(
             _mediaViewState.emit(MediaViewState.OperationStart)
             val encryptedResults = mutableListOf<Pair<String, String?>>()
             medias.forEach { mediaPath ->
-                val destinationPath = filesUtilities.generateFilePathForPhotos(mediaPath)
+                val destinationPath = filesUtilities.generateFilePathForMedia(mediaPath)
                 var thumbnailPath: String? = filesUtilities.createThumbnailPath(destinationPath)
                 try {
                     thumbsUtils.createThumbnailFromPath(mediaPath, thumbnailPath!!)
@@ -124,7 +124,7 @@ class MediasViewModel @Inject constructor(
     private fun encryptThumbnail(thumbnailPath: String?): String? = if (thumbnailPath != null) {
         try {
             val thumbEncryptedPath =
-                filesUtilities.generateEncryptedFilePathForPhotosThumbnail(thumbnailPath)
+                filesUtilities.generateEncryptedFilePathForMediaThumbnail(thumbnailPath)
             if (fileCrypt.encryptFileToPath(thumbnailPath, thumbEncryptedPath)) {
                 thumbEncryptedPath
             } else {
@@ -147,7 +147,7 @@ class MediasViewModel @Inject constructor(
             val encryptedMedias = filesRepository.mapThumbnailsAndNameToFileEntity(medias)
 
             encryptedMedias.forEach { encryptedMedia ->
-                val destinationPath = filesUtilities.generateDecryptedPhotoPathInKryptFolder(
+                val destinationPath = filesUtilities.generateDecryptedPhotoMediaInKryptFolder(
                     encryptedMedia.filePath
                 )
 
