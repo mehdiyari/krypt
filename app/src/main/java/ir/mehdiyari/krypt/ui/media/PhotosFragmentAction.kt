@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.photo
+package ir.mehdiyari.krypt.ui.media
 
 enum class PhotosFragmentAction(val value: Int) {
     DEFAULT(0),

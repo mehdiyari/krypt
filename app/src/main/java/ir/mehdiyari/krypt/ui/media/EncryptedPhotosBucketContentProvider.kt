@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.photo
+package ir.mehdiyari.krypt.ui.media
 
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.Media

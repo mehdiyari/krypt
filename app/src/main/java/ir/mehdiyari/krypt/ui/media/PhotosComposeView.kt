@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.photo
+package ir.mehdiyari.krypt.ui.media
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.photo.PhotosFragmentAction.*
+import ir.mehdiyari.krypt.ui.media.PhotosFragmentAction.*
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable

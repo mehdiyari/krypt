@@ -12,8 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.MainActivity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.ui.photo.PhotosFragmentAction
-import ir.mehdiyari.krypt.ui.photo.PhotosFragmentArgs
+import ir.mehdiyari.krypt.ui.media.PhotosFragmentAction
+import ir.mehdiyari.krypt.ui.media.PhotosFragmentArgs
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {

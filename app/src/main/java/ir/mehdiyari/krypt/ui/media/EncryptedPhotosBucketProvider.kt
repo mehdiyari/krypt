@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.photo
+package ir.mehdiyari.krypt.ui.media
 
 import android.app.Application
 import ir.mehdiyari.fallery.models.BucketType
