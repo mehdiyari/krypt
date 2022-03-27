@@ -20,7 +20,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class PhotosViewModel @Inject constructor(
+class MediasViewModel @Inject constructor(
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val fileCrypt: FileCrypt,
     private val filesUtilities: FilesUtilities,
@@ -30,35 +30,35 @@ class PhotosViewModel @Inject constructor(
     private val thumbsUtils: ThumbsUtils
 ) : ViewModel() {
 
-    private val _photosViewState = MutableStateFlow<PhotosViewState>(
-        PhotosViewState.Default
+    private val _mediaViewState = MutableStateFlow<MediaViewState>(
+        MediaViewState.Default
     )
-    val photosViewState: StateFlow<PhotosViewState> = _photosViewState
+    val mediaViewState: StateFlow<MediaViewState> = _mediaViewState
 
-    private val _latestAction = MutableStateFlow(PhotosFragmentAction.DEFAULT)
-    val viewAction: StateFlow<PhotosFragmentAction> = _latestAction
+    private val _latestAction = MutableStateFlow(MediaFragmentAction.DEFAULT)
+    val viewAction: StateFlow<MediaFragmentAction> = _latestAction
 
     fun onActionReceived(
-        action: PhotosFragmentAction
+        action: MediaFragmentAction
     ) {
         viewModelScope.launch {
             _latestAction.emit(action)
         }
     }
 
-    fun onSelectedPhotos(photos: Array<String>) {
+    fun onSelectedMedias(medias: Array<String>) {
         viewModelScope.launch {
-            _photosViewState.emit(
-                PhotosViewState.EncryptDecryptState(
-                    photos.size
+            _mediaViewState.emit(
+                MediaViewState.EncryptDecryptState(
+                    medias.size
                 ) { delete ->
                     val action = viewAction.value
-                    if (action == PhotosFragmentAction.PICK_PHOTO ||
-                        action == PhotosFragmentAction.TAKE_PHOTO
+                    if (action == MediaFragmentAction.PICK_MEDIA ||
+                        action == MediaFragmentAction.TAKE_MEDIA
                     ) {
-                        encrypt(photos, delete)
-                    } else if (action == PhotosFragmentAction.DECRYPT_PHOTO) {
-                        decrypt(photos, delete)
+                        encrypt(medias, delete)
+                    } else if (action == MediaFragmentAction.DECRYPT_MEDIA) {
+                        decrypt(medias, delete)
                     }
                 }
             )
@@ -66,22 +66,22 @@ class PhotosViewModel @Inject constructor(
     }
 
     private fun encrypt(
-        photos: Array<String>,
+        medias: Array<String>,
         deleteAfterEncrypt: Boolean
     ) {
         viewModelScope.launch(ioDispatcher) {
-            _photosViewState.emit(PhotosViewState.OperationStart)
+            _mediaViewState.emit(MediaViewState.OperationStart)
             val encryptedResults = mutableListOf<Pair<String, String?>>()
-            photos.forEach { photoPath ->
-                val destinationPath = filesUtilities.generateFilePathForPhotos(photoPath)
+            medias.forEach { mediaPath ->
+                val destinationPath = filesUtilities.generateFilePathForPhotos(mediaPath)
                 var thumbnailPath: String? = filesUtilities.createThumbnailPath(destinationPath)
                 try {
-                    thumbsUtils.createThumbnailFromPath(photoPath, thumbnailPath!!)
+                    thumbsUtils.createThumbnailFromPath(mediaPath, thumbnailPath!!)
                 } catch (t: Throwable) {
                     thumbnailPath = null
                 }
 
-                if (fileCrypt.encryptFileToPath(photoPath, destinationPath)) {
+                if (fileCrypt.encryptFileToPath(mediaPath, destinationPath)) {
                     encryptedResults.add(destinationPath to encryptThumbnail(thumbnailPath))
                 } else {
                     return@forEach
@@ -96,10 +96,10 @@ class PhotosViewModel @Inject constructor(
                 }
             }
 
-            if (photos.size == encryptedResults.size) {
+            if (medias.size == encryptedResults.size) {
                 if (deleteAfterEncrypt) {
                     try {
-                        mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(photos.toList())
+                        mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(medias.toList())
                     } catch (t: Throwable) {
                         t.printStackTrace()
                     }
@@ -114,9 +114,9 @@ class PhotosViewModel @Inject constructor(
                     )
                 })
 
-                _photosViewState.emit(PhotosViewState.OperationFinished)
+                _mediaViewState.emit(MediaViewState.OperationFinished)
             } else {
-                _photosViewState.emit(PhotosViewState.OperationFailed)
+                _mediaViewState.emit(MediaViewState.OperationFailed)
             }
         }
     }
@@ -138,39 +138,39 @@ class PhotosViewModel @Inject constructor(
     }
 
     private fun decrypt(
-        photos: Array<String>,
+        medias: Array<String>,
         deleteAfterEncrypt: Boolean
     ) {
         viewModelScope.launch(ioDispatcher) {
-            _photosViewState.emit(PhotosViewState.OperationStart)
+            _mediaViewState.emit(MediaViewState.OperationStart)
             val decryptedResult = mutableListOf<Pair<String, Long>>()
-            val encryptedPhotos = filesRepository.mapThumbnailsAndNameToFileEntity(photos)
+            val encryptedMedias = filesRepository.mapThumbnailsAndNameToFileEntity(medias)
 
-            encryptedPhotos.forEach { encryptedPhoto ->
+            encryptedMedias.forEach { encryptedMedia ->
                 val destinationPath = filesUtilities.generateDecryptedPhotoPathInKryptFolder(
-                    encryptedPhoto.filePath
+                    encryptedMedia.filePath
                 )
 
-                if (fileCrypt.decryptFileToPath(encryptedPhoto.filePath, destinationPath)) {
-                    decryptedResult.add(destinationPath to encryptedPhoto.id)
+                if (fileCrypt.decryptFileToPath(encryptedMedia.filePath, destinationPath)) {
+                    decryptedResult.add(destinationPath to encryptedMedia.id)
                 }
             }
 
-            if (photos.isNotEmpty() && decryptedResult.isEmpty()) {
-                _photosViewState.emit(PhotosViewState.OperationFailed)
+            if (medias.isNotEmpty() && decryptedResult.isEmpty()) {
+                _mediaViewState.emit(MediaViewState.OperationFailed)
             } else {
                 mediaStoreManager.scanAddedMedia(decryptedResult.map { it.first })
                 if (deleteAfterEncrypt) {
                     val ids = decryptedResult.map { it.second }
-                    filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(encryptedPhotos.filter {
+                    filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(encryptedMedias.filter {
                         ids.contains(it.id)
                     })
                 }
 
-                _photosViewState.emit(PhotosViewState.OperationFinished)
+                _mediaViewState.emit(MediaViewState.OperationFinished)
             }
         }
     }
 
-    suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getPhotosCount() > 0L
+    suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getMediasCount() > 0L
 }

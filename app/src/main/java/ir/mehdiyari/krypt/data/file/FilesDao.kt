@@ -27,10 +27,10 @@ interface FilesDao {
     ): List<FileEntity>
 
 
-    @Query("SELECT count(*) from files where accountName = :accountName AND type = :type")
-    suspend fun getAllFilesCountOfCurrentAccountBasedOnType(
+    @Query("SELECT count(*) from files where accountName = :accountName AND type in (:typeList)")
+    suspend fun getFilesCountBasedOnType(
         accountName: String,
-        type: FileTypeEnum
+        vararg typeList: FileTypeEnum
     ): Long
 
     @Delete(entity = FileEntity::class)
@@ -38,4 +38,10 @@ interface FilesDao {
 
     @Query("select * from files where id = :id and accountName = :accountName LIMIT 1")
     suspend fun getFileById(accountName: String, id: Long): FileEntity?
+
+    @Query("select * from files where accountName = :accountName and type in (:mediaType)")
+    suspend fun getAllMedia(
+        accountName: String,
+        mediaType: List<FileTypeEnum> = listOf(FileTypeEnum.Photo, FileTypeEnum.Video)
+    ): List<FileEntity>
 }

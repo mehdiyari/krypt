@@ -79,11 +79,11 @@
     </fragment>
     <fragment
         android:id="@+id/photosFragment"
-        android:name="ir.mehdiyari.krypt.ui.media.PhotosFragment"
+        android:name="ir.mehdiyari.krypt.ui.media.MediaFragment"
         android:label="PhotosFragment">
         <argument
             android:name="Action"
-            app:argType="ir.mehdiyari.krypt.ui.media.PhotosFragmentAction"
+            app:argType="ir.mehdiyari.krypt.ui.media.MediaFragmentAction"
             android:defaultValue="DEFAULT" />
     </fragment>
     <fragment

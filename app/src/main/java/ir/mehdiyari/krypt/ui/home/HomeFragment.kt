@@ -12,8 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.MainActivity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.ui.media.PhotosFragmentAction
-import ir.mehdiyari.krypt.ui.media.PhotosFragmentArgs
+import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
+import ir.mehdiyari.krypt.ui.media.MediaFragmentArgs
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -52,8 +52,7 @@ class HomeFragment : Fragment() {
 
     private fun addItemMenuSelected(item: Int) {
         when (item) {
-            R.string.add_photo -> navigateToPhotosFragment(PhotosFragmentAction.PICK_PHOTO)
-            R.string.add_video -> openVideoPicker()
+            R.string.add_media -> navigateToPhotosFragment(MediaFragmentAction.PICK_MEDIA)
             R.string.add_audio -> navigateToAudioRecorderFragment()
             R.string.add_music -> openAudioPicker()
             R.string.add_text -> navigateToNewTextFragment()
@@ -62,8 +61,7 @@ class HomeFragment : Fragment() {
 
     private fun onClickOnHomeCards(fileTypeEnum: FileTypeEnum) {
         when (fileTypeEnum) {
-            FileTypeEnum.Photo -> navigateToPhotosFragment(PhotosFragmentAction.DECRYPT_PHOTO)
-            FileTypeEnum.Video -> openFalleryWithCustomVideoGallery()
+            FileTypeEnum.Photo -> navigateToPhotosFragment(MediaFragmentAction.DECRYPT_MEDIA)
             FileTypeEnum.Audio, FileTypeEnum.Music -> navigateToMusicAndAudioFragment()
             FileTypeEnum.Text -> navigateToTextsFragment()
         }
@@ -74,18 +72,14 @@ class HomeFragment : Fragment() {
         (requireActivity() as MainActivity).restartApp()
     }
 
-    private fun navigateToPhotosFragment(photosAction: PhotosFragmentAction) {
+    private fun navigateToPhotosFragment(photosAction: MediaFragmentAction) {
         findNavController().navigate(
             R.id.action_homeFragment_to_photosFragment,
-            PhotosFragmentArgs.Builder().apply {
+            MediaFragmentArgs.Builder().apply {
                 action = photosAction
             }.build().toBundle(),
             null
         )
-    }
-
-    private fun openVideoPicker() {
-        TODO("Not yet implemented")
     }
 
     private fun navigateToNewTextFragment() {

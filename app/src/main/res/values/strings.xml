@@ -12,14 +12,12 @@
     <string name="successfully_create_account">Account created successfully</string>
     <string name="name_password_invalid">Account Name or Password is wrong</string>
 
-    <string name="add_photo">Photo</string>
-    <string name="add_video">Video</string>
+    <string name="add_media">Media(Photo, Video)</string>
     <string name="add_audio">Audio</string>
     <string name="add_text">Text</string>
     <string name="add_music">Music</string>
 
-    <string name="photos_library">Photos Library</string>
-    <string name="videos_library">Videos Library</string>
+    <string name="medias_library">Media Library</string>
     <string name="audios_library">Audios Library</string>
     <string name="texts_library">Texts Library</string>
     <string name="musics_library">Music Library</string>
@@ -37,13 +35,13 @@
 
     <string name="no_encrypted_file_found">No encrypted files found</string>
     <string name="encrypted_file_found">Encrypted files found</string>
-    <string name="x_photos_selected_for_encryption">We\'ve ready to encrypt %d selected photos.</string>
-    <string name="x_photos_selected_for_decryption">We\'ve ready to decrypt %d selected photos.</string>
+    <string name="x_medias_selected_for_encryption">We\'ve ready to encrypt %d selected medias.</string>
+    <string name="x_medias_selected_for_decryption">We\'ve ready to decrypt %d selected medias.</string>
     <string name="encrypt_action">Encrypt</string>
-    <string name="delete_files_after_encrypts">Delete photos after encryption</string>
+    <string name="delete_files_after_encrypts">Delete medias after encryption</string>
     <string name="decrypt_action">Decrypt</string>
-    <string name="delete_photos_after_encrypt_dialog_message">Do you want to delete these selected files permanently after encrypting?</string>
-    <string name="delete_photos_after_decrypt_dialog_message">Do you want to delete these selected encrypted files permanently after decrypting?</string>
+    <string name="delete_files_after_encrypt_dialog_message">Do you want to delete these selected files permanently after encrypting?</string>
+    <string name="delete_files_after_decrypt_dialog_message">Do you want to delete these selected encrypted files permanently after decrypting?</string>
     <string name="NO">No</string>
     <string name="YES">Yes</string>
     <string name="encrypt_successfully">All files encrypted successfully</string>

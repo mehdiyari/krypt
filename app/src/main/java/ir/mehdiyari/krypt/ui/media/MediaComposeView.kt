@@ -19,24 +19,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.media.PhotosFragmentAction.*
+import ir.mehdiyari.krypt.ui.media.MediaFragmentAction.*
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable
 @Preview
-fun PhotosComposeScreen(
-    viewModel: PhotosViewModel = viewModel(),
+fun MediasComposeScreen(
+    viewModel: MediasViewModel = viewModel(),
     onNavigationClickIcon: () -> Unit = {}
 ) {
     KryptTheme {
         val actionState = viewModel.viewAction.collectAsState()
-        val viewState = viewModel.photosViewState.collectAsState()
+        val viewState = viewModel.mediaViewState.collectAsState()
 
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.photos_library))
+                        Text(text = stringResource(id = R.string.medias_library))
                     },
                     navigationIcon = {
                         IconButton(onClick = {
@@ -52,26 +52,26 @@ fun PhotosComposeScreen(
                         .fillMaxWidth()
                         .fillMaxHeight()
                 ) {
-                    if (viewState.value is PhotosViewState.Default) {
+                    if (viewState.value is MediaViewState.Default) {
                         BaseViewLoading()
                     } else {
                         when (viewState.value) {
-                            is PhotosViewState.OperationStart -> {
+                            is MediaViewState.OperationStart -> {
                                 OperationStartView()
                             }
-                            is PhotosViewState.OperationFinished -> {
+                            is MediaViewState.OperationFinished -> {
                                 OperationFinishedView(actionState.value)
                             }
-                            is PhotosViewState.OperationFailed -> {
+                            is MediaViewState.OperationFailed -> {
                                 OperationFailedView(actionState.value)
                             }
-                            is PhotosViewState.EncryptDecryptState -> {
+                            is MediaViewState.EncryptDecryptState -> {
                                 val encryptDecryptState =
-                                    viewState.value as PhotosViewState.EncryptDecryptState
-                                if (actionState.value == PICK_PHOTO || actionState.value == PICK_PHOTO) {
-                                    EncryptSelectedPhotosView(encryptDecryptState)
-                                } else if (actionState.value == DECRYPT_PHOTO) {
-                                    DecryptSelectedPhotosView(encryptDecryptState)
+                                    viewState.value as MediaViewState.EncryptDecryptState
+                                if (actionState.value == PICK_MEDIA || actionState.value == PICK_MEDIA) {
+                                    EncryptSelectedMediaView(encryptDecryptState)
+                                } else if (actionState.value == DECRYPT_MEDIA) {
+                                    DecryptSelectedMediaView(encryptDecryptState)
                                 }
                             }
                         }
@@ -82,7 +82,7 @@ fun PhotosComposeScreen(
 }
 
 @Composable
-fun OperationFailedView(value: PhotosFragmentAction) {
+fun OperationFailedView(value: MediaFragmentAction) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,10 +91,10 @@ fun OperationFailedView(value: PhotosFragmentAction) {
             .fillMaxHeight()
     ) {
         val text = when (value) {
-            PICK_PHOTO, TAKE_PHOTO -> {
+            PICK_MEDIA, TAKE_MEDIA -> {
                 stringResource(id = R.string.encrypt_failed)
             }
-            DECRYPT_PHOTO -> {
+            DECRYPT_MEDIA -> {
                 stringResource(id = R.string.decrypt_failed)
             }
             else -> {
@@ -117,7 +117,7 @@ fun OperationFailedView(value: PhotosFragmentAction) {
 }
 
 @Composable
-fun OperationFinishedView(value: PhotosFragmentAction) {
+fun OperationFinishedView(value: MediaFragmentAction) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -126,10 +126,10 @@ fun OperationFinishedView(value: PhotosFragmentAction) {
             .fillMaxHeight()
     ) {
         val text = when (value) {
-            PICK_PHOTO, TAKE_PHOTO -> {
+            PICK_MEDIA, TAKE_MEDIA -> {
                 stringResource(id = R.string.encrypt_successfully)
             }
-            DECRYPT_PHOTO -> {
+            DECRYPT_MEDIA -> {
                 stringResource(id = R.string.decrypt_successfully)
             }
             else -> {
@@ -214,31 +214,31 @@ fun BaseEncryptDecryptView(
 }
 
 @Composable
-fun EncryptSelectedPhotosView(
-    encryptDecryptState: PhotosViewState.EncryptDecryptState
+fun EncryptSelectedMediaView(
+    encryptDecryptState: MediaViewState.EncryptDecryptState
 ) {
     BaseEncryptDecryptView(
         mainText = stringResource(
-            id = R.string.x_photos_selected_for_encryption,
-            encryptDecryptState.selectedPhotosCount
+            id = R.string.x_medias_selected_for_encryption,
+            encryptDecryptState.selectedMediasCount
         ),
         buttonText = stringResource(id = R.string.encrypt_action),
-        deleteFileDialogTestResId = R.string.delete_photos_after_encrypt_dialog_message,
+        deleteFileDialogTestResId = R.string.delete_files_after_encrypt_dialog_message,
         onButtonClick = encryptDecryptState.onEncryptOrDecryptAction
     )
 }
 
 @Composable
-fun DecryptSelectedPhotosView(
-    encryptDecryptState: PhotosViewState.EncryptDecryptState
+fun DecryptSelectedMediaView(
+    encryptDecryptState: MediaViewState.EncryptDecryptState
 ) {
     BaseEncryptDecryptView(
         mainText = stringResource(
-            id = R.string.x_photos_selected_for_decryption,
-            encryptDecryptState.selectedPhotosCount
+            id = R.string.x_medias_selected_for_decryption,
+            encryptDecryptState.selectedMediasCount
         ),
         buttonText = stringResource(id = R.string.decrypt_action),
-        deleteFileDialogTestResId = R.string.delete_photos_after_decrypt_dialog_message,
+        deleteFileDialogTestResId = R.string.delete_files_after_decrypt_dialog_message,
         onButtonClick = encryptDecryptState.onEncryptOrDecryptAction
     )
 }

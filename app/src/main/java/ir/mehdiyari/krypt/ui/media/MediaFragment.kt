@@ -24,19 +24,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhotosFragment : Fragment() {
+class MediaFragment : Fragment() {
 
-    private val viewModel: PhotosViewModel by viewModels()
-    private val args: PhotosFragmentArgs by navArgs()
+    private val viewModel: MediasViewModel by viewModels()
+    private val args: MediaFragmentArgs by navArgs()
 
     @field:Inject
     lateinit var deviceGalleryImageLoader: DeviceGalleryImageLoader
 
     @field:Inject
-    lateinit var encryptedPhotosBucketProvider: EncryptedPhotosBucketProvider
+    lateinit var encryptedMediasBucketProvider: EncryptedMediasBucketProvider
 
     @field:Inject
-    lateinit var encryptedPhotosBucketContentProvider: EncryptedPhotosBucketContentProvider
+    lateinit var encryptedMediasBucketContentProvider: EncryptedMediasBucketContentProvider
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +45,7 @@ class PhotosFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         viewModel.onActionReceived(args.action)
         setContent {
-            PhotosComposeScreen(viewModel) {
+            MediasComposeScreen(viewModel) {
                 findNavController().popBackStack()
             }
         }
@@ -56,8 +56,8 @@ class PhotosFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.viewAction.collect {
                 when (it) {
-                    PhotosFragmentAction.PICK_PHOTO -> openPhotoPicker()
-                    PhotosFragmentAction.DECRYPT_PHOTO -> {
+                    MediaFragmentAction.PICK_MEDIA -> openPhotoPicker()
+                    MediaFragmentAction.DECRYPT_MEDIA -> {
                         if (viewModel.checkForOpenPickerForDecryptMode()) {
                             openPhotoPickerForDecrypting()
                         } else {
@@ -69,8 +69,8 @@ class PhotosFragment : Fragment() {
                             findNavController().popBackStack()
                         }
                     }
-                    PhotosFragmentAction.TAKE_PHOTO -> TODO()
-                    PhotosFragmentAction.DEFAULT -> TODO()
+                    MediaFragmentAction.TAKE_MEDIA -> TODO()
+                    MediaFragmentAction.DEFAULT -> TODO()
                 }
             }
         }
@@ -90,8 +90,8 @@ class PhotosFragment : Fragment() {
     private fun openPhotoPickerForDecrypting() {
         getBaseOptionsOfFallery()
             .setContentProviders(
-                encryptedPhotosBucketContentProvider,
-                encryptedPhotosBucketProvider
+                encryptedMediasBucketContentProvider,
+                encryptedMediasBucketProvider
             )
             .build().also { options ->
                 startFalleryWithOptions(2, options)
@@ -124,7 +124,7 @@ class PhotosFragment : Fragment() {
         if (result.isNullOrEmpty()) {
             findNavController().popBackStack()
         } else {
-            viewModel.onSelectedPhotos(result)
+            viewModel.onSelectedMedias(result)
         }
     }
 }

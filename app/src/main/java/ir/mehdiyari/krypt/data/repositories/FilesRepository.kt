@@ -22,7 +22,7 @@ class FilesRepository @Inject constructor(
             FileTypeEnum.values().forEach { fileType ->
                 add(
                     fileType to try {
-                        filedDao.getAllFilesCountOfCurrentAccountBasedOnType(
+                        filedDao.getFilesCountBasedOnType(
                             currentAccountName.get(),
                             fileType
                         )
@@ -40,7 +40,7 @@ class FilesRepository @Inject constructor(
         filedDao.insertFiles(files)
     }
 
-    suspend fun getPhotosCount(): Long = filedDao.getAllFilesCountOfCurrentAccountBasedOnType(
+    suspend fun getMediasCount(): Long = filedDao.getFilesCountBasedOnType(
         currentAccountName.get(),
         FileTypeEnum.Photo
     )
@@ -53,15 +53,14 @@ class FilesRepository @Inject constructor(
             it.metaData.isNotBlank()
         }?.metaData
 
-    suspend fun getAllPhotosForCurrentUser(): List<FileEntity> =
-        filedDao.getAllFilesOfCurrentAccountBasedOnType(
-            currentAccountName.get(),
-            FileTypeEnum.Photo
+    suspend fun getAllEncryptedMedia(): List<FileEntity> =
+        filedDao.getAllMedia(
+            currentAccountName.get()
         )
 
     suspend fun mapThumbnailsAndNameToFileEntity(photos: Array<String>): List<FileEntity> =
         mutableListOf<FileEntity>().apply {
-            getAllPhotosForCurrentUser().filter {
+            getAllEncryptedMedia().filter {
                 photos.any { currentPhoto ->
                     if (!currentPhoto.contains("/")) {
                         it.filePath.contains(currentPhoto)

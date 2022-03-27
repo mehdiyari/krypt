@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import java.io.File
 import javax.inject.Inject
 
-class EncryptedPhotosBucketContentProvider @Inject constructor(
+class EncryptedMediasBucketContentProvider @Inject constructor(
     private val filesRepository: FilesRepository,
     private val fileCrypt: FileCrypt,
     private val filesUtilities: FilesUtilities,
@@ -23,9 +23,9 @@ class EncryptedPhotosBucketContentProvider @Inject constructor(
         bucketId: Long,
         bucketType: BucketType
     ): Flow<List<Media>> {
-        return if (bucketId == EncryptedPhotosBucketProvider.KRYPT_SAFE_FOLDER_ID) {
+        return if (bucketId == EncryptedMediasBucketProvider.KRYPT_SAFE_FOLDER_ID) {
             flow {
-                filesRepository.getAllPhotosForCurrentUser().map {
+                filesRepository.getAllEncryptedMedia().map {
                     if (it.metaData.isNotBlank()) {
                         val finalPath =
                             filesUtilities.generateStableNameFilePathForPhotosThumbnail(it.metaData)

@@ -11,7 +11,7 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import javax.inject.Inject
 
-class EncryptedPhotosBucketProvider @Inject constructor(
+class EncryptedMediasBucketProvider @Inject constructor(
     private val filesRepository: FilesRepository,
     private val filesUtilities: FilesUtilities,
     private val fileCrypt: FileCrypt,
@@ -26,10 +26,10 @@ class EncryptedPhotosBucketProvider @Inject constructor(
         return listOf(
             MediaBucket(
                 id = KRYPT_SAFE_FOLDER_ID,
-                bucketPath = filesUtilities.getCashDir(),
+                bucketPath = filesUtilities.getFilesDir(),
                 displayName = context.getString(R.string.app_name),
                 firstMediaThumbPath = getFirstThumbnail() ?: "",
-                mediaCount = filesRepository.getPhotosCount().toInt()
+                mediaCount = filesRepository.getMediasCount().toInt()
             )
         )
     }

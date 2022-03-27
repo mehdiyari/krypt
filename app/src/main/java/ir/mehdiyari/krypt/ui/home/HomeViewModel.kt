@@ -29,14 +29,9 @@ class HomeViewModel @Inject constructor(
             _filesCounts.emit(
                 filesRepository.getAllFilesTypeCounts().map {
                     when (it.first) {
-                        FileTypeEnum.Photo -> HomeCardsModel(
+                        FileTypeEnum.Photo, FileTypeEnum.Video -> HomeCardsModel(
                             R.drawable.ic_gallery_50,
-                            R.string.photos_library,
-                            it.second
-                        )
-                        FileTypeEnum.Video -> HomeCardsModel(
-                            R.drawable.ic_video_library_50,
-                            R.string.videos_library,
+                            R.string.medias_library,
                             it.second
                         )
                         FileTypeEnum.Audio -> HomeCardsModel(
