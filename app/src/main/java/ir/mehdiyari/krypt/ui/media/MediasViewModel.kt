@@ -189,4 +189,9 @@ class MediasViewModel @Inject constructor(
     }
 
     suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getMediasCount() > 0L
+
+    override fun onCleared() {
+        filesUtilities.deleteCacheDir()
+        super.onCleared()
+    }
 }
