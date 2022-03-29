@@ -193,12 +193,16 @@ private fun AddBottomSheet(
                             addItemsBottomSheetState.hide()
                         }
                     }),
-                    text = { Text(stringResource(id = it.second)) },
+                    text = {
+                        if (it.second != -1)
+                            Text(stringResource(id = it.second))
+                    },
                     icon = {
-                        Icon(
-                            painterResource(id = it.first),
-                            contentDescription = stringResource(id = it.second)
-                        )
+                        if (it.first != -1)
+                            Icon(
+                                painterResource(id = it.first),
+                                contentDescription = stringResource(id = it.second)
+                            )
                     }
                 )
             }
@@ -244,9 +248,11 @@ private fun HomeItemCard(
                 ) {
                     Text(text = stringResource(id = homeCardsModel.name))
                     Text(
-                        text = if (homeCardsModel.counts == 0L) stringResource(id = R.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${stringResource(
-                            id = R.string.encrypted_file_found
-                        )}",
+                        text = if (homeCardsModel.counts == 0L) stringResource(id = R.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${
+                            stringResource(
+                                id = R.string.encrypted_file_found
+                            )
+                        }",
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -257,7 +263,7 @@ private fun HomeItemCard(
     }
 }
 
-private fun getFileTypeEnumBasedOnStringRes(name: Int): FileTypeEnum = when(name) {
+private fun getFileTypeEnumBasedOnStringRes(name: Int): FileTypeEnum = when (name) {
     R.string.medias_library -> FileTypeEnum.Photo
     R.string.audios_library -> FileTypeEnum.Audio
     R.string.texts_library -> FileTypeEnum.Text
