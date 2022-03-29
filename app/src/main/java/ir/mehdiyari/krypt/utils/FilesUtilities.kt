@@ -18,11 +18,21 @@ class FilesUtilities @Inject constructor(
         const val KRYPT_FILES_PREFIX = "krypt_"
         const val KRYPT_THUMBS_FILES_PREFIX = "thumb_"
         const val KRYPT_EXT = "krp"
+
+        const val DEFAULT_PHOTO_EXT = "jpg"
+        const val DEFAULT_VIDEO_EXT = "mp4"
     }
 
-    fun generateFilePathForMedia(photoPath: String): String =
+    fun generateFilePathForMedia(
+        mediaPath: String,
+        isPhoto: Boolean = true
+    ): String =
         "${getFilesDir()}/$KRYPT_FILES_PREFIX${System.currentTimeMillis()}.${
-            photoPath.split(".").lastOrNull() ?: ".${KRYPT_EXT}"
+            File(mediaPath).extension.let {
+                it.ifBlank {
+                    if (isPhoto) DEFAULT_PHOTO_EXT else DEFAULT_VIDEO_EXT
+                }
+            }
         }"
 
     fun generateEncryptedFilePathForMediaThumbnail(thumbnailPath: String): String =

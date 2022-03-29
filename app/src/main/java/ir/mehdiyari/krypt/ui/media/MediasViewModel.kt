@@ -74,7 +74,7 @@ class MediasViewModel @Inject constructor(
             val encryptedResults = mutableListOf<Pair<Pair<Boolean, String>, String?>>()
             medias.forEach { mediaPath ->
                 val isPhoto = filesUtilities.isPhotoPath(mediaPath)
-                val destinationPath = filesUtilities.generateFilePathForMedia(mediaPath)
+                val destinationPath = filesUtilities.generateFilePathForMedia(mediaPath, isPhoto)
                 var thumbnailPath: String? = filesUtilities.createThumbnailPath(destinationPath)
                 try {
                     if (isPhoto) {
