@@ -4,6 +4,8 @@ package ir.mehdiyari.krypt.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
+import android.provider.MediaStore
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.inject.Inject
@@ -11,21 +13,26 @@ import javax.inject.Inject
 
 class ThumbsUtils @Inject constructor() {
 
+    companion object {
+        const val THUMB_WIDTH = 768
+    }
+
     fun createThumbnailFromPath(
         path: String,
         thumbPath: String
     ) {
         FileInputStream(path).use { fileInputStream ->
             val dimension = getPhotoDimension(path)
+            val desiredWidth = if (dimension.first < THUMB_WIDTH) dimension.first else THUMB_WIDTH
             val imageStream = BitmapFactory.decodeStream(fileInputStream)
             val thumbBitmap = Bitmap.createScaledBitmap(
                 imageStream,
-                356,
-                (dimension.second / (dimension.first / 356)),
+                desiredWidth,
+                (dimension.second / (dimension.first / desiredWidth)),
                 false
             )
             FileOutputStream(thumbPath).use { fileOutputStream ->
-                thumbBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fileOutputStream)
+                thumbBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
             }
         }
     }
