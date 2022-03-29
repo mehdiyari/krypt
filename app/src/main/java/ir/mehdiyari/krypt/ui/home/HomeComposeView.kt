@@ -260,7 +260,6 @@ private fun HomeItemCard(
 private fun getFileTypeEnumBasedOnStringRes(name: Int): FileTypeEnum = when(name) {
     R.string.medias_library -> FileTypeEnum.Photo
     R.string.audios_library -> FileTypeEnum.Audio
-    R.string.musics_library -> FileTypeEnum.Music
     R.string.texts_library -> FileTypeEnum.Text
     else -> throw IllegalArgumentException()
 }

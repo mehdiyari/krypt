@@ -54,7 +54,6 @@ class HomeFragment : Fragment() {
         when (item) {
             R.string.add_media -> navigateToPhotosFragment(MediaFragmentAction.PICK_MEDIA)
             R.string.add_audio -> navigateToAudioRecorderFragment()
-            R.string.add_music -> openAudioPicker()
             R.string.add_text -> navigateToNewTextFragment()
         }
     }
@@ -62,7 +61,7 @@ class HomeFragment : Fragment() {
     private fun onClickOnHomeCards(fileTypeEnum: FileTypeEnum) {
         when (fileTypeEnum) {
             FileTypeEnum.Photo -> navigateToPhotosFragment(MediaFragmentAction.DECRYPT_MEDIA)
-            FileTypeEnum.Audio, FileTypeEnum.Music -> navigateToMusicAndAudioFragment()
+            FileTypeEnum.Audio -> navigateToMusicAndAudioFragment()
             FileTypeEnum.Text -> navigateToTextsFragment()
         }
     }
@@ -86,10 +85,6 @@ class HomeFragment : Fragment() {
         findNavController().navigate(R.id.action_homeFragment_to_addTextFragment)
     }
 
-    private fun openAudioPicker() {
-        TODO("Not yet implemented")
-    }
-
     private fun navigateToAudioRecorderFragment() {
         TODO("Not yet implemented")
     }
@@ -107,10 +102,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDataUsageFragment() {
-        TODO("Not yet implemented")
-    }
-
-    private fun openFalleryWithCustomVideoGallery() {
         TODO("Not yet implemented")
     }
 

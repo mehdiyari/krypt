@@ -42,13 +42,6 @@ class HomeViewModel @Inject constructor(
                         it.second
                     )
                 )
-                FileTypeEnum.Music -> homeCardList.add(
-                    HomeCardsModel(
-                        R.drawable.ic_add_music_24,
-                        R.string.musics_library,
-                        it.second
-                    )
-                )
                 FileTypeEnum.Text -> homeCardList.add(
                     HomeCardsModel(
                         R.drawable.ic_editor_50,
