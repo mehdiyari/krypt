@@ -2,6 +2,7 @@ package ir.mehdiyari.krypt.utils
 
 import android.content.Context
 import android.os.Environment
+import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
@@ -56,7 +57,16 @@ class FilesUtilities @Inject constructor(
             File(it).mkdirs()
         }.let {
             "$it${getNameOfFile(encryptedPhoto)}.${
-                encryptedPhoto.split(".").lastOrNull() ?: ".$KRYPT_EXT"
+                encryptedPhoto.split(".").lastOrNull() ?: ".jpg"
+            }"
+        }
+
+    fun generateDecryptedVideoMediaInKryptFolder(encryptedVideo: String): String =
+        "${Environment.getExternalStorageDirectory().path}/Krypt/Videos/".also {
+            File(it).mkdirs()
+        }.let {
+            "$it${getNameOfFile(encryptedVideo)}.${
+                encryptedVideo.split(".").lastOrNull() ?: ".mp4"
             }"
         }
 
@@ -65,4 +75,26 @@ class FilesUtilities @Inject constructor(
 
     fun generateTextFileCachePath(): String =
         "${getCashDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}"
+
+    fun isPhotoPath(path: String): Boolean {
+        val cursor = context.contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE, MediaStore.Files.FileColumns.DATA),
+            """${MediaStore.Files.FileColumns.DATA}=?""",
+            arrayOf(path), null
+        )
+
+        if (cursor?.moveToFirst() == true) {
+            if (cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE)) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+                return true
+            }
+        }
+
+        cursor?.close()
+        return false
+    }
+
+    fun deleteCacheDir() {
+        File(getCashDir()).deleteRecursively()
+    }
 }
