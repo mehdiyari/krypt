@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Environment
 import android.provider.MediaStore
@@ -76,6 +77,7 @@ class FilesUtilities @Inject constructor(
     fun generateTextFileCachePath(): String =
         "${getCashDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}"
 
+    @SuppressLint("Range")
     fun isPhotoPath(path: String): Boolean {
         val cursor = context.contentResolver.query(
             MediaStore.Files.getContentUri("external"),
@@ -85,13 +87,16 @@ class FilesUtilities @Inject constructor(
         )
 
         if (cursor?.moveToFirst() == true) {
-            if (cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE)) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+            val type = cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE))
+            if (type == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                 return true
+            } else if (type == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                return false
             }
         }
 
         cursor?.close()
-        return false
+        return true
     }
 
     fun deleteCacheDir() {
