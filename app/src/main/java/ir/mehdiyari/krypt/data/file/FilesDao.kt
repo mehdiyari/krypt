@@ -20,10 +20,10 @@ interface FilesDao {
         path: String
     ): Int
 
-    @Query("SELECT * from files where accountName = :accountName AND type = :type")
+    @Query("SELECT * from files where accountName = :accountName AND type in (:type)")
     suspend fun getAllFilesOfCurrentAccountBasedOnType(
         accountName: String,
-        type: FileTypeEnum
+        vararg type: FileTypeEnum
     ): List<FileEntity>
 
 

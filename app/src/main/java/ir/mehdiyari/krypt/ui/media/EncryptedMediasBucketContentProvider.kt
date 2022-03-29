@@ -4,6 +4,7 @@ import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.Media
 import ir.mehdiyari.fallery.repo.AbstractBucketContentProvider
 import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.ThumbsUtils
@@ -48,12 +49,26 @@ class EncryptedMediasBucketContentProvider @Inject constructor(
                             thumbsUtils.getPhotoDimension(it.second)
                         }
 
-                    Media.Photo(
-                        id = it.first.id,
-                        path = it.second,
-                        width = dimension?.first ?: 0,
-                        height = dimension?.second ?: 0
-                    )
+                    if (it.first.type == FileTypeEnum.Video) {
+                        Media.Video(
+                            id = it.first.id,
+                            path = it.first.filePath,
+                            duration = 0, // todo: must be read from metadata
+                            thumbnail = Media.Photo(
+                                id = it.first.id,
+                                path = it.second,
+                                width = dimension?.first ?: 0,
+                                height = dimension?.second ?: 0
+                            )
+                        )
+                    } else {
+                        Media.Photo(
+                            id = it.first.id,
+                            path = it.second,
+                            width = dimension?.first ?: 0,
+                            height = dimension?.second ?: 0
+                        )
+                    }
                 }.also {
                     emit(it)
                 }

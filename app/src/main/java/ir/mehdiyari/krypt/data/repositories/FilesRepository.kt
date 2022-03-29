@@ -51,7 +51,7 @@ class FilesRepository @Inject constructor(
     suspend fun getLastEncryptedPhotoThumbnail(): String? =
         filedDao.getAllFilesOfCurrentAccountBasedOnType(
             currentAccountName.get(),
-            FileTypeEnum.Photo
+            FileTypeEnum.Photo, FileTypeEnum.Video
         ).lastOrNull {
             it.metaData.isNotBlank()
         }?.metaData

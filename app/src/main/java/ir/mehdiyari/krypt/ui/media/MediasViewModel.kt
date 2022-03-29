@@ -71,18 +71,28 @@ class MediasViewModel @Inject constructor(
     ) {
         viewModelScope.launch(ioDispatcher) {
             _mediaViewState.emit(MediaViewState.OperationStart)
-            val encryptedResults = mutableListOf<Pair<String, String?>>()
+            val encryptedResults = mutableListOf<Pair<Pair<Boolean, String>, String?>>()
             medias.forEach { mediaPath ->
+                val isPhoto = filesUtilities.isPhotoPath(mediaPath)
                 val destinationPath = filesUtilities.generateFilePathForMedia(mediaPath)
                 var thumbnailPath: String? = filesUtilities.createThumbnailPath(destinationPath)
                 try {
-                    thumbsUtils.createThumbnailFromPath(mediaPath, thumbnailPath!!)
+                    if (isPhoto) {
+                        thumbsUtils.createThumbnailFromPath(mediaPath, thumbnailPath!!)
+                    } else {
+                        thumbsUtils.createVideoThumbnail(mediaPath, thumbnailPath!!)
+                    }
                 } catch (t: Throwable) {
+                    t.printStackTrace()
                     thumbnailPath = null
                 }
 
                 if (fileCrypt.encryptFileToPath(mediaPath, destinationPath)) {
-                    encryptedResults.add(destinationPath to encryptThumbnail(thumbnailPath))
+                    encryptedResults.add(
+                        (isPhoto to destinationPath) to encryptThumbnail(
+                            thumbnailPath
+                        )
+                    )
                 } else {
                     return@forEach
                 }
@@ -107,8 +117,8 @@ class MediasViewModel @Inject constructor(
 
                 filesRepository.insertFiles(encryptedResults.map {
                     FileEntity(
-                        type = FileTypeEnum.Photo,
-                        filePath = it.first,
+                        type = if (it.first.first) FileTypeEnum.Photo else FileTypeEnum.Video,
+                        filePath = it.first.second,
                         metaData = it.second ?: "",
                         accountName = currentAccountName!!
                     )
@@ -147,9 +157,15 @@ class MediasViewModel @Inject constructor(
             val encryptedMedias = filesRepository.mapThumbnailsAndNameToFileEntity(medias)
 
             encryptedMedias.forEach { encryptedMedia ->
-                val destinationPath = filesUtilities.generateDecryptedPhotoMediaInKryptFolder(
-                    encryptedMedia.filePath
-                )
+                val destinationPath = if (encryptedMedia.type == FileTypeEnum.Photo) {
+                    filesUtilities.generateDecryptedPhotoMediaInKryptFolder(
+                        encryptedMedia.filePath
+                    )
+                } else {
+                    filesUtilities.generateDecryptedVideoMediaInKryptFolder(
+                        encryptedMedia.filePath
+                    )
+                }
 
                 if (fileCrypt.decryptFileToPath(encryptedMedia.filePath, destinationPath)) {
                     decryptedResult.add(destinationPath to encryptedMedia.id)

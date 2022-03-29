@@ -36,4 +36,21 @@ class ThumbsUtils @Inject constructor() {
     }.let {
         it.outWidth to it.outHeight
     }
+
+    fun createVideoThumbnail(mediaPath: String, thumbnailPath: String) {
+        ThumbnailUtils.createVideoThumbnail(
+            mediaPath,
+            MediaStore.Images.Thumbnails.FULL_SCREEN_KIND
+        ).apply {
+            if (this != null) {
+                try {
+                    FileOutputStream(thumbnailPath).also { output ->
+                        this.compress(Bitmap.CompressFormat.JPEG, 100, output)
+                    }
+                } catch (ignored: Throwable) {
+                    ignored.printStackTrace()
+                }
+            }
+        }
+    }
 }
