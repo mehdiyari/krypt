@@ -92,7 +92,10 @@ class MediaFragment : Fragment() {
             .setContentProviders(
                 encryptedMediasBucketContentProvider,
                 encryptedMediasBucketProvider
-            )
+            ).setOnVideoPlayClick {
+                Toast.makeText(context, R.string.must_decrypt_video_first, Toast.LENGTH_SHORT)
+                    .show()
+            }
             .build().also { options ->
                 startFalleryWithOptions(2, options)
             }
