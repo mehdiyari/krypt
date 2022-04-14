@@ -2,12 +2,15 @@ package ir.mehdiyari.krypt.ui.media
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -172,7 +175,8 @@ fun BaseEncryptDecryptView(
     mainText: String,
     buttonText: String,
     deleteFileDialogTestResId: Int,
-    onButtonClick: (delete: Boolean) -> Unit
+    onButtonClick: (delete: Boolean) -> Unit,
+    content: @Composable () -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -210,6 +214,8 @@ fun BaseEncryptDecryptView(
                 text = buttonText
             )
         }
+
+        content()
     }
 }
 
@@ -224,7 +230,9 @@ fun EncryptSelectedMediaView(
         ),
         buttonText = stringResource(id = R.string.encrypt_action),
         deleteFileDialogTestResId = R.string.delete_files_after_encrypt_dialog_message,
-        onButtonClick = encryptDecryptState.onEncryptOrDecryptAction
+        onButtonClick = {
+            encryptDecryptState.onEncryptOrDecryptAction(it, true)
+        }
     )
 }
 
@@ -232,6 +240,7 @@ fun EncryptSelectedMediaView(
 fun DecryptSelectedMediaView(
     encryptDecryptState: MediaViewState.EncryptDecryptState
 ) {
+    val notifyMediaScanner = remember { mutableStateOf(true) }
     BaseEncryptDecryptView(
         mainText = stringResource(
             id = R.string.x_medias_selected_for_decryption,
@@ -239,8 +248,26 @@ fun DecryptSelectedMediaView(
         ),
         buttonText = stringResource(id = R.string.decrypt_action),
         deleteFileDialogTestResId = R.string.delete_files_after_decrypt_dialog_message,
-        onButtonClick = encryptDecryptState.onEncryptOrDecryptAction
-    )
+        onButtonClick = {
+            encryptDecryptState.onEncryptOrDecryptAction(it, notifyMediaScanner.value)
+        }
+    ) {
+        Row(modifier = Modifier.padding(8.dp)) {
+            Checkbox(checked = notifyMediaScanner.value, onCheckedChange = {
+                notifyMediaScanner.value = it
+            })
+
+            Text(
+                text = stringResource(id = R.string.notify_media_scanner),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .selectable(false, onClick = {
+                        notifyMediaScanner.value = !notifyMediaScanner.value
+                    })
+                    .align(Alignment.CenterVertically)
+            )
+        }
+    }
 }
 
 @Composable

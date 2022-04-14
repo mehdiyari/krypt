@@ -61,4 +61,5 @@
     <string name="error_while_decrypting">Error while decrypting text file</string>
     <string name="must_decrypt_video_first">You must decrypt the video first.</string>
     <string name="button_create_new_account">Create New Account</string>
+    <string name="notify_media_scanner">Notify Media Scanner</string>
 </resources>
