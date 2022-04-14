@@ -29,8 +29,7 @@ fun PasswordTextField(passwordValue: MutableState<TextFieldValue>) {
         label = { Text(stringResource(id = R.string.account_password)) },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp, 3.dp, 20.dp, 3.dp)
-            .padding(20.dp, 3.dp, 20.dp, 3.dp),
+            .padding(25.dp, 3.dp, 25.dp, 3.dp),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             autoCorrect = false,

@@ -27,7 +27,10 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            LoginComposeScreen(viewModel, loginClick)
+            LoginComposeScreen(viewModel, loginClick) {
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.createAccountFragment)
+            }
         }
     }
 
