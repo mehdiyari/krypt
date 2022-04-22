@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -70,6 +71,10 @@ fun AddTextComposeView(
         if (!isPreviewMode) {
             SaveTextFab {
                 viewModel.saveNote(textTitleField.value.text.trim(), textContentField.value.text)
+            }
+        } else {
+            DeleteTextFab {
+                viewModel.deleteNote()
             }
         }
     }
@@ -182,6 +187,31 @@ private fun SaveTextFab(
             text = { Text(text = stringResource(id = R.string.save_text)) },
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = MaterialTheme.colors.onPrimary
+        )
+    }
+}
+
+
+@Composable
+private fun DeleteTextFab(
+    onDeleteClick: () -> Unit = {}
+) {
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.padding(15.dp)
+    ) {
+        ExtendedFloatingActionButton(
+            onClick = { onDeleteClick() },
+            icon = {
+                Icon(
+                    Icons.Filled.Delete,
+                    contentDescription = stringResource(id = R.string.delete_text)
+                )
+            },
+            text = { Text(text = stringResource(id = R.string.delete_text)) },
+            backgroundColor = MaterialTheme.colors.error,
+            contentColor = MaterialTheme.colors.onError
         )
     }
 }

@@ -62,4 +62,7 @@
     <string name="must_decrypt_video_first">You must decrypt the video first.</string>
     <string name="button_create_new_account">Create New Account</string>
     <string name="notify_media_scanner">Notify Media Scanner</string>
+    <string name="delete_text">Delete</string>
+    <string name="delete_text_was_successfully">Text file successfully deleted</string>
+    <string name="delete_text_was_unsuccessfully">Error while removing text file</string>
 </resources>
