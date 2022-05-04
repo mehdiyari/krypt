@@ -67,4 +67,13 @@
     <string name="delete_text_was_unsuccessfully">Error while removing text file</string>
 
     <string name="settings_lock_auto">Lock Automatically</string>
+    <string name="settings_lock_auto_disabled">Disabled</string>
+    <string name="settings_lock_auto_30_second">30 Second</string>
+    <string name="settings_lock_auto_1_min">1 Minute</string>
+    <string name="settings_lock_auto_2_min">2 Minute</string>
+    <string name="settings_lock_auto_5_min">5 Minute</string>
+    <string name="settings_lock_auto_10_min">10 Minute</string>
+    <string name="settings_lock_auto_15_min">15 Minute</string>
+    <string name="settings_lock_auto_30_min">30 m</string>
+    <string name="settings_lock_auto_1_hour">1 h</string>
 </resources>
