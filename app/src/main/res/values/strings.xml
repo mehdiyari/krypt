@@ -65,4 +65,6 @@
     <string name="delete_text">Delete</string>
     <string name="delete_text_was_successfully">Text file successfully deleted</string>
     <string name="delete_text_was_unsuccessfully">Error while removing text file</string>
+
+    <string name="settings_lock_auto">Lock Automatically</string>
 </resources>

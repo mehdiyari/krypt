@@ -94,7 +94,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToSettingsFragment() {
-        //TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_home_to_settingsFragment)
     }
 
     private fun navigateToChangePasswordFragment() {
