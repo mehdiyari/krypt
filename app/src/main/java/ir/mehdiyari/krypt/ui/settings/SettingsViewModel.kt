@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -11,16 +11,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _automaticallyLockSelectedItem =
-        MutableStateFlow(R.string.settings_lock_auto_disabled)
-    val automaticallyLockSelectedItem: StateFlow<Int> = _automaticallyLockSelectedItem
+        MutableStateFlow(settingsRepository.getLockAutomaticallyValue())
 
-    fun onSelectAutoLockItem(itemId: Int) {
+    val automaticallyLockSelectedItem: StateFlow<AutoLockItemsEnum> = _automaticallyLockSelectedItem
+
+    fun onSelectAutoLockItem(autoLockItemsEnum: AutoLockItemsEnum) {
         viewModelScope.launch {
-            _automaticallyLockSelectedItem.emit(itemId)
+            _automaticallyLockSelectedItem.emit(autoLockItemsEnum)
+            settingsRepository.storeLockAutomatically(autoLockItemsEnum)
         }
     }
 }
