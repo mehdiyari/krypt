@@ -80,7 +80,7 @@ fun AutomaticallyLockModalBottomSheet(
     automaticallyLockAppSheetState: ModalBottomSheetState,
     viewModel: SettingsViewModel,
     scope: CoroutineScope,
-    onItemClicked: (Int) -> Unit = {},
+    onItemClicked: (AutoLockItemsEnum) -> Unit = {},
 ) {
     val lastSelectedId = viewModel.automaticallyLockSelectedItem.collectAsState().value
     ModalBottomSheetLayout(
@@ -89,15 +89,18 @@ fun AutomaticallyLockModalBottomSheet(
             AUTO_LOCK_CRYPT_ITEMS.forEach {
                 ListItem(
                     modifier = Modifier.selectable(selected = false, onClick = {
-                        onItemClicked(it)
+                        onItemClicked(it.first)
                         scope.launch {
                             automaticallyLockAppSheetState.hide()
                         }
                     }), text = {
-                        if (lastSelectedId == it) {
-                            Text(stringResource(id = it), color = MaterialTheme.colors.primary)
+                        if (lastSelectedId == it.first) {
+                            Text(
+                                stringResource(id = it.second),
+                                color = MaterialTheme.colors.primary
+                            )
                         } else {
-                            Text(stringResource(id = it))
+                            Text(stringResource(id = it.second))
                         }
                     }
                 )
