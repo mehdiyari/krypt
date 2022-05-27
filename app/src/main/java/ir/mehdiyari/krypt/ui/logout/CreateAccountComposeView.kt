@@ -40,7 +40,7 @@ fun CreateAccountComposeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(bottom = 40.dp)
+                .padding(bottom = 65.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.krypt),

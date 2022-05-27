@@ -63,7 +63,7 @@ fun HomeComposeScreen(
                 }) {
                     Icon(
                         Icons.Filled.Add,
-                        tint = MaterialTheme.colors.onSurface,
+                        tint = MaterialTheme.colors.onPrimary,
                         contentDescription = stringResource(id = R.string.add_items)
                     )
                 }
@@ -98,7 +98,7 @@ fun HomeComposeScreen(
                 }
             }
         ) {
-            Row {
+            Row(modifier = Modifier.padding(top = 8.dp)) {
                 HomeCards(
                     viewModel,
                     clickOnCards
@@ -218,13 +218,13 @@ private fun HomeItemCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 8.dp, 16.dp, 4.dp)
-            .height(90.dp)
+            .padding(8.dp, 4.dp, 8.dp, 4.dp)
+            .height(80.dp)
             .selectable(
                 selected = false,
                 onClick = { clickOnCards(getFileTypeEnumBasedOnStringRes(homeCardsModel.name)) }),
         shape = RoundedCornerShape(8.dp),
-        elevation = 5.dp,
+        elevation = 4.dp,
     ) {
         Column(
             modifier = Modifier

@@ -92,7 +92,7 @@ private fun TopBarSurface(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(65.dp),
+            .height(55.dp),
         elevation = 8.dp
     ) {
         Row(

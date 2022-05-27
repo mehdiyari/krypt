@@ -37,7 +37,7 @@ fun TextsComposeView(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.texts_library))
+                        Text(text = stringResource(id = R.string.texts_library), fontSize = 18.sp)
                     },
                     navigationIcon = {
                         IconButton(onClick = {

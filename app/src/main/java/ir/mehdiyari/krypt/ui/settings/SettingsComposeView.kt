@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +42,7 @@ fun SettingsView(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.menu_settings))
+                        Text(text = stringResource(id = R.string.menu_settings), fontSize = 18.sp)
                     },
                     navigationIcon = {
                         IconButton(onClick = {
@@ -133,7 +134,7 @@ fun SettingsItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp, 8.dp, 8.dp, 8.dp)
-            .height(65.dp)
+            .height(60.dp)
             .selectable(
                 selected = false,
                 onClick = {

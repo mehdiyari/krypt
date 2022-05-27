@@ -39,7 +39,7 @@ fun MediasComposeScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.medias_library))
+                        Text(text = stringResource(id = R.string.medias_library), fontSize = 18.sp)
                     },
                     navigationIcon = {
                         IconButton(onClick = {
