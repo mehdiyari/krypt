@@ -29,6 +29,7 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 @Preview
 fun AddTextComposeView(
     viewModel: AddTextViewModel = viewModel(),
+    sharedContentText: String? = null,
     onNavigationClickIcon: () -> Unit = {}
 ) {
     KryptTheme {
@@ -46,6 +47,8 @@ fun AddTextComposeView(
             argsState as AddTextArgsViewState.TextArg
             textTitleField.value = TextFieldValue(argsState.textEntity.title)
             textContentField.value = TextFieldValue(argsState.textEntity.content)
+        } else {
+            textContentField.value = TextFieldValue(sharedContentText ?: "")
         }
 
         Scaffold(
