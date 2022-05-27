@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.home
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,8 @@ import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
 import ir.mehdiyari.krypt.ui.media.MediaFragmentArgs
 import ir.mehdiyari.krypt.ui.media.SharedImagesListModel
 import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
+import ir.mehdiyari.krypt.utils.APP_DOMAIN
+import ir.mehdiyari.krypt.utils.openBrowser
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -128,7 +131,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToHelpFragment() {
-        TODO("Not yet implemented")
+        requireContext().openBrowser(Uri.parse(APP_DOMAIN))
     }
 
     private fun navigateToSettingsFragment() {
