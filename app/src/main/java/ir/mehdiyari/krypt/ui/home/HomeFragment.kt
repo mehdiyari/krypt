@@ -127,7 +127,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToAudioRecorderFragment() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     private fun navigateToHelpFragment() {
@@ -139,11 +139,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToChangePasswordFragment() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     private fun navigateToDataUsageFragment() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     private fun navigateToTextsFragment() {
@@ -151,6 +151,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToMusicAndAudioFragment() {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }
