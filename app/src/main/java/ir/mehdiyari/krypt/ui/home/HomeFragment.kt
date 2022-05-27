@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
@@ -14,11 +16,15 @@ import ir.mehdiyari.krypt.app.MainActivity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
 import ir.mehdiyari.krypt.ui.media.MediaFragmentArgs
+import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
+    private val shareDataViewModel by activityViewModels<ShareDataViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +45,22 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getHomeData()
+        lifecycleScope.launch {
+            shareDataViewModel.sharedData.collectLatest {
+                if (it != null) {
+                    handleSharedDataWithKrypt(it)
+                    shareDataViewModel.clearSharedData()
+                }
+            }
+        }
+    }
+
+    private fun handleSharedDataWithKrypt(sharedDataState: SharedDataState?) {
+        if (sharedDataState != null) {
+            if (sharedDataState is SharedDataState.SharedText) {
+                navigateToNewTextFragment(sharedDataState.text)
+            }
+        }
     }
 
     private fun mainMenuItemSelected(item: Int) {
@@ -81,8 +103,14 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private fun navigateToNewTextFragment() {
-        findNavController().navigate(R.id.action_homeFragment_to_addTextFragment)
+    private fun navigateToNewTextFragment(text: String? = null) {
+        findNavController().navigate(
+            resId = R.id.action_homeFragment_to_addTextFragment,
+            args = AddTextFragmentArgs.Builder().apply {
+                sharedText = text
+            }.build().toBundle(),
+            navOptions = null
+        )
     }
 
     private fun navigateToAudioRecorderFragment() {

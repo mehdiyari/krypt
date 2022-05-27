@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -17,10 +18,12 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), AppLockerStopApi {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel: MainViewModel by viewModels()
+    private val shareDataViewModel by viewModels<ShareDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onNewIntent(intent)
         setContentView(R.layout.activity_main)
 
         lifecycleScope.launch {
@@ -40,6 +43,17 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
                         restartApp()
                     }
                 }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.action == Intent.ACTION_SEND) {
+            if ("text/plain" == intent.type) {
+                shareDataViewModel.handleSharedText(
+                    intent.getStringExtra(Intent.EXTRA_TEXT)
+                )
             }
         }
     }

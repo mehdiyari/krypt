@@ -33,7 +33,7 @@ class AddTextFragment : Fragment() {
             }
         }
         setContent {
-            AddTextComposeView(viewModel) {
+            AddTextComposeView(viewModel, args.sharedText) {
                 findNavController().popBackStack()
             }
         }
