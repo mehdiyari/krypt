@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getHomeData()
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             shareDataViewModel.sharedData.collectLatest {
                 if (it != null) {
                     handleSharedDataWithKrypt(it)

@@ -55,7 +55,7 @@ class MediaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.viewAction.collect {
                 when (it) {
                     MediaFragmentAction.PICK_MEDIA -> openMediaPicker()
@@ -116,7 +116,7 @@ class MediaFragment : Fragment() {
     }
 
     private fun handleAutoLockBeforeStartMediaPicker() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             delay(1000)
             try {
                 (requireActivity() as AppLockerStopApi).stopAppLockerManually()

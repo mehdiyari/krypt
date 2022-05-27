@@ -27,7 +27,7 @@ class AddTextFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         viewModel.handleInputTextID(args.textId)
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.argsTextViewState.collect {
                 handleArgsViewState(it)
             }
@@ -51,7 +51,7 @@ class AddTextFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.saveNoteState.collect {
                 if (it == true) {
                     Toast.makeText(context, R.string.successfully_encrypt_note, Toast.LENGTH_LONG)
@@ -64,7 +64,7 @@ class AddTextFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.deleteNoteState.collect {
                 if (it == true) {
                     findNavController().popBackStack()
@@ -83,7 +83,7 @@ class AddTextFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.saveNoteValidation.collect {
                 if (it != null) {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()

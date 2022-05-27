@@ -36,7 +36,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.closeLoginState.collect {
                 if (it) {
                     findNavController().navigate(R.id.action_loginFragment_to_createAccountFragment)
@@ -44,7 +44,7 @@ class LoginFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loginState.collect {
                 when (it) {
                     is LoginViewState.FailureLogin -> showErrorWithSnackBar(it.errorId)
