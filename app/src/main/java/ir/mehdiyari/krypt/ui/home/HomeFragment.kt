@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.MainActivity
@@ -106,24 +108,50 @@ class HomeFragment : Fragment() {
         photosAction: MediaFragmentAction,
         sharedImageList: SharedImagesListModel? = null
     ) {
-        findNavController().navigate(
-            R.id.photosFragment,
-            MediaFragmentArgs.Builder().apply {
-                action = photosAction
-                sharedImages = sharedImageList
-            }.build().toBundle(),
-            null
-        )
+        try {
+            findNavController().navigate(
+                R.id.photosFragment,
+                MediaFragmentArgs.Builder().apply {
+                    action = photosAction
+                    sharedImages = sharedImageList
+                }.build().toBundle(),
+                navOptions {
+                    this.anim {
+                        this.enter = android.R.anim.slide_in_left
+                        this.exit = android.R.anim.slide_out_right
+                    }
+
+                    this.launchSingleTop = true
+                },
+                null
+            )
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            Toast.makeText(requireContext(), R.string.navigation_error, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun navigateToNewTextFragment(text: String? = null) {
-        findNavController().navigate(
-            resId = R.id.addTextFragment,
-            args = AddTextFragmentArgs.Builder().apply {
-                sharedText = text
-            }.build().toBundle(),
-            navOptions = null
-        )
+        try {
+            findNavController().navigate(
+                R.id.addTextFragment,
+                AddTextFragmentArgs.Builder().apply {
+                    sharedText = text
+                }.build().toBundle(),
+                navOptions {
+                    this.anim {
+                        this.enter = android.R.anim.slide_in_left
+                        this.exit = android.R.anim.slide_out_right
+                    }
+
+                    this.launchSingleTop = true
+                },
+                null
+            )
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            Toast.makeText(requireContext(), R.string.navigation_error, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun navigateToAudioRecorderFragment() {

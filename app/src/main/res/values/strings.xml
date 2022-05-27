@@ -77,4 +77,5 @@
     <string name="settings_lock_auto_30_min">30 m</string>
     <string name="settings_lock_auto_1_hour">1 h</string>
     <string name="shared_media_not_found">We can\'t find selected media for encrypt.</string>
+    <string name="navigation_error">Error while navigation</string>
 </resources>
