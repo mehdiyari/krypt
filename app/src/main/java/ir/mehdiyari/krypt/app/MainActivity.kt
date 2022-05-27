@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AppLockerStopApi {
 
     private val viewModel by viewModels<MainViewModel>()
 
@@ -60,5 +60,9 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         viewModel.onStartLocker()
         super.onStop()
+    }
+
+    override fun stopAppLockerManually() {
+        viewModel.onStopLocker()
     }
 }

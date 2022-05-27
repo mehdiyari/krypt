@@ -17,9 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.fallery.main.fallery.*
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.app.AppLockerStopApi
 import ir.mehdiyari.krypt.utils.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.utils.getFileProviderAuthority
 import ir.mehdiyari.krypt.utils.isInDarkTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -98,7 +100,19 @@ class MediaFragment : Fragment() {
             }
             .build().also { options ->
                 startFalleryWithOptions(2, options)
+                handleAutoLockBeforeStartMediaPicker()
             }
+    }
+
+    private fun handleAutoLockBeforeStartMediaPicker() {
+        lifecycleScope.launch {
+            delay(1000)
+            try {
+                (requireActivity() as AppLockerStopApi).stopAppLockerManually()
+            } catch (t: java.lang.ClassCastException) {
+                t.printStackTrace()
+            }
+        }
     }
 
     private fun openMediaPicker() {
@@ -109,6 +123,7 @@ class MediaFragment : Fragment() {
             )
         ).build().also { options ->
             startFalleryWithOptions(1, options)
+            handleAutoLockBeforeStartMediaPicker()
         }
     }
 
