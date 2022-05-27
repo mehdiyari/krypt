@@ -29,6 +29,9 @@ class AddTextViewModel @Inject constructor(
     private val _saveNoteState = MutableStateFlow<Boolean?>(null)
     val saveNoteState: StateFlow<Boolean?> = _saveNoteState
 
+    private val _deleteNoteState = MutableStateFlow<Boolean?>(null)
+    val deleteNoteState: StateFlow<Boolean?> = _deleteNoteState
+
     private val _saveNoteValidation = MutableStateFlow<Int?>(null)
     val saveNoteValidation: StateFlow<Int?> = _saveNoteValidation
 
@@ -107,6 +110,24 @@ class AddTextViewModel @Inject constructor(
                     _argsTextViewState.emit(
                         AddTextArgsViewState.Error(R.string.error_while_decrypting)
                     )
+                }
+            }
+        }
+    }
+
+    fun deleteNote() {
+        viewModelScope.launch(ioDispatcher) {
+            argsTextViewState.value.also { state ->
+                if (state is AddTextArgsViewState.TextArg) {
+                    filesRepository.getFileById(state.textEntity.id)?.also {
+                        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(
+                            listOf(it)
+                        )
+
+                        _deleteNoteState.emit(true)
+                    } ?: _deleteNoteState.emit(false)
+                } else {
+                    _deleteNoteState.emit(false)
                 }
             }
         }

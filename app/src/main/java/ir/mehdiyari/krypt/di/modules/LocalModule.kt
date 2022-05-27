@@ -1,6 +1,8 @@
 package ir.mehdiyari.krypt.di.modules
 
+import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -52,4 +54,9 @@ class LocalModule {
         currentUser.key!!,
         "AES"
     )
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(context: Application): SharedPreferences =
+        context.getSharedPreferences("krypt", Context.MODE_PRIVATE)
 }

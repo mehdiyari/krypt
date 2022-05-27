@@ -51,14 +51,14 @@ class MediasViewModel @Inject constructor(
             _mediaViewState.emit(
                 MediaViewState.EncryptDecryptState(
                     medias.size
-                ) { delete ->
+                ) { delete, notifyMediaScanner ->
                     val action = viewAction.value
                     if (action == MediaFragmentAction.PICK_MEDIA ||
                         action == MediaFragmentAction.TAKE_MEDIA
                     ) {
                         encrypt(medias, delete)
                     } else if (action == MediaFragmentAction.DECRYPT_MEDIA) {
-                        decrypt(medias, delete)
+                        decrypt(medias, delete, notifyMediaScanner)
                     }
                 }
             )
@@ -149,7 +149,8 @@ class MediasViewModel @Inject constructor(
 
     private fun decrypt(
         medias: Array<String>,
-        deleteAfterEncrypt: Boolean
+        deleteAfterEncrypt: Boolean,
+        notifyMediaScanner: Boolean
     ) {
         viewModelScope.launch(ioDispatcher) {
             _mediaViewState.emit(MediaViewState.OperationStart)
@@ -175,7 +176,9 @@ class MediasViewModel @Inject constructor(
             if (medias.isNotEmpty() && decryptedResult.isEmpty()) {
                 _mediaViewState.emit(MediaViewState.OperationFailed)
             } else {
-                mediaStoreManager.scanAddedMedia(decryptedResult.map { it.first })
+                if (notifyMediaScanner) {
+                    mediaStoreManager.scanAddedMedia(decryptedResult.map { it.first })
+                }
                 if (deleteAfterEncrypt) {
                     val ids = decryptedResult.map { it.second }
                     filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(encryptedMedias.filter {

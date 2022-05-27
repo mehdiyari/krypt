@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         when (item) {
             R.string.menu_data_usage -> navigateToDataUsageFragment()
             R.string.menu_change_password -> navigateToChangePasswordFragment()
-            R.string.menu_customize -> navigateToCustomizeFragment()
+            R.string.menu_settings -> navigateToSettingsFragment()
             R.string.menu_help -> navigateToHelpFragment()
         }
     }
@@ -93,8 +93,8 @@ class HomeFragment : Fragment() {
         TODO("Not yet implemented")
     }
 
-    private fun navigateToCustomizeFragment() {
-        TODO("Not yet implemented")
+    private fun navigateToSettingsFragment() {
+        findNavController().navigate(R.id.action_home_to_settingsFragment)
     }
 
     private fun navigateToChangePasswordFragment() {

@@ -65,6 +65,25 @@ class AddTextFragment : Fragment() {
         }
 
         lifecycleScope.launch {
+            viewModel.deleteNoteState.collect {
+                if (it == true) {
+                    findNavController().popBackStack()
+                    Toast.makeText(
+                        context,
+                        R.string.delete_text_was_successfully,
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else if (it == false) {
+                    Toast.makeText(
+                        context,
+                        R.string.delete_text_was_unsuccessfully,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             viewModel.saveNoteValidation.collect {
                 if (it != null) {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()

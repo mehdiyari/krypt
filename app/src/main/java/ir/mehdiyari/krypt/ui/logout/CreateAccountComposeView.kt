@@ -40,6 +40,7 @@ fun CreateAccountComposeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .padding(bottom = 40.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.krypt),
@@ -51,7 +52,7 @@ fun CreateAccountComposeScreen(
             Text(
                 text = stringResource(id = R.string.create_account),
                 color = MaterialTheme.colors.onBackground,
-                modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 4.dp),
+                modifier = Modifier.padding(25.dp, 20.dp, 25.dp, 4.dp),
                 fontSize = 15.sp,
                 textAlign = TextAlign.Center
             )
@@ -65,8 +66,7 @@ fun CreateAccountComposeScreen(
                 label = { Text(stringResource(id = R.string.account_name)) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp, 20.dp, 20.dp, 3.dp)
-                    .padding(20.dp, 0.dp, 20.dp, 3.dp),
+                    .padding(25.dp, 20.dp, 25.dp, 3.dp),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     autoCorrect = false,
@@ -81,7 +81,7 @@ fun CreateAccountComposeScreen(
         Column(
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier.padding(35.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
             ExtendedFloatingActionButton(
                 onClick = { onClick(nameValue.value.text, passwordValue.value.text) },

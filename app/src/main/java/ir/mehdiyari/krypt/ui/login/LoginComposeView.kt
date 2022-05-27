@@ -31,7 +31,8 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 @Preview
 fun LoginComposeScreen(
     loginViewModel: LoginViewModel = viewModel(),
-    onClick: (username: String, password: String) -> Unit = { _, _ -> }
+    onClick: (username: String, password: String) -> Unit = { _, _ -> },
+    onCreateAccountClick: () -> Unit = {}
 ) {
     KryptTheme {
         val passwordValue = remember { mutableStateOf(TextFieldValue()) }
@@ -44,6 +45,7 @@ fun LoginComposeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .padding(bottom = 40.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.krypt),
@@ -55,8 +57,7 @@ fun LoginComposeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp, 20.dp, 20.dp, 3.dp)
-                    .padding(20.dp, 0.dp, 20.dp, 3.dp)
+                    .padding(25.dp, 20.dp, 25.dp, 3.dp)
             ) {
                 Column {
                     TextField(
@@ -107,7 +108,7 @@ fun LoginComposeScreen(
         Column(
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier.padding(35.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
             ExtendedFloatingActionButton(
                 onClick = { onClick(accountNameState.value.text, passwordValue.value.text) },
@@ -120,6 +121,19 @@ fun LoginComposeScreen(
                 text = { Text(text = stringResource(id = R.string.button_login)) },
                 backgroundColor = MaterialTheme.colors.primary,
                 contentColor = MaterialTheme.colors.onPrimary
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            ExtendedFloatingActionButton(
+                onClick = { onCreateAccountClick() },
+                text = { Text(text = stringResource(id = R.string.button_create_new_account)) },
+                backgroundColor = MaterialTheme.colors.secondary,
+                contentColor = MaterialTheme.colors.onSecondary
             )
         }
     }

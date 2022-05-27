@@ -79,8 +79,12 @@ class FilesRepository @Inject constructor(
         filedDao.deleteFiles(files)
         files.forEach {
             File(it.filePath).delete()
-            if (it.metaData.isNotBlank())
+            if (
+                it.metaData.isNotBlank()
+                && (it.type == FileTypeEnum.Photo || it.type == FileTypeEnum.Video)
+            ) {
                 File(it.metaData).delete()
+            }
         }
     }
 

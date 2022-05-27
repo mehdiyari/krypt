@@ -4,7 +4,7 @@ sealed class MediaViewState {
 
     data class EncryptDecryptState(
         val selectedMediasCount: Int = 1,
-        val onEncryptOrDecryptAction: (deleteAfterEncryption: Boolean) -> Unit,
+        val onEncryptOrDecryptAction: (deleteAfterEncryption: Boolean, notifyMediaScanner: Boolean) -> Unit,
     ) : MediaViewState()
 
     object Default : MediaViewState()
