@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.home
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,6 @@ class ShareDataViewModel @Inject constructor() : ViewModel() {
         if (!sharedText.isNullOrBlank()) {
             viewModelScope.launch {
                 _sharedData.emit(SharedDataState.SharedText(sharedText))
-                sharedData.value
             }
         }
     }
@@ -26,6 +26,14 @@ class ShareDataViewModel @Inject constructor() : ViewModel() {
     fun clearSharedData() {
         viewModelScope.launch {
             _sharedData.emit(null)
+        }
+    }
+
+    fun handleSharedImages(vararg images: Uri) {
+        if (images.isNotEmpty()) {
+            viewModelScope.launch {
+                _sharedData.emit(SharedDataState.SharedImages(images.toList()))
+            }
         }
     }
 }

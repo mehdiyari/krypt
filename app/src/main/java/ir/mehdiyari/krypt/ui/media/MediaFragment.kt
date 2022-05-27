@@ -71,10 +71,21 @@ class MediaFragment : Fragment() {
                             findNavController().popBackStack()
                         }
                     }
+                    MediaFragmentAction.ENCRYPT_MEDIA -> handleEncryptSharedMedia()
                     MediaFragmentAction.TAKE_MEDIA -> TODO()
                     MediaFragmentAction.DEFAULT -> TODO()
                 }
             }
+        }
+    }
+
+    private fun handleEncryptSharedMedia() {
+        if (args.sharedImages == null || args.sharedImages?.images?.isEmpty() == true) {
+            Toast.makeText(requireContext(), R.string.shared_media_not_found, Toast.LENGTH_SHORT)
+                .show()
+            findNavController().popBackStack()
+        } else {
+            viewModel.onDecryptSharedMedia(args.sharedImages?.images)
         }
     }
 

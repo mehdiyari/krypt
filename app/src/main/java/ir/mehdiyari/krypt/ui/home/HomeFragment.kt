@@ -16,6 +16,7 @@ import ir.mehdiyari.krypt.app.MainActivity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
 import ir.mehdiyari.krypt.ui.media.MediaFragmentArgs
+import ir.mehdiyari.krypt.ui.media.SharedImagesListModel
 import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -59,6 +60,11 @@ class HomeFragment : Fragment() {
         if (sharedDataState != null) {
             if (sharedDataState is SharedDataState.SharedText) {
                 navigateToNewTextFragment(sharedDataState.text)
+            } else if (sharedDataState is SharedDataState.SharedImages) {
+                navigateToMediasFragment(
+                    MediaFragmentAction.ENCRYPT_MEDIA,
+                    SharedImagesListModel(sharedDataState.images)
+                )
             }
         }
     }
@@ -74,7 +80,7 @@ class HomeFragment : Fragment() {
 
     private fun addItemMenuSelected(item: Int) {
         when (item) {
-            R.string.add_media -> navigateToPhotosFragment(MediaFragmentAction.PICK_MEDIA)
+            R.string.add_media -> navigateToMediasFragment(MediaFragmentAction.PICK_MEDIA)
             R.string.add_audio -> navigateToAudioRecorderFragment()
             R.string.add_text -> navigateToNewTextFragment()
         }
@@ -82,7 +88,7 @@ class HomeFragment : Fragment() {
 
     private fun onClickOnHomeCards(fileTypeEnum: FileTypeEnum) {
         when (fileTypeEnum) {
-            FileTypeEnum.Photo -> navigateToPhotosFragment(MediaFragmentAction.DECRYPT_MEDIA)
+            FileTypeEnum.Photo -> navigateToMediasFragment(MediaFragmentAction.DECRYPT_MEDIA)
             FileTypeEnum.Audio -> navigateToMusicAndAudioFragment()
             FileTypeEnum.Text -> navigateToTextsFragment()
         }
@@ -93,11 +99,15 @@ class HomeFragment : Fragment() {
         (requireActivity() as MainActivity).restartApp()
     }
 
-    private fun navigateToPhotosFragment(photosAction: MediaFragmentAction) {
+    private fun navigateToMediasFragment(
+        photosAction: MediaFragmentAction,
+        sharedImageList: SharedImagesListModel? = null
+    ) {
         findNavController().navigate(
             R.id.action_homeFragment_to_photosFragment,
             MediaFragmentArgs.Builder().apply {
                 action = photosAction
+                sharedImages = sharedImageList
             }.build().toBundle(),
             null
         )
