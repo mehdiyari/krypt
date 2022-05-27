@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        setIntent(intent)
         if (intent?.action == Intent.ACTION_SEND) {
             if ("text/plain" == intent.type) {
                 shareDataViewModel.handleSharedText(
