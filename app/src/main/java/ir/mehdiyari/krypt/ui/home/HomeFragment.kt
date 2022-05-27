@@ -107,7 +107,7 @@ class HomeFragment : Fragment() {
         sharedImageList: SharedImagesListModel? = null
     ) {
         findNavController().navigate(
-            R.id.action_homeFragment_to_photosFragment,
+            R.id.photosFragment,
             MediaFragmentArgs.Builder().apply {
                 action = photosAction
                 sharedImages = sharedImageList
@@ -118,7 +118,7 @@ class HomeFragment : Fragment() {
 
     private fun navigateToNewTextFragment(text: String? = null) {
         findNavController().navigate(
-            resId = R.id.action_homeFragment_to_addTextFragment,
+            resId = R.id.addTextFragment,
             args = AddTextFragmentArgs.Builder().apply {
                 sharedText = text
             }.build().toBundle(),
