@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.data.repositories.CurrentUser
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
+import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val currentUser: CurrentUser
+    private val currentUser: CurrentUser,
+    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _automaticLockState = MutableStateFlow(false)
@@ -28,7 +30,7 @@ class MainViewModel @Inject constructor(
         releaseTimer()
         val autoLockValue = settingsRepository.getLockAutomaticallyValue()
         if (autoLockValue != AutoLockItemsEnum.Disabled) {
-            lockerTimerJob = viewModelScope.launch(Dispatchers.Default) {
+            lockerTimerJob = viewModelScope.launch(defaultDispatcher) {
                 delay(autoLockValue.value * 1000L)
                 currentUser.clear()
                 _automaticLockState.emit(true)
