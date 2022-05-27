@@ -2,6 +2,7 @@ package ir.mehdiyari.krypt.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -108,6 +109,8 @@ class FilesUtilities @Inject constructor(
         cursor?.close()
         return true
     }
+
+    fun getPathFromUri(uri: Uri): String? = context.getRealPathBasedOnUri(uri)
 
     fun deleteCacheDir() {
         File(getCashDir()).deleteRecursively()

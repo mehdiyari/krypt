@@ -71,7 +71,7 @@ fun MediasComposeScreen(
                             is MediaViewState.EncryptDecryptState -> {
                                 val encryptDecryptState =
                                     viewState.value as MediaViewState.EncryptDecryptState
-                                if (actionState.value == PICK_MEDIA || actionState.value == PICK_MEDIA) {
+                                if (actionState.value == PICK_MEDIA || actionState.value == ENCRYPT_MEDIA) {
                                     EncryptSelectedMediaView(encryptDecryptState)
                                 } else if (actionState.value == DECRYPT_MEDIA) {
                                     DecryptSelectedMediaView(encryptDecryptState)
@@ -94,7 +94,7 @@ fun OperationFailedView(value: MediaFragmentAction) {
             .fillMaxHeight()
     ) {
         val text = when (value) {
-            PICK_MEDIA, TAKE_MEDIA -> {
+            PICK_MEDIA, TAKE_MEDIA, ENCRYPT_MEDIA -> {
                 stringResource(id = R.string.encrypt_failed)
             }
             DECRYPT_MEDIA -> {
@@ -129,7 +129,7 @@ fun OperationFinishedView(value: MediaFragmentAction) {
             .fillMaxHeight()
     ) {
         val text = when (value) {
-            PICK_MEDIA, TAKE_MEDIA -> {
+            PICK_MEDIA, TAKE_MEDIA, ENCRYPT_MEDIA -> {
                 stringResource(id = R.string.encrypt_successfully)
             }
             DECRYPT_MEDIA -> {

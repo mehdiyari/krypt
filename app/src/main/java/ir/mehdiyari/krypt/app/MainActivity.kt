@@ -2,7 +2,9 @@ package ir.mehdiyari.krypt.app
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
@@ -49,11 +51,24 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        setIntent(intent)
         if (intent?.action == Intent.ACTION_SEND) {
             if ("text/plain" == intent.type) {
                 shareDataViewModel.handleSharedText(
                     intent.getStringExtra(Intent.EXTRA_TEXT)
                 )
+            } else if (intent.type?.startsWith("image/") == true) {
+                (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
+                    shareDataViewModel.handleSharedImages(it)
+                }
+            }
+        } else if (intent?.action == Intent.ACTION_SEND_MULTIPLE) {
+            if (intent.type?.startsWith("image/") == true) {
+                intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.let {
+                    shareDataViewModel.handleSharedImages(*it.mapNotNull { image -> image as? Uri }
+                        .toTypedArray())
+                }
+
             }
         }
     }

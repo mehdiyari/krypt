@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.media
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,7 +55,8 @@ class MediasViewModel @Inject constructor(
                 ) { delete, notifyMediaScanner ->
                     val action = viewAction.value
                     if (action == MediaFragmentAction.PICK_MEDIA ||
-                        action == MediaFragmentAction.TAKE_MEDIA
+                        action == MediaFragmentAction.TAKE_MEDIA ||
+                        action == MediaFragmentAction.ENCRYPT_MEDIA
                     ) {
                         encrypt(medias, delete)
                     } else if (action == MediaFragmentAction.DECRYPT_MEDIA) {
@@ -192,6 +194,12 @@ class MediasViewModel @Inject constructor(
     }
 
     suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getMediasCount() > 0L
+
+    fun onDecryptSharedMedia(images: List<Uri>?) {
+        if (!images.isNullOrEmpty()) {
+            onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.toTypedArray())
+        }
+    }
 
     override fun onCleared() {
         filesUtilities.deleteCacheDir()
