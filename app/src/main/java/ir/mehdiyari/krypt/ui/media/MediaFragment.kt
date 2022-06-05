@@ -98,6 +98,7 @@ class MediaFragment : Fragment() {
         .setGrantSharedStoragePermission(true)
         .setMediaObserverEnabled(true)
         .setCaptionEnabledOptions(CaptionEnabledOptions(false))
+        .setFallerySpanCountMode(FalleryBucketsSpanCountMode.UserZoomInOrZoomOut)
         .setTheme(if (requireContext().isInDarkTheme()) ir.mehdiyari.fallery.R.style.Fallery_Dracula else ir.mehdiyari.fallery.R.style.Fallery_Light)
 
     private fun openMediaPickerForDecrypting() {
