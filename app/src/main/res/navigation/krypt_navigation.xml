@@ -82,6 +82,11 @@
             app:destination="@+id/settingsFramgnet"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_dataFragment"
+            app:destination="@id/dataFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/photosFragment"
@@ -128,5 +133,9 @@
         android:id="@+id/settingsFramgnet"
         android:name="ir.mehdiyari.krypt.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/dataFragment"
+        android:name="ir.mehdiyari.krypt.ui.data.DataFragment"
+        android:label="DataFragment" />
 
 </navigation>
