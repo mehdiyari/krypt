@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.settings
 
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -11,19 +12,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -36,31 +38,51 @@ fun SettingsView(
 ) {
     val automaticallyLockAppSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    val deleteDialogState = remember { mutableStateOf(false) }
     KryptTheme {
-
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(text = stringResource(id = R.string.menu_settings), fontSize = 18.sp)
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            onNavigationClickIcon()
-                        }) {
-                            Icon(Icons.Filled.ArrowBack, "")
-                        }
-                    }
-                )
-            }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
-            Row {
-                SettingsItems {
-                    if (it == R.string.settings_lock_auto) {
-                        scope.launch {
-                            automaticallyLockAppSheetState.show()
-                        }
+            val deleteAccountViewState = viewModel.deleteAccountState.collectAsState()
+            when (deleteAccountViewState.value) {
+                DeleteAccountViewState.DeleteAccountFailed -> {
+                    deleteDialogState.value = false
+                    Toast.makeText(
+                        LocalContext.current,
+                        R.string.account_delete_error,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                DeleteAccountViewState.DeleteAccountFinished -> {
+                    deleteDialogState.value = false
+                    Toast.makeText(
+                        LocalContext.current,
+                        R.string.your_account_deleted,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                DeleteAccountViewState.DeleteAccountStarts -> {
+                    deleteDialogState.value = false
+                    CircularProgressIndicator(modifier = Modifier.size(80.dp))
+                }
+                DeleteAccountViewState.PasswordsNotMatch, null -> {
+                    if (deleteAccountViewState.value == DeleteAccountViewState.PasswordsNotMatch) {
+                        Toast.makeText(
+                            LocalContext.current,
+                            R.string.password_not_match,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
+                    SettingItems(
+                        viewModel,
+                        deleteDialogState,
+                        automaticallyLockAppSheetState,
+                        scope,
+                        onNavigationClickIcon
+                    )
                 }
             }
         }
@@ -72,6 +94,92 @@ fun SettingsView(
         ) {
             viewModel.onSelectAutoLockItem(it)
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SettingItems(
+    viewModel: SettingsViewModel,
+    deleteDialogState: MutableState<Boolean>,
+    automaticallyLockAppSheetState: ModalBottomSheetState,
+    scope: CoroutineScope,
+    onNavigationClickIcon: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.menu_settings), fontSize = 18.sp)
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onNavigationClickIcon()
+                    }) {
+                        Icon(Icons.Filled.ArrowBack, "")
+                    }
+                }
+            )
+        }
+    ) {
+        Row {
+            SettingsItems {
+                if (it == R.string.settings_lock_auto) {
+                    scope.launch {
+                        automaticallyLockAppSheetState.show()
+                    }
+                } else if (it == R.string.settings_delete_account_text) {
+                    deleteDialogState.value = true
+                }
+            }
+
+            if (deleteDialogState.value) {
+                ShowDeleteConfirmDialog(viewModel = viewModel, state = deleteDialogState)
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowDeleteConfirmDialog(viewModel: SettingsViewModel, state: MutableState<Boolean>) {
+    val passwordValue = remember { mutableStateOf(TextFieldValue()) }
+    if (state.value) {
+        AlertDialog(
+            onDismissRequest = {
+                state.value = false
+            },
+            title = {
+                Text(text = stringResource(id = R.string.settings_delete_account_text))
+            },
+            text = {
+                Column {
+                    Text(
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        text = stringResource(id = R.string.settings_delete_account_description)
+                    )
+                    PasswordTextField(passwordValue = passwordValue, setDefaultPadding = false)
+                }
+            },
+            confirmButton = {
+                OutlinedButton(
+                    onClick = {
+                        viewModel.onDeleteCurrentAccount(passwordValue.value.text)
+                    },
+                ) {
+                    Text(stringResource(id = R.string.YES))
+                }
+
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = {
+                        state.value = false
+                    }
+                ) {
+                    Text(stringResource(id = R.string.NO))
+                }
+            }
+        )
     }
 }
 
@@ -133,7 +241,7 @@ fun SettingsItemCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp, 8.dp, 8.dp, 8.dp)
+            .padding(8.dp, 8.dp, 8.dp, 2.dp)
             .height(60.dp)
             .selectable(
                 selected = false,

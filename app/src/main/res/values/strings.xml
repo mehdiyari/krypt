@@ -82,4 +82,6 @@
     <string name="settings_delete_account_description">Do you want to delete current account? All data will be lost permanently</string>
     <string name="password_not_match">Passwords does not match</string>
     <string name="password_confirmation">Password Confirm</string>
+    <string name="your_account_deleted">Your account deleted successfully</string>
+    <string name="account_delete_error">Something went wrong during deleting your account. You must sign-in again</string>
 </resources>
