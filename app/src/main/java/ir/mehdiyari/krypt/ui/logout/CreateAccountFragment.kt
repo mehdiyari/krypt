@@ -19,16 +19,13 @@ import kotlinx.coroutines.launch
 class CreateAccountFragment : Fragment() {
 
     private val viewModel: CreateAccountViewModel by viewModels()
-    private val onCreateAccountClick: (String, String) -> Unit = { name, password ->
-        viewModel.addAccount(name, password)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            CreateAccountComposeScreen(onCreateAccountClick)
+            CreateAccountComposeScreen(viewModel)
         }
     }
 

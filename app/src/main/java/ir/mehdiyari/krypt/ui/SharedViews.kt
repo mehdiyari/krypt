@@ -19,17 +19,26 @@ import androidx.compose.ui.unit.dp
 import ir.mehdiyari.krypt.R
 
 @Composable
-fun PasswordTextField(passwordValue: MutableState<TextFieldValue>) {
+fun PasswordTextField(
+    passwordValue: MutableState<TextFieldValue>,
+    hintString: Int = R.string.account_password,
+    setDefaultPadding: Boolean = true
+) {
     TextField(
         singleLine = true,
         value = passwordValue.value,
         onValueChange = {
             passwordValue.value = it
         },
-        label = { Text(stringResource(id = R.string.account_password)) },
+        label = { Text(stringResource(id = hintString)) },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(25.dp, 3.dp, 25.dp, 3.dp),
+            .fillMaxWidth().let {
+                if (setDefaultPadding) {
+                    it.padding(25.dp, 3.dp, 25.dp, 3.dp)
+                } else {
+                    it
+                }
+            },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             autoCorrect = false,

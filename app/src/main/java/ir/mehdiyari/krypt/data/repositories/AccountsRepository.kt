@@ -14,9 +14,14 @@ class AccountsRepository @Inject constructor(
     private val passwordKeyGenerator: PasswordKeyGenerator,
     private val currentUser: CurrentUser
 ) {
-    suspend fun addAccount(name: String, password: String): Pair<Boolean, Throwable?> {
+    suspend fun addAccount(
+        name: String,
+        password: String,
+        passwordConfig: String
+    ): Pair<Boolean, Throwable?> {
         if (name.trim().length < 5) return false to BadAccountNameThrowable()
         if (password.trim().length < 12) return false to PasswordLengthThrowable()
+        if (password != passwordConfig) return false to PasswordsNotMatchThrowable()
 
         val salt = passwordKeyGenerator.generateSalt()
         val iv = symmetricHelper.createInitVector()
