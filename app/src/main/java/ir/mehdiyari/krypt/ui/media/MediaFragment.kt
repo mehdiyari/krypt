@@ -18,6 +18,8 @@ import ir.mehdiyari.fallery.main.fallery.*
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.AppLockerStopApi
+import ir.mehdiyari.krypt.ui.media.player.PlayerActivity
+import ir.mehdiyari.krypt.ui.media.player.createBundleForPlayer
 import ir.mehdiyari.krypt.utils.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.utils.getFileProviderAuthority
 import ir.mehdiyari.krypt.utils.isInDarkTheme
@@ -133,7 +135,12 @@ class MediaFragment : Fragment() {
                 true,
                 getFileProviderAuthority(requireActivity().application.packageName)
             )
-        ).build().also { options ->
+        ).setOnVideoPlayClick {
+            startActivity(
+                Intent(requireContext(), PlayerActivity::class.java),
+                createBundleForPlayer(it, false)
+            )
+        }.build().also { options ->
             startFalleryWithOptions(1, options)
             handleAutoLockBeforeStartMediaPicker()
         }
