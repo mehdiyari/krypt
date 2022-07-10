@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.ui.media.player
 
 import android.content.Context
-import android.os.Bundle
+import android.content.Intent
 import com.google.android.exoplayer2.ExoPlayer
 
 object PlayerFactory {
@@ -12,8 +12,8 @@ object PlayerFactory {
     fun getEncryptedStreamPlayer(activity: Context): ExoPlayer = TODO("Not Implemented YET")
 }
 
-fun createBundleForPlayer(videoPath: String, isEncryptedVideo: Boolean = false): Bundle =
-    Bundle().apply {
-        this.putString("video", videoPath)
-        this.putBoolean("encrypted", isEncryptedVideo)
+fun Intent.addExtraForPlayerToIntent(videoPath: String, isEncryptedVideo: Boolean = false): Intent =
+    this.apply {
+        this.putExtra("video", videoPath)
+        this.putExtra("encrypted", isEncryptedVideo)
     }

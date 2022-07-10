@@ -19,7 +19,7 @@ import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.AppLockerStopApi
 import ir.mehdiyari.krypt.ui.media.player.PlayerActivity
-import ir.mehdiyari.krypt.ui.media.player.createBundleForPlayer
+import ir.mehdiyari.krypt.ui.media.player.addExtraForPlayerToIntent
 import ir.mehdiyari.krypt.utils.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.utils.getFileProviderAuthority
 import ir.mehdiyari.krypt.utils.isInDarkTheme
@@ -137,8 +137,9 @@ class MediaFragment : Fragment() {
             )
         ).setOnVideoPlayClick {
             startActivity(
-                Intent(requireContext(), PlayerActivity::class.java),
-                createBundleForPlayer(it, false)
+                Intent(requireContext(), PlayerActivity::class.java).addExtraForPlayerToIntent(
+                    it, false
+                )
             )
         }.build().also { options ->
             startFalleryWithOptions(1, options)
