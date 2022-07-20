@@ -9,7 +9,7 @@ object PlayerFactory {
     fun getNormalStreamPlayer(activity: Context): ExoPlayer = ExoPlayer.Builder(activity)
         .build()
 
-    fun getEncryptedStreamPlayer(activity: Context): ExoPlayer = TODO("Not Implemented YET")
+
 }
 
 fun Intent.addExtraForPlayerToIntent(videoPath: String, isEncryptedVideo: Boolean = false): Intent =

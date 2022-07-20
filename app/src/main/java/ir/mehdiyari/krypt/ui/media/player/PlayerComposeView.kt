@@ -20,11 +20,11 @@ fun PlayerComposeView(
             factory = {
                 StyledPlayerView(it).apply {
                     this.player = player
-                    this.setShowShuffleButton(false)
+                  /*  this.setShowShuffleButton(false)
                     this.setShowSubtitleButton(false)
                     this.setShowNextButton(false)
                     this.setShowPreviousButton(false)
-                    this.setShowBuffering(StyledPlayerView.SHOW_BUFFERING_ALWAYS)
+                    this.setShowBuffering(StyledPlayerView.SHOW_BUFFERING_ALWAYS)*/
                     //this.set
                 }
             }, modifier = Modifier

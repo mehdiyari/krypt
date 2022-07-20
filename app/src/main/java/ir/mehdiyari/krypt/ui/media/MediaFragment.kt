@@ -3,6 +3,7 @@ package ir.mehdiyari.krypt.ui.media
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,8 +110,12 @@ class MediaFragment : Fragment() {
                 encryptedMediasBucketContentProvider,
                 encryptedMediasBucketProvider
             ).setOnVideoPlayClick {
-                Toast.makeText(context, R.string.must_decrypt_video_first, Toast.LENGTH_SHORT)
-                    .show()
+                Log.e("MehdiYari", "pathToVideoIs ${it}")
+                startActivity(
+                    Intent(requireContext(), PlayerActivity::class.java).addExtraForPlayerToIntent(
+                        it, true
+                    )
+                )
             }
             .build().also { options ->
                 startFalleryWithOptions(2, options)
