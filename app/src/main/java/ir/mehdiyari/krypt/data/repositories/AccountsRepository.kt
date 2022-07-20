@@ -3,6 +3,9 @@ package ir.mehdiyari.krypt.data.repositories
 import ir.mehdiyari.krypt.crypto.*
 import ir.mehdiyari.krypt.data.account.AccountEntity
 import ir.mehdiyari.krypt.data.account.AccountsDao
+import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
+import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable
+import ir.mehdiyari.krypt.ui.logout.throwables.PasswordsNotMatchThrowable
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,9 +17,14 @@ class AccountsRepository @Inject constructor(
     private val passwordKeyGenerator: PasswordKeyGenerator,
     private val currentUser: CurrentUser
 ) {
-    suspend fun addAccount(name: String, password: String): Pair<Boolean, Throwable?> {
+    suspend fun addAccount(
+        name: String,
+        password: String,
+        passwordConfig: String
+    ): Pair<Boolean, Throwable?> {
         if (name.trim().length < 5) return false to BadAccountNameThrowable()
         if (password.trim().length < 12) return false to PasswordLengthThrowable()
+        if (password != passwordConfig) return false to PasswordsNotMatchThrowable()
 
         val salt = passwordKeyGenerator.generateSalt()
         val iv = symmetricHelper.createInitVector()
@@ -84,5 +92,24 @@ class AccountsRepository @Inject constructor(
         } else {
             false
         }
+    }
+
+    suspend fun validatePassword(
+        password: String
+    ): Boolean {
+        val account = accountsDao.getAccountWithName(currentUser.accountName!!) ?: return false
+        val nameData = Base64.decode(account.encryptedName)
+        val salt = nameData.getBytesBetweenIndexes(
+            nameData.size - 32, nameData.size - 16
+        )
+        val keyBytes = passwordKeyGenerator.generate32BytesKeyFromPassword(
+            password, salt
+        )
+
+        return keyBytes.contentEquals(currentUser.key)
+    }
+
+    suspend fun deleteCurrentAccount() {
+        accountsDao.deleteCurrentAccount(currentUser.accountName!!)
     }
 }

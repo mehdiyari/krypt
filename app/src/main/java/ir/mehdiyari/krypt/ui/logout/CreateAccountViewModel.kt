@@ -6,9 +6,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.AccountsRepository
-import ir.mehdiyari.krypt.data.repositories.BadAccountNameThrowable
-import ir.mehdiyari.krypt.data.repositories.PasswordLengthThrowable
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
+import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable
+import ir.mehdiyari.krypt.ui.logout.throwables.PasswordsNotMatchThrowable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,15 +27,16 @@ class CreateAccountViewModel @Inject constructor(
 
     val createAccountViewState: SharedFlow<CreateAccountViewState> = _createAccountViewState
 
-    fun addAccount(name: String, password: String) {
+    fun addAccount(name: String, password: String, confirmPassword: String) {
         viewModelScope.launch(ioDispatcher) {
-            accountsRepository.addAccount(name, password).also { result ->
+            accountsRepository.addAccount(name, password, confirmPassword).also { result ->
                 if (result.first) {
                     _createAccountViewState.emit(CreateAccountViewState.SuccessCreateAccount)
                 } else {
                     when (result.second) {
                         is PasswordLengthThrowable -> R.string.password_length_error
                         is BadAccountNameThrowable -> R.string.account_length_error
+                        is PasswordsNotMatchThrowable -> R.string.password_not_match
                         else -> R.string.something_went_wrong
                     }.also {
                         _createAccountViewState.emit(

@@ -21,4 +21,7 @@ interface AccountsDao {
 
     @Query("SELECT * from accounts where name = :accountName")
     suspend fun getAccountWithName(accountName: String): AccountEntity?
+
+    @Query("DELETE FROM accounts where name = :accountName")
+    suspend fun deleteCurrentAccount(accountName: String)
 }

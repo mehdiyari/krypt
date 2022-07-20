@@ -6,7 +6,8 @@ import ir.mehdiyari.krypt.R
 
 
 val SETTINGS_LIST = listOf<Pair<@DrawableRes Int, @StringRes Int>>(
-    R.drawable.ic_lock_clock_24 to R.string.settings_lock_auto
+    R.drawable.ic_lock_clock_24 to R.string.settings_lock_auto,
+    R.drawable.ic_delete_account_24 to R.string.settings_delete_account_text
 )
 
 val AUTO_LOCK_CRYPT_ITEMS = listOf<Pair<AutoLockItemsEnum, Int>>(

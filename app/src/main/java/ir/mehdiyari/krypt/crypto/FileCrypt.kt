@@ -9,7 +9,9 @@ import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FileCrypt @Inject constructor(
     private val key: dagger.Lazy<SecretKey>,
     private val symmetricHelper: SymmetricHelper

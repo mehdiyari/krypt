@@ -3,6 +3,7 @@ package ir.mehdiyari.krypt.ui.media
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,8 @@ import ir.mehdiyari.fallery.main.fallery.*
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.AppLockerStopApi
+import ir.mehdiyari.krypt.ui.media.player.PlayerActivity
+import ir.mehdiyari.krypt.ui.media.player.addExtraForPlayerToIntent
 import ir.mehdiyari.krypt.utils.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.utils.getFileProviderAuthority
 import ir.mehdiyari.krypt.utils.isInDarkTheme
@@ -107,8 +110,12 @@ class MediaFragment : Fragment() {
                 encryptedMediasBucketContentProvider,
                 encryptedMediasBucketProvider
             ).setOnVideoPlayClick {
-                Toast.makeText(context, R.string.must_decrypt_video_first, Toast.LENGTH_SHORT)
-                    .show()
+                Log.e("MehdiYari", "pathToVideoIs ${it}")
+                startActivity(
+                    Intent(requireContext(), PlayerActivity::class.java).addExtraForPlayerToIntent(
+                        it, true
+                    )
+                )
             }
             .build().also { options ->
                 startFalleryWithOptions(2, options)
@@ -133,7 +140,13 @@ class MediaFragment : Fragment() {
                 true,
                 getFileProviderAuthority(requireActivity().application.packageName)
             )
-        ).build().also { options ->
+        ).setOnVideoPlayClick {
+            startActivity(
+                Intent(requireContext(), PlayerActivity::class.java).addExtraForPlayerToIntent(
+                    it, false
+                )
+            )
+        }.build().also { options ->
             startFalleryWithOptions(1, options)
             handleAutoLockBeforeStartMediaPicker()
         }
