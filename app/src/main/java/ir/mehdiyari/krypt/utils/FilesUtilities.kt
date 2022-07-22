@@ -115,4 +115,10 @@ class FilesUtilities @Inject constructor(
     fun deleteCacheDir() {
         File(getCashDir()).deleteRecursively()
     }
+
+    fun generateBackupFilePath(accountName: String): String =
+        "${getFilesDir()}/krypt_backup_${accountName}_${System.currentTimeMillis()}.${KRYPT_EXT}"
+
+    fun generateRestoreFilePath(): String =
+        "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}.${KRYPT_EXT}"
 }

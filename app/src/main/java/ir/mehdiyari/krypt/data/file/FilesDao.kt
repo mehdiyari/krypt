@@ -47,4 +47,7 @@ interface FilesDao {
 
     @Query("select * from files where accountName = :currentAccountName")
     suspend fun getAllFiles(currentAccountName: String): List<FileEntity>
+
+    @Query("select filePath from files where accountName = :accountName")
+    suspend fun getAllFilesPath(accountName: String): List<String>?
 }
