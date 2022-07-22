@@ -1,7 +1,6 @@
 package ir.mehdiyari.krypt.ui.media.player
 
 import android.net.Uri
-import android.util.Log
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.TransferListener
@@ -47,7 +46,6 @@ class AESEncryptedVideoPlayerDataSource @Inject constructor(
             dataSpec.length
         }
 
-        Log.e("MehdiYari", "sizeee - ${File(dataSpec.uri.path).length()}    ${len}")
         return len
     }
 
