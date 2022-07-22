@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ThumbsUtils @Inject constructor() {
 
     companion object {
-        const val THUMB_WIDTH = 768
+        const val THUMB_WIDTH = 1024
     }
 
     fun createThumbnailFromPath(
