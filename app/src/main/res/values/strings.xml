@@ -17,7 +17,7 @@
     <string name="add_text">Text</string>
 
     <string name="medias_library">Media Library</string>
-    <string name="audios_library">Audios Library</string>
+    <string name="audios_library">Audios Library (Coming Soon)</string>
     <string name="texts_library">Texts Library</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
@@ -25,7 +25,6 @@
     <string name="lock_app_content_description">Lock Krypt</string>
 
     <string name="menu_data_usage">Data Usage</string>
-    <string name="menu_backup">Backup</string>
     <string name="menu_change_password">Change Password</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_help">Help</string>
@@ -84,4 +83,12 @@
     <string name="password_confirmation">Password Confirm</string>
     <string name="your_account_deleted">Your account deleted successfully</string>
     <string name="account_delete_error">Something went wrong during deleting your account. You must sign-in again</string>
+    <string name="krypt_file_sizes">App Storage Used</string>
+    <string name="last_backup_date">Last Backup </string>
+    <string name="no_backup_yet"> 00/00/00 00:00 </string>
+    <string name="backup">Backup now</string>
+    <string name="backup_card_title">Backup</string>
+    <string name="share_backup_file">Share</string>
+    <string name="all_backups">All Backups</string>
+    <string name="retry_backup">Retry Back up</string>
 </resources>
