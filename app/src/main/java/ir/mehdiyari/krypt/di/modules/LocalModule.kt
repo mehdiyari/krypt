@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.data.account.AccountsDao
+import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.database.KryptDataBase
 import ir.mehdiyari.krypt.data.file.FilesDao
 import ir.mehdiyari.krypt.data.repositories.CurrentUser
@@ -25,7 +26,8 @@ class LocalModule {
     @Provides
     @Singleton
     fun provideKryptDataBase(@ApplicationContext context: Context): KryptDataBase =
-        Room.databaseBuilder(context, KryptDataBase::class.java, "krypt_db").build()
+        Room.databaseBuilder(context, KryptDataBase::class.java, "krypt_db")
+            .addMigrations(KryptDataBase.MIGRATION_1_2).build()
 
     @Provides
     @Singleton
@@ -39,6 +41,12 @@ class LocalModule {
     fun provideAccountsDao(
         kryptDataBase: KryptDataBase
     ): AccountsDao = kryptDataBase.accountsDAO()
+
+    @Provides
+    @Singleton
+    fun provideBackupDao(
+        kryptDataBase: KryptDataBase
+    ): BackupDao = kryptDataBase.backupDao()
 
 
     @Provides
