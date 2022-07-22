@@ -7,6 +7,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import java.io.FileNotFoundException
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -82,6 +84,11 @@ class FilesUtilities @Inject constructor(
             }"
         }
 
+    fun generateBackupFileInKryptFolder(): String =
+        "${Environment.getExternalStorageDirectory().path}/Krypt/Backups/".also {
+            File(it).mkdirs()
+        }
+
     fun generateTextFilePath(): String =
         "${getFilesDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}.${KRYPT_EXT}"
 
@@ -114,5 +121,29 @@ class FilesUtilities @Inject constructor(
 
     fun deleteCacheDir() {
         File(getCashDir()).deleteRecursively()
+    }
+
+    fun generateBackupFilePath(accountName: String): String =
+        "${getFilesDir()}/krypt_backup_${accountName}_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+
+    fun generateRestoreFilePath(): String =
+        "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+
+    fun copyBackupFileToKryptFolder(backupFilePath: String): String {
+        return File(backupFilePath).let {
+            if (!it.exists()) {
+                throw FileNotFoundException("copyBackupFileToKryptFolder: Backup file not found")
+            }
+
+            val newBackup = File(
+                generateBackupFileInKryptFolder(), it.name
+            )
+
+            it.copyTo(
+                newBackup, overwrite = true
+            )
+
+            newBackup.path
+        }
     }
 }

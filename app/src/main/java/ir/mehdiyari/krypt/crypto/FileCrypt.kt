@@ -9,7 +9,9 @@ import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FileCrypt @Inject constructor(
     private val key: dagger.Lazy<SecretKey>,
     private val symmetricHelper: SymmetricHelper
@@ -100,5 +102,13 @@ class FileCrypt @Inject constructor(
             key = key.get(),
             initVector = initVector
         )
+    }
+
+    fun getCipherAndInitVector(): Pair<Cipher, ByteArray> {
+        val cipher = Cipher.getInstance(SymmetricHelper.AES_CBC_PKS5PADDING)
+        val initVector = symmetricHelper.createInitVector()
+        cipher.init(Cipher.ENCRYPT_MODE, key.get(), IvParameterSpec(initVector))
+
+        return cipher to initVector
     }
 }

@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.data.repositories
 
+import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.file.FilesDao
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class FilesRepository @Inject constructor(
     private val filedDao: FilesDao,
+    private val backupDao: BackupDao,
     @AccountName private val currentAccountName: Provider<String>,
     private val filesUtilities: FilesUtilities
 ) {
@@ -95,4 +97,24 @@ class FilesRepository @Inject constructor(
         filedDao.getFileById(currentAccountName.get(), id)
 
     suspend fun getAllFiles(): List<FileEntity> = filedDao.getAllFiles(currentAccountName.get())
+
+    suspend fun getAllFilesSize(): Long {
+        var total = 0L
+        (try {
+            mutableListOf<String>().apply {
+                addAll(backupDao.getAllBackupFiles(currentAccountName.get()) ?: listOf())
+                addAll(filedDao.getAllFilesPath(currentAccountName.get()) ?: listOf())
+            }
+        } catch (t: Throwable) {
+            null
+        })?.map {
+            File(it).length()
+        }?.forEach {
+            total += convectToMB(it)
+        }
+
+        return total
+    }
+
+    private fun convectToMB(size: Long): Long = (size / (1024)) / 1024
 }
