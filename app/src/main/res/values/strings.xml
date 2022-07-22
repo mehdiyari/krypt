@@ -95,4 +95,8 @@
     <string name="delete_backup_file_title">Delete Backup</string>
     <string name="delete_backup_file_failed">Failed to delete backup file. try again.</string>
     <string name="delete_backup_file_successfully">Backup file successfully deleted.</string>
+    <string name="error_while_saving_backup_into_external_storage">Error while saving backup in krypt folder</string>
+    <string name="saving_backup_permission_error">Seem\'s app does not have access to storage.</string>
+    <string name="grant">Grant</string>
+    <string name="save_backup_file_successfylly">"App successfully save backup file into Krypt official folder on your storage. "</string>
 </resources>

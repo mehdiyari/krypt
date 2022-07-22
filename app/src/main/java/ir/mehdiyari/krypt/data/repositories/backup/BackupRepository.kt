@@ -137,11 +137,16 @@ class BackupRepository @Inject constructor(
 
     suspend fun deleteBackupWithId(backupFileId: Int) {
         backupDao.getEntityWithId(
-
             backupFileId, currentUser.accountName!!
         )!!.also {
             File(it.filePath).delete()
             backupDao.deleteBackupWithId(backupFileId, currentUser.accountName!!)
+        }
+    }
+
+    suspend fun getBackupFilePathWithId(backupFileId: Int): String {
+        return backupDao.getEntityWithId(backupFileId, currentUser.accountName!!)!!.let {
+            it.filePath
         }
     }
 }

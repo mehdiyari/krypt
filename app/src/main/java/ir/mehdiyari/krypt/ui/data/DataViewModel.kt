@@ -7,6 +7,8 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.utils.MediaStoreManager
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -22,7 +24,9 @@ import javax.inject.Inject
 class DataViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
     private val filesRepository: FilesRepository,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
+    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    private val filesUtilities: FilesUtilities,
+    private val mediaStoreManager: MediaStoreManager,
 ) : ViewModel() {
 
     private val _filesSizes = MutableStateFlow(0L)
@@ -37,8 +41,8 @@ class DataViewModel @Inject constructor(
     private val _backups = MutableStateFlow<List<BackupViewData>>(listOf())
     val backups = _backups.asStateFlow()
 
-    private val _generalErrorFlow = MutableSharedFlow<Int?>()
-    val generalErrorFlow = _generalErrorFlow.asSharedFlow()
+    private val _generalMessageFlow = MutableSharedFlow<Int?>()
+    val generalMessageFlow = _generalMessageFlow.asSharedFlow()
 
     private var backupJob: Job? = null
 
@@ -81,17 +85,39 @@ class DataViewModel @Inject constructor(
     }
 
     fun onSaveBackup(backupFileId: Int) {
-        //TODO("Not yet implemented")
+        viewModelScope.launch(ioDispatcher) {
+            try {
+                backupRepository.getBackupFilePathWithId(backupFileId).also {
+                    filesUtilities.copyBackupFileToKryptFolder(it).also { path ->
+                        if (path.isNotBlank()) {
+                            try {
+                                mediaStoreManager.scanAddedMedia(listOf(path))
+                            } catch (t: Throwable) {
+                                t.printStackTrace()
+                            }
+                        }
+                    }
+                }
+
+                _generalMessageFlow.emit(R.string.save_backup_file_successfylly)
+            } catch (t: Throwable) {
+                if (t is SecurityException) {
+                    _generalMessageFlow.emit(R.string.saving_backup_permission_error)
+                } else {
+                    _generalMessageFlow.emit(R.string.error_while_saving_backup_into_external_storage)
+                }
+            }
+        }
     }
 
     fun onDeleteBackup(backupFileId: Int) {
         viewModelScope.launch(ioDispatcher) {
             try {
                 backupRepository.deleteBackupWithId(backupFileId)
-                _generalErrorFlow.emit(R.string.delete_backup_file_successfully)
+                _generalMessageFlow.emit(R.string.delete_backup_file_successfully)
             } catch (t: Throwable) {
                 t.printStackTrace()
-                _generalErrorFlow.emit(R.string.delete_backup_file_failed)
+                _generalMessageFlow.emit(R.string.delete_backup_file_failed)
             }
             refreshAllData()
         }
