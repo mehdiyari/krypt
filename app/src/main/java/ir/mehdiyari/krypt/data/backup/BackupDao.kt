@@ -20,4 +20,10 @@ interface BackupDao {
     @Query("select filePath from backups where account = :account")
     suspend fun getAllBackupFiles(account: String): List<String>?
 
+    @Query("select * from backups where id = :backupFileId and account = :accountName")
+    suspend fun getEntityWithId(backupFileId: Int, accountName: String): BackupEntity?
+
+    @Query("delete from backups where id = :backupFileId and account = :accountName")
+    suspend fun deleteBackupWithId(backupFileId: Int, accountName: String)
+
 }

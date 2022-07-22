@@ -134,4 +134,14 @@ class BackupRepository @Inject constructor(
             ""
         }
     }
+
+    suspend fun deleteBackupWithId(backupFileId: Int) {
+        backupDao.getEntityWithId(
+
+            backupFileId, currentUser.accountName!!
+        )!!.also {
+            File(it.filePath).delete()
+            backupDao.deleteBackupWithId(backupFileId, currentUser.accountName!!)
+        }
+    }
 }

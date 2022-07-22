@@ -3,13 +3,16 @@ package ir.mehdiyari.krypt.ui.data
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
@@ -33,6 +36,9 @@ class DataViewModel @Inject constructor(
 
     private val _backups = MutableStateFlow<List<BackupViewData>>(listOf())
     val backups = _backups.asStateFlow()
+
+    private val _generalErrorFlow = MutableSharedFlow<Int?>()
+    val generalErrorFlow = _generalErrorFlow.asSharedFlow()
 
     private var backupJob: Job? = null
 
@@ -79,7 +85,16 @@ class DataViewModel @Inject constructor(
     }
 
     fun onDeleteBackup(backupFileId: Int) {
-        //TODO("Not yet implemented")
+        viewModelScope.launch(ioDispatcher) {
+            try {
+                backupRepository.deleteBackupWithId(backupFileId)
+                _generalErrorFlow.emit(R.string.delete_backup_file_successfully)
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                _generalErrorFlow.emit(R.string.delete_backup_file_failed)
+            }
+            refreshAllData()
+        }
     }
 
     private fun getBackups() {

@@ -12,10 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -50,7 +47,13 @@ fun DataScreen(
                 val backupState = viewModel.backupViewState.collectAsState()
                 BackupView(lastBackupState, backupState, viewModel::backupNow)
                 val backupList = viewModel.backups.collectAsState()
-                BackupList(backupList, viewModel::onSaveBackup, viewModel::onDeleteBackup)
+
+                val deleteDialogState = remember { mutableStateOf(false to -1) }
+                BackupList(backupList, viewModel::onSaveBackup) {
+                    deleteDialogState.value = true to it
+                }
+
+                DeleteBackupFileDialog(deleteDialogState, viewModel)
             }
         }
     }
@@ -238,7 +241,7 @@ fun BackupList(
 fun BackupItem(
     backupViewData: BackupViewData =
         BackupViewData(1, "", "300 MB"),
-    onShareClick: (Int) -> Unit = {},
+    onSaveClick: (Int) -> Unit = {},
     onDeleteClick: (Int) -> Unit = {}
 ) {
     Card(
@@ -279,7 +282,7 @@ fun BackupItem(
                 Icon(
                     painter = painterResource(R.drawable.ic_save_as), "", modifier = Modifier
                         .selectable(false, onClick = {
-                            onShareClick(backupViewData.id)
+                            onSaveClick(backupViewData.id)
                         }, role = Role.Button, enabled = true)
                         .padding(start = 6.dp, end = 6.dp)
                         .size(18.dp)
@@ -305,6 +308,50 @@ private fun DataBaseDivider() {
     Divider(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)
     )
+}
+
+@Composable
+@Preview
+private fun DeleteBackupFileDialog(
+    deleteDialogState: MutableState<Pair<Boolean, Int>> = mutableStateOf(true to -1),
+    viewModel: DataViewModel? = null
+) {
+    if (deleteDialogState.value.first) {
+        AlertDialog(
+            onDismissRequest = {
+                deleteDialogState.value = false to -1
+            },
+            title = {
+                Text(text = stringResource(id = R.string.delete_backup_file_title))
+            },
+            text = {
+                Text(
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    text = stringResource(id = R.string.delete_backup_file)
+                )
+            },
+            confirmButton = {
+                OutlinedButton(
+                    onClick = {
+                        viewModel?.onDeleteBackup(deleteDialogState.value.second)
+                        deleteDialogState.value = false to -1
+                    },
+                ) {
+                    Text(stringResource(id = R.string.YES))
+                }
+
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = {
+                        deleteDialogState.value = false to -1
+                    }
+                ) {
+                    Text(stringResource(id = R.string.NO))
+                }
+            }
+        )
+    }
 }
 
 

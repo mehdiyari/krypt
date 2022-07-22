@@ -91,4 +91,8 @@
     <string name="share_backup_file">Share</string>
     <string name="all_backups">All Backups</string>
     <string name="retry_backup">Retry Back up</string>
+    <string name="delete_backup_file">Are you sure you want to delete this backup file?</string>
+    <string name="delete_backup_file_title">Delete Backup</string>
+    <string name="delete_backup_file_failed">Failed to delete backup file. try again.</string>
+    <string name="delete_backup_file_successfully">Backup file successfully deleted.</string>
 </resources>
