@@ -149,4 +149,14 @@ class BackupRepository @Inject constructor(
             it.filePath
         }
     }
+
+    suspend fun deleteCachedBackupFiles() {
+        backupDao.getAllBackupFiles(currentUser.accountName!!)?.forEach {
+            try {
+                File(it).delete()
+            } catch (t: Throwable) {
+                t.printStackTrace()
+            }
+        }
+    }
 }
