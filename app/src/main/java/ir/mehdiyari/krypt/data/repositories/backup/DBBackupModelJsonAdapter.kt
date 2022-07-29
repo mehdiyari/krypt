@@ -20,6 +20,7 @@ class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel
         const val FILE_ID = "id"
         const val FILE_META_DATA = "meta"
         const val FILE_TYPE = "type"
+        const val FILE_PATH = "path"
     }
 
     private val options = JsonReader.Options.of(ACCOUNT, DATA)
@@ -68,6 +69,7 @@ class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel
             var id: Long? = null
             var meta: String? = null
             var type: FileTypeEnum? = null
+            var path: String? = null
             while (reader.hasNext()) {
                 when (reader.selectName(fileOptions)) {
                     0 -> id = reader.nextLong()
@@ -78,6 +80,7 @@ class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel
                             it.value == typeString
                         }
                     }
+                    3 -> path = reader.nextString()
                     else -> {
                         reader.skipName()
                         reader.skipValue()
@@ -90,7 +93,7 @@ class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel
                     FileEntity(
                         id = id,
                         type = type,
-                        filePath = "",
+                        filePath = path ?: "",
                         metaData = meta ?: "",
                         accountName = ""
                     )
@@ -144,6 +147,7 @@ class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel
             writer.name(FILE_ID).value(it.id)
             writer.name(FILE_META_DATA).value(it.metaData)
             writer.name(FILE_TYPE).value(it.type?.value)
+            writer.name(FILE_PATH).value(it.filePath)
             writer.endObject()
         }
         writer.endArray()

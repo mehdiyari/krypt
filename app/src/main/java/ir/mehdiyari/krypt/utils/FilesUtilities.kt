@@ -31,8 +31,8 @@ class FilesUtilities @Inject constructor(
         mediaPath: String,
         isPhoto: Boolean = true
     ): String =
-        "${getFilesDir()}/$KRYPT_FILES_PREFIX${System.currentTimeMillis()}.${
-            File(mediaPath).extension.let {
+        "${getFilesDir()}/$KRYPT_FILES_PREFIX${System.nanoTime()}.${
+            mediaPath.getExtension().let {
                 it.ifBlank {
                     if (isPhoto) DEFAULT_PHOTO_EXT else DEFAULT_VIDEO_EXT
                 }
@@ -159,5 +159,15 @@ class FilesUtilities @Inject constructor(
         } catch (t: Throwable) {
             t.printStackTrace()
         }
+    }
+
+    private fun String.getExtension(): String = try {
+        if (this.isNotBlank()) {
+            this.substring(this.lastIndexOf('.') + 1, this.length)
+        } else {
+            ""
+        }
+    } catch (t: Throwable) {
+        ""
     }
 }

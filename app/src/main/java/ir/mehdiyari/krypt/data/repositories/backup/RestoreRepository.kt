@@ -51,13 +51,21 @@ class RestoreRepository @Inject constructor(
                 val fileId = id.toLong()
 
 
-                val path: String = when (dbBackupModel.files.firstOrNull {
-                    it.id == fileId
-                }?.type!!) {
-                    FileTypeEnum.Photo -> fileUtils.generateFilePathForMedia(it.toString(), true)
-                    FileTypeEnum.Video -> fileUtils.generateFilePathForMedia(it.toString(), false)
-                    FileTypeEnum.Text -> fileUtils.generateTextFilePath()
-                    FileTypeEnum.Audio -> TODO("No Audio yet")
+                val path: String = dbBackupModel.files.firstOrNull { file ->
+                    file.id == fileId
+                }.let { currentFile ->
+                    when (currentFile?.type!!) {
+                        FileTypeEnum.Photo -> fileUtils.generateFilePathForMedia(
+                            currentFile.filePath,
+                            true
+                        )
+                        FileTypeEnum.Video -> fileUtils.generateFilePathForMedia(
+                            currentFile.filePath,
+                            false
+                        )
+                        FileTypeEnum.Text -> fileUtils.generateTextFilePath()
+                        FileTypeEnum.Audio -> TODO("No Audio yet")
+                    }
                 }
 
                 FileOutputStream(File(path)).use { currentOutputStream ->
