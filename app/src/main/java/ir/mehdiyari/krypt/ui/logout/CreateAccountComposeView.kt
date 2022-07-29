@@ -2,7 +2,9 @@ package ir.mehdiyari.krypt.ui.logout
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -12,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -22,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.utils.KryptTheme
@@ -29,18 +33,20 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 @Composable
 @Preview
 fun CreateAccountComposeScreen(
-    onClick: (username: String, password: String) -> Unit = { _, _ -> }
+    viewModel: CreateAccountViewModel = viewModel()
 ) {
     KryptTheme {
         val nameValue = remember { mutableStateOf(TextFieldValue()) }
         val passwordValue = remember { mutableStateOf(TextFieldValue()) }
+        val confirmPasswordValue = remember { mutableStateOf(TextFieldValue()) }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(bottom = 65.dp)
+                .padding(bottom = 80.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.krypt),
@@ -76,6 +82,7 @@ fun CreateAccountComposeScreen(
             )
 
             PasswordTextField(passwordValue)
+            PasswordTextField(confirmPasswordValue, hintString = R.string.password_confirmation)
         }
 
         Column(
@@ -83,8 +90,15 @@ fun CreateAccountComposeScreen(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier.padding(20.dp)
         ) {
+            val context = LocalContext.current
             ExtendedFloatingActionButton(
-                onClick = { onClick(nameValue.value.text, passwordValue.value.text) },
+                onClick = {
+                    viewModel.addAccount(
+                        nameValue.value.text,
+                        passwordValue.value.text,
+                        confirmPasswordValue.value.text
+                    )
+                },
                 icon = {
                     Icon(
                         Icons.Filled.ArrowForward,

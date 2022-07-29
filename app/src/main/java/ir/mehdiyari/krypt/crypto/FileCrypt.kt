@@ -101,4 +101,12 @@ class FileCrypt @Inject constructor(
             initVector = initVector
         )
     }
+
+    fun getCipherAndInitVector(): Pair<Cipher, ByteArray> {
+        val cipher = Cipher.getInstance(SymmetricHelper.AES_CBC_PKS5PADDING)
+        val initVector = symmetricHelper.createInitVector()
+        cipher.init(Cipher.ENCRYPT_MODE, key.get(), IvParameterSpec(initVector))
+
+        return cipher to initVector
+    }
 }

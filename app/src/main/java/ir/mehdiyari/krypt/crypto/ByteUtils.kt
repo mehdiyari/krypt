@@ -3,6 +3,7 @@ package ir.mehdiyari.krypt.crypto
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.UnsupportedEncodingException
+import java.nio.ByteBuffer
 import java.security.SecureRandom
 
 /**
@@ -67,3 +68,36 @@ fun ByteArray.getBeforeIndex(before: Int): ByteArray = ByteArray(before).apply {
 
 fun ByteArray.toBase64() = Base64.encodeBytes(this)
 fun ByteArray.toUrlSafeBase64() = Base64.encodeBytes(this, Base64.URL_SAFE)
+
+fun Long.toByteArray(): ByteArray {
+    val buffer = ByteBuffer.allocate(Long.SIZE_BYTES)
+    buffer.putLong(this)
+
+    return buffer.array()
+}
+
+fun ByteArray.toLong(): Long {
+    val buffer = ByteBuffer.allocate(Long.SIZE_BYTES)
+    buffer.put(this)
+    buffer.flip()
+    return buffer.long
+}
+
+fun getBestBufferSizeForFile(fileSize: Long): Int {
+    return if (fileSize <= DEFAULT_BUFFER_SIZE) {
+        fileSize.toInt()
+    } else if (fileSize % DEFAULT_BUFFER_SIZE.toLong() == 0L) {
+        DEFAULT_BUFFER_SIZE
+    } else {
+        var buffer = DEFAULT_BUFFER_SIZE + 1
+        while (true) {
+            if (fileSize % buffer.toLong() == 0L) {
+                break
+            } else {
+                buffer++
+            }
+        }
+
+        buffer
+    }
+}

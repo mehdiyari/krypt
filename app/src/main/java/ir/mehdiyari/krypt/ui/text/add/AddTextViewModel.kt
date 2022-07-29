@@ -7,7 +7,6 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.ui.text.list.TextEntity
 import ir.mehdiyari.krypt.utils.TextFilesUtils
@@ -16,14 +15,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Provider
 
 @HiltViewModel
 class AddTextViewModel @Inject constructor(
     private val textFilesUtils: TextFilesUtils,
     private val filesRepository: FilesRepository,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
-    @AccountName private val accountName: Provider<String>
+    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _saveNoteState = MutableStateFlow<Boolean?>(null)
@@ -63,7 +60,7 @@ class AddTextViewModel @Inject constructor(
                                     title,
                                     content
                                 ) ?: "",
-                                accountName = accountName.get()
+                                accountName = ""
                             )
                         )
                     )

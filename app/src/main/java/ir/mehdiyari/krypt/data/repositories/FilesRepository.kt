@@ -1,19 +1,19 @@
 package ir.mehdiyari.krypt.data.repositories
 
+import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.file.FilesDao
-import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Singleton
 
 @Singleton
 class FilesRepository @Inject constructor(
     private val filedDao: FilesDao,
-    @AccountName private val currentAccountName: Provider<String>,
+    private val backupDao: BackupDao,
+    private val currentUser: CurrentUser,
     private val filesUtilities: FilesUtilities
 ) {
 
@@ -23,7 +23,7 @@ class FilesRepository @Inject constructor(
                 add(
                     fileType to try {
                         filedDao.getFilesCountBasedOnType(
-                            currentAccountName.get(),
+                            currentUser.accountName!!,
                             fileType
                         )
                     } catch (t: Throwable) {
@@ -37,20 +37,22 @@ class FilesRepository @Inject constructor(
     suspend fun insertFiles(
         files: List<FileEntity>
     ) {
-        filedDao.insertFiles(files)
+        filedDao.insertFiles(files.map {
+            it.copy(accountName = currentUser.accountName!!)
+        })
     }
 
     suspend fun getMediasCount(): Long = filedDao.getFilesCountBasedOnType(
-        currentAccountName.get(),
+        currentUser.accountName!!,
         FileTypeEnum.Photo
     ) + filedDao.getFilesCountBasedOnType(
-        currentAccountName.get(),
+        currentUser.accountName!!,
         FileTypeEnum.Video
     )
 
     suspend fun getLastEncryptedPhotoThumbnail(): String? =
         filedDao.getAllFilesOfCurrentAccountBasedOnType(
-            currentAccountName.get(),
+            currentUser.accountName!!,
             FileTypeEnum.Photo, FileTypeEnum.Video
         ).lastOrNull {
             it.metaData.isNotBlank()
@@ -58,7 +60,7 @@ class FilesRepository @Inject constructor(
 
     suspend fun getAllEncryptedMedia(): List<FileEntity> =
         filedDao.getAllMedia(
-            currentAccountName.get()
+            currentUser.accountName!!
         )
 
     suspend fun mapThumbnailsAndNameToFileEntity(photos: Array<String>): List<FileEntity> =
@@ -89,8 +91,31 @@ class FilesRepository @Inject constructor(
     }
 
     suspend fun getAllTextFiles(): List<FileEntity> =
-        filedDao.getAllFilesOfCurrentAccountBasedOnType(currentAccountName.get(), FileTypeEnum.Text)
+        filedDao.getAllFilesOfCurrentAccountBasedOnType(
+            currentUser.accountName!!,
+            FileTypeEnum.Text
+        )
 
     suspend fun getFileById(id: Long): FileEntity? =
-        filedDao.getFileById(currentAccountName.get(), id)
+        filedDao.getFileById(currentUser.accountName!!, id)
+
+    suspend fun getAllFiles(): List<FileEntity> = filedDao.getAllFiles(currentUser.accountName!!)
+
+    suspend fun getAllFilesSize(): Long {
+        var total = 0L
+        (try {
+            mutableListOf<String>().apply {
+                addAll(backupDao.getAllBackupFiles(currentUser.accountName!!) ?: listOf())
+                addAll(filedDao.getAllFilesPath(currentUser.accountName!!) ?: listOf())
+            }
+        } catch (t: Throwable) {
+            null
+        })?.map {
+            File(it).length()
+        }?.forEach {
+            total += it
+        }
+
+        return total
+    }
 }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
@@ -81,9 +82,7 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
     fun restartApp() {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        this.finish()
-        Runtime.getRuntime().exit(0)
+        ProcessPhoenix.triggerRebirth(this, intent)
     }
 
     override fun onStop() {

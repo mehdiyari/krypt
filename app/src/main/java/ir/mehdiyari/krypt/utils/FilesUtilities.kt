@@ -7,6 +7,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import java.io.FileNotFoundException
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,14 +24,15 @@ class FilesUtilities @Inject constructor(
 
         const val DEFAULT_PHOTO_EXT = "jpg"
         const val DEFAULT_VIDEO_EXT = "mp4"
+        const val VIDEO_CACHE_FOLDER = "3xP"
     }
 
     fun generateFilePathForMedia(
         mediaPath: String,
         isPhoto: Boolean = true
     ): String =
-        "${getFilesDir()}/$KRYPT_FILES_PREFIX${System.currentTimeMillis()}.${
-            File(mediaPath).extension.let {
+        "${getFilesDir()}/$KRYPT_FILES_PREFIX${System.nanoTime()}.${
+            mediaPath.getExtension().let {
                 it.ifBlank {
                     if (isPhoto) DEFAULT_PHOTO_EXT else DEFAULT_VIDEO_EXT
                 }
@@ -82,6 +85,11 @@ class FilesUtilities @Inject constructor(
             }"
         }
 
+    fun generateBackupFileInKryptFolder(): String =
+        "${Environment.getExternalStorageDirectory().path}/Krypt/Backups/".also {
+            File(it).mkdirs()
+        }
+
     fun generateTextFilePath(): String =
         "${getFilesDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}.${KRYPT_EXT}"
 
@@ -114,5 +122,52 @@ class FilesUtilities @Inject constructor(
 
     fun deleteCacheDir() {
         File(getCashDir()).deleteRecursively()
+    }
+
+    fun generateBackupFilePath(accountName: String): String =
+        "${getFilesDir()}/krypt_backup_${accountName}_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+
+    fun generateRestoreFilePath(): String =
+        "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+
+    fun copyBackupFileToKryptFolder(backupFilePath: String): String {
+        return File(backupFilePath).let {
+            if (!it.exists()) {
+                throw FileNotFoundException("copyBackupFileToKryptFolder: Backup file not found")
+            }
+
+            val newBackup = File(
+                generateBackupFileInKryptFolder(), it.name
+            )
+
+            it.copyTo(
+                newBackup, overwrite = true
+            )
+
+            newBackup.path
+        }
+    }
+
+    fun generateCacheVideoPath(name: String): String =
+        "${getFilesDir()}/${VIDEO_CACHE_FOLDER}/".apply {
+            File(this).mkdirs()
+        } + name
+
+    fun deleteCachedVideoDIR() {
+        try {
+            File("${getFilesDir()}/${VIDEO_CACHE_FOLDER}").deleteRecursively()
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
+    private fun String.getExtension(): String = try {
+        if (this.isNotBlank()) {
+            this.substring(this.lastIndexOf('.') + 1, this.length)
+        } else {
+            ""
+        }
+    } catch (t: Throwable) {
+        ""
     }
 }

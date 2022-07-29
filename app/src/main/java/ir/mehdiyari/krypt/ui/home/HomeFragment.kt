@@ -171,7 +171,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDataUsageFragment() {
-        //TODO("Not yet implemented")
+        try {
+            findNavController().navigate(R.id.action_homeFragment_to_dataFragment)
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
     }
 
     private fun navigateToTextsFragment() {

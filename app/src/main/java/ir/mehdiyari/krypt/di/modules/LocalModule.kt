@@ -10,10 +10,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.data.account.AccountsDao
+import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.database.KryptDataBase
 import ir.mehdiyari.krypt.data.file.FilesDao
 import ir.mehdiyari.krypt.data.repositories.CurrentUser
-import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Singleton
@@ -25,7 +25,8 @@ class LocalModule {
     @Provides
     @Singleton
     fun provideKryptDataBase(@ApplicationContext context: Context): KryptDataBase =
-        Room.databaseBuilder(context, KryptDataBase::class.java, "krypt_db").build()
+        Room.databaseBuilder(context, KryptDataBase::class.java, "krypt_db")
+            .addMigrations(KryptDataBase.MIGRATION_1_2).build()
 
     @Provides
     @Singleton
@@ -40,14 +41,16 @@ class LocalModule {
         kryptDataBase: KryptDataBase
     ): AccountsDao = kryptDataBase.accountsDAO()
 
+    @Provides
+    @Singleton
+    fun provideBackupDao(
+        kryptDataBase: KryptDataBase
+    ): BackupDao = kryptDataBase.backupDao()
+
 
     @Provides
     @Singleton
     fun provideCurrentUser(): CurrentUser = CurrentUser()
-
-    @Provides
-    @AccountName
-    fun provideCurrentAccountName(currentUser: CurrentUser): String = currentUser.accountName!!
 
     @Provides
     fun provideCurrentAccountKey(currentUser: CurrentUser): SecretKey = SecretKeySpec(

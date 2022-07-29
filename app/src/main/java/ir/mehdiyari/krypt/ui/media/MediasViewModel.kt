@@ -8,7 +8,6 @@ import ir.mehdiyari.krypt.crypto.FileCrypt
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.AccountName
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
@@ -26,7 +25,6 @@ class MediasViewModel @Inject constructor(
     private val fileCrypt: FileCrypt,
     private val filesUtilities: FilesUtilities,
     private val filesRepository: FilesRepository,
-    @AccountName private val currentAccountName: String?,
     private val mediaStoreManager: MediaStoreManager,
     private val thumbsUtils: ThumbsUtils
 ) : ViewModel() {
@@ -122,7 +120,7 @@ class MediasViewModel @Inject constructor(
                         type = if (it.first.first) FileTypeEnum.Photo else FileTypeEnum.Video,
                         filePath = it.first.second,
                         metaData = it.second ?: "",
-                        accountName = currentAccountName!!
+                        accountName = ""
                     )
                 })
 

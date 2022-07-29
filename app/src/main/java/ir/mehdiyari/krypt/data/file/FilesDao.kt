@@ -44,4 +44,10 @@ interface FilesDao {
         accountName: String,
         mediaType: List<FileTypeEnum> = listOf(FileTypeEnum.Photo, FileTypeEnum.Video)
     ): List<FileEntity>
+
+    @Query("select * from files where accountName = :currentAccountName")
+    suspend fun getAllFiles(currentAccountName: String): List<FileEntity>
+
+    @Query("select filePath from files where accountName = :accountName")
+    suspend fun getAllFilesPath(accountName: String): List<String>?
 }
