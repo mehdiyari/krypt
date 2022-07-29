@@ -1,3 +1,7 @@
+## 2.0.2
+
+1. Fix bug of rotate device on krypt gallery
+
 ## Version 2.0.1
 
 1. Implement video player for encrypted videos
