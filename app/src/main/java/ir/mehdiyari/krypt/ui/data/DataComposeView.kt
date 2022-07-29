@@ -100,7 +100,7 @@ fun DataScreenScaffold(
 
 @Composable
 @Preview
-fun FileSizeView(fileSizeState: State<Long> = mutableStateOf(500)) {
+fun FileSizeView(fileSizeState: State<String> = mutableStateOf("500 MB")) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -115,7 +115,7 @@ fun FileSizeView(fileSizeState: State<Long> = mutableStateOf(500)) {
         )
 
         Text(
-            text = "${fileSizeState.value} MB",
+            text = fileSizeState.value,
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
             modifier = Modifier.padding(top = 8.dp)

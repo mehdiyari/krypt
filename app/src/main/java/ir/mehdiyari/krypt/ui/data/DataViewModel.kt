@@ -29,7 +29,7 @@ class DataViewModel @Inject constructor(
     private val mediaStoreManager: MediaStoreManager,
 ) : ViewModel() {
 
-    private val _filesSizes = MutableStateFlow(0L)
+    private val _filesSizes = MutableStateFlow("")
     val fileSizes = _filesSizes.asStateFlow()
 
     private val _lastBackupDateTime = MutableStateFlow<String?>(null)
@@ -130,7 +130,7 @@ class DataViewModel @Inject constructor(
                     BackupViewData(
                         it.id,
                         backupRepository.convertToBackUpDateTimeFormat(it.dateTime),
-                        getFileSizeAsMB(it.filePath)
+                        formatSize(File(it.filePath).length())
                     )
                 })
         }
@@ -138,7 +138,7 @@ class DataViewModel @Inject constructor(
 
     private fun getAllFileSizes() {
         viewModelScope.launch(ioDispatcher) {
-            _filesSizes.emit(filesRepository.getAllFilesSize())
+            _filesSizes.emit(formatSize(filesRepository.getAllFilesSize()))
         }
     }
 
@@ -148,13 +148,26 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    private fun getFileSizeAsMB(filePath: String): String = try {
-        "${
-            ((File(filePath)
-                .length() / 1024) / 1024)
-        } MB"
-    } catch (t: Throwable) {
-        " > 1MB"
+    private fun formatSize(size: Long): String {
+        var internalSize = size
+        var suffix: String?
+        if (internalSize >= 1024) {
+            suffix = "KB"
+            internalSize /= 1024
+            if (internalSize >= 1024) {
+                suffix = "MB"
+                internalSize /= 1024
+                if (internalSize >= 1024) {
+                    suffix = "GB"
+                    internalSize /= 1024
+
+                }
+            }
+        } else {
+            suffix = "Bytes"
+        }
+
+        return "$internalSize $suffix"
     }
 
     fun cancelBackup() {

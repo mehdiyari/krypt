@@ -110,11 +110,9 @@ class FilesRepository @Inject constructor(
         })?.map {
             File(it).length()
         }?.forEach {
-            total += convectToMB(it)
+            total += it
         }
 
         return total
     }
-
-    private fun convectToMB(size: Long): Long = (size / (1024)) / 1024
 }
