@@ -24,6 +24,7 @@ class FilesUtilities @Inject constructor(
 
         const val DEFAULT_PHOTO_EXT = "jpg"
         const val DEFAULT_VIDEO_EXT = "mp4"
+        const val VIDEO_CACHE_FOLDER = "3xP"
     }
 
     fun generateFilePathForMedia(
@@ -144,6 +145,19 @@ class FilesUtilities @Inject constructor(
             )
 
             newBackup.path
+        }
+    }
+
+    fun generateCacheVideoPath(name: String): String =
+        "${getFilesDir()}/${VIDEO_CACHE_FOLDER}/".apply {
+            File(this).mkdirs()
+        } + name
+
+    fun deleteCachedVideoDIR() {
+        try {
+            File("${getFilesDir()}/${VIDEO_CACHE_FOLDER}").deleteRecursively()
+        } catch (t: Throwable) {
+            t.printStackTrace()
         }
     }
 }
