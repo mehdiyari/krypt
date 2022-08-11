@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Krypt</string>
     <string name="splash_content_description">Krypt Icon</string>
     <string name="account_name">Account Name</string>
     <string name="account_password">Account Password</string>
