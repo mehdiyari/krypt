@@ -29,6 +29,7 @@
             android:name=".ui.media.player.PlayerActivity"
             android:exported="false"
             android:launchMode="singleInstancePerTask"
+            android:screenOrientation="sensor"
             android:theme="@style/Theme.Krypt" />
 
         <activity
