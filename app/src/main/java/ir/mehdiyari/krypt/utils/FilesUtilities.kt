@@ -67,6 +67,14 @@ class FilesUtilities @Inject constructor(
         File(path).nameWithoutExtension
     }
 
+    fun getNameOfFileWithExtension(path: String): String = try {
+        path.substring(
+            path.lastIndexOf("/") + 1
+        )
+    } catch (t: Throwable) {
+        File(path).name
+    }
+
     fun generateDecryptedPhotoMediaInKryptFolder(encryptedPhoto: String): String =
         "${Environment.getExternalStorageDirectory().path}/Krypt/Photos/".also {
             File(it).mkdirs()
@@ -170,4 +178,10 @@ class FilesUtilities @Inject constructor(
     } catch (t: Throwable) {
         ""
     }
+
+    /**
+     *
+     */
+    fun getStableEncryptedThumbPathForDecryptedThumb(fileName: String): String =
+        "${getFilesDir()}/$fileName"
 }
