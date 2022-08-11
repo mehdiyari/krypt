@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.glide.GlideImage
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.media.MediaFragmentAction.*
@@ -431,7 +432,12 @@ fun FileItem(
         ) {
             GlideImage(
                 imageModel = item.path,
-                contentScale = ContentScale.Crop,
+                requestOptions = {
+                    RequestOptions()
+                        .override(80, 80)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                },
                 modifier = Modifier
                     .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
                     .size(80.dp)
