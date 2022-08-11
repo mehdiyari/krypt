@@ -105,4 +105,8 @@
     <string name="file_removed_from_list">File removed from the list</string>
     <string name="file_deleted_from_external_storage">File deleted from external storage</string>
     <string name="file_deleted_from_krypt_storage">Encrypted file deleted from krypt storage</string>
+    <string name="delete_all">Delete All</string>
+    <string name="delete_all_selected_files">Are you sure you want to delete ALL selected files from storage permanently?</string>
+    <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
+    <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
 </resources>

@@ -80,7 +80,7 @@ class FilesRepository @Inject constructor(
                     if (!currentMedia.contains("/")) {
                         it.filePath.contains(currentMedia)
                     } else {
-                        val nameOfFile = filesUtilities.getNameOfFile(currentMedia)
+                        val nameOfFile = filesUtilities.getNameOfFileWithExtension(currentMedia)
                         it.metaData.contains(nameOfFile) || it.filePath.contains(nameOfFile)
                     }
                 }
