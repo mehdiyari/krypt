@@ -6,6 +6,8 @@ plugins {
     id 'androidx.navigation.safeargs'
 }
 
+apply from: "${rootProject.projectDir}/flavors.gradle"
+
 android {
     compileSdk 32
 
