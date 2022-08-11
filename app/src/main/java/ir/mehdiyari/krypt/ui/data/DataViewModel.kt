@@ -9,6 +9,7 @@ import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
+import ir.mehdiyari.krypt.utils.formatSize
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -148,28 +149,6 @@ class DataViewModel @Inject constructor(
         }
     }
 
-    private fun formatSize(size: Long): String {
-        var internalSize = size
-        var suffix: String?
-        if (internalSize >= 1024) {
-            suffix = "KB"
-            internalSize /= 1024
-            if (internalSize >= 1024) {
-                suffix = "MB"
-                internalSize /= 1024
-                if (internalSize >= 1024) {
-                    suffix = "GB"
-                    internalSize /= 1024
-
-                }
-            }
-        } else {
-            suffix = "Bytes"
-        }
-
-        return "$internalSize $suffix"
-    }
-
     fun cancelBackup() {
         backupJob?.cancel()
         backupJob = null
@@ -181,4 +160,3 @@ class DataViewModel @Inject constructor(
         backupJob = null
     }
 }
-
