@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.crypto.FileCrypt
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
@@ -13,9 +14,7 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -40,6 +39,9 @@ class MediasViewModel @Inject constructor(
 
     private val _selectedMedias = MutableStateFlow<List<SelectedMediaItems>>(listOf())
     fun getSelectedMediasFlow(): StateFlow<List<SelectedMediaItems>> = _selectedMedias.asStateFlow()
+
+    private val _messageFlow = MutableSharedFlow<Int>()
+    fun getMessageFlow(): SharedFlow<Int> = _messageFlow.asSharedFlow()
 
     fun onActionReceived(
         action: MediaFragmentAction
@@ -231,9 +233,12 @@ class MediasViewModel @Inject constructor(
         super.onCleared()
     }
 
-    fun removeSelectedFromList(path: String) {
+    fun removeSelectedFromList(path: String, showMessage: Boolean = true) {
         viewModelScope.launch {
             _selectedMedias.emit(_selectedMedias.value.filter { it.path != path })
+            if (showMessage) {
+                _messageFlow.emit(R.string.file_removed_from_list)
+            }
             if (getSelectedMediasFlow().value.isEmpty()) {
                 _latestAction.emit(MediaFragmentAction.DEFAULT)
             } else {
@@ -248,6 +253,31 @@ class MediasViewModel @Inject constructor(
     }
 
     fun deleteSelectedFromList(path: String, isEncrypted: Boolean) {
-        TODO("Not yet implemented")
+        viewModelScope.launch(ioDispatcher) {
+            try {
+                if (!isEncrypted) {
+                    File(path).delete()
+                    mediaStoreManager.scanAddedMedia(listOf(path))
+                    _messageFlow.emit(R.string.file_deleted_from_external_storage)
+                } else {
+                    val thumb = filesUtilities.getStableEncryptedThumbPathForDecryptedThumb(
+                        filesUtilities.getNameOfFileWithExtension(path)
+                    )
+                    filesRepository.getFileByThumbPath(
+                        thumb
+                    )?.also {
+                        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(
+                            listOf(it)
+                        )
+                        File(path).delete()
+                        File(thumb).delete()
+                        _messageFlow.emit(R.string.file_deleted_from_krypt_storage)
+                    }
+                }
+                removeSelectedFromList(path, showMessage = false)
+            } catch (t: Throwable) {
+                _messageFlow.emit(R.string.something_went_wrong)
+            }
+        }
     }
 }

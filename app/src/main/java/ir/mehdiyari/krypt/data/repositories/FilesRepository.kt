@@ -73,14 +73,14 @@ class FilesRepository @Inject constructor(
             currentUser.accountName!!
         )
 
-    suspend fun mapThumbnailsAndNameToFileEntity(photos: Array<String>): List<FileEntity> =
+    suspend fun mapThumbnailsAndNameToFileEntity(medias: Array<String>): List<FileEntity> =
         mutableListOf<FileEntity>().apply {
             getAllEncryptedMedia().filter {
-                photos.any { currentPhoto ->
-                    if (!currentPhoto.contains("/")) {
-                        it.filePath.contains(currentPhoto)
+                medias.any { currentMedia ->
+                    if (!currentMedia.contains("/")) {
+                        it.filePath.contains(currentMedia)
                     } else {
-                        val nameOfFile = filesUtilities.getNameOfFile(currentPhoto)
+                        val nameOfFile = filesUtilities.getNameOfFile(currentMedia)
                         it.metaData.contains(nameOfFile) || it.filePath.contains(nameOfFile)
                     }
                 }
@@ -146,4 +146,9 @@ class FilesRepository @Inject constructor(
         currentUser.accountName!!,
         FileTypeEnum.Video
     )
+
+    suspend fun getFileByThumbPath(thumbFileName: String): FileEntity? =
+        filedDao.getMediaFileByPath(
+            currentUser.accountName!!, thumbFileName
+        )
 }

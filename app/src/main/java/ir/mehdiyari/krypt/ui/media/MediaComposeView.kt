@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -85,6 +84,8 @@ private fun MediaScreenContent(
         if (viewState.value is MediaViewState.Default) {
             BaseViewLoading()
         } else {
+            val deleteFileDialogState =
+                remember<MutableState<Pair<Boolean, (() -> Unit)?>>> { mutableStateOf(false to {}) }
             when (viewState.value) {
                 is MediaViewState.OperationStart -> {
                     OperationStartView()
@@ -102,10 +103,12 @@ private fun MediaScreenContent(
                         EncryptSelectedMediaView(
                             encryptDecryptState,
                             onRemoveClicked = {
-                                viewModel.removeSelectedFromList(it)
+                                viewModel.removeSelectedFromList(it, false)
                             },
                             onDeleteClicked = {
-                                viewModel.deleteSelectedFromList(it, isEncrypted = false)
+                                deleteFileDialogState.value = true to {
+                                    viewModel.deleteSelectedFromList(it, isEncrypted = false)
+                                }
                             }
                         )
                     } else if (actionState.value == DECRYPT_MEDIA) {
@@ -113,17 +116,61 @@ private fun MediaScreenContent(
                             encryptDecryptState,
                             notifyMediaScanner,
                             onRemoveClicked = {
-                                viewModel.removeSelectedFromList(it)
+                                viewModel.removeSelectedFromList(it, false)
                             },
                             onDeleteClicked = {
-                                viewModel.deleteSelectedFromList(it, isEncrypted = true)
+                                deleteFileDialogState.value = true to {
+                                    viewModel.deleteSelectedFromList(it, isEncrypted = true)
+                                }
                             }
                         )
                     }
                 }
             }
+
+            if (deleteFileDialogState.value.first) {
+                ShowDeleteFileDialog(deleteFileDialogState)
+            }
         }
     }
+}
+
+@Composable
+fun ShowDeleteFileDialog(deleteFileDialogState: MutableState<Pair<Boolean, (() -> Unit)?>>) {
+    AlertDialog(
+        onDismissRequest = {
+            deleteFileDialogState.value = false to null
+        },
+        title = {
+            Text(text = stringResource(id = R.string.delete_file))
+        },
+        text = {
+            Text(
+                modifier = Modifier.padding(bottom = 10.dp),
+                text = stringResource(id = R.string.delete_selected_file)
+            )
+        },
+        confirmButton = {
+            OutlinedButton(
+                onClick = {
+                    deleteFileDialogState.value.second?.invoke()
+                    deleteFileDialogState.value = false to null
+                },
+            ) {
+                Text(stringResource(id = R.string.YES))
+            }
+
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = {
+                    deleteFileDialogState.value = false to null
+                }
+            ) {
+                Text(stringResource(id = R.string.NO))
+            }
+        }
+    )
 }
 
 @Composable
@@ -382,16 +429,16 @@ fun FileItem(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (item.isEncrypted) {
-                Image(
-                    painter = painterResource(R.drawable.ic_gallery_50),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
-                        .size(80.dp),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
-                )
-            } else {
+            /* if (item.isEncrypted) {
+                 Image(
+                     painter = painterResource(R.drawable.ic_gallery_50),
+                     contentDescription = "",
+                     modifier = Modifier
+                         .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
+                         .size(80.dp),
+                     colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
+                 )
+             } else {*/
                 GlideImage(
                     imageModel = item.path,
                     contentScale = ContentScale.Crop,
@@ -400,7 +447,7 @@ fun FileItem(
                         .size(80.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
-            }
+            // }
 
             Column(modifier = Modifier.padding(top = 10.dp, start = 8.dp, end = 4.dp)) {
                 Text(

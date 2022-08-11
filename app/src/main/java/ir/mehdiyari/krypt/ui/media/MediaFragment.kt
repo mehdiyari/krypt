@@ -87,6 +87,12 @@ class MediaFragment : Fragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getMessageFlow().collect {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun handleEncryptSharedMedia() {

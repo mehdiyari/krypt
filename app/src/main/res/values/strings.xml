@@ -100,4 +100,9 @@
     <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
     <string name="photos_folder_name">Photos</string>
     <string name="videos_folder_name">Videos</string>
+    <string name="delete_file">Delete File</string>
+    <string name="delete_selected_file">Are you sure you want to delete this file from storage permanently?</string>
+    <string name="file_removed_from_list">File removed from the list</string>
+    <string name="file_deleted_from_external_storage">File deleted from external storage</string>
+    <string name="file_deleted_from_krypt_storage">Encrypted file deleted from krypt storage</string>
 </resources>
