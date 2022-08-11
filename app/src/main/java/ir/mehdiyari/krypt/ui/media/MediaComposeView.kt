@@ -429,25 +429,14 @@ fun FileItem(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            /* if (item.isEncrypted) {
-                 Image(
-                     painter = painterResource(R.drawable.ic_gallery_50),
-                     contentDescription = "",
-                     modifier = Modifier
-                         .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
-                         .size(80.dp),
-                     colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
-                 )
-             } else {*/
-                GlideImage(
-                    imageModel = item.path,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                )
-            // }
+            GlideImage(
+                imageModel = item.path,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
 
             Column(modifier = Modifier.padding(top = 10.dp, start = 8.dp, end = 4.dp)) {
                 Text(
