@@ -31,8 +31,6 @@
 
     <string name="no_encrypted_file_found">No encrypted files found</string>
     <string name="encrypted_file_found">Encrypted files found</string>
-    <string name="x_medias_selected_for_encryption">We\'ve ready to encrypt %d selected medias.</string>
-    <string name="x_medias_selected_for_decryption">We\'ve ready to decrypt %d selected medias.</string>
     <string name="encrypt_action">Encrypt</string>
     <string name="delete_files_after_encrypts">Delete medias after encryption</string>
     <string name="decrypt_action">Decrypt</string>
@@ -100,4 +98,6 @@
     <string name="save_backup_file_successfylly">"App successfully save backup file into Krypt official folder on your storage. "</string>
     <string name="cant_decrypt_video">Can\'t decrypt video</string>
     <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
+    <string name="photos_folder_name">Photos</string>
+    <string name="videos_folder_name">Videos</string>
 </resources>

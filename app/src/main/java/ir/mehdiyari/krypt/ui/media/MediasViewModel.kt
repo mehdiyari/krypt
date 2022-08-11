@@ -15,6 +15,7 @@ import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -52,23 +53,36 @@ class MediasViewModel @Inject constructor(
 
     fun onSelectedMedias(medias: Array<String>) {
         viewModelScope.launch {
+            if (isEncryptAction()) {
+                _selectedMedias.emit(medias.map {
+                    SelectedMediaItems(it, false)
+                })
+            } else if (isDecryptAction()) {
+                _selectedMedias.emit(medias.map {
+                    SelectedMediaItems(it, true)
+                })
+            }
+
             _mediaViewState.emit(
                 MediaViewState.EncryptDecryptState(
-                    medias.size
-                ) { delete, notifyMediaScanner ->
-                    val action = viewAction.value
-                    if (action == MediaFragmentAction.PICK_MEDIA ||
-                        action == MediaFragmentAction.TAKE_MEDIA ||
-                        action == MediaFragmentAction.ENCRYPT_MEDIA
-                    ) {
-                        encrypt(medias, delete)
-                    } else if (action == MediaFragmentAction.DECRYPT_MEDIA) {
-                        decrypt(medias, delete, notifyMediaScanner)
-                    }
-                }
+                    getSelectedMediasFlow().value, getOnActionClickedCallback()
+                )
             )
         }
     }
+
+    private fun getOnActionClickedCallback(): (deleteAfterEncryption: Boolean, notifyMediaScanner: Boolean) -> Unit =
+        { delete, notifyMediaScanner ->
+            val items = getSelectedMediasFlow().value.map {
+                it.path
+            }.toTypedArray()
+
+            if (isEncryptAction()) {
+                encrypt(items, delete)
+            } else if (isDecryptAction()) {
+                decrypt(items, delete, notifyMediaScanner)
+            }
+        }
 
     private fun encrypt(
         medias: Array<String>,
@@ -204,8 +218,36 @@ class MediasViewModel @Inject constructor(
         }
     }
 
+    private fun isDecryptAction(): Boolean = viewAction.value == MediaFragmentAction.DECRYPT_MEDIA
+
+    private fun isEncryptAction(): Boolean = viewAction.value.let { action ->
+        action == MediaFragmentAction.PICK_MEDIA ||
+                action == MediaFragmentAction.TAKE_MEDIA ||
+                action == MediaFragmentAction.ENCRYPT_MEDIA
+    }
+
     override fun onCleared() {
         filesUtilities.deleteCacheDir()
         super.onCleared()
+    }
+
+    fun removeSelectedFromList(path: String) {
+        viewModelScope.launch {
+            _selectedMedias.emit(_selectedMedias.value.filter { it.path != path })
+            if (getSelectedMediasFlow().value.isEmpty()) {
+                _latestAction.emit(MediaFragmentAction.DEFAULT)
+            } else {
+                _mediaViewState.emit(
+                    MediaViewState.EncryptDecryptState(
+                        getSelectedMediasFlow().value,
+                        getOnActionClickedCallback()
+                    )
+                )
+            }
+        }
+    }
+
+    fun deleteSelectedFromList(path: String, isEncrypted: Boolean) {
+        TODO("Not yet implemented")
     }
 }
