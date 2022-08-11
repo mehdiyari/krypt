@@ -20,22 +20,56 @@ class EncryptedMediasBucketProvider @Inject constructor(
 
     companion object {
         const val KRYPT_SAFE_FOLDER_ID = 1L
+        const val KRYPT_SAFE_FOLDER_PHOTO_ID = 2L
+        const val KRYPT_SAFE_FOLDER_VIDEO_ID = 3L
     }
 
     override suspend fun getMediaBuckets(bucketType: BucketType): List<MediaBucket> {
-        return listOf(
-            MediaBucket(
-                id = KRYPT_SAFE_FOLDER_ID,
-                bucketPath = filesUtilities.getFilesDir(),
-                displayName = context.getString(R.string.app_name),
-                firstMediaThumbPath = getFirstThumbnail() ?: "",
-                mediaCount = filesRepository.getMediasCount().toInt()
+        val list = mutableListOf<MediaBucket>()
+        if (filesRepository.getMediasCount() != 0L) {
+            list.add(
+                MediaBucket(
+                    id = KRYPT_SAFE_FOLDER_ID,
+                    bucketPath = filesUtilities.getFilesDir(),
+                    displayName = context.getString(R.string.app_name),
+                    firstMediaThumbPath = getFirstThumbnail(filesRepository.getLastEncryptedMediaThumbnail())
+                        ?: "",
+                    mediaCount = filesRepository.getMediasCount().toInt()
+                )
             )
-        )
+        }
+
+        if (filesRepository.getPhotosCount() != 0L) {
+            list.add(
+                MediaBucket(
+                    id = KRYPT_SAFE_FOLDER_PHOTO_ID,
+                    bucketPath = filesUtilities.getFilesDir(),
+                    displayName = context.getString(R.string.photos_folder_name),
+                    firstMediaThumbPath = getFirstThumbnail(filesRepository.getLastEncryptedPhotoThumbnail())
+                        ?: "",
+                    mediaCount = filesRepository.getMediasCount().toInt()
+                )
+            )
+        }
+
+        if (filesRepository.getVideosCount() != 0L) {
+            list.add(
+                MediaBucket(
+                    id = KRYPT_SAFE_FOLDER_VIDEO_ID,
+                    bucketPath = filesUtilities.getFilesDir(),
+                    displayName = context.getString(R.string.videos_folder_name),
+                    firstMediaThumbPath = getFirstThumbnail(filesRepository.getLastEncryptedVideoThumbnail())
+                        ?: "",
+                    mediaCount = filesRepository.getMediasCount().toInt()
+                )
+            )
+        }
+
+        return list
     }
 
-    private suspend fun getFirstThumbnail(): String? =
-        filesRepository.getLastEncryptedPhotoThumbnail()?.let {
+    private fun getFirstThumbnail(thumb: String?): String? =
+        thumb?.let {
             val finalPath = filesUtilities.generateStableNameFilePathForMediaThumbnail(it)
             if (!File(finalPath).exists()) {
                 if (fileCrypt.decryptFileToPath(it, finalPath)) {

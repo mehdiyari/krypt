@@ -50,13 +50,23 @@ class FilesRepository @Inject constructor(
         FileTypeEnum.Video
     )
 
+    suspend fun getLastEncryptedMediaThumbnail(): String? =
+        internalGetLastThumb(FileTypeEnum.Photo, FileTypeEnum.Video)
+
     suspend fun getLastEncryptedPhotoThumbnail(): String? =
-        filedDao.getAllFilesOfCurrentAccountBasedOnType(
-            currentUser.accountName!!,
-            FileTypeEnum.Photo, FileTypeEnum.Video
-        ).lastOrNull {
-            it.metaData.isNotBlank()
-        }?.metaData
+        internalGetLastThumb(FileTypeEnum.Photo)
+
+    suspend fun getLastEncryptedVideoThumbnail(): String? =
+        internalGetLastThumb(FileTypeEnum.Video)
+
+    private suspend fun internalGetLastThumb(
+        vararg types: FileTypeEnum
+    ): String? = filedDao.getAllFilesOfCurrentAccountBasedOnType(
+        currentUser.accountName!!,
+        *types
+    ).lastOrNull {
+        it.metaData.isNotBlank()
+    }?.metaData
 
     suspend fun getAllEncryptedMedia(): List<FileEntity> =
         filedDao.getAllMedia(
@@ -118,4 +128,22 @@ class FilesRepository @Inject constructor(
 
         return total
     }
+
+    suspend fun getAllImages(): List<FileEntity> = filedDao.getAllMedia(
+        currentUser.accountName!!, listOf(FileTypeEnum.Photo)
+    )
+
+    suspend fun getAllVideos(): List<FileEntity> = filedDao.getAllMedia(
+        currentUser.accountName!!, listOf(FileTypeEnum.Video)
+    )
+
+    suspend fun getPhotosCount(): Long = filedDao.getFilesCountBasedOnType(
+        currentUser.accountName!!,
+        FileTypeEnum.Photo
+    )
+
+    suspend fun getVideosCount(): Long = filedDao.getFilesCountBasedOnType(
+        currentUser.accountName!!,
+        FileTypeEnum.Video
+    )
 }
