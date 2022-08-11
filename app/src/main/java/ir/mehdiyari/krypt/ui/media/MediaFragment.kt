@@ -59,23 +59,31 @@ class MediaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.viewAction.collect {
-                when (it) {
-                    MediaFragmentAction.PICK_MEDIA -> openMediaPicker()
-                    MediaFragmentAction.DECRYPT_MEDIA -> {
-                        if (viewModel.checkForOpenPickerForDecryptMode()) {
-                            openMediaPickerForDecrypting()
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                R.string.no_encrypted_file_found,
-                                Toast.LENGTH_LONG
-                            ).show()
+                if (viewModel.getSelectedMediasFlow().value.isEmpty()) {
+                    when (it) {
+                        MediaFragmentAction.PICK_MEDIA -> {
+                            openMediaPicker()
+                        }
+                        MediaFragmentAction.DECRYPT_MEDIA -> {
+
+                            if (viewModel.checkForOpenPickerForDecryptMode()) {
+                                openMediaPickerForDecrypting()
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    R.string.no_encrypted_file_found,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                findNavController().popBackStack()
+                            }
+
+                        }
+                        MediaFragmentAction.ENCRYPT_MEDIA -> handleEncryptSharedMedia()
+                        MediaFragmentAction.TAKE_MEDIA -> TODO()
+                        MediaFragmentAction.DEFAULT -> {
                             findNavController().popBackStack()
                         }
                     }
-                    MediaFragmentAction.ENCRYPT_MEDIA -> handleEncryptSharedMedia()
-                    MediaFragmentAction.TAKE_MEDIA -> TODO()
-                    MediaFragmentAction.DEFAULT -> TODO()
                 }
             }
         }

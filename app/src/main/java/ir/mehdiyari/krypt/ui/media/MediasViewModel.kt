@@ -37,11 +37,16 @@ class MediasViewModel @Inject constructor(
     private val _latestAction = MutableStateFlow(MediaFragmentAction.DEFAULT)
     val viewAction: StateFlow<MediaFragmentAction> = _latestAction
 
+    private val _selectedMedias = MutableStateFlow<List<SelectedMediaItems>>(listOf())
+    fun getSelectedMediasFlow(): StateFlow<List<SelectedMediaItems>> = _selectedMedias.asStateFlow()
+
     fun onActionReceived(
         action: MediaFragmentAction
     ) {
-        viewModelScope.launch {
-            _latestAction.emit(action)
+        if (viewAction.value == MediaFragmentAction.DEFAULT) {
+            viewModelScope.launch {
+                _latestAction.emit(action)
+            }
         }
     }
 
