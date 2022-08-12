@@ -256,8 +256,9 @@ class MediasViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             try {
                 if (!isEncrypted) {
-                    File(path).delete()
-                    mediaStoreManager.scanAddedMedia(listOf(path))
+                    mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(
+                        listOf(path)
+                    )
                     _messageFlow.emit(R.string.file_deleted_from_external_storage)
                 } else {
                     val thumb = filesUtilities.getStableEncryptedThumbPathForDecryptedThumb(
@@ -293,10 +294,9 @@ class MediasViewModel @Inject constructor(
             try {
                 if (isEncryptAction()) {
                     getSelectedMediasFlow().value.also { selectedMedias ->
-                        selectedMedias.forEach {
-                            File(it.path).delete()
-                        }
-                        mediaStoreManager.scanAddedMedia(selectedMedias.map { it.path })
+                        mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(
+                            selectedMedias.map { it.path }
+                        )
                     }
                     _messageFlow.emit(R.string.all_selected_file_deleted)
                     closeMedia()
