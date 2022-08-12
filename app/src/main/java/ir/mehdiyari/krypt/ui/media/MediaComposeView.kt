@@ -15,6 +15,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,13 +62,8 @@ fun MediasComposeScreen(
                 MediaScreenContent(viewState, actionState, notifyMediaScanner, viewModel)
             })
 
-        Column(
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.End,
-            modifier = Modifier.padding(20.dp)
-        ) {
-            ShowActionButton(viewState, actionState, notifyMediaScanner)
-        }
+
+        ShowActionButton(viewState, actionState, notifyMediaScanner, viewModel)
     }
 }
 
@@ -130,14 +127,20 @@ private fun MediaScreenContent(
             }
 
             if (deleteFileDialogState.value.first) {
-                ShowDeleteFileDialog(deleteFileDialogState)
+                ShowDeleteFileDialog(
+                    deleteFileDialogState,
+                    stringResource(id = R.string.delete_selected_file)
+                )
             }
         }
     }
 }
 
 @Composable
-fun ShowDeleteFileDialog(deleteFileDialogState: MutableState<Pair<Boolean, (() -> Unit)?>>) {
+fun ShowDeleteFileDialog(
+    deleteFileDialogState: MutableState<Pair<Boolean, (() -> Unit)?>>,
+    description: String
+) {
     AlertDialog(
         onDismissRequest = {
             deleteFileDialogState.value = false to null
@@ -148,7 +151,7 @@ fun ShowDeleteFileDialog(deleteFileDialogState: MutableState<Pair<Boolean, (() -
         text = {
             Text(
                 modifier = Modifier.padding(bottom = 10.dp),
-                text = stringResource(id = R.string.delete_selected_file)
+                text = description
             )
         },
         confirmButton = {
@@ -178,7 +181,8 @@ fun ShowDeleteFileDialog(deleteFileDialogState: MutableState<Pair<Boolean, (() -
 private fun ShowActionButton(
     viewState: State<MediaViewState>,
     actionState: State<MediaFragmentAction>,
-    notifyMediaScanner: MutableState<Boolean>
+    notifyMediaScanner: MutableState<Boolean>,
+    viewModel: MediasViewModel
 ) {
     val context = LocalContext.current
     if (viewState.value is MediaViewState.EncryptDecryptState) {
@@ -197,23 +201,38 @@ private fun ShowActionButton(
             }
 
         val encryptDecryptState = viewState.value as? MediaViewState.EncryptDecryptState
-        ActionFloatingButton(buttonTextAndDeleteText.first) {
-            androidx.appcompat.app.AlertDialog.Builder(context)
-                .setMessage(buttonTextAndDeleteText.second)
-                .setPositiveButton(context.getString(R.string.YES)) { d, _ ->
-                    d.dismiss()
-                    encryptDecryptState?.onEncryptOrDecryptAction?.invoke(
-                        true,
-                        notifyMediaScanner.value
-                    )
-                }
-                .setNegativeButton(context.getString(R.string.NO)) { d, _ ->
-                    d.dismiss()
-                    encryptDecryptState?.onEncryptOrDecryptAction?.invoke(
-                        false,
-                        notifyMediaScanner.value
-                    )
-                }.create().show()
+
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            ActionFloatingButton(buttonTextAndDeleteText.first) {
+                androidx.appcompat.app.AlertDialog.Builder(context)
+                    .setMessage(buttonTextAndDeleteText.second)
+                    .setPositiveButton(context.getString(R.string.YES)) { d, _ ->
+                        d.dismiss()
+                        encryptDecryptState?.onEncryptOrDecryptAction?.invoke(
+                            true,
+                            notifyMediaScanner.value
+                        )
+                    }
+                    .setNegativeButton(context.getString(R.string.NO)) { d, _ ->
+                        d.dismiss()
+                        encryptDecryptState?.onEncryptOrDecryptAction?.invoke(
+                            false,
+                            notifyMediaScanner.value
+                        )
+                    }.create().show()
+            }
+        }
+
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            DeleteAllFilesFloatingButton(viewModel = viewModel)
         }
     }
 }
@@ -390,6 +409,34 @@ fun ActionFloatingButton(
         },
         text = { Text(text = buttonText) }
     )
+}
+
+
+@Composable
+fun DeleteAllFilesFloatingButton(
+    onButtonClick: () -> Unit = {},
+    viewModel: MediasViewModel
+) {
+    val deleteAllFileDialogState =
+        remember<MutableState<Pair<Boolean, (() -> Unit)?>>> { mutableStateOf(false to {}) }
+    ExtendedFloatingActionButton(
+        onClick = {
+            deleteAllFileDialogState.value = true to {
+                viewModel.deleteAllSelectedFiles()
+            }
+            onButtonClick()
+        },
+        text = { Text(text = stringResource(id = R.string.delete_all)) },
+        backgroundColor = MaterialTheme.colors.error,
+        contentColor = Color.White
+    )
+
+    if (deleteAllFileDialogState.value.first) {
+        ShowDeleteFileDialog(
+            deleteAllFileDialogState,
+            stringResource(id = R.string.delete_all_selected_files)
+        )
+    }
 }
 
 @Composable

@@ -280,4 +280,44 @@ class MediasViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteAllSelectedFiles() {
+        viewModelScope.launch(ioDispatcher) {
+
+            suspend fun closeMedia() {
+                _selectedMedias.emit(listOf())
+                _latestAction.emit(MediaFragmentAction.DEFAULT)
+            }
+
+            _mediaViewState.emit(MediaViewState.OperationStart)
+            try {
+                if (isEncryptAction()) {
+                    getSelectedMediasFlow().value.also { selectedMedias ->
+                        selectedMedias.forEach {
+                            File(it.path).delete()
+                        }
+                        mediaStoreManager.scanAddedMedia(selectedMedias.map { it.path })
+                    }
+                    _messageFlow.emit(R.string.all_selected_file_deleted)
+                    closeMedia()
+                } else if (isDecryptAction()) {
+                    filesRepository.mapThumbnailsAndNameToFileEntity(
+                        getSelectedMediasFlow().value.map {
+                            it.path
+                        }.toTypedArray()
+                    ).also {
+                        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(it)
+                    }
+                    _messageFlow.emit(R.string.all_selected_file_deleted_from_krypt)
+                    closeMedia()
+                } else {
+                    closeMedia()
+                }
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                _messageFlow.emit(R.string.something_went_wrong)
+                closeMedia()
+            }
+        }
+    }
 }
