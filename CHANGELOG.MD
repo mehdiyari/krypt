@@ -1,3 +1,14 @@
+## 2.1.0
+
+1. Redesign the media page
+2. Fix some bugs
+3. Add support for delete single and delete group of selected media
+4. Separate videos and photos folder in encrypted gallery
+5. Some improvements in video player like prevent from sleep during watching video and rotation the
+   player based on device sensor
+6. Add flavors fro development and production
+7. Some UI/UX improvements
+
 ## 2.0.2
 
 1. Fix bug of rotate device on krypt gallery
