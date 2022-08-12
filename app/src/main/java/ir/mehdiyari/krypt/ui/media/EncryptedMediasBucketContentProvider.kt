@@ -24,9 +24,14 @@ class EncryptedMediasBucketContentProvider @Inject constructor(
         bucketId: Long,
         bucketType: BucketType
     ): Flow<List<Media>> {
-        return if (bucketId == EncryptedMediasBucketProvider.KRYPT_SAFE_FOLDER_ID) {
+        return try {
             flow {
-                filesRepository.getAllEncryptedMedia().map {
+                when (bucketId) {
+                    EncryptedMediasBucketProvider.KRYPT_SAFE_FOLDER_ID -> filesRepository.getAllEncryptedMedia()
+                    EncryptedMediasBucketProvider.KRYPT_SAFE_FOLDER_PHOTO_ID -> filesRepository.getAllImages()
+                    EncryptedMediasBucketProvider.KRYPT_SAFE_FOLDER_VIDEO_ID -> filesRepository.getAllVideos()
+                    else -> TODO()
+                }.map {
                     if (it.metaData.isNotBlank()) {
                         val finalPath =
                             filesUtilities.generateStableNameFilePathForMediaThumbnail(it.metaData)
@@ -73,7 +78,7 @@ class EncryptedMediasBucketContentProvider @Inject constructor(
                     emit(it)
                 }
             }
-        } else {
+        } catch (t: Throwable) {
             flow {
                 this.emit(listOf())
             }

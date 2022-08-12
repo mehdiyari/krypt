@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Krypt</string>
     <string name="splash_content_description">Krypt Icon</string>
     <string name="account_name">Account Name</string>
     <string name="account_password">Account Password</string>
@@ -32,8 +31,6 @@
 
     <string name="no_encrypted_file_found">No encrypted files found</string>
     <string name="encrypted_file_found">Encrypted files found</string>
-    <string name="x_medias_selected_for_encryption">We\'ve ready to encrypt %d selected medias.</string>
-    <string name="x_medias_selected_for_decryption">We\'ve ready to decrypt %d selected medias.</string>
     <string name="encrypt_action">Encrypt</string>
     <string name="delete_files_after_encrypts">Delete medias after encryption</string>
     <string name="decrypt_action">Decrypt</string>
@@ -101,4 +98,16 @@
     <string name="save_backup_file_successfylly">"App successfully save backup file into Krypt official folder on your storage. "</string>
     <string name="cant_decrypt_video">Can\'t decrypt video</string>
     <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
+    <string name="photos_folder_name">Photos</string>
+    <string name="videos_folder_name">Videos</string>
+    <string name="delete_file">Delete File</string>
+    <string name="delete_selected_file">Are you sure you want to delete this file from storage permanently?</string>
+    <string name="file_removed_from_list">File removed from the list</string>
+    <string name="file_deleted_from_external_storage">File deleted from external storage</string>
+    <string name="file_deleted_from_krypt_storage">Encrypted file deleted from krypt storage</string>
+    <string name="delete_all">Delete All</string>
+    <string name="delete_all_selected_files">Are you sure you want to delete ALL selected files from storage permanently?</string>
+    <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
+    <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
+    <string name="all_media">All media</string>
 </resources>

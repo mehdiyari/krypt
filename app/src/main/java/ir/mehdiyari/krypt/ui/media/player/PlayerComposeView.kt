@@ -38,6 +38,7 @@ fun PlayerComposeView(
                             this.setShowNextButton(false)
                             this.setShowPreviousButton(false)
                             this.setShowBuffering(StyledPlayerView.SHOW_BUFFERING_ALWAYS)
+                            this.keepScreenOn = true
                         }
                     }, modifier = Modifier
                         .fillMaxWidth()

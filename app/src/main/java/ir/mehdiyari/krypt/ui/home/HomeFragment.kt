@@ -19,7 +19,7 @@ import ir.mehdiyari.krypt.app.MainActivity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
 import ir.mehdiyari.krypt.ui.media.MediaFragmentArgs
-import ir.mehdiyari.krypt.ui.media.SharedImagesListModel
+import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
 import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
 import ir.mehdiyari.krypt.utils.APP_DOMAIN
 import ir.mehdiyari.krypt.utils.openBrowser
@@ -65,10 +65,10 @@ class HomeFragment : Fragment() {
         if (sharedDataState != null) {
             if (sharedDataState is SharedDataState.SharedText) {
                 navigateToNewTextFragment(sharedDataState.text)
-            } else if (sharedDataState is SharedDataState.SharedImages) {
+            } else if (sharedDataState is SharedDataState.SharedMedias) {
                 navigateToMediasFragment(
                     MediaFragmentAction.ENCRYPT_MEDIA,
-                    SharedImagesListModel(sharedDataState.images)
+                    SharedMediaListModel(sharedDataState.medias)
                 )
             }
         }
@@ -106,15 +106,16 @@ class HomeFragment : Fragment() {
 
     private fun navigateToMediasFragment(
         photosAction: MediaFragmentAction,
-        sharedImageList: SharedImagesListModel? = null
+        sharedImageList: SharedMediaListModel? = null
     ) {
         try {
             findNavController().navigate(
                 R.id.photosFragment,
-                MediaFragmentArgs.Builder().apply {
-                    action = photosAction
-                    sharedImages = sharedImageList
-                }.build().toBundle(),
+                MediaFragmentArgs.Builder(sharedImageList)
+                    .apply {
+                        action = photosAction
+                        sharedMedias = sharedImageList
+                    }.build().toBundle(),
                 navOptions {
                     this.anim {
                         this.enter = android.R.anim.slide_in_left

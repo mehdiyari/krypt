@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.crypto.FileCrypt
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
@@ -13,8 +14,7 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -37,33 +37,54 @@ class MediasViewModel @Inject constructor(
     private val _latestAction = MutableStateFlow(MediaFragmentAction.DEFAULT)
     val viewAction: StateFlow<MediaFragmentAction> = _latestAction
 
+    private val _selectedMedias = MutableStateFlow<List<SelectedMediaItems>>(listOf())
+    fun getSelectedMediasFlow(): StateFlow<List<SelectedMediaItems>> = _selectedMedias.asStateFlow()
+
+    private val _messageFlow = MutableSharedFlow<Int>()
+    fun getMessageFlow(): SharedFlow<Int> = _messageFlow.asSharedFlow()
+
     fun onActionReceived(
         action: MediaFragmentAction
     ) {
-        viewModelScope.launch {
-            _latestAction.emit(action)
+        if (viewAction.value == MediaFragmentAction.DEFAULT) {
+            viewModelScope.launch {
+                _latestAction.emit(action)
+            }
         }
     }
 
     fun onSelectedMedias(medias: Array<String>) {
         viewModelScope.launch {
+            if (isEncryptAction()) {
+                _selectedMedias.emit(medias.map {
+                    SelectedMediaItems(it, false)
+                })
+            } else if (isDecryptAction()) {
+                _selectedMedias.emit(medias.map {
+                    SelectedMediaItems(it, true)
+                })
+            }
+
             _mediaViewState.emit(
                 MediaViewState.EncryptDecryptState(
-                    medias.size
-                ) { delete, notifyMediaScanner ->
-                    val action = viewAction.value
-                    if (action == MediaFragmentAction.PICK_MEDIA ||
-                        action == MediaFragmentAction.TAKE_MEDIA ||
-                        action == MediaFragmentAction.ENCRYPT_MEDIA
-                    ) {
-                        encrypt(medias, delete)
-                    } else if (action == MediaFragmentAction.DECRYPT_MEDIA) {
-                        decrypt(medias, delete, notifyMediaScanner)
-                    }
-                }
+                    getSelectedMediasFlow().value, getOnActionClickedCallback()
+                )
             )
         }
     }
+
+    private fun getOnActionClickedCallback(): (deleteAfterEncryption: Boolean, notifyMediaScanner: Boolean) -> Unit =
+        { delete, notifyMediaScanner ->
+            val items = getSelectedMediasFlow().value.map {
+                it.path
+            }.toTypedArray()
+
+            if (isEncryptAction()) {
+                encrypt(items, delete)
+            } else if (isDecryptAction()) {
+                decrypt(items, delete, notifyMediaScanner)
+            }
+        }
 
     private fun encrypt(
         medias: Array<String>,
@@ -195,12 +216,110 @@ class MediasViewModel @Inject constructor(
 
     fun onDecryptSharedMedia(images: List<Uri>?) {
         if (!images.isNullOrEmpty()) {
-            onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.toTypedArray())
+            onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
+                filesUtilities.isPhotoPath(it) || filesUtilities.isVideoPath(it)
+            }.toTypedArray())
         }
+    }
+
+    private fun isDecryptAction(): Boolean = viewAction.value == MediaFragmentAction.DECRYPT_MEDIA
+
+    private fun isEncryptAction(): Boolean = viewAction.value.let { action ->
+        action == MediaFragmentAction.PICK_MEDIA ||
+                action == MediaFragmentAction.TAKE_MEDIA ||
+                action == MediaFragmentAction.ENCRYPT_MEDIA
     }
 
     override fun onCleared() {
         filesUtilities.deleteCacheDir()
         super.onCleared()
+    }
+
+    fun removeSelectedFromList(path: String, showMessage: Boolean = true) {
+        viewModelScope.launch {
+            _selectedMedias.emit(_selectedMedias.value.filter { it.path != path })
+            if (showMessage) {
+                _messageFlow.emit(R.string.file_removed_from_list)
+            }
+            if (getSelectedMediasFlow().value.isEmpty()) {
+                _latestAction.emit(MediaFragmentAction.DEFAULT)
+            } else {
+                _mediaViewState.emit(
+                    MediaViewState.EncryptDecryptState(
+                        getSelectedMediasFlow().value,
+                        getOnActionClickedCallback()
+                    )
+                )
+            }
+        }
+    }
+
+    fun deleteSelectedFromList(path: String, isEncrypted: Boolean) {
+        viewModelScope.launch(ioDispatcher) {
+            try {
+                if (!isEncrypted) {
+                    mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(
+                        listOf(path)
+                    )
+                    _messageFlow.emit(R.string.file_deleted_from_external_storage)
+                } else {
+                    val thumb = filesUtilities.getStableEncryptedThumbPathForDecryptedThumb(
+                        filesUtilities.getNameOfFileWithExtension(path)
+                    )
+                    filesRepository.getFileByThumbPath(
+                        thumb
+                    )?.also {
+                        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(
+                            listOf(it)
+                        )
+                        File(path).delete()
+                        File(thumb).delete()
+                        _messageFlow.emit(R.string.file_deleted_from_krypt_storage)
+                    }
+                }
+                removeSelectedFromList(path, showMessage = false)
+            } catch (t: Throwable) {
+                _messageFlow.emit(R.string.something_went_wrong)
+            }
+        }
+    }
+
+    fun deleteAllSelectedFiles() {
+        viewModelScope.launch(ioDispatcher) {
+
+            suspend fun closeMedia() {
+                _selectedMedias.emit(listOf())
+                _latestAction.emit(MediaFragmentAction.DEFAULT)
+            }
+
+            _mediaViewState.emit(MediaViewState.OperationStart)
+            try {
+                if (isEncryptAction()) {
+                    getSelectedMediasFlow().value.also { selectedMedias ->
+                        mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(
+                            selectedMedias.map { it.path }
+                        )
+                    }
+                    _messageFlow.emit(R.string.all_selected_file_deleted)
+                    closeMedia()
+                } else if (isDecryptAction()) {
+                    filesRepository.mapThumbnailsAndNameToFileEntity(
+                        getSelectedMediasFlow().value.map {
+                            it.path
+                        }.toTypedArray()
+                    ).also {
+                        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(it)
+                    }
+                    _messageFlow.emit(R.string.all_selected_file_deleted_from_krypt)
+                    closeMedia()
+                } else {
+                    closeMedia()
+                }
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                _messageFlow.emit(R.string.something_went_wrong)
+                closeMedia()
+            }
+        }
     }
 }

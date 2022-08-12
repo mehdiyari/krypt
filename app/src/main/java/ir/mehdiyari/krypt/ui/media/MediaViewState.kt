@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.media
 sealed class MediaViewState {
 
     data class EncryptDecryptState(
-        val selectedMediasCount: Int = 1,
+        val selectedMediaItems: List<SelectedMediaItems>,
         val onEncryptOrDecryptAction: (deleteAfterEncryption: Boolean, notifyMediaScanner: Boolean) -> Unit,
     ) : MediaViewState()
 

@@ -97,9 +97,8 @@
             app:argType="ir.mehdiyari.krypt.ui.media.MediaFragmentAction"
             android:defaultValue="DEFAULT" />
         <argument
-            android:name="sharedImages"
-            android:defaultValue="@null"
-            app:argType="ir.mehdiyari.krypt.ui.media.SharedImagesListModel"
+            android:name="sharedMedias"
+            app:argType="ir.mehdiyari.krypt.ui.media.SharedMediaListModel"
             app:nullable="true" />
     </fragment>
     <fragment
