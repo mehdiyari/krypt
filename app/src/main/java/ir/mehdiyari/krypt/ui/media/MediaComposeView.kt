@@ -104,7 +104,7 @@ private fun MediaScreenContent(
                         EncryptSelectedMediaView(
                             encryptDecryptState,
                             onRemoveClicked = {
-                                viewModel.removeSelectedFromList(it, false)
+                                viewModel.removeSelectedFromList(it)
                             },
                             onDeleteClicked = {
                                 deleteFileDialogState.value = true to {
@@ -117,7 +117,7 @@ private fun MediaScreenContent(
                             encryptDecryptState,
                             notifyMediaScanner,
                             onRemoveClicked = {
-                                viewModel.removeSelectedFromList(it, false)
+                                viewModel.removeSelectedFromList(it)
                             },
                             onDeleteClicked = {
                                 deleteFileDialogState.value = true to {
