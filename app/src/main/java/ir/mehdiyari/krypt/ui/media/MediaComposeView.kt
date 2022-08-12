@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -406,7 +405,15 @@ fun ActionFloatingButton(
         onClick = {
             onButtonClick()
         },
-        text = { Text(text = buttonText) }
+        contentColor = MaterialTheme.colors.onPrimary,
+        text = { Text(text = buttonText) },
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_encrypt_decrypt_action),
+                contentDescription = buttonText
+            )
+        },
+        backgroundColor = MaterialTheme.colors.primary
     )
 }
 
@@ -426,8 +433,14 @@ fun DeleteAllFilesFloatingButton(
             onButtonClick()
         },
         text = { Text(text = stringResource(id = R.string.delete_all)) },
+        icon = {
+            Icon(
+                Icons.Filled.Delete,
+                contentDescription = stringResource(id = R.string.delete_all)
+            )
+        },
         backgroundColor = MaterialTheme.colors.error,
-        contentColor = Color.White
+        contentColor = MaterialTheme.colors.onError
     )
 
     if (deleteAllFileDialogState.value.first) {
