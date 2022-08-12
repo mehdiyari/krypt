@@ -47,7 +47,7 @@ class EncryptedMediasBucketProvider @Inject constructor(
                     displayName = context.getString(R.string.photos_folder_name),
                     firstMediaThumbPath = getFirstThumbnail(filesRepository.getLastEncryptedPhotoThumbnail())
                         ?: "",
-                    mediaCount = filesRepository.getMediasCount().toInt()
+                    mediaCount = filesRepository.getPhotosCount().toInt()
                 )
             )
         }
@@ -60,7 +60,7 @@ class EncryptedMediasBucketProvider @Inject constructor(
                     displayName = context.getString(R.string.videos_folder_name),
                     firstMediaThumbPath = getFirstThumbnail(filesRepository.getLastEncryptedVideoThumbnail())
                         ?: "",
-                    mediaCount = filesRepository.getMediasCount().toInt()
+                    mediaCount = filesRepository.getVideosCount().toInt()
                 )
             )
         }
