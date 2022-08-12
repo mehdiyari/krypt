@@ -31,7 +31,7 @@ class EncryptedMediasBucketProvider @Inject constructor(
                 MediaBucket(
                     id = KRYPT_SAFE_FOLDER_ID,
                     bucketPath = filesUtilities.getFilesDir(),
-                    displayName = context.getString(R.string.app_name),
+                    displayName = context.getString(R.string.all_media),
                     firstMediaThumbPath = getFirstThumbnail(filesRepository.getLastEncryptedMediaThumbnail())
                         ?: "",
                     mediaCount = filesRepository.getMediasCount().toInt()
