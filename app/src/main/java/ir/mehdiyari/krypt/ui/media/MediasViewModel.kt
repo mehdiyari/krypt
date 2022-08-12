@@ -216,7 +216,9 @@ class MediasViewModel @Inject constructor(
 
     fun onDecryptSharedMedia(images: List<Uri>?) {
         if (!images.isNullOrEmpty()) {
-            onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.toTypedArray())
+            onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
+                filesUtilities.isPhotoPath(it) || filesUtilities.isVideoPath(it)
+            }.toTypedArray())
         }
     }
 

@@ -58,18 +58,20 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
                 shareDataViewModel.handleSharedText(
                     intent.getStringExtra(Intent.EXTRA_TEXT)
                 )
-            } else if (intent.type?.startsWith("image/") == true) {
+            } else if (intent.type?.startsWith("image/") == true || intent.type?.startsWith("video/") == true) {
                 (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
-                    shareDataViewModel.handleSharedImages(it)
+                    shareDataViewModel.handleSharedMedias(it)
                 }
             }
         } else if (intent?.action == Intent.ACTION_SEND_MULTIPLE) {
-            if (intent.type?.startsWith("image/") == true) {
+            if (intent.type?.startsWith("image/") == true
+                || intent.type?.startsWith("video/") == true || intent.type?.startsWith("*/*") == true
+            ) {
                 intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.let {
-                    shareDataViewModel.handleSharedImages(*it.mapNotNull { image -> image as? Uri }
-                        .toTypedArray())
+                    shareDataViewModel.handleSharedMedias(
+                        *it.mapNotNull { image -> image as? Uri }
+                            .toTypedArray())
                 }
-
             }
         }
     }

@@ -96,12 +96,12 @@ class MediaFragment : Fragment() {
     }
 
     private fun handleEncryptSharedMedia() {
-        if (args.sharedImages == null || args.sharedImages?.images?.isEmpty() == true) {
+        if (args.sharedMedias == null || args.sharedMedias?.images?.isEmpty() == true) {
             Toast.makeText(requireContext(), R.string.shared_media_not_found, Toast.LENGTH_SHORT)
                 .show()
             findNavController().popBackStack()
         } else {
-            viewModel.onDecryptSharedMedia(args.sharedImages?.images)
+            viewModel.onDecryptSharedMedia(args.sharedMedias?.images)
         }
     }
 

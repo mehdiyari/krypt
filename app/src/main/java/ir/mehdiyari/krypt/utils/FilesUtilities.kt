@@ -115,15 +115,29 @@ class FilesUtilities @Inject constructor(
 
         if (cursor?.moveToFirst() == true) {
             val type = cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE))
-            if (type == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
-                return true
-            } else if (type == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                return false
-            }
+            return type == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
         }
 
         cursor?.close()
-        return true
+        return false
+    }
+
+    @SuppressLint("Range")
+    fun isVideoPath(path: String): Boolean {
+        val cursor = context.contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE, MediaStore.Files.FileColumns.DATA),
+            """${MediaStore.Files.FileColumns.DATA}=?""",
+            arrayOf(path), null
+        )
+
+        if (cursor?.moveToFirst() == true) {
+            val type = cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE))
+            return type == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
+        }
+
+        cursor?.close()
+        return false
     }
 
     fun getPathFromUri(uri: Uri): String? = context.getRealPathBasedOnUri(uri)

@@ -29,10 +29,10 @@ class ShareDataViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun handleSharedImages(vararg images: Uri) {
+    fun handleSharedMedias(vararg images: Uri) {
         if (images.isNotEmpty()) {
             viewModelScope.launch {
-                _sharedData.emit(SharedDataState.SharedImages(images.toList()))
+                _sharedData.emit(SharedDataState.SharedMedias(images.toList()))
             }
         }
     }

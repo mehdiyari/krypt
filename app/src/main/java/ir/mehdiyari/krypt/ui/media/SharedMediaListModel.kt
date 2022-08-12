@@ -4,7 +4,7 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 
-data class SharedImagesListModel(
+data class SharedMediaListModel(
     val images: List<Uri>? = null
 ) : Parcelable {
 
@@ -18,12 +18,12 @@ data class SharedImagesListModel(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<SharedImagesListModel> {
-        override fun createFromParcel(parcel: Parcel): SharedImagesListModel {
-            return SharedImagesListModel(parcel)
+    companion object CREATOR : Parcelable.Creator<SharedMediaListModel> {
+        override fun createFromParcel(parcel: Parcel): SharedMediaListModel {
+            return SharedMediaListModel(parcel)
         }
 
-        override fun newArray(size: Int): Array<SharedImagesListModel?> {
+        override fun newArray(size: Int): Array<SharedMediaListModel?> {
             return arrayOfNulls(size)
         }
     }
