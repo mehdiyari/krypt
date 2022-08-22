@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.settings
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -28,6 +29,8 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -89,7 +92,7 @@ fun SettingsView(
 
         AutomaticallyLockModalBottomSheet(
             automaticallyLockAppSheetState,
-            viewModel,
+            viewModel.automaticallyLockSelectedItem,
             scope
         ) {
             viewModel.onSelectAutoLockItem(it)
@@ -97,6 +100,7 @@ fun SettingsView(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingItems(
@@ -134,14 +138,21 @@ fun SettingItems(
             }
 
             if (deleteDialogState.value) {
-                ShowDeleteConfirmDialog(viewModel = viewModel, state = deleteDialogState)
+                ShowDeleteConfirmDialog(
+                    onDeleteCurrentAccount = viewModel::onDeleteCurrentAccount,
+                    state = deleteDialogState
+                )
             }
         }
     }
 }
 
 @Composable
-fun ShowDeleteConfirmDialog(viewModel: SettingsViewModel, state: MutableState<Boolean>) {
+@Preview
+fun ShowDeleteConfirmDialog(
+    onDeleteCurrentAccount: (String) -> Unit = {},
+    state: MutableState<Boolean> = mutableStateOf(true)
+) {
     val passwordValue = remember { mutableStateOf(TextFieldValue()) }
     if (state.value) {
         AlertDialog(
@@ -163,7 +174,7 @@ fun ShowDeleteConfirmDialog(viewModel: SettingsViewModel, state: MutableState<Bo
             confirmButton = {
                 OutlinedButton(
                     onClick = {
-                        viewModel.onDeleteCurrentAccount(passwordValue.value.text)
+                        onDeleteCurrentAccount.invoke(passwordValue.value.text)
                     },
                 ) {
                     Text(stringResource(id = R.string.YES))
@@ -185,13 +196,16 @@ fun ShowDeleteConfirmDialog(viewModel: SettingsViewModel, state: MutableState<Bo
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+@Preview
 fun AutomaticallyLockModalBottomSheet(
-    automaticallyLockAppSheetState: ModalBottomSheetState,
-    viewModel: SettingsViewModel,
-    scope: CoroutineScope,
+    automaticallyLockAppSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
+        ModalBottomSheetValue.Expanded
+    ),
+    automaticallyLockSelectedItem: StateFlow<AutoLockItemsEnum> = MutableStateFlow(AutoLockItemsEnum.OneMinute),
+    scope: CoroutineScope = rememberCoroutineScope(),
     onItemClicked: (AutoLockItemsEnum) -> Unit = {},
 ) {
-    val lastSelectedId = viewModel.automaticallyLockSelectedItem.collectAsState().value
+    val lastSelectedId = automaticallyLockSelectedItem.collectAsState().value
     ModalBottomSheetLayout(
         sheetState = automaticallyLockAppSheetState,
         sheetContent = {
@@ -275,5 +289,14 @@ fun SettingsItemCard(
                 )
             }
         }
+    }
+}
+
+
+@Composable
+@Preview
+fun ListItemsPreview() {
+    KryptTheme {
+        SettingsItems()
     }
 }

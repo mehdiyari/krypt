@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.data
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -60,6 +61,7 @@ fun DataScreen(
 }
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DataScreenScaffold(
     onNavigationClicked: () -> Unit = {},

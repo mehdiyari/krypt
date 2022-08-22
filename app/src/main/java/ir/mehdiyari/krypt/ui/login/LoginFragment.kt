@@ -18,16 +18,13 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
-    private val loginClick: (String, String) -> Unit = { name, password ->
-        viewModel.login(name, password)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            LoginComposeScreen(viewModel, loginClick) {
+            LoginComposeScreen(viewModel) {
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.createAccountFragment)
             }

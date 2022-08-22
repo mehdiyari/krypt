@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.text.list
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-@Preview
 fun TextsComposeView(
     viewModel: TextsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onNavigationClickIcon: () -> Unit = {},
@@ -59,6 +61,7 @@ fun TextsComposeView(
 }
 
 @Composable
+@Preview
 private fun NewNoteFab(
     newNoteClick: () -> Unit = {}
 ) {
@@ -86,8 +89,15 @@ private fun NewNoteFab(
 }
 
 @Composable
+@Preview
 fun TextsLazyList(
-    textLists: State<List<TextEntity>>,
+    textLists: State<List<TextEntity>> = mutableStateOf(
+        listOf(
+            TextEntity(0, "Test1", "Content1"),
+            TextEntity(1, "Test2", "Content2"),
+            TextEntity(2, "Test3", "Content3")
+        )
+    ),
     onCardsClick: (id: Long) -> Unit = { _ -> }
 ) {
     LazyColumn(

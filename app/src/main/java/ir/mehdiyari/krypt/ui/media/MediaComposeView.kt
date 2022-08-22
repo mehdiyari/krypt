@@ -135,9 +135,10 @@ private fun MediaScreenContent(
 }
 
 @Composable
+@Preview
 fun ShowDeleteFileDialog(
-    deleteFileDialogState: MutableState<Pair<Boolean, (() -> Unit)?>>,
-    description: String
+    deleteFileDialogState: MutableState<Pair<Boolean, (() -> Unit)?>> = mutableStateOf(true to {}),
+    description: String = stringResource(id = R.string.delete_selected_file)
 ) {
     AlertDialog(
         onDismissRequest = {
@@ -230,13 +231,14 @@ private fun ShowActionButton(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.padding(20.dp)
         ) {
-            DeleteAllFilesFloatingButton(viewModel = viewModel)
+            DeleteAllFilesFloatingButton(viewModel::deleteAllSelectedFiles)
         }
     }
 }
 
 @Composable
-fun OperationFailedView(value: MediaFragmentAction) {
+@Preview
+fun OperationFailedView(value: MediaFragmentAction = ENCRYPT_MEDIA) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -271,7 +273,8 @@ fun OperationFailedView(value: MediaFragmentAction) {
 }
 
 @Composable
-fun OperationFinishedView(value: MediaFragmentAction) {
+@Preview
+fun OperationFinishedView(value: MediaFragmentAction = DECRYPT_MEDIA) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -304,6 +307,7 @@ fun OperationFinishedView(value: MediaFragmentAction) {
 }
 
 @Composable
+@Preview
 fun OperationStartView() {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -335,9 +339,16 @@ fun EncryptSelectedMediaView(
 }
 
 @Composable
+@Preview
 fun DecryptSelectedMediaView(
-    encryptDecryptState: MediaViewState.EncryptDecryptState,
-    notifyMediaScanner: MutableState<Boolean>,
+    encryptDecryptState: MediaViewState.EncryptDecryptState = MediaViewState.EncryptDecryptState(
+        listOf(
+            SelectedMediaItems("", true),
+            SelectedMediaItems("", true),
+            SelectedMediaItems("", true)
+        )
+    ) { _, _ -> },
+    notifyMediaScanner: MutableState<Boolean> = mutableStateOf(true),
     onRemoveClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {}
 ) {
@@ -419,16 +430,17 @@ fun ActionFloatingButton(
 
 
 @Composable
+@Preview
 fun DeleteAllFilesFloatingButton(
     onButtonClick: () -> Unit = {},
-    viewModel: MediasViewModel
+    deleteAllSelectedFiles: () -> Unit = {}
 ) {
     val deleteAllFileDialogState =
         remember<MutableState<Pair<Boolean, (() -> Unit)?>>> { mutableStateOf(false to {}) }
     ExtendedFloatingActionButton(
         onClick = {
             deleteAllFileDialogState.value = true to {
-                viewModel.deleteAllSelectedFiles()
+                deleteAllSelectedFiles()
             }
             onButtonClick()
         },
@@ -489,19 +501,30 @@ fun FileItem(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            GlideImage(
-                imageModel = item.path,
-                requestOptions = {
-                    RequestOptions()
-                        .override(80, 80)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop()
-                },
-                modifier = Modifier
-                    .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
+            if (item.path.isNotBlank()) {
+                GlideImage(
+                    imageModel = item.path,
+                    requestOptions = {
+                        RequestOptions()
+                            .override(80, 80)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .centerCrop()
+                    },
+                    modifier = Modifier
+                        .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                )
+            } else {
+                Image(
+                    modifier = Modifier
+                        .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentDescription = "",
+                    painter = painterResource(id = R.drawable.ic_gallery_50),
+                )
+            }
 
             Column(modifier = Modifier.padding(top = 10.dp, start = 8.dp, end = 4.dp)) {
                 Text(

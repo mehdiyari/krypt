@@ -8,9 +8,13 @@ data class SelectedMediaItems(
     val isEncrypted: Boolean
 ) {
     fun getFileSize(): String = formatSize(File(this.path).length())
-    fun getFileRealName(): String = File(this.path).name.let {
-        it.ifBlank {
-            "File"
+    fun getFileRealName(): String = try {
+        File(this.path).name.let {
+            it.ifBlank {
+                "File"
+            }
         }
+    } catch (t: Throwable) {
+        "File"
     }
 }

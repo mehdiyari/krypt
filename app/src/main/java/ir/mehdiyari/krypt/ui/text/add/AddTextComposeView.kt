@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.text.add
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,8 +26,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-@Preview
 fun AddTextComposeView(
     viewModel: AddTextViewModel = viewModel(),
     sharedContentText: String? = null,
@@ -84,10 +85,11 @@ fun AddTextComposeView(
 }
 
 @Composable
+@Preview
 private fun TopBarSurface(
-    onNavigationClickIcon: () -> Unit,
-    textTitleField: MutableState<TextFieldValue>,
-    isPreviewMode: Boolean
+    onNavigationClickIcon: () -> Unit = {},
+    textTitleField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
+    isPreviewMode: Boolean = false
 ) {
     Surface(
         modifier = Modifier
@@ -139,9 +141,10 @@ private fun TopBarSurface(
 }
 
 @Composable
+@Preview
 private fun ContentTextField(
-    textContentField: MutableState<TextFieldValue>,
-    isPreviewMode: Boolean
+    textContentField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
+    isPreviewMode: Boolean = false
 ) {
     TextField(
         value = textContentField.value,
@@ -171,6 +174,7 @@ private fun ContentTextField(
 }
 
 @Composable
+@Preview
 private fun SaveTextFab(
     onSaveClick: () -> Unit = {}
 ) {
@@ -196,6 +200,7 @@ private fun SaveTextFab(
 
 
 @Composable
+@Preview
 private fun DeleteTextFab(
     onDeleteClick: () -> Unit = {}
 ) {
