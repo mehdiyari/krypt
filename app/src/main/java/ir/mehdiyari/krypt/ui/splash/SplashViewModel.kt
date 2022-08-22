@@ -8,7 +8,7 @@ import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _isAnyAccountsExists: MutableSharedFlow<Boolean> = MutableSharedFlow()
-    val isAnyAccountsExists: SharedFlow<Boolean> = _isAnyAccountsExists
+    val isAnyAccountsExists = _isAnyAccountsExists.asSharedFlow()
 
     init {
         viewModelScope.launch(ioDispatcher) {

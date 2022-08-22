@@ -8,7 +8,7 @@ import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.TextFilesUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class TextsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _textFilesList = MutableStateFlow<List<TextEntity>>(listOf())
-    val textFilesList: StateFlow<List<TextEntity>> = _textFilesList
+    val textFilesList = _textFilesList.asStateFlow()
 
     fun getTextFiles() {
         viewModelScope.launch(ioDispatcher) {

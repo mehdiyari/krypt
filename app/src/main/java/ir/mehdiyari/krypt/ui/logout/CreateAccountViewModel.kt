@@ -12,7 +12,7 @@ import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable
 import ir.mehdiyari.krypt.ui.logout.throwables.PasswordsNotMatchThrowable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +25,8 @@ class CreateAccountViewModel @Inject constructor(
     private val _createAccountViewState: MutableSharedFlow<CreateAccountViewState> =
         MutableSharedFlow(replay = 0)
 
-    val createAccountViewState: SharedFlow<CreateAccountViewState> = _createAccountViewState
+    val createAccountViewState = _createAccountViewState
+        .asSharedFlow()
 
     fun addAccount(name: String, password: String, confirmPassword: String) {
         viewModelScope.launch(ioDispatcher) {

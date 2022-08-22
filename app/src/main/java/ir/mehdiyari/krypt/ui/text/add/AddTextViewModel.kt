@@ -12,7 +12,7 @@ import ir.mehdiyari.krypt.ui.text.list.TextEntity
 import ir.mehdiyari.krypt.utils.TextFilesUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,16 +24,16 @@ class AddTextViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _saveNoteState = MutableStateFlow<Boolean?>(null)
-    val saveNoteState: StateFlow<Boolean?> = _saveNoteState
+    val saveNoteState = _saveNoteState.asStateFlow()
 
     private val _deleteNoteState = MutableStateFlow<Boolean?>(null)
-    val deleteNoteState: StateFlow<Boolean?> = _deleteNoteState
+    val deleteNoteState = _deleteNoteState.asStateFlow()
 
     private val _saveNoteValidation = MutableStateFlow<Int?>(null)
-    val saveNoteValidation: StateFlow<Int?> = _saveNoteValidation
+    val saveNoteValidation = _saveNoteValidation.asStateFlow()
 
     private val _argsTextViewState = MutableStateFlow<AddTextArgsViewState?>(null)
-    val argsTextViewState: StateFlow<AddTextArgsViewState?> = _argsTextViewState
+    val argsTextViewState = _argsTextViewState.asStateFlow()
 
     fun saveNote(title: String, content: String) {
         viewModelScope.launch(ioDispatcher) {

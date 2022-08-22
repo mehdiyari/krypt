@@ -14,7 +14,10 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -32,16 +35,16 @@ class MediasViewModel @Inject constructor(
     private val _mediaViewState = MutableStateFlow<MediaViewState>(
         MediaViewState.Default
     )
-    val mediaViewState: StateFlow<MediaViewState> = _mediaViewState
+    val mediaViewState = _mediaViewState.asStateFlow()
 
     private val _latestAction = MutableStateFlow(MediaFragmentAction.DEFAULT)
-    val viewAction: StateFlow<MediaFragmentAction> = _latestAction
+    val viewAction = _latestAction.asStateFlow()
 
     private val _selectedMedias = MutableStateFlow<List<SelectedMediaItems>>(listOf())
-    fun getSelectedMediasFlow(): StateFlow<List<SelectedMediaItems>> = _selectedMedias.asStateFlow()
+    val selectedMediasFlow = _selectedMedias.asStateFlow()
 
     private val _messageFlow = MutableSharedFlow<Int>()
-    fun getMessageFlow(): SharedFlow<Int> = _messageFlow.asSharedFlow()
+    val messageFlow = _messageFlow.asSharedFlow()
 
     fun onActionReceived(
         action: MediaFragmentAction
@@ -67,7 +70,7 @@ class MediasViewModel @Inject constructor(
 
             _mediaViewState.emit(
                 MediaViewState.EncryptDecryptState(
-                    getSelectedMediasFlow().value, getOnActionClickedCallback()
+                    selectedMediasFlow.value, getOnActionClickedCallback()
                 )
             )
         }
@@ -75,7 +78,7 @@ class MediasViewModel @Inject constructor(
 
     private fun getOnActionClickedCallback(): (deleteAfterEncryption: Boolean, notifyMediaScanner: Boolean) -> Unit =
         { delete, notifyMediaScanner ->
-            val items = getSelectedMediasFlow().value.map {
+            val items = selectedMediasFlow.value.map {
                 it.path
             }.toTypedArray()
 
@@ -241,12 +244,12 @@ class MediasViewModel @Inject constructor(
             if (showMessage) {
                 _messageFlow.emit(R.string.file_removed_from_list)
             }
-            if (getSelectedMediasFlow().value.isEmpty()) {
+            if (selectedMediasFlow.value.isEmpty()) {
                 _latestAction.emit(MediaFragmentAction.DEFAULT)
             } else {
                 _mediaViewState.emit(
                     MediaViewState.EncryptDecryptState(
-                        getSelectedMediasFlow().value,
+                        selectedMediasFlow.value,
                         getOnActionClickedCallback()
                     )
                 )
@@ -295,7 +298,7 @@ class MediasViewModel @Inject constructor(
             _mediaViewState.emit(MediaViewState.OperationStart)
             try {
                 if (isEncryptAction()) {
-                    getSelectedMediasFlow().value.also { selectedMedias ->
+                    selectedMediasFlow.value.also { selectedMedias ->
                         mediaStoreManager.deleteFilesFromExternalStorageAndMediaStore(
                             selectedMedias.map { it.path }
                         )
@@ -304,7 +307,7 @@ class MediasViewModel @Inject constructor(
                     closeMedia()
                 } else if (isDecryptAction()) {
                     filesRepository.mapThumbnailsAndNameToFileEntity(
-                        getSelectedMediasFlow().value.map {
+                        selectedMediasFlow.value.map {
                             it.path
                         }.toTypedArray()
                     ).also {

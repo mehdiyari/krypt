@@ -8,7 +8,7 @@ import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,10 +23,10 @@ class SettingsViewModel @Inject constructor(
     private val _automaticallyLockSelectedItem =
         MutableStateFlow(settingsRepository.getLockAutomaticallyValue())
 
-    val automaticallyLockSelectedItem: StateFlow<AutoLockItemsEnum> = _automaticallyLockSelectedItem
+    val automaticallyLockSelectedItem = _automaticallyLockSelectedItem.asStateFlow()
 
     private val _deleteAccountState = MutableStateFlow<DeleteAccountViewState?>(null)
-    val deleteAccountState: StateFlow<DeleteAccountViewState?> = _deleteAccountState
+    val deleteAccountState = _deleteAccountState.asStateFlow()
 
     fun onSelectAutoLockItem(autoLockItemsEnum: AutoLockItemsEnum) {
         viewModelScope.launch {

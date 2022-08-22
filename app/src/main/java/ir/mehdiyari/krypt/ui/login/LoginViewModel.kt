@@ -9,8 +9,8 @@ import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,13 +21,13 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _allAccountsNameState = MutableStateFlow<List<String>>(listOf())
-    val allAccountsNameState: StateFlow<List<String>> = _allAccountsNameState
+    val allAccountsNameState = _allAccountsNameState.asStateFlow()
 
     private val _closeLoginState = MutableSharedFlow<Boolean>()
-    val closeLoginState: SharedFlow<Boolean> = _closeLoginState
+    val closeLoginState = _closeLoginState.asSharedFlow()
 
     private val _loginState = MutableSharedFlow<LoginViewState>()
-    val loginState: SharedFlow<LoginViewState> = _loginState
+    val loginState = _loginState.asSharedFlow()
 
     init {
         viewModelScope.launch(dispatcherIO) {

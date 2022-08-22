@@ -59,7 +59,7 @@ class MediaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.viewAction.collect {
-                if (viewModel.getSelectedMediasFlow().value.isEmpty()) {
+                if (viewModel.selectedMediasFlow.value.isEmpty()) {
                     when (it) {
                         MediaFragmentAction.PICK_MEDIA -> {
                             openMediaPicker()
@@ -89,7 +89,7 @@ class MediaFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getMessageFlow().collect {
+            viewModel.messageFlow.collect {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
