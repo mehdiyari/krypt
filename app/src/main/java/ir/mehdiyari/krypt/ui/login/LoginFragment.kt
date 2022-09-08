@@ -49,6 +49,8 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.getAccountNames()
     }
 
     private fun showErrorWithSnackBar(errorId: Int) {

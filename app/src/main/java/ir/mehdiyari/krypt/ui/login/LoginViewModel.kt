@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableSharedFlow<LoginViewState>()
     val loginState = _loginState.asSharedFlow()
 
-    init {
+    fun getAccountNames() {
         viewModelScope.launch(dispatcherIO) {
             accountsRepository.getAllAccountsName().also {
                 if (it.isEmpty()) {
