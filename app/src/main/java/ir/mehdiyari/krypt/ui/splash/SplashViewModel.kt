@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.ui.splash.di.SplashDelay
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     accountsRepository: AccountsRepository,
-    @DispatcherIO ioDispatcher: CoroutineDispatcher
+    @DispatcherIO ioDispatcher: CoroutineDispatcher,
+    @SplashDelay splashDelay: Long
 ) : ViewModel() {
 
     private val _isAnyAccountsExists: MutableSharedFlow<Boolean> = MutableSharedFlow()
@@ -23,7 +25,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            delay(1000)
+            delay(splashDelay)
             _isAnyAccountsExists.emit(accountsRepository.isAccountExists())
         }
     }
