@@ -28,7 +28,7 @@ class LoginViewModelTest {
 
     @Test
     fun `when viewModel initialized and getAllAccountsName returns account list - then verify allAccountsNameState has value`() =
-        runTest {
+        runTest(dispatcher) {
             val accounts = listOf("Mehdi", "Richard", "Tomas")
             coEvery { accountsRepository.getAllAccountsName() } returns accounts
             loginViewModel.getAccountNames()
@@ -37,10 +37,10 @@ class LoginViewModelTest {
 
     @Test
     fun `when viewModel initialized and getAllAccountsName returns empty list - then closeLoginState_value must be true`() =
-        runTest {
+        runTest(dispatcher) {
             coEvery { accountsRepository.getAllAccountsName() } returns listOf()
             val collector = mockk<FlowCollector<Boolean>>(relaxed = true)
-            val collectorJob = launch(dispatcher) {
+            val collectorJob = launch {
                 loginViewModel.closeLoginState.collect(collector)
             }
 
@@ -54,16 +54,16 @@ class LoginViewModelTest {
 
     @Test
     fun `when user tap on login button and user name password is correct - then view state must be SuccessfulLogin`() =
-        runTest {
+        runTest(dispatcher) {
             val collector = mockk<FlowCollector<LoginViewState>>(relaxed = true)
             val username = "Richard"
             val password = "JhR4$^*&^kdHJAJan"
             coEvery { accountsRepository.login(username, password) } returns true
-            val collectorJob = launch(dispatcher) { loginViewModel.loginState.collect(collector) }
+            val collectorJob = launch { loginViewModel.loginState.collect(collector) }
             loginViewModel.login(username, password)
 
             launch {
-                coVerify {
+                coVerify(exactly = 1) {
                     collector.emit(LoginViewState.SuccessfulLogin)
                 }
                 collectorJob.cancel()
@@ -72,23 +72,23 @@ class LoginViewModelTest {
 
     @Test
     fun `when user tap on login button and user name password is wrong - then view state must be FailureLogin`() =
-        runTest {
+        runTest(dispatcher) {
             val collector = mockk<FlowCollector<LoginViewState>>(relaxed = true)
             val username = "Richard"
             val password = "JhR4$^*&^kdHJAJan"
             coEvery { accountsRepository.login(username, password) } returns false
-            val collectorJob = launch(dispatcher) { loginViewModel.loginState.collect(collector) }
+            val collectorJob = launch { loginViewModel.loginState.collect(collector) }
             loginViewModel.login(username, password)
 
             launch {
-                coVerify { collector.emit(LoginViewState.FailureLogin(R.string.name_password_invalid)) }
+                coVerify(exactly = 1) { collector.emit(LoginViewState.FailureLogin(R.string.name_password_invalid)) }
                 collectorJob.cancel()
             }
         }
 
     @Test
     fun `when user tap on login button login throws an exception - then view state must be FailureLogin with general message`() =
-        runTest {
+        runTest(dispatcher) {
             val collector = mockk<FlowCollector<LoginViewState>>(relaxed = true)
             val username = "Richard"
             val password = "JhR4$^*&^kdHJAJan"
@@ -96,11 +96,11 @@ class LoginViewModelTest {
                 accountsRepository.login(username, password)
             } throws Throwable("something went wrong in validate username and password")
 
-            val collectorJob = launch(dispatcher) { loginViewModel.loginState.collect(collector) }
+            val collectorJob = launch { loginViewModel.loginState.collect(collector) }
             loginViewModel.login(username, password)
 
             launch {
-                coVerify {
+                coVerify(exactly = 1) {
                     collector.emit(LoginViewState.FailureLogin(R.string.something_went_wrong))
                 }
                 collectorJob.cancel()
