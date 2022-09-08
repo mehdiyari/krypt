@@ -1,6 +1,5 @@
 package ir.mehdiyari.krypt.ui.logout
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,9 +49,4 @@ class CreateAccountViewModel @Inject constructor(
             }
         }
     }
-}
-
-sealed class CreateAccountViewState {
-    object SuccessCreateAccount : CreateAccountViewState()
-    data class FailureCreateAccount(@StringRes val errorResId: Int) : CreateAccountViewState()
 }
