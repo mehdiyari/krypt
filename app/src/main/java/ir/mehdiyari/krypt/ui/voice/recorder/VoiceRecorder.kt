@@ -43,8 +43,6 @@ class VoiceRecorder @Inject constructor(
         isRecording = false
         mediaRecorder.stop()
         mediaRecorder.release()
-        filePath = ""
-
     }
 
     fun deleteAudioCacheFile(): Boolean {
