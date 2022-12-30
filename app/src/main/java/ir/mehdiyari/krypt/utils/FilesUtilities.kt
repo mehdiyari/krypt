@@ -202,6 +202,6 @@ class FilesUtilities @Inject constructor(
 
     fun getFilePathForVoceRecord(): String = "${getCashDir()}/v_${System.nanoTime()}.enc"
 
-    fun getRealFilePathForVoceRecord(): String =
+    fun getRealFilePathForRecordedVoice(): String =
         "${getFilesDir()}/v_${System.nanoTime()}.${AUDIO_EXT}"
 }

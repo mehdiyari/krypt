@@ -78,7 +78,7 @@ class RecordVoiceViewModel @Inject constructor(
 
         viewModelScope.launch(ioDispatcher) {
             if (voiceRecorder.getRecordFilePath().isNotBlank()) {
-                val encryptedDestination = filesUtilities.getRealFilePathForVoceRecord()
+                val encryptedDestination = filesUtilities.getRealFilePathForRecordedVoice()
                 try {
                     if (fileCrypt.encryptFileToPath(
                             voiceRecorder.getRecordFilePath(),
