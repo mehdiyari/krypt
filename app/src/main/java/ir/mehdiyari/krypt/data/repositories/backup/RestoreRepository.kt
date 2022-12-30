@@ -64,7 +64,7 @@ class RestoreRepository @Inject constructor(
                             false
                         )
                         FileTypeEnum.Text -> fileUtils.generateTextFilePath()
-                        FileTypeEnum.Audio -> TODO("No Audio yet")
+                        FileTypeEnum.Audio -> fileUtils.getRealFilePathForRecordedVoice()
                     }
                 }
 
