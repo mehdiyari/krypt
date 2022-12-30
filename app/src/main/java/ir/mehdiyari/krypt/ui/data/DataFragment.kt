@@ -1,9 +1,6 @@
 package ir.mehdiyari.krypt.ui.data
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +12,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.utils.showPermissionSnackbar
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -40,36 +38,13 @@ class DataFragment : Fragment() {
             viewModel.generalMessageFlow.collect {
                 if (it != null) {
                     if (it == R.string.saving_backup_permission_error) {
-                        showPermissionSnackbar(it)
+                        requireView().showPermissionSnackbar(it)
                     } else {
                         Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show()
                     }
                 }
             }
         }
-    }
-
-    private fun showPermissionSnackbar(it: Int) {
-        Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).also { snackBar ->
-            snackBar.setAction(
-                R.string.grant
-            ) {
-                try {
-                    startActivity(Intent().apply {
-                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                        data = Uri.fromParts(
-                            "package",
-                            requireActivity().packageName,
-                            null
-                        )
-                    })
-                } catch (t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                snackBar.dismiss()
-            }
-        }.show()
     }
 
     override fun onDestroy() {
