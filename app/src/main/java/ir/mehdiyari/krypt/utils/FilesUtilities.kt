@@ -25,6 +25,7 @@ class FilesUtilities @Inject constructor(
         const val DEFAULT_PHOTO_EXT = "jpg"
         const val DEFAULT_VIDEO_EXT = "mp4"
         const val VIDEO_CACHE_FOLDER = "3xP"
+        const val AUDIO_EXT = "amr"
     }
 
     fun generateFilePathForMedia(
@@ -198,4 +199,9 @@ class FilesUtilities @Inject constructor(
      */
     fun getStableEncryptedThumbPathForDecryptedThumb(fileName: String): String =
         "${getFilesDir()}/$fileName"
+
+    fun getFilePathForVoceRecord(): String = "${getCashDir()}/v_${System.nanoTime()}.enc"
+
+    fun getRealFilePathForVoceRecord(): String =
+        "${getFilesDir()}/v_${System.nanoTime()}.${AUDIO_EXT}"
 }
