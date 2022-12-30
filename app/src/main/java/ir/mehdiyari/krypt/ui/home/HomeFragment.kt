@@ -1,11 +1,13 @@
 package ir.mehdiyari.krypt.ui.home
 
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,6 +25,7 @@ import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
 import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
 import ir.mehdiyari.krypt.utils.APP_DOMAIN
 import ir.mehdiyari.krypt.utils.openBrowser
+import ir.mehdiyari.krypt.utils.showPermissionSnackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -31,6 +34,17 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     private val shareDataViewModel by activityViewModels<ShareDataViewModel>()
+
+    private val requestMICPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                findNavController().navigate(R.id.action_homeFragment_to_recordVoiceFragment)
+            } else {
+                requireView().showPermissionSnackbar(R.string.mic_permission_denied)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -156,7 +170,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToAudioRecorderFragment() {
-        findNavController().navigate(R.id.action_homeFragment_to_recordVoiceFragment)
+        if (
+            requireActivity().checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            findNavController().navigate(R.id.action_homeFragment_to_recordVoiceFragment)
+        } else {
+            requestMICPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
+        }
     }
 
     private fun navigateToHelpFragment() {
