@@ -1,16 +1,43 @@
 package ir.mehdiyari.krypt.ui.voice.record
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.data.file.FileEntity
+import ir.mehdiyari.krypt.data.file.FileTypeEnum
+import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.ui.voice.recorder.SecondToTimerMapper
+import ir.mehdiyari.krypt.ui.voice.recorder.VoiceRecorder
+import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaData
+import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaDataJsonParser
+import ir.mehdiyari.krypt.utils.FilesUtilities
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class RecordVoiceViewModel @Inject constructor() : ViewModel() {
+class RecordVoiceViewModel @Inject constructor(
+    private val voiceRecorder: VoiceRecorder,
+    private val filesUtilities: FilesUtilities,
+    private val fileCrypt: FileCrypt,
+    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    private val filesRepository: FilesRepository,
+    private val audioMetaDataJsonAdapter: AudioMetaDataJsonParser,
+    private val secondToTimerMapper: SecondToTimerMapper
+) : ViewModel() {
 
     private val _recordTimer = MutableStateFlow("00:00:00")
     val recordTimer = _recordTimer.asStateFlow()
+    private var timerJob: Job? = null
+    private var timerAsSecond = 0L
+        set(value) {
+            field = value
+            _recordTimer.value = secondToTimerMapper.map(value)
+        }
 
     private val _recordVoiceViewState =
         MutableStateFlow<RecordVoiceViewState>(RecordVoiceViewState.Initialize)
@@ -26,29 +53,128 @@ class RecordVoiceViewModel @Inject constructor() : ViewModel() {
 
     val actionsButtonState = _actionsButtonState.asStateFlow()
 
+    init {
+        voiceRecorder.setOnErrorListener { _, _, _ ->
+            _recordVoiceViewState.value = RecordVoiceViewState.MicError
+        }
+    }
+
     fun startRecord() {
-        _recordVoiceViewState.value = RecordVoiceViewState.RecordStarted()
+        if (!voiceRecorder.isInRecordingState()) {
+            _recordVoiceViewState.value = RecordVoiceViewState.RecordStarted(isPaused = false)
+            startTimer()
+
+            viewModelScope.launch {
+                voiceRecorder.startRecord(filesUtilities.getFilePathForVoceRecord())
+            }
+        }
     }
 
     private fun onSaveRecord() {
-        TODO("save and change the _recordVoiceViewState")
+        if (voiceRecorder.isInRecordingState()) {
+            stopTimer()
+            voiceRecorder.stopRecord()
+        }
+
+        viewModelScope.launch(ioDispatcher) {
+            if (voiceRecorder.getRecordFilePath().isNotBlank()) {
+                val encryptedDestination = filesUtilities.getRealFilePathForVoceRecord()
+                try {
+                    if (fileCrypt.encryptFileToPath(
+                            voiceRecorder.getRecordFilePath(),
+                            encryptedDestination
+                        )
+                    ) {
+                        saveAudioRecordInDataBase(
+                            voiceRecorder.getRecordFilePath(),
+                            encryptedDestination
+                        )
+
+                        if (!voiceRecorder.deleteAudioCacheFile()) {
+                            filesUtilities.deleteCacheDir()
+                        }
+
+                        _recordVoiceViewState.value = RecordVoiceViewState.RecordSavedSuccessfully
+                    } else {
+                        _recordVoiceViewState.value = RecordVoiceViewState.RecordSavedFailed
+                    }
+                } catch (t: Throwable) {
+                    _recordVoiceViewState.value = RecordVoiceViewState.RecordSavedFailed
+                }
+            } else {
+                _recordVoiceViewState.value = RecordVoiceViewState.NavigateUp
+            }
+        }
+    }
+
+    private fun saveAudioRecordInDataBase(path: String, destinationPath: String) {
+        val meta = audioMetaDataJsonAdapter.toJson(getRecordMetaData(path))
+        viewModelScope.launch(ioDispatcher) {
+            filesRepository.insertFiles(
+                listOf(
+                    FileEntity(
+                        type = FileTypeEnum.Audio,
+                        metaData = meta,
+                        filePath = destinationPath,
+                        accountName = ""
+                    )
+                )
+            )
+        }
     }
 
     private fun onResumeRecord() {
-        _actionsButtonState.value = _actionsButtonState.value.copy(
-            stop = true to ::onStopRecord,
-            resume = false to ::onResumeRecord,
-        )
+        if (!voiceRecorder.isInRecordingState()) {
+            _recordVoiceViewState.value = RecordVoiceViewState.RecordStarted(isPaused = false)
+            startTimer()
+            voiceRecorder.resumeRecording()
+            _actionsButtonState.value = _actionsButtonState.value.copy(
+                stop = true to ::onStopRecord,
+                resume = false to ::onResumeRecord,
+            )
+        }
     }
 
     private fun onStopRecord() {
-        _actionsButtonState.value = _actionsButtonState.value.copy(
-            stop = false to ::onStopRecord,
-            resume = true to ::onResumeRecord,
-        )
+        if (voiceRecorder.isInRecordingState()) {
+            stopTimer()
+            _recordVoiceViewState.value = RecordVoiceViewState.RecordStarted(isPaused = true)
+            voiceRecorder.pauseRecord()
+            _actionsButtonState.value = _actionsButtonState.value.copy(
+                stop = false to ::onStopRecord,
+                resume = true to ::onResumeRecord,
+            )
+        }
     }
 
     fun saveRecordRetry() {
-        TODO("Not yet implemented")
+        onSaveRecord()
+    }
+
+    private fun startTimer() {
+        if (timerJob != null && timerJob!!.isActive) return
+        timerJob = viewModelScope.launch(ioDispatcher) {
+            for (i in 0..Long.MAX_VALUE) {
+                ensureActive()
+                delay(1000)
+                timerAsSecond += 1
+            }
+        }
+    }
+
+    private fun stopTimer() {
+        timerJob?.cancel()
+        timerJob?.cancelChildren()
+        timerJob = null
+    }
+
+    private fun getRecordMetaData(path: String): AudioMetaData =
+        AudioMetaData(
+            File(path).length(), timerAsSecond, System.currentTimeMillis()
+        )
+
+    override fun onCleared() {
+        filesUtilities.deleteCacheDir()
+        super.onCleared()
     }
 }

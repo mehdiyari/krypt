@@ -118,4 +118,5 @@
     <string name="voice_recorded_failed">"We can't save the voice right now, please try again. "</string>
     <string name="voice_recorder_retry">Retry</string>
     <string name="mic_permission_denied">Without access to microphone we can\'t record your voice.</string>
+    <string name="microphone_error">Unconfidently there is a problem with your microphone.</string>
 </resources>
