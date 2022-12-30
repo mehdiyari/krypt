@@ -87,6 +87,9 @@
             app:destination="@id/dataFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_recordVoiceFragment"
+            app:destination="@id/recordVoiceFragment" />
     </fragment>
     <fragment
         android:id="@+id/photosFragment"
@@ -136,5 +139,9 @@
         android:id="@+id/dataFragment"
         android:name="ir.mehdiyari.krypt.ui.data.DataFragment"
         android:label="DataFragment" />
+    <fragment
+        android:id="@+id/recordVoiceFragment"
+        android:name="ir.mehdiyari.krypt.ui.voice.record.RecordVoiceFragment"
+        android:label="RecordVoiceFragment" />
 
 </navigation>

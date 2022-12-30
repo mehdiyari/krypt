@@ -156,7 +156,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToAudioRecorderFragment() {
-        //TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_homeFragment_to_recordVoiceFragment)
     }
 
     private fun navigateToHelpFragment() {

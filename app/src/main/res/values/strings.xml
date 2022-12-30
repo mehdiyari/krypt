@@ -110,4 +110,11 @@
     <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
     <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
     <string name="all_media">All media</string>
+    <string name="record_audio">Record</string>
+    <string name="record_pause">Pause</string>
+    <string name="record_resume">Resume</string>
+    <string name="record_save">Save</string>
+    <string name="voice_recored_successfully">"Voice recorded successfully. "</string>
+    <string name="voice_recored_failed">"We can't save the voice rightnow, please try again. "</string>
+    <string name="voice_recorder_retry">Retry</string>
 </resources>
