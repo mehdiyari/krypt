@@ -205,6 +205,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToMusicAndAudioFragment() {
-        // TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_homeFragment_to_audios_fragment)
     }
 }

@@ -28,13 +28,13 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="ir.mehdiyari.krypt.ui.login.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/krypt_navigation"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -42,12 +42,12 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:launchSingleTop="true"
             app:popUpTo="@id/krypt_navigation"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/createAccountFragment"
         android:name="ir.mehdiyari.krypt.ui.logout.CreateAccountFragment"
-        android:label="CreateAccountFragment" >
+        android:label="CreateAccountFragment">
         <action
             android:id="@+id/action_createAccountFragment_to_splashFragment"
             app:destination="@id/splashFragment"
@@ -90,6 +90,11 @@
         <action
             android:id="@+id/action_homeFragment_to_recordVoiceFragment"
             app:destination="@id/recordVoiceFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_audios_fragment"
+            app:destination="@+id/audiosFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/photosFragment"
@@ -97,8 +102,8 @@
         android:label="PhotosFragment">
         <argument
             android:name="Action"
-            app:argType="ir.mehdiyari.krypt.ui.media.MediaFragmentAction"
-            android:defaultValue="DEFAULT" />
+            android:defaultValue="DEFAULT"
+            app:argType="ir.mehdiyari.krypt.ui.media.MediaFragmentAction" />
         <argument
             android:name="sharedMedias"
             app:argType="ir.mehdiyari.krypt.ui.media.SharedMediaListModel"
@@ -143,5 +148,10 @@
         android:id="@+id/recordVoiceFragment"
         android:name="ir.mehdiyari.krypt.ui.voice.record.RecordVoiceFragment"
         android:label="RecordVoiceFragment" />
+
+    <fragment
+        android:id="@+id/audiosFragment"
+        android:name="ir.mehdiyari.krypt.ui.voice.audios.AudiosFragment"
+        android:label="AudiosFragment" />
 
 </navigation>
