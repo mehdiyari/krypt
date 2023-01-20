@@ -16,7 +16,7 @@
     <string name="add_text">Text</string>
 
     <string name="medias_library">Media Library</string>
-    <string name="audios_library">Audios Library (Coming Soon)</string>
+    <string name="audios_library">Audios Library</string>
     <string name="texts_library">Texts Library</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
@@ -119,4 +119,5 @@
     <string name="voice_recorder_retry">Retry</string>
     <string name="mic_permission_denied">Without access to microphone we can\'t record your voice.</string>
     <string name="microphone_error">Unconfidently there is a problem with your microphone.</string>
+    <string name="add_new_audio">Record</string>
 </resources>

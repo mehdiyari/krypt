@@ -24,6 +24,7 @@ import ir.mehdiyari.krypt.ui.media.MediaFragmentArgs
 import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
 import ir.mehdiyari.krypt.ui.text.add.AddTextFragmentArgs
 import ir.mehdiyari.krypt.utils.APP_DOMAIN
+import ir.mehdiyari.krypt.utils.getAnimationNavUtils
 import ir.mehdiyari.krypt.utils.openBrowser
 import ir.mehdiyari.krypt.utils.showPermissionSnackbar
 import kotlinx.coroutines.flow.collectLatest
@@ -40,7 +41,7 @@ class HomeFragment : Fragment() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                findNavController().navigate(R.id.action_homeFragment_to_recordVoiceFragment)
+                navigateToAudioRecorderFragment()
             } else {
                 requireView().showPermissionSnackbar(R.string.mic_permission_denied)
             }
@@ -174,7 +175,11 @@ class HomeFragment : Fragment() {
             requireActivity().checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)
             == PackageManager.PERMISSION_GRANTED
         ) {
-            findNavController().navigate(R.id.action_homeFragment_to_recordVoiceFragment)
+            findNavController().navigate(
+                resId = R.id.action_homeFragment_to_recordVoiceFragment,
+                args = null,
+                navOptions = getAnimationNavUtils()
+            )
         } else {
             requestMICPermissionLauncher.launch(android.Manifest.permission.RECORD_AUDIO)
         }
@@ -205,6 +210,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToMusicAndAudioFragment() {
-        findNavController().navigate(R.id.action_homeFragment_to_audios_fragment)
+        findNavController().navigate(
+            resId = R.id.action_homeFragment_to_audios_fragment,
+            args = null,
+            navOptions = getAnimationNavUtils()
+        )
     }
 }
