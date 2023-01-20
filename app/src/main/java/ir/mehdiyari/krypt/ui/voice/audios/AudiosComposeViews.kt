@@ -57,6 +57,40 @@ fun AudiosScreen(
                 audiosViewModel::onAudioAction
             )
         }
+
+        AddNewVoiceButton(navController)
+    }
+}
+
+@Preview
+@Composable
+fun AddNewVoiceButton(
+    navController: NavController? = null
+) {
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.padding(15.dp)
+    ) {
+        ExtendedFloatingActionButton(
+            onClick = {
+                navController
+                    ?.navigate(
+                        resId = R.id.action_audiosFragment_to_recordVoiceFragment,
+                        args = null,
+                        navOptions = getAnimationNavUtils()
+                    )
+            },
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_audio_24),
+                    contentDescription = ""
+                )
+            },
+            text = {
+                Text(text = stringResource(id = R.string.add_new_audio))
+            }
+        )
     }
 }
 
