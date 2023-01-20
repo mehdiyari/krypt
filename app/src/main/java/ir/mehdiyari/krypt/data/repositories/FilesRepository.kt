@@ -4,7 +4,10 @@ import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.FilesUtilities
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,7 +17,8 @@ class FilesRepository @Inject constructor(
     private val filedDao: FilesDao,
     private val backupDao: BackupDao,
     private val currentUser: CurrentUser,
-    private val filesUtilities: FilesUtilities
+    private val filesUtilities: FilesUtilities,
+    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun getAllFilesTypeCounts(): List<Pair<FileTypeEnum, Long>> =
@@ -142,6 +146,13 @@ class FilesRepository @Inject constructor(
         FileTypeEnum.Photo
     )
 
+    suspend fun getAudiosCount(): Long = withContext(ioDispatcher) {
+        filedDao.getFilesCountBasedOnType(
+            currentUser.accountName!!,
+            FileTypeEnum.Audio
+        )
+    }
+
     suspend fun getVideosCount(): Long = filedDao.getFilesCountBasedOnType(
         currentUser.accountName!!,
         FileTypeEnum.Video
@@ -151,4 +162,11 @@ class FilesRepository @Inject constructor(
         filedDao.getMediaFileByPath(
             currentUser.accountName!!, thumbFileName
         )
+
+    suspend fun getAllAudioFiles(): List<FileEntity> = withContext(ioDispatcher) {
+        filedDao.getAllFilesOfCurrentAccountBasedOnType(
+            currentUser.accountName!!,
+            FileTypeEnum.Audio
+        )
+    }
 }
