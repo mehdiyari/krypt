@@ -24,17 +24,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.utils.getAnimationNavUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-@Preview
 fun AudiosScreen(
     navController: NavController? = null,
     audiosViewModel: AudiosViewModel = viewModel()
 ) {
-    KryptTheme(darkTheme = true) {
+    KryptTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -121,7 +121,7 @@ private fun AudioList(
         }) {
             AudioItem(audios.value[it], playingAudioState, onActionClicked)
         }
-    })
+    }, contentPadding = PaddingValues(top = 8.dp, bottom = 70.dp, start = 6.dp, end = 6.dp))
 }
 
 @Composable
@@ -144,7 +144,7 @@ fun AudioItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .padding(10.dp),
+            .padding(4.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = 8.dp
     ) {
