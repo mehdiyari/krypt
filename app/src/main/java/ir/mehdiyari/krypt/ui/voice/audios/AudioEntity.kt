@@ -5,4 +5,8 @@ data class AudioEntity(
     val name: String,
     val duration: String,
     val dateTime: String
-)
+) {
+    companion object {
+        const val NAME_PREFIX = "Voice #"
+    }
+}
