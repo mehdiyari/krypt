@@ -152,6 +152,10 @@
     <fragment
         android:id="@+id/audiosFragment"
         android:name="ir.mehdiyari.krypt.ui.voice.audios.AudiosFragment"
-        android:label="AudiosFragment" />
+        android:label="AudiosFragment">
+        <action
+            android:id="@+id/action_audiosFragment_to_recordVoiceFragment"
+            app:destination="@id/recordVoiceFragment" />
+    </fragment>
 
 </navigation>
