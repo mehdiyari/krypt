@@ -10,7 +10,7 @@ import java.io.File
 import javax.inject.Inject
 
 class VoiceRecorder @Inject constructor(
-    private val mediaRecorder: MediaRecorder,
+    private val mediaRecorder: MediaRecorder?,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) {
     private var isRecording: Boolean = false
@@ -19,7 +19,7 @@ class VoiceRecorder @Inject constructor(
     @WorkerThread
     suspend fun startRecord(path: String) = withContext(ioDispatcher) {
         filePath = path
-        mediaRecorder.setOutputFile(path)
+        mediaRecorder!!.setOutputFile(path)
         mediaRecorder.prepare()
         mediaRecorder.start()
         isRecording = true
@@ -28,20 +28,20 @@ class VoiceRecorder @Inject constructor(
     fun pauseRecord() {
         isRecording = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mediaRecorder.pause()
+            mediaRecorder!!.pause()
         }
     }
 
     fun resumeRecording() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mediaRecorder.resume()
+            mediaRecorder!!.resume()
             isRecording = true
         }
     }
 
     fun stopRecord() {
         isRecording = false
-        mediaRecorder.stop()
+        mediaRecorder!!.stop()
         mediaRecorder.release()
     }
 
@@ -61,11 +61,14 @@ class VoiceRecorder @Inject constructor(
     }
 
     fun setOnErrorListener(listener: MediaRecorder.OnErrorListener) {
-        mediaRecorder.setOnErrorListener(listener)
+        if (mediaRecorder == null) {
+            listener.onError(null, -1, -1)
+        }
+        mediaRecorder?.setOnErrorListener(listener)
     }
 
     fun setOnInfoListener(listener: MediaRecorder.OnInfoListener) {
-        mediaRecorder.setOnInfoListener(listener)
+        mediaRecorder?.setOnInfoListener(listener)
     }
 
     fun getRecordFilePath(): String = filePath

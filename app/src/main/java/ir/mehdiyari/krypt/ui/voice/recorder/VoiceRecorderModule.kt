@@ -16,18 +16,23 @@ class VoiceRecorderModule {
     @Provides
     fun provideMediaRecorder(
         @ApplicationContext context: Context
-    ): MediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        MediaRecorder(context).apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+    ): MediaRecorder? = try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            MediaRecorder(context).apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            }
+        } else {
+            MediaRecorder().apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            }
         }
-    } else {
-        MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-        }
+    } catch (t: Throwable) {
+        t.printStackTrace()
+        null
     }
 
 }
