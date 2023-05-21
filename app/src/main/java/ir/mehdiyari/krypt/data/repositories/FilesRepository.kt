@@ -169,4 +169,8 @@ class FilesRepository @Inject constructor(
             FileTypeEnum.Audio
         )
     }
+
+    suspend fun updateFile(fileEntity: FileEntity): Unit = withContext(ioDispatcher) {
+        filedDao.updateFile(fileEntity)
+    }
 }

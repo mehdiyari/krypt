@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,48 +39,82 @@ fun AddTextComposeView(
             return@KryptTheme
         }
 
-        val textTitleField = remember { mutableStateOf(TextFieldValue()) }
-        val textContentField = remember { mutableStateOf(TextFieldValue()) }
+        val textTitleField = rememberSaveable { mutableStateOf("") }
+        val textContentField = rememberSaveable { mutableStateOf("") }
 
-        val isPreviewMode = argsState is AddTextArgsViewState.TextArg
+        val isEditMode = argsState is AddTextArgsViewState.TextArg
 
-        if (isPreviewMode) {
+        if (isEditMode && textContentField.value.isEmpty() && textTitleField.value.isEmpty()) {
             argsState as AddTextArgsViewState.TextArg
-            textTitleField.value = TextFieldValue(argsState.textEntity.title)
-            textContentField.value = TextFieldValue(argsState.textEntity.content)
+            textTitleField.value = argsState.textEntity.title
+            textContentField.value = argsState.textEntity.content
         } else {
-            textContentField.value = TextFieldValue(sharedContentText ?: "")
+            if (!sharedContentText.isNullOrBlank()) {
+                textContentField.value = sharedContentText
+            }
         }
 
-        Scaffold(
-            topBar = {
-                TopBarSurface(
-                    onNavigationClickIcon,
-                    textTitleField,
-                    isPreviewMode = isPreviewMode
+        Scaffold(topBar = {
+            TopBarSurface(
+                onNavigationClickIcon,
+                textTitleField,
+            )
+        }, content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ) {
+                ContentTextField(
+                    textContentField,
                 )
-            }, content = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    ContentTextField(
-                        textContentField,
-                        isPreviewMode = isPreviewMode
+            }
+        })
+
+        if (!isEditMode) {
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier.padding(15.dp)
+            ) {
+                SaveTextFab {
+                    viewModel.saveNote(
+                        textTitleField.value.trim(),
+                        textContentField.value
                     )
                 }
-            })
-
-        if (!isPreviewMode) {
-            SaveTextFab {
-                viewModel.saveNote(textTitleField.value.text.trim(), textContentField.value.text)
             }
         } else {
-            DeleteTextFab {
-                viewModel.deleteNote()
+            EditAndDeleteButtons(
+                textTitleField, textContentField, viewModel::deleteNote, viewModel::saveNote
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun EditAndDeleteButtons(
+    textTitleField: MutableState<String> = mutableStateOf("Title"),
+    textContentField: MutableState<String> = mutableStateOf("Content"),
+    deleteNote: (() -> Unit)? = null,
+    saveNote: ((title: String, context: String) -> Unit)? = null,
+) {
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.padding(15.dp)
+    ) {
+        Row {
+            DeleteTextFab(modifier = Modifier.padding(4.dp)) {
+                deleteNote?.invoke()
+            }
+
+            SaveTextFab(modifier = Modifier.padding(4.dp)) {
+                saveNote?.invoke(textTitleField.value.trim(), textContentField.value)
             }
         }
+
     }
 }
 
@@ -88,14 +122,12 @@ fun AddTextComposeView(
 @Preview
 private fun TopBarSurface(
     onNavigationClickIcon: () -> Unit = {},
-    textTitleField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
-    isPreviewMode: Boolean = false
+    textTitleField: MutableState<String> = mutableStateOf("Test"),
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(55.dp),
-        elevation = 8.dp
+            .height(55.dp), elevation = 8.dp
     ) {
         Row(
             modifier = Modifier
@@ -104,26 +136,23 @@ private fun TopBarSurface(
         ) {
             IconButton(modifier = Modifier
                 .fillMaxHeight()
-                .padding(0.dp),
-                onClick = {
-                    onNavigationClickIcon()
-                }) {
+                .padding(0.dp), onClick = {
+                onNavigationClickIcon()
+            }) {
                 Icon(Icons.Filled.ArrowBack, "")
             }
 
             TextField(
                 value = textTitleField.value,
                 onValueChange = {
-                    if (it.text.length < 32) {
+                    if (it.length < 32) {
                         textTitleField.value = it
                     }
                 },
                 label = { Text(text = stringResource(id = R.string.text_title)) },
-                modifier = Modifier
-                    .fillMaxHeight(),
+                modifier = Modifier.fillMaxHeight(),
                 textStyle = TextStyle(
-                    color = MaterialTheme.colors.onBackground,
-                    fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colors.onBackground, fontWeight = FontWeight.Bold
                 ),
                 shape = RectangleShape,
                 colors = TextFieldDefaults.textFieldColors(
@@ -134,7 +163,6 @@ private fun TopBarSurface(
                     disabledIndicatorColor = Color.Transparent
                 ),
                 singleLine = true,
-                readOnly = isPreviewMode
             )
         }
     }
@@ -143,8 +171,7 @@ private fun TopBarSurface(
 @Composable
 @Preview
 private fun ContentTextField(
-    textContentField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
-    isPreviewMode: Boolean = false
+    textContentField: MutableState<String> = mutableStateOf(("Test")),
 ) {
     TextField(
         value = textContentField.value,
@@ -153,7 +180,7 @@ private fun ContentTextField(
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .padding(bottom = if (isPreviewMode) 0.dp else 55.dp),
+            .padding(bottom = 55.dp),
         textStyle = TextStyle(
             color = MaterialTheme.colors.onBackground,
             fontSize = 18.sp,
@@ -169,57 +196,46 @@ private fun ContentTextField(
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
         ),
-        readOnly = isPreviewMode
     )
 }
 
 @Composable
 @Preview
 private fun SaveTextFab(
-    onSaveClick: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onSaveClick: () -> Unit = {},
 ) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(15.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = { onSaveClick() },
-            icon = {
-                Icon(
-                    Icons.Filled.Done,
-                    contentDescription = stringResource(id = R.string.save_text)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.save_text)) },
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary
-        )
-    }
+    ExtendedFloatingActionButton(
+        onClick = { onSaveClick() },
+        icon = {
+            Icon(
+                Icons.Filled.Done, contentDescription = stringResource(id = R.string.save_text)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.save_text)) },
+        backgroundColor = MaterialTheme.colors.primary,
+        contentColor = MaterialTheme.colors.onPrimary,
+        modifier = modifier,
+    )
 }
 
 
 @Composable
 @Preview
 private fun DeleteTextFab(
-    onDeleteClick: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onDeleteClick: () -> Unit = {},
 ) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(15.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = { onDeleteClick() },
-            icon = {
-                Icon(
-                    Icons.Filled.Delete,
-                    contentDescription = stringResource(id = R.string.delete_text)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.delete_text)) },
-            backgroundColor = MaterialTheme.colors.error,
-            contentColor = MaterialTheme.colors.onError
-        )
-    }
+    ExtendedFloatingActionButton(
+        onClick = { onDeleteClick() },
+        icon = {
+            Icon(
+                Icons.Filled.Delete, contentDescription = stringResource(id = R.string.delete_text)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.delete_text)) },
+        backgroundColor = MaterialTheme.colors.error,
+        contentColor = MaterialTheme.colors.onError,
+        modifier = modifier,
+    )
 }

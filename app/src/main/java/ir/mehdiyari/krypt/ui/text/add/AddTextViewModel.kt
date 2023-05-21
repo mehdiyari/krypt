@@ -36,17 +36,21 @@ class AddTextViewModel @Inject constructor(
     val argsTextViewState = _argsTextViewState.asStateFlow()
 
     fun saveNote(title: String, content: String) {
+        if (title.trim().isEmpty()) {
+            _saveNoteValidation.value = R.string.title_must_not_empty
+            return
+        }
+
+        if (content.isEmpty()) {
+            _saveNoteValidation.value = R.string.content_must_not_empty
+            return
+        }
+
+        if (argsTextViewState.value is AddTextArgsViewState.TextArg) {
+            return updateNote(title, content)
+        }
+
         viewModelScope.launch(ioDispatcher) {
-            if (title.trim().isEmpty()) {
-                _saveNoteValidation.emit(R.string.title_must_not_empty)
-                return@launch
-            }
-
-            if (content.isEmpty()) {
-                _saveNoteValidation.emit(R.string.content_must_not_empty)
-                return@launch
-            }
-
             textFilesUtils.mapTitleAndContentToFile(title, content).also { textFile ->
                 val encryptedFileResult = textFilesUtils.encryptTextFiles(textFile)
                 if (encryptedFileResult.first) {
@@ -65,6 +69,36 @@ class AddTextViewModel @Inject constructor(
                         )
                     )
 
+                    _saveNoteState.emit(true)
+                } else {
+                    _saveNoteState.emit(false)
+                }
+            }
+        }
+    }
+
+    private fun updateNote(title: String, content: String) {
+        val textEntity = (argsTextViewState.value as? AddTextArgsViewState.TextArg)?.textEntity
+        if (textEntity == null) {
+            _argsTextViewState.value = AddTextArgsViewState.Error(R.string.something_went_wrong)
+            return
+        }
+
+        viewModelScope.launch(ioDispatcher) {
+            textFilesUtils.mapTitleAndContentToFile(title, content).also { textFile ->
+                val encryptedFileResult = textFilesUtils.encryptTextFiles(textFile)
+                if (encryptedFileResult.first) {
+                    textFile.delete()
+                    val localTextEntity = filesRepository.getFileById(textEntity.id)!!
+                    filesRepository.updateFile(
+                        localTextEntity.copy(
+                            filePath = encryptedFileResult.second!!,
+                            metaData = textFilesUtils.getEncryptedBase64MetaDataFromTitleAndContent(
+                                title = title,
+                                content = content,
+                            ) ?: ""
+                        )
+                    )
                     _saveNoteState.emit(true)
                 } else {
                     _saveNoteState.emit(false)
