@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,17 +39,19 @@ fun AddTextComposeView(
             return@KryptTheme
         }
 
-        val textTitleField = remember { mutableStateOf(TextFieldValue()) }
-        val textContentField = remember { mutableStateOf(TextFieldValue()) }
+        val textTitleField = rememberSaveable { mutableStateOf("") }
+        val textContentField = rememberSaveable { mutableStateOf("") }
 
         val isEditMode = argsState is AddTextArgsViewState.TextArg
 
-        if (isEditMode) {
+        if (isEditMode && textContentField.value.isEmpty() && textTitleField.value.isEmpty()) {
             argsState as AddTextArgsViewState.TextArg
-            textTitleField.value = TextFieldValue(argsState.textEntity.title)
-            textContentField.value = TextFieldValue(argsState.textEntity.content)
+            textTitleField.value = argsState.textEntity.title
+            textContentField.value = argsState.textEntity.content
         } else {
-            textContentField.value = TextFieldValue(sharedContentText ?: "")
+            if (!sharedContentText.isNullOrBlank()) {
+                textContentField.value = sharedContentText
+            }
         }
 
         Scaffold(topBar = {
@@ -77,8 +79,8 @@ fun AddTextComposeView(
             ) {
                 SaveTextFab {
                     viewModel.saveNote(
-                        textTitleField.value.text.trim(),
-                        textContentField.value.text
+                        textTitleField.value.trim(),
+                        textContentField.value
                     )
                 }
             }
@@ -93,8 +95,8 @@ fun AddTextComposeView(
 @Composable
 @Preview
 private fun EditAndDeleteButtons(
-    textTitleField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Title")),
-    textContentField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Content")),
+    textTitleField: MutableState<String> = mutableStateOf("Title"),
+    textContentField: MutableState<String> = mutableStateOf("Content"),
     deleteNote: (() -> Unit)? = null,
     saveNote: ((title: String, context: String) -> Unit)? = null,
 ) {
@@ -109,7 +111,7 @@ private fun EditAndDeleteButtons(
             }
 
             SaveTextFab(modifier = Modifier.padding(4.dp)) {
-                saveNote?.invoke(textTitleField.value.text.trim(), textContentField.value.text)
+                saveNote?.invoke(textTitleField.value.trim(), textContentField.value)
             }
         }
 
@@ -120,7 +122,7 @@ private fun EditAndDeleteButtons(
 @Preview
 private fun TopBarSurface(
     onNavigationClickIcon: () -> Unit = {},
-    textTitleField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
+    textTitleField: MutableState<String> = mutableStateOf("Test"),
 ) {
     Surface(
         modifier = Modifier
@@ -143,7 +145,7 @@ private fun TopBarSurface(
             TextField(
                 value = textTitleField.value,
                 onValueChange = {
-                    if (it.text.length < 32) {
+                    if (it.length < 32) {
                         textTitleField.value = it
                     }
                 },
@@ -169,7 +171,7 @@ private fun TopBarSurface(
 @Composable
 @Preview
 private fun ContentTextField(
-    textContentField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
+    textContentField: MutableState<String> = mutableStateOf(("Test")),
 ) {
     TextField(
         value = textContentField.value,
