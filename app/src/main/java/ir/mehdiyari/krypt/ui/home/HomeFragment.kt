@@ -111,6 +111,7 @@ class HomeFragment : Fragment() {
             FileTypeEnum.Photo -> navigateToMediasFragment(MediaFragmentAction.DECRYPT_MEDIA)
             FileTypeEnum.Audio -> navigateToMusicAndAudioFragment()
             FileTypeEnum.Text -> navigateToTextsFragment()
+            else -> Unit
         }
     }
 

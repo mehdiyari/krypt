@@ -71,6 +71,8 @@ fun RecordVoiceScreen(
                     )
                     return@RecordToolbar
                 }
+
+                else -> Unit
             }
 
             RecordButton(

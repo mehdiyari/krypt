@@ -122,6 +122,8 @@ private fun MediaScreenContent(
                         )
                     }
                 }
+
+                else -> Unit
             }
 
             if (deleteFileDialogState.value.first) {

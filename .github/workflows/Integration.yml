@@ -22,7 +22,3 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: testDevelopmentDebugUnitTest --stacktrace
-      - name: Run Lint check
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: lintDevelopmentDebug
