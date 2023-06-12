@@ -9,12 +9,12 @@ plugins {
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "ir.mehdiyari.krypt"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 14
         versionName "2.1.0"
 
