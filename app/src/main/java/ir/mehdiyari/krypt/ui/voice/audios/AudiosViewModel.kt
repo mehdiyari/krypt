@@ -20,9 +20,6 @@ class AudiosViewModel @Inject constructor(
     private val _audios = MutableStateFlow<List<AudioEntity>>(listOf())
     val audios = _audios.asStateFlow()
 
-    private val _currentAudioPlaying = MutableStateFlow<AudioEntity?>(null)
-    val currentAudioPlaying = _currentAudioPlaying.asStateFlow()
-
     fun getAudios() {
         viewModelScope.launch {
             if (filesRepository.getAudiosCount() != _audios.value.size.toLong()) {
@@ -41,10 +38,6 @@ class AudiosViewModel @Inject constructor(
                     }
             }
         }
-    }
-
-    fun onAudioAction(audioEntity: AudioEntity) {
-        TODO()
     }
 
     private fun mapAudioName(index: Int, audioEntity: AudioEntity, size: Int): AudioEntity =
