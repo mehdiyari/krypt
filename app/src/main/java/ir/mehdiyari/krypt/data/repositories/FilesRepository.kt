@@ -173,4 +173,8 @@ class FilesRepository @Inject constructor(
     suspend fun updateFile(fileEntity: FileEntity): Unit = withContext(ioDispatcher) {
         filedDao.updateFile(fileEntity)
     }
+
+    suspend fun getAudioById(id: Long): FileEntity? = withContext(ioDispatcher) {
+        filedDao.getFileById(currentUser.accountName!!, id)
+    }
 }
