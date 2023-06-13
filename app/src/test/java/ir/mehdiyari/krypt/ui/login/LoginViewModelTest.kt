@@ -32,7 +32,7 @@ class LoginViewModelTest {
             val accounts = listOf("Mehdi", "Richard", "Tomas")
             coEvery { accountsRepository.getAllAccountsName() } returns accounts
             loginViewModel.getAccountNames()
-            Assert.assertEquals(accounts, loginViewModel.allAccountsNameState.value)
+            Assert.assertEquals(accounts, loginViewModel.allUserNamesState.value)
         }
 
     @Test

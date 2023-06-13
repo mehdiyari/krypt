@@ -153,7 +153,7 @@ fun ShowDeleteConfirmDialog(
     onDeleteCurrentAccount: (String) -> Unit = {},
     state: MutableState<Boolean> = mutableStateOf(true)
 ) {
-    val passwordValue = remember { mutableStateOf(TextFieldValue()) }
+    var passwordValue by remember { mutableStateOf("") }
     if (state.value) {
         AlertDialog(
             onDismissRequest = {
@@ -168,13 +168,15 @@ fun ShowDeleteConfirmDialog(
                         modifier = Modifier.padding(bottom = 10.dp),
                         text = stringResource(id = R.string.settings_delete_account_description)
                     )
-                    PasswordTextField(passwordValue = passwordValue, setDefaultPadding = false)
+                    PasswordTextField(password = passwordValue, onPasswordChanged = {
+                        passwordValue = it
+                    })
                 }
             },
             confirmButton = {
                 OutlinedButton(
                     onClick = {
-                        onDeleteCurrentAccount.invoke(passwordValue.value.text)
+                        onDeleteCurrentAccount.invoke(passwordValue)
                     },
                 ) {
                     Text(stringResource(id = R.string.YES))

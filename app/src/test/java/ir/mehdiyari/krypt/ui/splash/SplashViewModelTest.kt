@@ -63,7 +63,7 @@ class SplashViewModelTest {
 
         val collector = mockk<FlowCollector<Boolean>>(relaxed = true)
         val collectorJob = launch {
-            splashViewModel.isAnyAccountsExists.collect(collector)
+            splashViewModel.splashUiState.collect(collector)
         }
         return collector to collectorJob
     }

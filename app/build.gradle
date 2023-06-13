@@ -9,12 +9,12 @@ plugins {
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "ir.mehdiyari.krypt"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 14
         versionName "2.1.0"
 
@@ -27,8 +27,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion "1.6.10"
-        kotlinCompilerExtensionVersion "1.2.0-alpha02"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     buildTypes {
@@ -73,16 +72,17 @@ dependencies {
 
     def hilt_version = "2.38.1"
     implementation "com.google.dagger:hilt-android:${hilt_version}"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-compiler:${hilt_version}"
 
-    implementation 'androidx.activity:activity-compose:1.5.1'
-    implementation 'androidx.compose.material:material:1.2.0'
-    implementation 'androidx.compose.animation:animation:1.2.0'
-    implementation 'androidx.compose.ui:ui-tooling:1.2.0'
+    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation 'androidx.compose.material:material:1.4.3'
+    implementation 'androidx.compose.animation:animation:1.4.3'
+    implementation 'androidx.compose.ui:ui-tooling:1.4.3'
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0'
-    implementation "androidx.navigation:navigation-compose:2.5.1"
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha03"
+    implementation "androidx.navigation:navigation-compose:2.6.0"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10"
 
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
@@ -106,4 +106,7 @@ dependencies {
     testImplementation "io.mockk:mockk:1.12.7"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'app.cash.turbine:turbine:0.9.0'
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+
 }

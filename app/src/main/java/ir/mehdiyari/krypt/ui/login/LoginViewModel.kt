@@ -21,7 +21,7 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _allAccountsNameState = MutableStateFlow<List<String>>(listOf())
-    val allAccountsNameState = _allAccountsNameState.asStateFlow()
+    val allUserNamesState = _allAccountsNameState.asStateFlow()
 
     private val _closeLoginState = MutableSharedFlow<Boolean>()
     val closeLoginState = _closeLoginState.asSharedFlow()

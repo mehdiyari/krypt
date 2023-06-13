@@ -10,8 +10,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,15 +39,15 @@ fun CreateAccountComposeScreen(
 ) {
     KryptTheme {
         val nameValue = remember { mutableStateOf(TextFieldValue()) }
-        val passwordValue = remember { mutableStateOf(TextFieldValue()) }
-        val confirmPasswordValue = remember { mutableStateOf(TextFieldValue()) }
+        var passwordValue by remember { mutableStateOf("") }
+        var confirmPasswordValue by remember { mutableStateOf("") }
 
-        CreateAccountItems(nameValue, passwordValue, confirmPasswordValue)
+        CreateAccountItems(nameValue, passwordValue, onPasswordChanged =  {passwordValue = it}, confirmPassword = confirmPasswordValue, onConfirmPasswordChanged = {confirmPasswordValue = it})
         CreateAccountButton {
             viewModel.addAccount(
                 nameValue.value.text,
-                passwordValue.value.text,
-                confirmPasswordValue.value.text
+                passwordValue,
+                confirmPasswordValue
             )
         }
     }
@@ -80,11 +82,12 @@ private fun CreateAccountButton(
 }
 
 @Composable
-@Preview
 private fun CreateAccountItems(
     nameValue: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test1")),
-    passwordValue: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("123456789012")),
-    confirmPasswordValue: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("123456789012"))
+    password:String,
+    onPasswordChanged: (String) -> Unit,
+    confirmPassword: String,
+    onConfirmPasswordChanged: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -128,8 +131,8 @@ private fun CreateAccountItems(
             textStyle = TextStyle(color = MaterialTheme.colors.onBackground)
         )
 
-        PasswordTextField(passwordValue)
-        PasswordTextField(confirmPasswordValue, hintString = R.string.password_confirmation)
+        PasswordTextField(password, onPasswordChanged = onPasswordChanged)
+        PasswordTextField(confirmPassword, onPasswordChanged = onConfirmPasswordChanged ,hintString = R.string.password_confirmation)
     }
 }
 
@@ -137,7 +140,7 @@ private fun CreateAccountItems(
 @Preview
 fun CreateAccountScreenPreview() {
     KryptTheme {
-        CreateAccountItems()
+//        CreateAccountItems()
         CreateAccountButton()
     }
 }
