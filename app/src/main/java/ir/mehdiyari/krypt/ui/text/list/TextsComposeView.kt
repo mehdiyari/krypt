@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TextsComposeView(
     viewModel: TextsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
@@ -82,8 +83,8 @@ private fun NewNoteFab(
                 )
             },
             text = { Text(text = stringResource(id = R.string.add_new_text)) },
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary
+            containerColor =  MaterialTheme.colorScheme.primary,
+            contentColor =  MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -124,7 +125,7 @@ fun TextCard(
                 selected = false,
                 onClick = { onCardsClick.invoke(textEntity.id) }),
         shape = RoundedCornerShape(8.dp),
-        elevation = 5.dp,
+        elevation = CardDefaults.cardElevation(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()

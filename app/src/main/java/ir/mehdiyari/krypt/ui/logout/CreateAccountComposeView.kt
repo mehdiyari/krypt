@@ -8,6 +8,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -75,8 +80,8 @@ private fun CreateAccountButton(
                 )
             },
             text = { Text(text = stringResource(id = R.string.button_create_account)) },
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary
+            containerColor =  MaterialTheme.colorScheme.primary,
+            contentColor =  MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -107,7 +112,7 @@ private fun CreateAccountItems(
 
         Text(
             text = stringResource(id = R.string.create_account),
-            color = MaterialTheme.colors.onBackground,
+            color =  MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(25.dp, 20.dp, 25.dp, 4.dp),
             fontSize = 15.sp,
             textAlign = TextAlign.Center
@@ -128,7 +133,7 @@ private fun CreateAccountItems(
                 autoCorrect = false,
                 imeAction = ImeAction.Next
             ),
-            textStyle = TextStyle(color = MaterialTheme.colors.onBackground)
+            textStyle = TextStyle(color =  MaterialTheme.colorScheme.onBackground)
         )
 
         PasswordTextField(password, onPasswordChanged = onPasswordChanged)

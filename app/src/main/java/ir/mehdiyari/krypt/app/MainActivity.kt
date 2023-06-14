@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
                             ?.currentDestination?.id
 
                     if (!listOf(
-                            R.id.splashFragment,
-                            R.id.loginFragment,
+//                            R.id.splashFragment,
+//                            R.id.loginFragment,
                             R.id.createAccountFragment
                         ).contains(currentDestination)
                     ) {

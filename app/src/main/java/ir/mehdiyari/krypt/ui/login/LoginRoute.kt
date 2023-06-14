@@ -1,19 +1,18 @@
 package ir.mehdiyari.krypt.ui.login
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,22 +23,24 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 fun LoginRoute(
     onCreateAccountClicked: () -> Unit,
     onLoginSuccess: () -> Unit,
-    showSnackBar: (Int) -> Unit,
-    viewModel: LoginViewModel = hiltViewModel()
+    showSnackBar: suspend (message: String, action: String?) -> Boolean,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
 
     val userNames by viewModel.allUserNamesState.collectAsStateWithLifecycle()
     val loginState by viewModel.loginState.collectAsStateWithLifecycle(null)
 
-    DisposableEffect(key1 = loginState){
-        loginState?.let {
-            if (it is LoginViewState.SuccessfulLogin) {
-                onLoginSuccess()
-            } else if (it is LoginViewState.FailureLogin) {
-                showSnackBar(it.errorId)
+    when (loginState) {
+        LoginViewState.SuccessfulLogin -> onLoginSuccess()
+        is LoginViewState.FailureLogin -> {
+            val message =
+                LocalContext.current.getString((loginState as LoginViewState.FailureLogin).errorId)
+            LaunchedEffect(key1 = loginState) {
+                showSnackBar(message, null)
             }
         }
-        onDispose {  }
+
+        null -> Unit
     }
 
     LoginScreen(

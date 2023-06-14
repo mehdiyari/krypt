@@ -9,10 +9,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,7 +75,8 @@ fun DataScreen(
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DataScreenScaffold(
     onNavigationClicked: () -> Unit = {},
@@ -90,9 +105,10 @@ fun DataScreenScaffold(
                 }
             )
         }
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
+                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
             content()
@@ -174,16 +190,16 @@ fun BackupView(
             )
         } else {
             val colorIfError = if (stateValue is BackupViewState.Failed) {
-                MaterialTheme.colors.error
+                 MaterialTheme.colorScheme.error
             } else {
-                MaterialTheme.colors.primary
+                 MaterialTheme.colorScheme.primary
             }
 
             Button(
                 modifier = Modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = colorIfError
+                    containerColor = colorIfError
                 ),
                 onClick = {
                     backupNowClick()
@@ -251,7 +267,7 @@ fun BackupItem(
             .width(150.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -267,7 +283,7 @@ fun BackupItem(
                 painter = painterResource(R.drawable.ic_backup_file),
                 contentDescription = "",
                 modifier = Modifier.padding(6.dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface)
+                colorFilter = ColorFilter.tint( MaterialTheme.colorScheme.onSurface)
             )
 
             val dateTimeString = backupViewData.dateTime.ifBlank {

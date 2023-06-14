@@ -12,6 +12,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -128,7 +140,8 @@ private fun HandleSuccessState(navController: NavController?) {
     navController?.navigateUp()
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 @Preview
 private fun RecordToolbar(
@@ -249,6 +262,7 @@ fun TimerText(numberStateFlow: StateFlow<String> = MutableStateFlow("00:00:01"))
     }
 }
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
@@ -262,7 +276,7 @@ fun RecordControlsButtons(
         targetState = recordActionButtonsModel.hashCode(),
         transitionSpec = {
             EnterTransition.None with ExitTransition.None
-        }
+        }, label = ""
     ) {
         Row {
             if (recordActionButtonsModel.stop.first) {
@@ -322,7 +336,7 @@ private fun RecordActionButton(
             Image(
                 painter = painterResource(id = iconId),
                 contentDescription = "",
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary)
+                colorFilter = ColorFilter.tint( MaterialTheme.colorScheme.onPrimary)
             )
 
             Text(

@@ -2,9 +2,17 @@ package ir.mehdiyari.krypt.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,10 +66,11 @@ fun CrateAccountButton(onCreateAccountClick: () -> Unit, modifier: Modifier) {
     ) {
         ExtendedFloatingActionButton(
             onClick = { onCreateAccountClick() },
-            text = { Text(text = stringResource(id = R.string.button_create_new_account)) },
-            backgroundColor = MaterialTheme.colors.secondary,
-            contentColor = MaterialTheme.colors.onSecondary
-        )
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary,
+        ) {
+            Text(text = stringResource(id = R.string.button_create_new_account))
+        }
     }
 }
 
@@ -80,14 +89,13 @@ fun LoginButton(
                 )
             },
             text = { Text(text = stringResource(id = R.string.button_login)) },
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
         )
     }
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownTextField(
     items: List<String>,
@@ -105,7 +113,7 @@ fun DropDownTextField(
             value = selectedItem,
             onValueChange = { },
             label = { Text(text = stringResource(id = R.string.account_name)) },
-            textStyle = TextStyle(color = MaterialTheme.colors.onBackground)
+            textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground)
         )
 
         ExposedDropdownMenu(
@@ -116,13 +124,12 @@ fun DropDownTextField(
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
+                    text = { Text(text = item) },
                     onClick = {
                         onItemChanged(item)
                         expanded = false
                     }
-                ) {
-                    Text(text = item)
-                }
+                )
             }
         }
     }
@@ -130,7 +137,7 @@ fun DropDownTextField(
 
 @Preview
 @Composable
-private fun LoginFieldsPreview() {
+fun LoginFieldsPreview() {
     KryptTheme {
         Surface {
             LoginFields(

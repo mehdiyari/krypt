@@ -2,11 +2,20 @@ package ir.mehdiyari.krypt.ui.text.add
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -26,7 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddTextComposeView(
     viewModel: AddTextViewModel = viewModel(),
@@ -118,6 +127,7 @@ private fun EditAndDeleteButtons(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 private fun TopBarSurface(
@@ -127,7 +137,7 @@ private fun TopBarSurface(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(55.dp), elevation = 8.dp
+            .height(55.dp), shadowElevation = 8.dp
     ) {
         Row(
             modifier = Modifier
@@ -152,12 +162,12 @@ private fun TopBarSurface(
                 label = { Text(text = stringResource(id = R.string.text_title)) },
                 modifier = Modifier.fillMaxHeight(),
                 textStyle = TextStyle(
-                    color = MaterialTheme.colors.onBackground, fontWeight = FontWeight.Bold
+                    color =  MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold
                 ),
                 shape = RectangleShape,
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = MaterialTheme.colors.onSurface,
+                    containerColor = Color.Transparent,
+                    focusedTextColor =  MaterialTheme.colorScheme.onSurface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
@@ -168,6 +178,7 @@ private fun TopBarSurface(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 private fun ContentTextField(
@@ -182,7 +193,7 @@ private fun ContentTextField(
             .fillMaxWidth()
             .padding(bottom = 55.dp),
         textStyle = TextStyle(
-            color = MaterialTheme.colors.onBackground,
+            color =  MaterialTheme.colorScheme.onBackground,
             fontSize = 18.sp,
             localeList = LocaleList.current,
             textDirection = TextDirection.ContentOrRtl,
@@ -190,8 +201,8 @@ private fun ContentTextField(
         ),
         shape = RectangleShape,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.Transparent,
-            textColor = MaterialTheme.colors.onSurface,
+            containerColor = Color.Transparent,
+            focusedTextColor =  MaterialTheme.colorScheme.onSurface,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
@@ -213,8 +224,8 @@ private fun SaveTextFab(
             )
         },
         text = { Text(text = stringResource(id = R.string.save_text)) },
-        backgroundColor = MaterialTheme.colors.primary,
-        contentColor = MaterialTheme.colors.onPrimary,
+        containerColor =  MaterialTheme.colorScheme.primary,
+        contentColor =  MaterialTheme.colorScheme.onPrimary,
         modifier = modifier,
     )
 }
@@ -234,8 +245,8 @@ private fun DeleteTextFab(
             )
         },
         text = { Text(text = stringResource(id = R.string.delete_text)) },
-        backgroundColor = MaterialTheme.colors.error,
-        contentColor = MaterialTheme.colors.onError,
+        containerColor =  MaterialTheme.colorScheme.error,
+        contentColor =  MaterialTheme.colorScheme.onError,
         modifier = modifier,
     )
 }

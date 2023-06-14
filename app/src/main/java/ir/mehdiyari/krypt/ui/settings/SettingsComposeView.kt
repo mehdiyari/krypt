@@ -13,6 +13,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,13 +49,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsView(
     viewModel: SettingsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onNavigationClickIcon: () -> Unit = {}
 ) {
-    val automaticallyLockAppSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val automaticallyLockAppSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val deleteDialogState = remember { mutableStateOf(false) }
     KryptTheme {
@@ -100,13 +116,13 @@ fun SettingsView(
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingItems(
     viewModel: SettingsViewModel,
     deleteDialogState: MutableState<Boolean>,
-    automaticallyLockAppSheetState: ModalBottomSheetState,
+    automaticallyLockAppSheetState: SheetState,
     scope: CoroutineScope,
     onNavigationClickIcon: () -> Unit
 ) {
@@ -196,21 +212,19 @@ fun ShowDeleteConfirmDialog(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun AutomaticallyLockModalBottomSheet(
-    automaticallyLockAppSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
-        ModalBottomSheetValue.Expanded
-    ),
+    automaticallyLockAppSheetState: SheetState = rememberModalBottomSheetState(),
     automaticallyLockSelectedItem: StateFlow<AutoLockItemsEnum> = MutableStateFlow(AutoLockItemsEnum.OneMinute),
     scope: CoroutineScope = rememberCoroutineScope(),
     onItemClicked: (AutoLockItemsEnum) -> Unit = {},
 ) {
     val lastSelectedId = automaticallyLockSelectedItem.collectAsState().value
-    ModalBottomSheetLayout(
+    ModalBottomSheet(
         sheetState = automaticallyLockAppSheetState,
-        sheetContent = {
+        content = {
             AUTO_LOCK_CRYPT_ITEMS.forEach {
                 ListItem(
                     modifier = Modifier.selectable(selected = false, onClick = {
@@ -218,11 +232,13 @@ fun AutomaticallyLockModalBottomSheet(
                         scope.launch {
                             automaticallyLockAppSheetState.hide()
                         }
-                    }), text = {
+                    }),
+                    headlineContent = {},
+                    trailingContent = {
                         if (lastSelectedId == it.first) {
                             Text(
                                 stringResource(id = it.second),
-                                color = MaterialTheme.colors.primary
+                                color =  MaterialTheme.colorScheme.primary
                             )
                         } else {
                             Text(stringResource(id = it.second))
@@ -230,8 +246,9 @@ fun AutomaticallyLockModalBottomSheet(
                     }
                 )
             }
-        }
-    ) { }
+        },
+        onDismissRequest = {}
+    )
 }
 
 @Composable
@@ -265,7 +282,7 @@ fun SettingsItemCard(
                     onItemClick(textResId)
                 }),
         shape = RoundedCornerShape(8.dp),
-        elevation = 5.dp,
+        elevation = CardDefaults.cardElevation(),
     ) {
         Column(
             modifier = Modifier

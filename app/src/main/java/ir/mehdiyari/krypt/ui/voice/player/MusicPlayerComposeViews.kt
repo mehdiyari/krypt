@@ -12,14 +12,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Slider
-import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -42,13 +41,11 @@ import com.google.android.exoplayer2.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 import ir.mehdiyari.krypt.utils.convertToReadableTime
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun MusicPlayerBottomSheet(
-    playerSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
-        ModalBottomSheetValue.Expanded
-    ),
+    playerSheetState: SheetState = rememberModalBottomSheetState(),
     title: String = "Stairway to Heaven",
     sliderState: MutableState<Long> = mutableStateOf(300L),
     maxValue: Long = 896L,
@@ -57,7 +54,7 @@ fun MusicPlayerBottomSheet(
     onPlayPauseClicked: () -> Unit = {},
 ) {
     KryptTheme {
-        ModalBottomSheetLayout(sheetState = playerSheetState, sheetContent = {
+        ModalBottomSheet(sheetState = playerSheetState, content = {
             MusicPlayerView(
                 title,
                 sliderState,
@@ -66,7 +63,7 @@ fun MusicPlayerBottomSheet(
                 onNextClicked,
                 onPlayPauseClicked
             )
-        }) { }
+        }, onDismissRequest = {})
     }
 }
 
@@ -87,7 +84,7 @@ fun MusicPlayerView(
         Text(
             text = title,
             fontSize = 20.sp,
-            color = MaterialTheme.colors.onBackground,
+            color =  MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -103,7 +100,7 @@ fun MusicPlayerView(
             Text(
                 text = sliderState.value.convertToReadableTime(),
                 fontSize = 12.sp,
-                color = MaterialTheme.colors.onBackground,
+                color =  MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(end = 4.dp)
@@ -132,7 +129,7 @@ fun MusicPlayerView(
             Text(
                 text = maxValue.convertToReadableTime(),
                 fontSize = 12.sp,
-                color = MaterialTheme.colors.onBackground,
+                color =  MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(start = 4.dp)

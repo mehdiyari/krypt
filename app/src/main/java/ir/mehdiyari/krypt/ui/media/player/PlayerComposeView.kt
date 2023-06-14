@@ -2,9 +2,9 @@ package ir.mehdiyari.krypt.ui.media.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -69,7 +69,7 @@ private fun ProgressBar(withText: Boolean = false) {
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(top = 20.dp),
-                color = MaterialTheme.colors.onBackground
+                color =  MaterialTheme.colorScheme.onBackground
             )
         }
     }

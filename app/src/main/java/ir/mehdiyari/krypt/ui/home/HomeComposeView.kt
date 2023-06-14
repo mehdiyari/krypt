@@ -8,16 +8,30 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -34,8 +48,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeComposeScreen(
     viewModel: HomeViewModel = viewModel(),
@@ -45,8 +59,8 @@ fun HomeComposeScreen(
     clickOnCards: (FileTypeEnum) -> Unit = { }
 ) {
     KryptTheme {
-        val addItemsBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-        val mainMenuBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+        val addItemsBottomSheetState = rememberModalBottomSheetState()
+        val mainMenuBottomSheetState = rememberModalBottomSheetState()
         val scope = rememberCoroutineScope()
         Scaffold(
             floatingActionButtonPosition = FabPosition.Center,
@@ -63,31 +77,33 @@ fun HomeComposeScreen(
                 }) {
                     Icon(
                         Icons.Filled.Add,
-                        tint = MaterialTheme.colors.onPrimary,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = stringResource(id = R.string.add_items)
                     )
                 }
             },
-            isFloatingActionButtonDocked = true,
+//            isFloatingActionButtonDocked = true,
             bottomBar = {
                 BottomAppBar(
-                    cutoutShape = MaterialTheme.shapes.small.copy(
-                        CornerSize(percent = 50)
+                    modifier = Modifier.clip(
+                        MaterialTheme.shapes.small.copy(
+                            CornerSize(percent = 50)
+                        )
                     )
                 ) {
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                        IconButton(onClick = {
-                            scope.launch {
-                                addItemsBottomSheetState.hide()
-                                mainMenuBottomSheetState.show()
-                            }
-                        }) {
-                            Icon(
-                                Icons.Filled.Menu,
-                                contentDescription = stringResource(id = R.string.krypt_main_menu)
-                            )
+//                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+                    IconButton(onClick = {
+                        scope.launch {
+                            addItemsBottomSheetState.hide()
+                            mainMenuBottomSheetState.show()
                         }
+                    }) {
+                        Icon(
+                            Icons.Filled.Menu,
+                            contentDescription = stringResource(id = R.string.krypt_main_menu)
+                        )
                     }
+//                    }
                     Spacer(Modifier.weight(1f, true))
                     IconButton(onClick = { clickOnLockItem() }) {
                         Icon(
@@ -97,8 +113,8 @@ fun HomeComposeScreen(
                     }
                 }
             }
-        ) {
-            Row(modifier = Modifier.padding(top = 8.dp)) {
+        ) { paddingValues ->
+            Row(modifier = Modifier.padding(paddingValues)) {
                 HomeCards(
                     viewModel,
                     clickOnCards
@@ -127,16 +143,16 @@ private fun HomeCards(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainMenuBottomSheet(
-    mainMenuBottomSheetState: ModalBottomSheetState,
+    mainMenuBottomSheetState: SheetState,
     onSelectMainMenuItem: (Int) -> Unit,
     scope: CoroutineScope
 ) {
-    ModalBottomSheetLayout(
+    ModalBottomSheet(
         sheetState = mainMenuBottomSheetState,
-        sheetContent = {
+        content = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -162,8 +178,9 @@ private fun MainMenuBottomSheet(
                             mainMenuBottomSheetState.hide()
                         }
                     }),
-                    text = { Text(stringResource(id = it.second)) },
-                    icon = {
+                    headlineContent = {},
+                    trailingContent = { Text(stringResource(id = it.second)) },
+                    leadingContent = {
                         Icon(
                             painterResource(id = it.first),
                             contentDescription = stringResource(id = it.second)
@@ -171,20 +188,21 @@ private fun MainMenuBottomSheet(
                     }
                 )
             }
-        }
-    ) { }
+        },
+        onDismissRequest = {}
+    )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddBottomSheet(
-    addItemsBottomSheetState: ModalBottomSheetState,
+    addItemsBottomSheetState: SheetState,
     onSelectAddItemMenuItem: (Int) -> Unit,
     scope: CoroutineScope
 ) {
-    ModalBottomSheetLayout(
+    ModalBottomSheet(
         sheetState = addItemsBottomSheetState,
-        sheetContent = {
+        content = {
             ADD_ITEMS.forEach {
                 ListItem(
                     modifier = Modifier.selectable(selected = false, onClick = {
@@ -193,11 +211,12 @@ private fun AddBottomSheet(
                             addItemsBottomSheetState.hide()
                         }
                     }),
-                    text = {
+                    headlineContent = {},
+                    trailingContent = {
                         if (it.second != -1)
                             Text(stringResource(id = it.second))
                     },
-                    icon = {
+                    leadingContent = {
                         if (it.first != -1)
                             Icon(
                                 painterResource(id = it.first),
@@ -206,8 +225,9 @@ private fun AddBottomSheet(
                     }
                 )
             }
-        }
-    ) { }
+        },
+        onDismissRequest = {}
+    )
 }
 
 @Composable
@@ -224,7 +244,7 @@ private fun HomeItemCard(
                 selected = false,
                 onClick = { clickOnCards(getFileTypeEnumBasedOnStringRes(homeCardsModel.name)) }),
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp,
+        elevation = CardDefaults.cardElevation(),
     ) {
         Column(
             modifier = Modifier

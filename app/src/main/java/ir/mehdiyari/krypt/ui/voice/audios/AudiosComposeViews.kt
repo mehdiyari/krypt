@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -34,15 +34,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AudiosScreen(
     navController: NavController? = null,
     audiosViewModel: AudiosViewModel = viewModel(),
     musicPlayerViewModel: MusicPlayerViewModel
 ) {
-    val musicPlayerBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val musicPlayerBottomSheetState = rememberModalBottomSheetState()
     KryptTheme {
         Scaffold(
             topBar = {
@@ -117,7 +117,7 @@ fun AddNewVoiceButton(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AudioList(
     audios: State<List<AudioEntity>> = mutableStateOf(
@@ -136,7 +136,7 @@ private fun AudioList(
         )
     ),
     onActionClicked: (AudioEntity) -> Unit = {},
-    musicPlayerBottomSheetState: ModalBottomSheetState
+    musicPlayerBottomSheetState: SheetState
 ) {
     val playingAudioState = currentAudioPlaying.collectAsState()
     LazyColumn(content = {
@@ -154,7 +154,7 @@ private fun AudioList(
 }
 
 @SuppressLint("StateFlowValueCalledInComposition")
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AudioItem(
     audioEntity: AudioEntity = AudioEntity(
@@ -169,7 +169,7 @@ fun AudioItem(
         )
     ),
     onActionClicked: (AudioEntity) -> Unit = {},
-    musicPlayerBottomSheetState: ModalBottomSheetState
+    musicPlayerBottomSheetState: SheetState
 ) {
     val scope = rememberCoroutineScope()
     Card(
@@ -178,7 +178,7 @@ fun AudioItem(
             .height(80.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = 8.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Row(
             modifier = Modifier
@@ -193,7 +193,7 @@ fun AudioItem(
                 }
             }) {
                 val playPauseIcon =
-                    if (playingAudioState.value?.id == audioEntity.id && musicPlayerBottomSheetState.currentValue == ModalBottomSheetValue.Expanded) {
+                    if (playingAudioState.value?.id == audioEntity.id && musicPlayerBottomSheetState.currentValue == SheetValue.Expanded) {
                         painterResource(id = R.drawable.ic_pause)
                     } else {
                         painterResource(id = R.drawable.ic_audio_play)

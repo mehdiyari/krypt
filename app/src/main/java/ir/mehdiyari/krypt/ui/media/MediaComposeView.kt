@@ -7,10 +7,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +44,8 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.media.MediaFragmentAction.*
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MediasComposeScreen(
     viewModel: MediasViewModel = viewModel(),
@@ -418,7 +432,7 @@ fun ActionFloatingButton(
         onClick = {
             onButtonClick()
         },
-        contentColor = MaterialTheme.colors.onPrimary,
+        contentColor =  MaterialTheme.colorScheme.onPrimary,
         text = { Text(text = buttonText) },
         icon = {
             Icon(
@@ -426,7 +440,7 @@ fun ActionFloatingButton(
                 contentDescription = buttonText
             )
         },
-        backgroundColor = MaterialTheme.colors.primary
+        containerColor =  MaterialTheme.colorScheme.primary
     )
 }
 
@@ -453,8 +467,8 @@ fun DeleteAllFilesFloatingButton(
                 contentDescription = stringResource(id = R.string.delete_all)
             )
         },
-        backgroundColor = MaterialTheme.colors.error,
-        contentColor = MaterialTheme.colors.onError
+        containerColor =  MaterialTheme.colorScheme.error,
+        contentColor =  MaterialTheme.colorScheme.onError
     )
 
     if (deleteAllFileDialogState.value.first) {
@@ -498,7 +512,7 @@ fun FileItem(
             .height(95.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
