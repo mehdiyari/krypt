@@ -25,9 +25,10 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable
 fun SplashRoute(
-    viewModel: SplashViewModel = hiltViewModel(),
     accountExists: () -> Unit,
-    noAccountExists: () -> Unit
+    noAccountExists: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
 
     val uiState by viewModel.splashUiState.collectAsStateWithLifecycle()
@@ -40,15 +41,17 @@ fun SplashRoute(
         }
     }
 
-    SplashScreen()
+    SplashScreen(modifier)
 
 }
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(modifier: Modifier = Modifier) {
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
     ) {
         Image(
             painter = painterResource(R.drawable.krypt),
@@ -57,7 +60,7 @@ fun SplashScreen() {
 
         Text(
             text = stringResource(id = R.string.app_name),
-            color =  MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(4.dp),
             fontSize = 18.sp
         )

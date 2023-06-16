@@ -61,16 +61,13 @@ fun LoginFields(
 
 @Composable
 fun CrateAccountButton(onCreateAccountClick: () -> Unit, modifier: Modifier) {
-    Box(
+    ExtendedFloatingActionButton(
+        onClick = { onCreateAccountClick() },
+        containerColor = MaterialTheme.colorScheme.secondary,
+        contentColor = MaterialTheme.colorScheme.onSecondary,
         modifier = modifier
     ) {
-        ExtendedFloatingActionButton(
-            onClick = { onCreateAccountClick() },
-            containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondary,
-        ) {
-            Text(text = stringResource(id = R.string.button_create_new_account))
-        }
+        Text(text = stringResource(id = R.string.button_create_new_account))
     }
 }
 
@@ -79,20 +76,19 @@ fun LoginButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier) {
-        ExtendedFloatingActionButton(
-            onClick = onClick,
-            icon = {
-                Icon(
-                    Icons.Filled.ArrowForward,
-                    contentDescription = stringResource(id = R.string.button_login)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.button_login)) },
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-        )
-    }
+    ExtendedFloatingActionButton(
+        onClick = onClick,
+        icon = {
+            Icon(
+                Icons.Filled.ArrowForward,
+                contentDescription = stringResource(id = R.string.button_login)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.button_login)) },
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        modifier = modifier
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

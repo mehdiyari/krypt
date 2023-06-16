@@ -24,6 +24,7 @@ fun LoginRoute(
     onCreateAccountClicked: () -> Unit,
     onLoginSuccess: () -> Unit,
     showSnackBar: suspend (message: String, action: String?) -> Boolean,
+    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
 
@@ -47,7 +48,9 @@ fun LoginRoute(
         userNames,
         onLoginClicked = { userName, password ->
             viewModel.login(userName, password)
-        }, onCreateAccountClicked = onCreateAccountClicked
+        },
+        onCreateAccountClicked = onCreateAccountClicked,
+        modifier = modifier
     )
 }
 
@@ -56,11 +59,12 @@ fun LoginScreen(
     accounts: List<String>,
     onLoginClicked: (userName: String, password: String) -> Unit,
     onCreateAccountClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var userName by remember { mutableStateOf(accounts[0]) }
     var password by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier) {
         LoginFields(
             usernames = accounts,
             selectedUserName = userName,
@@ -69,7 +73,6 @@ fun LoginScreen(
             onPasswordChanged = { password = it },
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(bottom = 65.dp)
         )
 
         LoginButton(
@@ -88,7 +91,7 @@ fun LoginScreen(
     }
 }
 
-@Preview(device = "id:pixel_xl")
+@Preview
 @Composable
 private fun LoginScreenPreview() {
     KryptTheme {
@@ -96,7 +99,9 @@ private fun LoginScreenPreview() {
             LoginScreen(
                 accounts = List(5) { "UserName$it" },
                 onLoginClicked = { _, _ -> },
-                onCreateAccountClicked = {})
+                onCreateAccountClicked = {},
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }

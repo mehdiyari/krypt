@@ -20,7 +20,7 @@ fun NavGraphBuilder.loginScreen(
         LoginRoute(
             onCreateAccountClicked = onCreateAccountClicked,
             onLoginSuccess = onLoginSuccess,
-            showSnackBar = showSnackBar
+            showSnackBar = showSnackBar,
         )
     }
 
