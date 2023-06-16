@@ -1,5 +1,7 @@
 package ir.mehdiyari.krypt.ui
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -14,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ir.mehdiyari.krypt.ui.login.loginScreen
 import ir.mehdiyari.krypt.ui.login.navigateToLogin
+import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 import ir.mehdiyari.krypt.ui.splash.splashScreen
 
@@ -21,31 +24,27 @@ import ir.mehdiyari.krypt.ui.splash.splashScreen
 fun KryptApp() {
 
     val navController = rememberNavController()
-    val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
 
-        NavHost(
-            modifier = Modifier.padding(padding),
-            navController = navController, startDestination = ROUTE_SPLASH
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
-            splashScreen(accountExists = {
-                navController.navigateToLogin()
-            }, noAccountExists = {})
 
-            loginScreen(onCreateAccountClicked = {}, onLoginSuccess = {}, showSnackBar = { message, action ->
-                snackbarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = action,
-                    duration = SnackbarDuration.Short,
-                ) == SnackbarResult.ActionPerformed
-            })
-
+            KryptNaveHost(navController = navController,
+                onShowSnackbar = { message, action ->
+                    snackbarHostState.showSnackbar(
+                        message = message,
+                        actionLabel = action,
+                        duration = SnackbarDuration.Short,
+                    ) == SnackbarResult.ActionPerformed
+                })
         }
     }
-
 
 }

@@ -5,6 +5,8 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
@@ -13,13 +15,14 @@ import androidx.navigation.findNavController
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.KryptApp
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), AppLockerStopApi {
+class MainActivity : ComponentActivity(), AppLockerStopApi {
 
     private val viewModel: MainViewModel by viewModels()
     private val shareDataViewModel by viewModels<ShareDataViewModel>()
@@ -27,7 +30,9 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onNewIntent(intent)
-        setContentView(R.layout.activity_main)
+        setContent{
+            KryptApp()
+        }
 
         lifecycleScope.launch {
             viewModel.automaticLockState.collectLatest {
