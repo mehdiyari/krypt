@@ -87,4 +87,6 @@ class SymmetricHelper @Inject constructor() {
         it.init(Cipher.DECRYPT_MODE, key, IvParameterSpec(initVector))
         it.doFinal(encryptedData)
     }
+
+    fun getAESCipher(): Cipher = Cipher.getInstance(AES_CBC_PKS5PADDING)
 }

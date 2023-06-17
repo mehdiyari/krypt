@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.voice.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
@@ -13,9 +13,14 @@ import ir.mehdiyari.krypt.ui.voice.recorder.VoiceRecorder
 import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaData
 import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaDataJsonParser
 import ir.mehdiyari.krypt.utils.FilesUtilities
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
@@ -23,7 +28,7 @@ import javax.inject.Inject
 class RecordVoiceViewModel @Inject constructor(
     private val voiceRecorder: VoiceRecorder,
     private val filesUtilities: FilesUtilities,
-    private val fileCrypt: FileCrypt,
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val filesRepository: FilesRepository,
     private val audioMetaDataJsonAdapter: AudioMetaDataJsonParser,
@@ -80,10 +85,10 @@ class RecordVoiceViewModel @Inject constructor(
             if (voiceRecorder.getRecordFilePath().isNotBlank()) {
                 val encryptedDestination = filesUtilities.getRealFilePathForRecordedVoice()
                 try {
-                    if (fileCrypt.encryptFileToPath(
+                    if (kryptCryptographyHelper.encryptFile(
                             voiceRecorder.getRecordFilePath(),
                             encryptedDestination
-                        )
+                        ).isSuccess
                     ) {
                         saveAudioRecordInDataBase(
                             voiceRecorder.getRecordFilePath(),

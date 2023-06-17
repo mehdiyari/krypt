@@ -1,14 +1,19 @@
 package ir.mehdiyari.krypt.utils
 
 import ir.mehdiyari.krypt.crypto.Base64
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.combineWith
+import ir.mehdiyari.krypt.crypto.getAfterIndex
+import ir.mehdiyari.krypt.crypto.getBeforeIndex
 import ir.mehdiyari.krypt.crypto.toUtf8Bytes
 import java.io.File
 import javax.inject.Inject
 
 class TextFilesUtils @Inject constructor(
-    private val fileCrypt: FileCrypt,
-    private val filesUtilities: FilesUtilities
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
+    private val filesUtilities: FilesUtilities,
+    private val symmetricHelper: SymmetricHelper,
 ) {
 
     fun mapTitleAndContentToFile(title: String, content: String): File {
@@ -19,27 +24,42 @@ class TextFilesUtils @Inject constructor(
         }
     }
 
-    fun encryptTextFiles(file: File): Pair<Boolean, String?> {
+    suspend fun encryptTextFiles(file: File): Pair<Boolean, String?> {
         val destinationPath = filesUtilities.generateTextFilePath()
-        return if (fileCrypt.encryptFileToPath(file.path, destinationPath)) {
+        return if (kryptCryptographyHelper.encryptFile(file.path, destinationPath).isSuccess) {
             true to destinationPath
         } else {
             false to null
         }
     }
 
-    fun getEncryptedBase64MetaDataFromTitleAndContent(title: String, content: String): String? =
+    suspend fun getEncryptedBase64MetaDataFromTitleAndContent(
+        title: String,
+        content: String
+    ): String? =
         try {
             val str = "${title.replace("\n", "")}\n${getFirst64CharacterOfContent(content)}"
-            Base64.encodeBytes(fileCrypt.encryptDataWithIVAtFirst(str.toUtf8Bytes()))
+            val initVector = symmetricHelper.createInitVector()
+            Base64.encodeBytes(
+                initVector.combineWith(
+                    kryptCryptographyHelper.encryptBytes(
+                        str.toUtf8Bytes(),
+                        initVector
+                    ).getOrThrow()
+                )
+            )
         } catch (t: Throwable) {
             t.printStackTrace()
             null
         }
 
-    fun decryptMetaData(string: String): Pair<String, String>? {
-        val decryptedText = fileCrypt.decryptDataWithIVAtFirst(Base64.decode(string))
-        decryptedText ?: return null
+    suspend fun decryptMetaData(string: String): Pair<String, String>? {
+        val encryptedBytes = Base64.decode(string)
+        val initVector = encryptedBytes.getBeforeIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE)
+        val decryptedText = kryptCryptographyHelper.decryptBytes(
+            encryptedBytes.getAfterIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE),
+            initVector
+        ).getOrThrow()
         val text = String(decryptedText)
         val title = text.substring(0, text.indexOf("\n"))
         val content = text.substring(text.indexOf("\n") + 1, text.length)
@@ -52,7 +72,7 @@ class TextFilesUtils @Inject constructor(
         else
             content
 
-    fun decryptTextFile(filePath: String): Pair<String, String>? {
+    suspend fun decryptTextFile(filePath: String): Pair<String, String>? {
         val encryptedFile = File(filePath)
         if (!encryptedFile.exists()) {
             return null
@@ -60,8 +80,13 @@ class TextFilesUtils @Inject constructor(
 
         return try {
             val fileContentByteArray = encryptedFile.readBytes()
-            val decryptedByteArray = fileCrypt.decryptDataWithIVAtFirst(fileContentByteArray)
-            val text = String(decryptedByteArray!!)
+            val initVector =
+                fileContentByteArray.getBeforeIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE)
+            val decryptedByteArray = kryptCryptographyHelper.decryptBytes(
+                fileContentByteArray.getAfterIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE),
+                initVector
+            ).getOrThrow()
+            val text = String(decryptedByteArray)
 
             val title = text.substring(0, text.indexOf("\n"))
             val content = text.substring(text.indexOf("\n") + 1, text.length)

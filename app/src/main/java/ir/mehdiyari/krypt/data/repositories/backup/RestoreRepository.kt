@@ -1,6 +1,11 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.crypto.*
+import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.getAfterIndex
+import ir.mehdiyari.krypt.crypto.getBeforeIndex
+import ir.mehdiyari.krypt.crypto.getBestBufferSizeForFile
+import ir.mehdiyari.krypt.crypto.toLong
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
@@ -8,15 +13,16 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.inject.Inject
 
+
 class RestoreRepository @Inject constructor(
     private val fileUtils: FilesUtilities,
-    private val fileCrypt: dagger.Lazy<FileCrypt>,
+    private val kryptCryptographyHelper: dagger.Lazy<KryptCryptographyHelper>,
     private val dbBackupModelJsonAdapter: DBBackupModelJsonAdapter,
 ) {
 
-    fun restoreAll(backupFile: String): Boolean {
+    suspend fun restoreAll(backupFile: String): Boolean {
         val newBackupPath = fileUtils.generateRestoreFilePath()
-        if (!fileCrypt.get().decryptFileToPath(backupFile, newBackupPath)) {
+        if (kryptCryptographyHelper.get().decryptFile(backupFile, newBackupPath).isFailure) {
             return false
         }
 
@@ -32,9 +38,14 @@ class RestoreRepository @Inject constructor(
             val dataBaseContent = ByteArray(dataBaseSize.toLong().toInt())
             inputStream.read(dataBaseContent)
 
+            val decryptInitialVector =
+                dataBaseContent.getBeforeIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE)
             val dbBackupModel = getDataBaseModel(
                 String(
-                    fileCrypt.get().decryptDataWithIVAtFirst(dataBaseContent)!!
+                    kryptCryptographyHelper.get().decryptBytes(
+                        dataBaseContent.getAfterIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE),
+                        decryptInitialVector
+                    ).getOrThrow()
                 )
             )
 
@@ -59,10 +70,12 @@ class RestoreRepository @Inject constructor(
                             currentFile.filePath,
                             true
                         )
+
                         FileTypeEnum.Video -> fileUtils.generateFilePathForMedia(
                             currentFile.filePath,
                             false
                         )
+
                         FileTypeEnum.Text -> fileUtils.generateTextFilePath()
                         FileTypeEnum.Audio -> fileUtils.getRealFilePathForRecordedVoice()
                     }

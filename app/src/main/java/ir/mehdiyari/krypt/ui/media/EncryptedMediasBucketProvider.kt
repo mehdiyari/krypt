@@ -5,7 +5,7 @@ import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.MediaBucket
 import ir.mehdiyari.fallery.repo.AbstractMediaBucketProvider
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class EncryptedMediasBucketProvider @Inject constructor(
     private val filesRepository: FilesRepository,
     private val filesUtilities: FilesUtilities,
-    private val fileCrypt: FileCrypt,
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val context: Application
 ) : AbstractMediaBucketProvider {
 
@@ -68,11 +68,11 @@ class EncryptedMediasBucketProvider @Inject constructor(
         return list
     }
 
-    private fun getFirstThumbnail(thumb: String?): String? =
+    private suspend fun getFirstThumbnail(thumb: String?): String? =
         thumb?.let {
             val finalPath = filesUtilities.generateStableNameFilePathForMediaThumbnail(it)
             if (!File(finalPath).exists()) {
-                if (fileCrypt.decryptFileToPath(it, finalPath)) {
+                if (kryptCryptographyHelper.decryptFile(it, finalPath).isSuccess) {
                     finalPath
                 } else {
                     null

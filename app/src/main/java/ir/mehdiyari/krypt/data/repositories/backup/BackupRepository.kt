@@ -1,6 +1,8 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.combineWith
 import ir.mehdiyari.krypt.crypto.getBestBufferSizeForFile
 import ir.mehdiyari.krypt.crypto.toByteArray
 import ir.mehdiyari.krypt.crypto.toUtf8Bytes
@@ -16,8 +18,11 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import javax.crypto.Cipher
 import javax.crypto.CipherOutputStream
+import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
 class BackupRepository @Inject constructor(
@@ -27,7 +32,9 @@ class BackupRepository @Inject constructor(
     private val currentUser: CurrentUser,
     private val dbBackupModelJsonAdapter: DBBackupModelJsonAdapter,
     private val fileUtils: FilesUtilities,
-    private val fileCrypt: FileCrypt
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
+    private val symmetricHelper: SymmetricHelper,
+    private val key: dagger.Lazy<SecretKey>,
 ) {
 
     /**
@@ -45,7 +52,9 @@ class BackupRepository @Inject constructor(
         val backupFilePath = fileUtils.generateBackupFilePath(currentUser.accountName!!)
         val backupFile = File(backupFilePath)
 
-        val (cipher, initVector) = fileCrypt.getCipherAndInitVector()
+        val (cipher, initVector) = symmetricHelper.getAESCipher() to symmetricHelper.createInitVector()
+        cipher.init(Cipher.ENCRYPT_MODE, key.get(), IvParameterSpec(initVector))
+
         FileOutputStream(backupFile).use { backupStream ->
 
             // write init vector to raw stream
@@ -54,8 +63,14 @@ class BackupRepository @Inject constructor(
             // create cipher stream in top of normal stream
             CipherOutputStream(backupStream, cipher).use { encryptedBackupStream ->
 
+                val encryptInitVector = symmetricHelper.createInitVector()
                 val dbEncryptedBytes =
-                    fileCrypt.encryptDataWithIVAtFirst(createDBBackupAsBytes(user, files))
+                    encryptInitVector.combineWith(
+                        kryptCryptographyHelper.encryptBytes(
+                            createDBBackupAsBytes(user, files),
+                            encryptInitVector
+                        ).getOrThrow()
+                    )
 
                 // write size and encrypted content of db backup to [encryptedBackupStream]
                 encryptedBackupStream.write(dbEncryptedBytes.size.toLong().toByteArray())
