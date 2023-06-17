@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.media.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher

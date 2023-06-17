@@ -1,7 +1,8 @@
-package ir.mehdiyari.krypt.crypto
+package ir.mehdiyari.krypt.crypto.impl
 
 import ir.mehdiyari.krypt.crypto.api.ByteCryptography
 import ir.mehdiyari.krypt.crypto.api.FileCryptography
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import javax.crypto.SecretKey
 import javax.inject.Inject
 

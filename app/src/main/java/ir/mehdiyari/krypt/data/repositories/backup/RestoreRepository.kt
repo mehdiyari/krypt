@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
 import ir.mehdiyari.krypt.crypto.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.crypto.getAfterIndex
 import ir.mehdiyari.krypt.crypto.getBeforeIndex
 import ir.mehdiyari.krypt.crypto.getBestBufferSizeForFile

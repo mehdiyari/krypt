@@ -1,8 +1,8 @@
 package ir.mehdiyari.krypt.utils
 
 import ir.mehdiyari.krypt.crypto.Base64
-import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
 import ir.mehdiyari.krypt.crypto.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.crypto.combineWith
 import ir.mehdiyari.krypt.crypto.getAfterIndex
 import ir.mehdiyari.krypt.crypto.getBeforeIndex

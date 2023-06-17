@@ -1,6 +1,5 @@
 package ir.mehdiyari.krypt.crypto.impl
 
-import ir.mehdiyari.krypt.crypto.BUFFER_SIZE
 import ir.mehdiyari.krypt.crypto.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.api.FileCryptography
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO

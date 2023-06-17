@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.media
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.Media
 import ir.mehdiyari.fallery.repo.AbstractBucketContentProvider
-import ir.mehdiyari.krypt.crypto.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.utils.FilesUtilities
