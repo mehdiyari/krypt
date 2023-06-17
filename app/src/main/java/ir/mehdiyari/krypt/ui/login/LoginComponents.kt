@@ -2,7 +2,12 @@ package ir.mehdiyari.krypt.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.DropdownMenuItem
@@ -44,39 +49,61 @@ fun LoginFields(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .padding(bottom = 60.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Image(
             painter = painterResource(R.drawable.krypt),
             contentDescription = stringResource(id = R.string.splash_content_description),
             contentScale = ContentScale.Fit,
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier
+                .size(100.dp)
         )
 
         DropDownTextField(
-            items = usernames, selectedItem = selectedUserName, onItemChanged = onUserNameChanged
+            items = usernames,
+            selectedItem = selectedUserName,
+            onItemChanged = onUserNameChanged,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 5.dp)
         )
 
-        PasswordTextField(password, onPasswordChanged)
+        PasswordTextField(
+            password,
+            onPasswordChanged,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
+        )
     }
 }
 
 @Composable
-fun CrateAccountButton(onCreateAccountClick: () -> Unit, modifier: Modifier) {
+@Preview
+fun CrateAccountButton(
+    onCreateAccountClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
+) {
     ExtendedFloatingActionButton(
         onClick = { onCreateAccountClick() },
         containerColor = MaterialTheme.colorScheme.secondary,
         contentColor = MaterialTheme.colorScheme.onSecondary,
-        modifier = modifier
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
     ) {
         Text(text = stringResource(id = R.string.button_create_new_account))
     }
 }
 
 @Composable
+@Preview
 fun LoginButton(
-    onClick: () -> Unit, modifier: Modifier = Modifier
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     ExtendedFloatingActionButton(
         onClick = onClick,
@@ -89,7 +116,8 @@ fun LoginButton(
         text = { Text(text = stringResource(id = R.string.button_login)) },
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
-        modifier = modifier
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp)
     )
 }
 
@@ -101,16 +129,17 @@ fun DropDownTextField(
     onItemChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     var expanded by remember { mutableStateOf(false) }
-
-    ExposedDropdownMenuBox(modifier = modifier,
+    ExposedDropdownMenuBox(modifier = modifier.fillMaxWidth(),
         expanded = expanded,
         onExpandedChange = {
             expanded = !expanded
         }) {
+
         TextField(
-            modifier = Modifier.menuAnchor(),
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth(),
             value = selectedItem,
             onValueChange = { },
             readOnly = true,
@@ -123,14 +152,20 @@ fun DropDownTextField(
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
         )
 
-        ExposedDropdownMenu(expanded = expanded, onDismissRequest = {
-            expanded = false
-        }) {
+        ExposedDropdownMenu(
+            modifier = Modifier.fillMaxWidth(),
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            }) {
             items.forEach { item ->
-                DropdownMenuItem(text = { Text(text = item) }, onClick = {
-                    onItemChanged(item)
-                    expanded = false
-                })
+                DropdownMenuItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = { Text(text = item) },
+                    onClick = {
+                        onItemChanged(item)
+                        expanded = false
+                    })
             }
         }
     }
