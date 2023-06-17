@@ -29,7 +29,7 @@ class RestoreRepositoryImpl(
     private val filesDao: FilesDao,
 ) : RestoreRepository {
 
-    override suspend fun restoreAll(backupFile: String, key: SecretKey): Result<Boolean> {
+    override suspend fun restoreAll(backupFile: String, key: SecretKey): Result<Unit> {
         val newBackupPath = fileUtils.generateRestoreFilePath()
         if (fileCryptography.decryptFile(backupFile, newBackupPath, key).isFailure) {
             return Result.failure(DecryptException("Error in Decrypt backup file with given key."))
