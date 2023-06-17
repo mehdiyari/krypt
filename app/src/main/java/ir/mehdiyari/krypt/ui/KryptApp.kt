@@ -14,14 +14,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ir.mehdiyari.krypt.ui.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.ui.login.loginScreen
 import ir.mehdiyari.krypt.ui.login.navigateToLogin
+import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 import ir.mehdiyari.krypt.ui.splash.splashScreen
 
 @Composable
-fun KryptApp() {
+fun KryptApp(
+    kryptAppState: KryptAppState = rememberKryptAppState()
+) {
 
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -36,7 +40,7 @@ fun KryptApp() {
                 .padding(padding)
         ) {
 
-            KryptNaveHost(navController = navController,
+            KryptNaveHost(kryptAppState = kryptAppState,
                 onShowSnackbar = { message, action ->
                     snackbarHostState.showSnackbar(
                         message = message,

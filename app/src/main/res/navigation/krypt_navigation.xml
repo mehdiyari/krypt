@@ -4,20 +4,6 @@
     android:id="@+id/krypt_navigation"
     app:startDestination="@id/homeFragment">
 
-
-    <fragment
-        android:id="@+id/createAccountFragment"
-        android:name="ir.mehdiyari.krypt.ui.logout.CreateAccountFragment"
-        android:label="CreateAccountFragment">
-        <action
-            android:id="@+id/action_createAccountFragment_to_splashFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/krypt_navigation"
-            app:popUpToInclusive="true" />
-    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="ir.mehdiyari.krypt.ui.home.HomeFragment"
