@@ -1,9 +1,12 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.utils.Base64
+import ir.mehdiyari.krypt.crypto.utils.HashingUtils
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.utils.combineWith
 import ir.mehdiyari.krypt.crypto.utils.getBestBufferSizeForFile
+import ir.mehdiyari.krypt.crypto.utils.getBytesBetweenIndexes
 import ir.mehdiyari.krypt.crypto.utils.toByteArray
 import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.data.account.AccountEntity
@@ -41,10 +44,19 @@ class BackupRepository @Inject constructor(
      *  Backup from all data's in db with all encrypted files.
      *
      *  Output File Schema:
-     *  [^IV[EN_PART:[^DB_SIZE, ^EN_DB, ^F_SIZE, ^EN_F_CONTENT, ^F_SIZE, ^EN_F_CONTENT]]]
+     *  [Salt[^IV[EN_PART:[^DB_SIZE, ^EN_DB, ^F_SIZE, ^EN_F_CONTENT, ^F_SIZE, ^EN_F_CONTENT]]]]
      */
     suspend fun backupAll(): Boolean {
         val user = accountsDao.getAccountWithName(currentUser.accountName!!)!!
+        val salt =
+            Base64.decode(user.encryptedName)
+                .let { name ->
+                    name.getBytesBetweenIndexes(
+                        start = name.size - (SymmetricHelper.INITIALIZE_VECTOR_SIZE + HashingUtils.SALT_SIZE),
+                        end = name.size - SymmetricHelper.INITIALIZE_VECTOR_SIZE
+                    )
+                }
+
         val files = filesDao.getAllFiles(currentUser.accountName!!).filter {
             File(it.filePath).exists()
         }
@@ -56,6 +68,9 @@ class BackupRepository @Inject constructor(
         cipher.init(Cipher.ENCRYPT_MODE, key.get(), IvParameterSpec(initVector))
 
         FileOutputStream(backupFile).use { backupStream ->
+
+            // write salt
+            backupStream.write(salt)
 
             // write init vector to raw stream
             backupStream.write(initVector)
