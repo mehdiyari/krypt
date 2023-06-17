@@ -1,37 +1,43 @@
-package ir.mehdiyari.krypt.data.repositories.backup
+package ir.mehdiyari.krypt.data.repositories.restore
 
 import ir.mehdiyari.krypt.crypto.api.ByteCryptography
 import ir.mehdiyari.krypt.crypto.api.FileCryptography
+import ir.mehdiyari.krypt.crypto.exceptions.DecryptException
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.utils.getAfterIndex
 import ir.mehdiyari.krypt.crypto.utils.getBeforeIndex
 import ir.mehdiyari.krypt.crypto.utils.getBestBufferSizeForFile
 import ir.mehdiyari.krypt.crypto.utils.toLong
+import ir.mehdiyari.krypt.data.account.AccountsDao
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
+import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.data.repositories.backup.DBBackupModel
+import ir.mehdiyari.krypt.data.repositories.backup.DBBackupModelJsonAdapter
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import javax.crypto.SecretKey
 
-
-class RestoreRepository(
+class RestoreRepositoryImpl(
     private val fileUtils: FilesUtilities,
     private val fileCryptography: FileCryptography,
     private val bytesCryptography: ByteCryptography,
     private val dbBackupModelJsonAdapter: DBBackupModelJsonAdapter,
-    private val restoreKey: SecretKey,
-) {
+    private val accountsDao: AccountsDao,
+    private val filesDao: FilesDao,
+) : RestoreRepository {
 
-    suspend fun restoreAll(backupFile: String): Boolean {
+    override suspend fun restoreAll(backupFile: String, key: SecretKey): Result<Boolean> {
         val newBackupPath = fileUtils.generateRestoreFilePath()
-        if (fileCryptography.decryptFile(backupFile, newBackupPath, restoreKey).isFailure) {
-            return false
+        if (fileCryptography.decryptFile(backupFile, newBackupPath, key).isFailure) {
+            return Result.failure(DecryptException("Error in Decrypt backup file with given key."))
         }
 
         val file = File(newBackupPath)
         if (!file.exists()) {
-            return false
+            return Result.failure(FileNotFoundException("Decrypt finished but the output could not found. $newBackupPath"))
         }
 
         FileInputStream(file).use { inputStream ->
@@ -48,7 +54,7 @@ class RestoreRepository(
                     bytesCryptography.decryptBytes(
                         dataBaseContent.getAfterIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE),
                         decryptInitialVector,
-                        restoreKey,
+                        key,
                     ).getOrThrow()
                 )
             )
@@ -109,9 +115,22 @@ class RestoreRepository(
                     fileList.add(fileId to path)
                 }
             }
+
+            createDB(dbBackupModel.copy(files = dbBackupModel.files.map { fileEntity ->
+                fileList.firstOrNull { it.first == fileEntity.id }?.let {
+                    fileEntity.copy(filePath = it.second)
+                } ?: fileEntity.copy(filePath = "")
+            }))
         }
 
-        return true
+        return Result.success(true)
+    }
+
+    private suspend fun createDB(
+        dbBackupModel: DBBackupModel,
+    ) {
+        accountsDao.insert(dbBackupModel.account)
+        filesDao.insertFiles(dbBackupModel.files)
     }
 
     private fun getDataBaseModel(dpContent: String): DBBackupModel = dbBackupModelJsonAdapter
