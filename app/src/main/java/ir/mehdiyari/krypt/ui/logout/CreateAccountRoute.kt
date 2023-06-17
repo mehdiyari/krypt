@@ -2,8 +2,13 @@ package ir.mehdiyari.krypt.ui.logout
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -76,7 +81,12 @@ fun CreateAccountScreen(
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
+    ) {
         CreateAccountItems(
             userName = userName,
             onUserNameChanged = {
@@ -87,8 +97,9 @@ fun CreateAccountScreen(
             confirmPassword = confirmPassword,
             onConfirmPasswordChanged = { confirmPassword = it },
             modifier = Modifier
+                .fillMaxHeight()
                 .align(Alignment.Center)
-                .padding(horizontal = 24.dp)
+                .padding(start = 20.dp, end = 20.dp)
         )
 
         ExtendedFloatingActionButton(
@@ -104,6 +115,7 @@ fun CreateAccountScreen(
             text = { Text(text = stringResource(id = R.string.button_create_account)) },
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 20.dp, bottom = 20.dp)

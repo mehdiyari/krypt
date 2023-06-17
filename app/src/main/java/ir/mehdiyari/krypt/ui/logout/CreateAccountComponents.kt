@@ -1,12 +1,13 @@
 package ir.mehdiyari.krypt.ui.logout
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,32 +28,6 @@ import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.utils.KryptTheme
-
-
-@Composable
-@Preview
-fun CreateAccountButton(
-    createAccountClick: () -> Unit = {}
-) {
-    Box(
-        modifier = Modifier.padding(20.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = {
-                createAccountClick.invoke()
-            },
-            icon = {
-                Icon(
-                    Icons.Filled.ArrowForward,
-                    contentDescription = stringResource(id = R.string.button_create_account)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.button_create_account)) },
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    }
-}
 
 @Composable
 fun CreateAccountItems(
@@ -115,6 +90,7 @@ fun CreateAccountItems(
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
+        Spacer(modifier = modifier.size(100.dp))
     }
 }
 
