@@ -2,9 +2,10 @@ package ir.mehdiyari.krypt.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import ir.mehdiyari.krypt.ui.KryptAppState
+import ir.mehdiyari.krypt.ui.home.homeScreen
+import ir.mehdiyari.krypt.ui.home.navigateToHome
 import ir.mehdiyari.krypt.ui.login.loginScreen
 import ir.mehdiyari.krypt.ui.login.navigateToLogin
 import ir.mehdiyari.krypt.ui.logout.createAccountScreen
@@ -33,11 +34,21 @@ fun KryptNaveHost(
 
         loginScreen(onCreateAccountClicked = {
             navController.navigateToCreateAccount()
-        }, onLoginSuccess = {}, showSnackBar = onShowSnackbar)
+        }, onLoginSuccess = {
+            navController.navigateToHome()
+        }, showSnackBar = onShowSnackbar)
 
         createAccountScreen(onCreateAccountSuccess = {
-
+            navController.navigateToLogin()
         }, onShowSnackbar = onShowSnackbar)
+
+        homeScreen(
+            openTextsScreen = {},
+            openMediaScreen = { mediaFragmentAction, sharedMediaListModel -> },
+            openMusicAndAudioScreen = {},
+            openAudioRecorderScreen = {},
+            onShowSnackbar = onShowSnackbar
+        )
 
     }
 }

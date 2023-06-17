@@ -1,19 +1,25 @@
 package ir.mehdiyari.krypt.ui.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -38,8 +44,7 @@ fun LoginFields(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Image(
@@ -50,9 +55,7 @@ fun LoginFields(
         )
 
         DropDownTextField(
-            items = usernames,
-            selectedItem = selectedUserName,
-            onItemChanged = onUserNameChanged
+            items = usernames, selectedItem = selectedUserName, onItemChanged = onUserNameChanged
         )
 
         PasswordTextField(password, onPasswordChanged)
@@ -73,8 +76,7 @@ fun CrateAccountButton(onCreateAccountClick: () -> Unit, modifier: Modifier) {
 
 @Composable
 fun LoginButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     ExtendedFloatingActionButton(
         onClick = onClick,
@@ -102,30 +104,33 @@ fun DropDownTextField(
 
     var expanded by remember { mutableStateOf(false) }
 
-    ExposedDropdownMenuBox(modifier = modifier, expanded = expanded, onExpandedChange = {
-        expanded = !expanded
-    }) {
+    ExposedDropdownMenuBox(modifier = modifier,
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded
+        }) {
         TextField(
+            modifier = Modifier.menuAnchor(),
             value = selectedItem,
             onValueChange = { },
+            readOnly = true,
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(
+                    expanded = expanded
+                )
+            },
             label = { Text(text = stringResource(id = R.string.account_name)) },
-            textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground)
+            textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
         )
 
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = {
-                expanded = false
-            }
-        ) {
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = {
+            expanded = false
+        }) {
             items.forEach { item ->
-                DropdownMenuItem(
-                    text = { Text(text = item) },
-                    onClick = {
-                        onItemChanged(item)
-                        expanded = false
-                    }
-                )
+                DropdownMenuItem(text = { Text(text = item) }, onClick = {
+                    onItemChanged(item)
+                    expanded = false
+                })
             }
         }
     }
@@ -136,8 +141,7 @@ fun DropDownTextField(
 fun LoginFieldsPreview() {
     KryptTheme {
         Surface {
-            LoginFields(
-                usernames = List(5) { "UserName$it" },
+            LoginFields(usernames = List(5) { "UserName$it" },
                 selectedUserName = "UserName0",
                 onUserNameChanged = {},
                 password = "12345",

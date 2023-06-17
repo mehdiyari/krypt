@@ -1,5 +1,7 @@
 package ir.mehdiyari.krypt.ui.login
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -21,6 +23,7 @@ fun NavGraphBuilder.loginScreen(
             onCreateAccountClicked = onCreateAccountClicked,
             onLoginSuccess = onLoginSuccess,
             showSnackBar = showSnackBar,
+            modifier = Modifier.fillMaxSize()
         )
     }
 

@@ -31,27 +31,30 @@ fun LoginRoute(
     val userNames by viewModel.allUserNamesState.collectAsStateWithLifecycle()
     val loginState by viewModel.loginState.collectAsStateWithLifecycle(null)
 
-    when (loginState) {
-        LoginViewState.SuccessfulLogin -> onLoginSuccess()
-        is LoginViewState.FailureLogin -> {
-            val message =
-                LocalContext.current.getString((loginState as LoginViewState.FailureLogin).errorId)
-            LaunchedEffect(key1 = loginState) {
+    val context = LocalContext.current
+    LaunchedEffect(key1 = loginState) {
+        when (loginState) {
+            LoginViewState.SuccessfulLogin -> onLoginSuccess()
+            is LoginViewState.FailureLogin -> {
+                val message = context.getString((loginState as LoginViewState.FailureLogin).errorId)
                 showSnackBar(message, null)
             }
-        }
 
-        null -> Unit
+            null -> Unit
+        }
     }
 
-    LoginScreen(
-        userNames,
-        onLoginClicked = { userName, password ->
-            viewModel.login(userName, password)
-        },
-        onCreateAccountClicked = onCreateAccountClicked,
-        modifier = modifier
-    )
+    if (userNames.isNotEmpty()) {
+        LoginScreen(
+            userNames,
+            onLoginClicked = { userName, password ->
+                viewModel.login(userName, password)
+            },
+            onCreateAccountClicked = onCreateAccountClicked,
+            modifier = modifier
+        )
+    }
+
 }
 
 @Composable
@@ -61,7 +64,7 @@ fun LoginScreen(
     onCreateAccountClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var userName by remember { mutableStateOf(accounts[0]) }
+    var userName by remember { mutableStateOf(accounts.first()) }
     var password by remember { mutableStateOf("") }
 
     Box(modifier = modifier) {

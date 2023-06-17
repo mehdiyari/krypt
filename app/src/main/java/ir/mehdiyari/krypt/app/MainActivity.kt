@@ -42,14 +42,14 @@ class MainActivity : ComponentActivity(), AppLockerStopApi {
                             ?.findNavController()
                             ?.currentDestination?.id
 
-                    if (!listOf(
+//                    if (!listOf<String>(
 //                            R.id.splashFragment,
 //                            R.id.loginFragment,
-                            R.id.createAccountFragment
-                        ).contains(currentDestination)
-                    ) {
-                        restartApp()
-                    }
+//                            R.id.createAccountFragment
+//                        ).contains(currentDestination)
+//                    ) {
+//                        restartApp()
+//                    }
                 }
             }
         }

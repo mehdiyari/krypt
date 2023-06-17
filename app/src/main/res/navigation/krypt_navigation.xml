@@ -2,47 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/krypt_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/photosFragment">
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="ir.mehdiyari.krypt.ui.home.HomeFragment"
-        android:label="HomeFragment">
-        <action
-            android:id="@+id/action_homeFragment_to_photosFragment"
-            app:destination="@id/photosFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_homeFragment_to_addTextFragment"
-            app:destination="@id/addTextFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_homeFragment_to_textsFragment"
-            app:destination="@id/textsFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_home_to_settingsFragment"
-            app:destination="@+id/settingsFramgnet"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_homeFragment_to_dataFragment"
-            app:destination="@id/dataFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_homeFragment_to_recordVoiceFragment"
-            app:destination="@id/recordVoiceFragment" />
-
-        <action
-            android:id="@+id/action_homeFragment_to_audios_fragment"
-            app:destination="@+id/audiosFragment" />
-
-    </fragment>
     <fragment
         android:id="@+id/photosFragment"
         android:name="ir.mehdiyari.krypt.ui.media.MediaFragment"
