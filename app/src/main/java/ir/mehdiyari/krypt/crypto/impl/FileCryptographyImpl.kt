@@ -6,6 +6,7 @@ import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.crypto.Cipher
@@ -24,9 +25,15 @@ class FileCryptographyImpl @Inject constructor(
         sourcePath: String,
         destinationPath: String,
         key: SecretKey
+    ): Result<Unit> = encryptFile(FileInputStream(File(sourcePath)), destinationPath, key)
+
+    override suspend fun encryptFile(
+        stream: FileInputStream,
+        destinationPath: String,
+        key: SecretKey
     ): Result<Unit> = withContext(ioDispatcher) {
         try {
-            FileInputStream(sourcePath).use { sourceInputStream ->
+            stream.use { sourceInputStream ->
                 val cipher = Cipher.getInstance(SymmetricHelper.AES_CBC_PKS5PADDING)
                 val initVector = symmetricHelper.createInitVector()
                 cipher.init(Cipher.ENCRYPT_MODE, key, IvParameterSpec(initVector))
@@ -56,16 +63,21 @@ class FileCryptographyImpl @Inject constructor(
         sourcePath: String,
         destinationPath: String,
         key: SecretKey
+    ): Result<Unit> = decryptFile(FileInputStream(File(sourcePath)), destinationPath, key)
+
+    override suspend fun decryptFile(
+        stream: FileInputStream,
+        destinationPath: String,
+        key: SecretKey
     ): Result<Unit> = withContext(ioDispatcher) {
         try {
             FileOutputStream(destinationPath).use { outputFileStream ->
                 val cipher = Cipher.getInstance(SymmetricHelper.AES_CBC_PKS5PADDING)
-                val realFileInputStream = FileInputStream(sourcePath)
                 val initVector = ByteArray(SymmetricHelper.INITIALIZE_VECTOR_SIZE)
-                realFileInputStream.read(initVector)
+                stream.read(initVector)
 
                 cipher.init(Cipher.DECRYPT_MODE, key, IvParameterSpec(initVector))
-                CipherInputStream(realFileInputStream, cipher).use { cipherInputStream ->
+                CipherInputStream(stream, cipher).use { cipherInputStream ->
                     val buffer = ByteArray(BUFFER_SIZE)
                     while (true) {
                         val count = cipherInputStream.read(buffer)
