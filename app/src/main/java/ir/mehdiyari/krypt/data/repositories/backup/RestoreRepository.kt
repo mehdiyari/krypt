@@ -1,6 +1,7 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.api.ByteCryptography
+import ir.mehdiyari.krypt.crypto.api.FileCryptography
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.utils.getAfterIndex
 import ir.mehdiyari.krypt.crypto.utils.getBeforeIndex
@@ -11,18 +12,20 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import javax.inject.Inject
+import javax.crypto.SecretKey
 
 
-class RestoreRepository @Inject constructor(
+class RestoreRepository(
     private val fileUtils: FilesUtilities,
-    private val kryptCryptographyHelper: dagger.Lazy<KryptCryptographyHelper>,
+    private val fileCryptography: FileCryptography,
+    private val bytesCryptography: ByteCryptography,
     private val dbBackupModelJsonAdapter: DBBackupModelJsonAdapter,
+    private val restoreKey: SecretKey,
 ) {
 
     suspend fun restoreAll(backupFile: String): Boolean {
         val newBackupPath = fileUtils.generateRestoreFilePath()
-        if (kryptCryptographyHelper.get().decryptFile(backupFile, newBackupPath).isFailure) {
+        if (fileCryptography.decryptFile(backupFile, newBackupPath, restoreKey).isFailure) {
             return false
         }
 
@@ -42,9 +45,10 @@ class RestoreRepository @Inject constructor(
                 dataBaseContent.getBeforeIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE)
             val dbBackupModel = getDataBaseModel(
                 String(
-                    kryptCryptographyHelper.get().decryptBytes(
+                    bytesCryptography.decryptBytes(
                         dataBaseContent.getAfterIndex(SymmetricHelper.INITIALIZE_VECTOR_SIZE),
-                        decryptInitialVector
+                        decryptInitialVector,
+                        restoreKey,
                     ).getOrThrow()
                 )
             )
