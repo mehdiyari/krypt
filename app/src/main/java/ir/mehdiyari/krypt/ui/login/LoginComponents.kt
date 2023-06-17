@@ -2,6 +2,7 @@ package ir.mehdiyari.krypt.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -50,7 +51,6 @@ fun LoginFields(
 ) {
     Column(
         modifier = modifier
-            .padding(bottom = 60.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -79,6 +79,8 @@ fun LoginFields(
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
         )
+
+        Spacer(modifier = modifier.size(100.dp))
     }
 }
 
