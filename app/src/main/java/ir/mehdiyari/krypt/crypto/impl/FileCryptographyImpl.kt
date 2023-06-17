@@ -16,7 +16,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
-internal class FileCryptographyImpl @Inject constructor(
+class FileCryptographyImpl @Inject constructor(
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val symmetricHelper: SymmetricHelper,
 ) : FileCryptography {

@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.crypto.SecretKey
 import javax.inject.Inject
 
-internal class ByteCryptographyImpl @Inject constructor(
+class ByteCryptographyImpl @Inject constructor(
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val symmetricHelper: SymmetricHelper,
 ) : ByteCryptography {
