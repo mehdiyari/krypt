@@ -5,7 +5,7 @@ import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.crypto.toUtf8Bytes
+import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.CurrentUser
 import ir.mehdiyari.krypt.data.repositories.FilesRepository

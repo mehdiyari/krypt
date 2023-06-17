@@ -1,5 +1,7 @@
 package ir.mehdiyari.krypt.crypto
 
+import ir.mehdiyari.krypt.crypto.utils.HashingUtils
+import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
 import javax.inject.Inject
 
 class PasswordKeyGenerator @Inject constructor(
