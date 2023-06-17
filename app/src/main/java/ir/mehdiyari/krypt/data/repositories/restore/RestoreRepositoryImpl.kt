@@ -3,6 +3,7 @@ package ir.mehdiyari.krypt.data.repositories.restore
 import ir.mehdiyari.krypt.crypto.api.ByteCryptography
 import ir.mehdiyari.krypt.crypto.api.FileCryptography
 import ir.mehdiyari.krypt.crypto.exceptions.DecryptException
+import ir.mehdiyari.krypt.crypto.utils.HashingUtils
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.utils.getAfterIndex
 import ir.mehdiyari.krypt.crypto.utils.getBeforeIndex
@@ -31,7 +32,11 @@ class RestoreRepositoryImpl(
 
     override suspend fun restoreAll(backupFile: String, key: SecretKey): Result<Unit> {
         val newBackupPath = fileUtils.generateRestoreFilePath()
-        if (fileCryptography.decryptFile(backupFile, newBackupPath, key).isFailure) {
+        val backupStream = FileInputStream(File(backupFile))
+        val salt = ByteArray(HashingUtils.SALT_SIZE)
+        backupStream.read(salt)
+
+        if (fileCryptography.decryptFile(backupStream, newBackupPath, key).isFailure) {
             return Result.failure(DecryptException("Error in Decrypt backup file with given key."))
         }
 
@@ -123,7 +128,7 @@ class RestoreRepositoryImpl(
             }))
         }
 
-        return Result.success(true)
+        return Result.success(Unit)
     }
 
     private suspend fun createDB(
