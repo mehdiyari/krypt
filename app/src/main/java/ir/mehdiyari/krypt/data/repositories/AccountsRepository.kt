@@ -74,7 +74,8 @@ class AccountsRepository @Inject constructor(
         val nameData = Base64.decode(account.encryptedName)
         val iv = nameData.getAfterIndex(nameData.size - 16)
         val salt = nameData.getBytesBetweenIndexes(
-            nameData.size - 32, nameData.size - 16
+            nameData.size - (SymmetricHelper.INITIALIZE_VECTOR_SIZE + HashingUtils.SALT_SIZE),
+            nameData.size - SymmetricHelper.INITIALIZE_VECTOR_SIZE
         )
 
         val encryptedName = nameData.getBeforeIndex(nameData.size - 32)
