@@ -12,6 +12,8 @@ import ir.mehdiyari.krypt.ui.logout.createAccountScreen
 import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 import ir.mehdiyari.krypt.ui.splash.splashScreen
+import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
+import ir.mehdiyari.krypt.ui.text.list.textsScreen
 
 @Composable
 fun KryptNaveHost(
@@ -43,12 +45,14 @@ fun KryptNaveHost(
         }, onShowSnackbar = onShowSnackbar)
 
         homeScreen(
-            openTextsScreen = {},
+            openTextsScreen = { navController.navigateToTexts() },
             openMediaScreen = { mediaFragmentAction, sharedMediaListModel -> },
             openMusicAndAudioScreen = {},
             openAudioRecorderScreen = {},
             onShowSnackbar = onShowSnackbar
         )
+
+        textsScreen(onTextClick = {}, onNewNoteClick = {})
 
     }
 }

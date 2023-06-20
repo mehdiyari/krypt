@@ -1,160 +1,114 @@
 package ir.mehdiyari.krypt.ui.text.list
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun TextsComposeView(
-    viewModel: TextsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onNavigationClickIcon: () -> Unit = {},
-    newNoteClick: () -> Unit = {},
-    onCardsClick: (id: Long) -> Unit = { _ -> }
-) {
-    KryptTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(text = stringResource(id = R.string.texts_library), fontSize = 18.sp)
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            onNavigationClickIcon()
-                        }) {
-                            Icon(Icons.Filled.ArrowBack, "")
-                        }
-                    }
-                )
-            }, content = {
-                val textLists = viewModel.textFilesList.collectAsState()
-                Row {
-                    TextsLazyList(textLists, onCardsClick)
-                }
-            })
 
-        NewNoteFab(newNoteClick)
-    }
+@Composable
+fun NewNoteFab(
+    newNoteClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ExtendedFloatingActionButton(
+        modifier = modifier,
+        onClick = {
+            newNoteClick()
+        },
+        icon = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.ic_pen),
+                contentDescription = stringResource(id = R.string.add_new_text)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.add_new_text)) },
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    )
 }
 
 @Composable
-@Preview
-private fun NewNoteFab(
-    newNoteClick: () -> Unit = {}
-) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(15.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = {
-                newNoteClick()
-            },
-            icon = {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.ic_pen),
-                    contentDescription = stringResource(id = R.string.add_new_text)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.add_new_text)) },
-            containerColor =  MaterialTheme.colorScheme.primary,
-            contentColor =  MaterialTheme.colorScheme.onPrimary
-        )
-    }
-}
-
-@Composable
-@Preview
-fun TextsLazyList(
-    textLists: State<List<TextEntity>> = mutableStateOf(
-        listOf(
-            TextEntity(0, "Test1", "Content1"),
-            TextEntity(1, "Test2", "Content2"),
-            TextEntity(2, "Test3", "Content3")
-        )
-    ),
-    onCardsClick: (id: Long) -> Unit = { _ -> }
-) {
-    LazyColumn(
-        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-        contentPadding = PaddingValues(bottom = 85.dp),
-    ) {
-        items(textLists.value) { textEntity ->
-            TextCard(textEntity, onCardsClick)
-        }
-    }
-}
-
-@Composable
-@Preview
 fun TextCard(
-    textEntity: TextEntity = TextEntity(1, "Hello World", "This is Test Content...."),
-    onCardsClick: (id: Long) -> Unit = { _ -> }
+    text: TextEntity,
+    onTextClick: (id: Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp, 6.dp, 8.dp, 6.dp)
+        modifier = modifier
             .selectable(
                 selected = false,
-                onClick = { onCardsClick.invoke(textEntity.id) }),
+                onClick = { onTextClick.invoke(text.id) }),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(all = 8.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_pen),
                 modifier = Modifier
-                    .size(45.dp)
-                    .padding(10.dp, 10.dp, 5.dp, 0.dp),
-                contentDescription = "",
+                    .size(32.dp),
+                contentDescription = null,
                 colorFilter = ColorFilter.tint(Color.Gray)
             )
 
             Column(
                 modifier = Modifier
-                    .padding(4.dp, 10.dp, 8.dp, 10.dp)
-                    .fillMaxWidth(),
+                    .padding(start = 4.dp, end = 8.dp)
             ) {
                 Text(
-                    text = textEntity.title,
+                    text = text.title,
                     maxLines = 1
                 )
                 Text(
-                    text = textEntity.content,
+                    text = text.content,
                     fontSize = 12.sp,
                     color = Color.Gray,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun TextCardPreview() {
+    KryptTheme {
+        Surface {
+            TextCard(
+                text = TextEntity(id = 10001L, title = "Title", content = "Text"),
+                onTextClick = {},
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
