@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.text.add
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,10 +19,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTextViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val textFilesUtils: TextFilesUtils,
     private val filesRepository: FilesRepository,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+
+    val addTextArgs = AddTextArgs(savedStateHandle)
 
     private val _saveNoteState = MutableStateFlow<Boolean?>(null)
     val saveNoteState = _saveNoteState.asStateFlow()
@@ -34,6 +38,17 @@ class AddTextViewModel @Inject constructor(
 
     private val _argsTextViewState = MutableStateFlow<AddTextArgsViewState?>(null)
     val argsTextViewState = _argsTextViewState.asStateFlow()
+
+    init {
+        val textId = addTextArgs.textId
+        if (textId != -1L) {
+            viewModelScope.launch(ioDispatcher) {
+                filesRepository.getFileById(textId).also {
+                    handleInputTextFileEntity(it, textId)
+                }
+            }
+        }
+    }
 
     fun saveNote(title: String, content: String) {
         if (title.trim().isEmpty()) {
@@ -102,16 +117,6 @@ class AddTextViewModel @Inject constructor(
                     _saveNoteState.emit(true)
                 } else {
                     _saveNoteState.emit(false)
-                }
-            }
-        }
-    }
-
-    fun handleInputTextID(textId: Long) {
-        if (textId != -1L) {
-            viewModelScope.launch(ioDispatcher) {
-                filesRepository.getFileById(textId).also {
-                    handleInputTextFileEntity(it, textId)
                 }
             }
         }

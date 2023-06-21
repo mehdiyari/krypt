@@ -17,32 +17,6 @@
             app:argType="ir.mehdiyari.krypt.ui.media.SharedMediaListModel"
             app:nullable="true" />
     </fragment>
-    <fragment
-        android:id="@+id/textsFragment"
-        android:name="ir.mehdiyari.krypt.ui.text.list.TextsFragment"
-        android:label="TextsFragment">
-        <action
-            android:id="@+id/action_textsFragment_to_addTextFragment"
-            app:destination="@id/addTextFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/addTextFragment"
-        android:name="ir.mehdiyari.krypt.ui.text.add.AddTextFragment"
-        android:label="AddTextFragment">
-        <argument
-            android:name="textId"
-            android:defaultValue="-1L"
-            app:argType="long" />
-        <argument
-            android:name="shared_text"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="true" />
-
-
-    </fragment>
 
     <fragment
         android:id="@+id/settingsFramgnet"

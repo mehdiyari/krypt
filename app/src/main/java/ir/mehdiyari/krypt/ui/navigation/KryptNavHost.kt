@@ -12,6 +12,8 @@ import ir.mehdiyari.krypt.ui.logout.createAccountScreen
 import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 import ir.mehdiyari.krypt.ui.splash.splashScreen
+import ir.mehdiyari.krypt.ui.text.add.addTextScreen
+import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
 import ir.mehdiyari.krypt.ui.text.list.textsScreen
 
@@ -52,7 +54,13 @@ fun KryptNaveHost(
             onShowSnackbar = onShowSnackbar
         )
 
-        textsScreen(onTextClick = {}, onNewNoteClick = {})
+        textsScreen(onTextClick = {
+            navController.navigateToAddText(textId = it)
+        }, onNewNoteClick = {
+            navController.navigateToAddText()
+        })
+
+        addTextScreen()
 
     }
 }
