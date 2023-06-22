@@ -38,7 +38,8 @@ fun HomeItemCard(
     onCardClicked: (FileTypeEnum) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(modifier = modifier,
+    Card(
+        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(),
         onClick = {
@@ -50,18 +51,18 @@ fun HomeItemCard(
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-            Row {
+            Row(modifier = modifier.padding(top = 5.dp)) {
                 Image(
                     painter = painterResource(id = homeCardsModel.icon),
-                    contentDescription = "",
+                    contentDescription = stringResource(id = homeCardsModel.name),
                     modifier = Modifier
-                        .size(55.dp)
-                        .padding(10.dp, 0.dp, 0.dp, 0.dp),
+                        .size(60.dp)
+                        .padding(10.dp, 8.dp, 8.dp, 10.dp),
                     colorFilter = ColorFilter.tint(Color.Gray)
                 )
 
                 Column(
-                    modifier = Modifier.padding(3.dp, 9.dp, 4.dp, 0.dp),
+                    modifier = modifier.padding(top = 10.dp),
                 ) {
                     Text(text = stringResource(id = homeCardsModel.name))
                     Text(
