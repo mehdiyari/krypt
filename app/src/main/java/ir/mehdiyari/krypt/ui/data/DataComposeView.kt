@@ -1,6 +1,7 @@
 package ir.mehdiyari.krypt.ui.data
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -29,6 +31,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
+
 
 @Composable
 fun DataScreen(
@@ -50,7 +53,11 @@ fun DataScreen(
                 val backupList = viewModel.backups.collectAsState()
 
                 val deleteDialogState = remember { mutableStateOf(false to -1) }
-                BackupList(backupList, viewModel::onSaveBackup) {
+                val context = LocalContext.current
+                BackupList(backupList, {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    context.startActivity(intent)
+                }) {
                     deleteDialogState.value = true to it
                 }
 

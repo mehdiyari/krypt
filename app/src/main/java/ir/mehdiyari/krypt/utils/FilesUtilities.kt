@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.documentfile.provider.DocumentFile
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileNotFoundException
@@ -152,6 +153,11 @@ class FilesUtilities @Inject constructor(
 
     fun generateRestoreFilePath(): String =
         "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+
+    fun x(path: String) {
+        val file = DocumentFile.fromFile(File(path))
+
+    }
 
     fun copyBackupFileToKryptFolder(backupFilePath: String): String {
         return File(backupFilePath).let {

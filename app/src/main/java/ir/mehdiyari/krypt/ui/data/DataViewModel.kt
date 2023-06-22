@@ -102,6 +102,7 @@ class DataViewModel @Inject constructor(
 
                 _generalMessageFlow.emit(R.string.save_backup_file_successfylly)
             } catch (t: Throwable) {
+                t.printStackTrace()
                 if (t is SecurityException) {
                     _generalMessageFlow.emit(R.string.saving_backup_permission_error)
                 } else {
