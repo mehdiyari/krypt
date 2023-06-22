@@ -6,17 +6,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,38 +23,34 @@ import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 fun KryptApp(
     kryptAppState: KryptAppState = rememberKryptAppState()
 ) {
-
     val snackbarHostState = remember { SnackbarHostState() }
-
-    var openAddBottomSheet by remember { mutableStateOf(false) }
-    var openMenuBottomSheet by remember { mutableStateOf(false) }
     val addItemsBottomSheetState = rememberModalBottomSheetState()
     val mainMenuBottomSheetState = rememberModalBottomSheetState()
 
-    if (openAddBottomSheet) {
+    if (addItemsBottomSheetState.currentValue == SheetValue.Expanded) {
         AddBottomSheet(
             addItemsBottomSheetState,
             onSelectAddItemMenuItem = {
-//            when (it) {
-//                R.string.menu_data_usage -> navigateToDataUsageFragment()
-//                R.string.menu_change_password -> navigateToChangePasswordFragment()
-//                R.string.menu_settings -> navigateToSettingsFragment()
-//                R.string.menu_help ->         requireContext().openBrowser(Uri.parse(APP_DOMAIN))
-//            }
+                when (it) {
+                    R.string.menu_data_usage -> TODO("navigateToDataUsageFragment")
+                    R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
+                    R.string.menu_settings -> TODO("navigateToSettingsFragment")
+                    R.string.menu_help -> TODO("openBrowser")
+                }
             },
             kryptAppState.coroutineScope
         )
     }
 
-    if (openMenuBottomSheet) {
+    if (mainMenuBottomSheetState.currentValue == SheetValue.Expanded) {
         MainMenuBottomSheet(
             mainMenuBottomSheetState,
             onSelectMainMenuItem = {
-//            when (it) {
-//                R.string.add_media -> navigateToMediasFragment(MediaFragmentAction.PICK_MEDIA)
-//                R.string.add_audio -> navigateToAudioRecorderFragment()
-//                R.string.add_text -> navigateToNewTextFragment()
-//            }
+                when (it) {
+                    R.string.add_media -> TODO("navigateToMediasFragment")
+                    R.string.add_audio -> TODO("navigateToAudioRecorderFragment")
+                    R.string.add_text -> TODO("navigateToNewTextFragment")
+                }
             },
             kryptAppState.coroutineScope
         )
@@ -70,8 +65,7 @@ fun KryptApp(
                     mainMenuBottomSheetState,
                     kryptAppState.coroutineScope,
                     onLockClicked = {
-//                        viewModel.lockKrypt()
-//                        (requireActivity() as MainActivity).restartApp()
+                        TODO("viewModel.lockKrypt(), restartApp")
                     })
             }
         },

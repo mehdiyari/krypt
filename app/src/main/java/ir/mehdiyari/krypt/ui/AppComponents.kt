@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -139,12 +140,18 @@ fun MainMenuBottomSheet(
                         }
                     }),
                     headlineContent = {},
-                    trailingContent = { Text(stringResource(id = it.second)) },
                     leadingContent = {
-                        Icon(
-                            painterResource(id = it.first),
-                            contentDescription = stringResource(id = it.second)
-                        )
+                        Row {
+                            Icon(
+                                painterResource(id = it.first),
+                                contentDescription = stringResource(id = it.second),
+                            )
+                            Text(
+                                stringResource(id = it.second),
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(start = 16.dp, top = 1.dp)
+                            )
+                        }
                     }
                 )
             }
@@ -173,15 +180,19 @@ fun AddBottomSheet(
                     }),
                     headlineContent = {},
                     trailingContent = {
-                        if (it.second != -1)
-                            Text(stringResource(id = it.second))
+
                     },
                     leadingContent = {
-                        if (it.first != -1)
+                        Row {
                             Icon(
                                 painterResource(id = it.first),
                                 contentDescription = stringResource(id = it.second)
                             )
+                            Text(
+                                stringResource(id = it.second),
+                                modifier = Modifier.padding(start = 16.dp, top = 1.dp)
+                            )
+                        }
                     }
                 )
             }
