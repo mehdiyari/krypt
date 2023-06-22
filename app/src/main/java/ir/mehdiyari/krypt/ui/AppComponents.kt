@@ -53,7 +53,10 @@ fun KryptBottomAppBar(
 ) {
     BottomAppBar(
         modifier = Modifier.clip(
-            MaterialTheme.shapes.small.copy(CornerSize(percent = 50))
+            MaterialTheme.shapes.small.copy(
+                topStart = CornerSize(24.dp),
+                topEnd = CornerSize(24.dp)
+            )
         ),
     ) {
         IconButton(modifier = Modifier
