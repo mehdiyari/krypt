@@ -42,19 +42,6 @@ class MediaFragment : Fragment() {
     @field:Inject
     lateinit var encryptedMediasBucketContentProvider: EncryptedMediasBucketContentProvider
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = ComposeView(requireContext()).apply {
-        viewModel.onActionReceived(args.action)
-        setContent {
-            MediasComposeScreen(viewModel) {
-                findNavController().popBackStack()
-            }
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {

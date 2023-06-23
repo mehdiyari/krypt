@@ -1,6 +1,10 @@
 package ir.mehdiyari.krypt.ui.media
 
 import android.net.Uri
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediasViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val fileCrypt: FileCrypt,
     private val filesUtilities: FilesUtilities,
@@ -46,12 +51,12 @@ class MediasViewModel @Inject constructor(
     private val _messageFlow = MutableSharedFlow<Int>()
     val messageFlow = _messageFlow.asSharedFlow()
 
-    fun onActionReceived(
-        action: MediaFragmentAction
-    ) {
+    private val args = MediaArgs(savedStateHandle)
+
+    init {
         if (viewAction.value == MediaFragmentAction.DEFAULT) {
             viewModelScope.launch {
-                _latestAction.emit(action)
+                _latestAction.emit(args.action)
             }
         }
     }
