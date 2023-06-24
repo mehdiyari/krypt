@@ -58,6 +58,8 @@ fun KryptNaveHost(
             navController.navigateToAddText(textId = it)
         }, onNewNoteClick = {
             navController.navigateToAddText()
+        }, onBackPressed = {
+            navController.popBackStack()
         })
 
         addTextScreen()

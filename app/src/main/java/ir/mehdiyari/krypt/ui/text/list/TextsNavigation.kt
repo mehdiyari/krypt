@@ -12,12 +12,17 @@ fun NavController.navigateToTexts() {
     this.navigate(ROUTE_TEXTS)
 }
 
-fun NavGraphBuilder.textsScreen(onTextClick: (id: Long) -> Unit, onNewNoteClick: () -> Unit) {
+fun NavGraphBuilder.textsScreen(
+    onTextClick: (id: Long) -> Unit,
+    onNewNoteClick: () -> Unit,
+    onBackPressed: () -> Unit,
+) {
     composable(ROUTE_TEXTS) {
         TextsRoute(
             onTextClick = onTextClick,
             onNewNoteClick = onNewNoteClick,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onBackPressed = onBackPressed,
         )
     }
 }
