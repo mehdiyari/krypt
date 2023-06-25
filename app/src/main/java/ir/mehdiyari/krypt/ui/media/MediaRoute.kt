@@ -137,15 +137,22 @@ fun MediaScreen(
                 OperationResult(imageRes = R.drawable.operation_failed, messageRes = textRes)
             }
 
-            is MediaViewState.EncryptDecryptState -> MediaScreenContent(
-                selectedMediaItems = viewState.selectedMediaItems,
-                actionState = actionState,
-                notifyMediaScanner = notifyMediaScanner,
-                removeItemFromList = removeItemFromList,
-                deleteSelectedFromList = deleteSelectedFromList,
-                onNotifyChanged = onNotifyChanged,
-                modifier = modifier
-            )
+            is MediaViewState.EncryptDecryptState -> {
+                if (viewState.selectedMediaItems.isEmpty()) {
+                    onBackPressed()
+                    return
+                } else {
+                    MediaScreenContent(
+                        selectedMediaItems = viewState.selectedMediaItems,
+                        actionState = actionState,
+                        notifyMediaScanner = notifyMediaScanner,
+                        removeItemFromList = removeItemFromList,
+                        deleteSelectedFromList = deleteSelectedFromList,
+                        onNotifyChanged = onNotifyChanged,
+                        modifier = modifier
+                    )
+                }
+            }
 
         }
 
