@@ -39,6 +39,11 @@ fun MediaRoute(
     val viewState by viewModel.mediaViewState.collectAsStateWithLifecycle()
     var notifyMediaScanner by remember { mutableStateOf(true) }
 
+    if (actionState == MediaViewAction.DEFAULT) {
+        onBackPressed()
+        return
+    }
+
     MediaScreen(
         modifier = modifier,
         actionState = actionState,
