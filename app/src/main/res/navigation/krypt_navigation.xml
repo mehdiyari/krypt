@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/krypt_navigation"
-    app:startDestination="@id/photosFragment">
-
-    <fragment
-        android:id="@+id/photosFragment"
-        android:name="ir.mehdiyari.krypt.ui.media.MediaFragment"
-        android:label="PhotosFragment">
-        <argument
-            android:name="Action"
-            android:defaultValue="DEFAULT"
-            app:argType="ir.mehdiyari.krypt.ui.media.MediaFragmentAction" />
-        <argument
-            android:name="sharedMedias"
-            app:argType="ir.mehdiyari.krypt.ui.media.SharedMediaListModel"
-            app:nullable="true" />
-    </fragment>
+    android:id="@+id/krypt_navigation">
 
     <fragment
         android:id="@+id/settingsFramgnet"
