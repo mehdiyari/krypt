@@ -37,7 +37,7 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     shareDataViewModel: ShareDataViewModel = androidx.lifecycle.viewmodel.compose.viewModel() // FIXME MHD: Handle Shared view model
 ) {
-
+    viewModel.getHomeItems()
     val cards by viewModel.filesCounts.collectAsStateWithLifecycle()
     val sharedData by shareDataViewModel.sharedData.collectAsStateWithLifecycle()
 
