@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
+import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.utils.KryptTheme
 
@@ -34,10 +36,14 @@ fun KryptApp(
                 addItemsBottomSheetState,
                 onSelectAddItemMenuItem = {
                     when (it) {
-                        R.string.menu_data_usage -> TODO("navigateToDataUsageFragment")
-                        R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
-                        R.string.menu_settings -> TODO("navigateToSettingsFragment")
-                        R.string.menu_help -> TODO("openBrowser")
+                        R.string.add_media -> {
+                            kryptAppState.navController.navigateToMedia(
+                                MediaFragmentAction.PICK_MEDIA
+                            )
+                        }
+
+                        R.string.add_audio -> TODO("navigateToAudioRecorderFragment")
+                        R.string.add_text -> TODO("navigateToNewTextFragment")
                     }
                 },
                 kryptAppState.coroutineScope
@@ -49,9 +55,10 @@ fun KryptApp(
                 mainMenuBottomSheetState,
                 onSelectMainMenuItem = {
                     when (it) {
-                        R.string.add_media -> TODO("navigateToMediasFragment")
-                        R.string.add_audio -> TODO("navigateToAudioRecorderFragment")
-                        R.string.add_text -> TODO("navigateToNewTextFragment")
+                        R.string.menu_data_usage -> TODO("navigateToDataUsageFragment")
+                        R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
+                        R.string.menu_settings -> TODO("navigateToSettingsFragment")
+                        R.string.menu_help -> TODO("openBrowser")
                     }
                 },
                 kryptAppState.coroutineScope
