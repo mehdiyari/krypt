@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
+import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.utils.KryptTheme
@@ -38,7 +38,7 @@ fun KryptApp(
                     when (it) {
                         R.string.add_media -> {
                             kryptAppState.navController.navigateToMedia(
-                                MediaFragmentAction.PICK_MEDIA
+                                MediaViewAction.PICK_MEDIA
                             )
                         }
 

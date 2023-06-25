@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
+import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
 
 const val ROUTE_HOME = "home"
@@ -17,7 +17,7 @@ fun NavController.navigateToHome() {
 fun NavGraphBuilder.homeScreen(
     openTextsScreen: (String?) -> Unit,
     openMusicAndAudioScreen: () -> Unit,
-    openMediaScreen: (MediaFragmentAction, SharedMediaListModel?) -> Unit,
+    openMediaScreen: (MediaViewAction, SharedMediaListModel?) -> Unit,
     openAudioRecorderScreen: () -> Unit,
     onShowSnackbar: suspend (String, String) -> Boolean,
 ) {

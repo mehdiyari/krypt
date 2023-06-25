@@ -42,7 +42,7 @@ class MediasViewModel @Inject constructor(
     )
     val mediaViewState = _mediaViewState.asStateFlow()
 
-    private val _latestAction = MutableStateFlow(MediaFragmentAction.DEFAULT)
+    private val _latestAction = MutableStateFlow(MediaViewAction.DEFAULT)
     val viewAction = _latestAction.asStateFlow()
 
     private val _selectedMedias = MutableStateFlow<List<SelectedMediaItems>>(listOf())
@@ -54,7 +54,7 @@ class MediasViewModel @Inject constructor(
     private val args = MediaArgs(savedStateHandle)
 
     init {
-        if (viewAction.value == MediaFragmentAction.DEFAULT) {
+        if (viewAction.value == MediaViewAction.DEFAULT) {
             viewModelScope.launch {
                 _latestAction.emit(args.action)
             }
@@ -235,12 +235,12 @@ class MediasViewModel @Inject constructor(
         }
     }
 
-    private fun isDecryptAction(): Boolean = viewAction.value == MediaFragmentAction.DECRYPT_MEDIA
+    private fun isDecryptAction(): Boolean = viewAction.value == MediaViewAction.DECRYPT_MEDIA
 
     private fun isEncryptAction(): Boolean = viewAction.value.let { action ->
-        action == MediaFragmentAction.PICK_MEDIA ||
-                action == MediaFragmentAction.TAKE_MEDIA ||
-                action == MediaFragmentAction.ENCRYPT_MEDIA
+        action == MediaViewAction.PICK_MEDIA ||
+                action == MediaViewAction.TAKE_MEDIA ||
+                action == MediaViewAction.ENCRYPT_MEDIA
     }
 
     override fun onCleared() {
@@ -255,7 +255,7 @@ class MediasViewModel @Inject constructor(
                 _messageFlow.emit(R.string.file_removed_from_list)
             }
             if (selectedMediasFlow.value.isEmpty()) {
-                _latestAction.emit(MediaFragmentAction.DEFAULT)
+                _latestAction.emit(MediaViewAction.DEFAULT)
             } else {
                 _mediaViewState.emit(
                     MediaViewState.EncryptDecryptState(
@@ -302,7 +302,7 @@ class MediasViewModel @Inject constructor(
 
             suspend fun closeMedia() {
                 _selectedMedias.emit(listOf())
-                _latestAction.emit(MediaFragmentAction.DEFAULT)
+                _latestAction.emit(MediaViewAction.DEFAULT)
             }
 
             _mediaViewState.emit(MediaViewState.OperationStart)

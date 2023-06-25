@@ -75,7 +75,7 @@ fun MediaRoute(
 @Composable
 fun MediaScreen(
     modifier: Modifier,
-    actionState: MediaFragmentAction,
+    actionState: MediaViewAction,
     viewState: MediaViewState,
     notifyMediaScanner: Boolean,
     onNotifyChanged: (Boolean) -> Unit,
@@ -91,7 +91,7 @@ fun MediaScreen(
 ) {
     val isFalleryOpenedBefore = remember { mutableStateOf(false) }
     val falleryLauncher = rememberLauncherForActivityResult(getFalleryActivityResultContract()) {
-        if (actionState == MediaFragmentAction.DECRYPT_MEDIA && it.mediaPathList.isNullOrEmpty()) {
+        if (actionState == MediaViewAction.DECRYPT_MEDIA && it.mediaPathList.isNullOrEmpty()) {
             onBackPressed()
             return@rememberLauncherForActivityResult
         }
@@ -121,8 +121,8 @@ fun MediaScreen(
             MediaViewState.OperationStart -> OperationStart()
             MediaViewState.OperationFinished -> {
                 val textRes = when (actionState) {
-                    MediaFragmentAction.PICK_MEDIA, MediaFragmentAction.TAKE_MEDIA, MediaFragmentAction.ENCRYPT_MEDIA -> R.string.encrypt_successfully
-                    MediaFragmentAction.DECRYPT_MEDIA -> R.string.decrypt_successfully
+                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA -> R.string.encrypt_successfully
+                    MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_successfully
                     else -> R.string.operation_successfully
                 }
                 OperationResult(imageRes = R.drawable.operation_done, messageRes = textRes)
@@ -130,8 +130,8 @@ fun MediaScreen(
 
             MediaViewState.OperationFailed -> {
                 val textRes = when (actionState) {
-                    MediaFragmentAction.PICK_MEDIA, MediaFragmentAction.TAKE_MEDIA, MediaFragmentAction.ENCRYPT_MEDIA -> R.string.encrypt_failed
-                    MediaFragmentAction.DECRYPT_MEDIA -> R.string.decrypt_failed
+                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA -> R.string.encrypt_failed
+                    MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_failed
                     else -> R.string.operation_failed
                 }
                 OperationResult(imageRes = R.drawable.operation_failed, messageRes = textRes)
@@ -161,13 +161,13 @@ fun MediaScreen(
 
     if (viewState == MediaViewState.Default) {
         if (!isFalleryOpenedBefore.value) {
-            if (actionState == MediaFragmentAction.PICK_MEDIA) {
+            if (actionState == MediaViewAction.PICK_MEDIA) {
                 SideEffect {
                     onStopAutoLocker()
                     falleryLauncher.launch(defaultFalleryOptions)
                     isFalleryOpenedBefore.value = true
                 }
-            } else if (actionState == MediaFragmentAction.DECRYPT_MEDIA) {
+            } else if (actionState == MediaViewAction.DECRYPT_MEDIA) {
                 val context = LocalContext.current
                 if (!checkForOpenPickerForDecryptMode()) {
                     Toast.makeText(

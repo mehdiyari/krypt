@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.ui.media
 
-enum class MediaFragmentAction(val value: Int) {
+enum class MediaViewAction(val value: Int) {
     DEFAULT(0),
     PICK_MEDIA(1),
     DECRYPT_MEDIA(2),

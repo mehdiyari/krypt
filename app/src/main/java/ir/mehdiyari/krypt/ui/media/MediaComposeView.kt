@@ -50,16 +50,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.glide.GlideImage
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.media.MediaFragmentAction.DECRYPT_MEDIA
-import ir.mehdiyari.krypt.ui.media.MediaFragmentAction.ENCRYPT_MEDIA
-import ir.mehdiyari.krypt.ui.media.MediaFragmentAction.PICK_MEDIA
+import ir.mehdiyari.krypt.ui.media.MediaViewAction.DECRYPT_MEDIA
+import ir.mehdiyari.krypt.ui.media.MediaViewAction.ENCRYPT_MEDIA
+import ir.mehdiyari.krypt.ui.media.MediaViewAction.PICK_MEDIA
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 
 @Composable
 fun MediaScreenContent(
     selectedMediaItems: List<SelectedMediaItems>,
-    actionState: MediaFragmentAction,
+    actionState: MediaViewAction,
     notifyMediaScanner: Boolean,
     removeItemFromList: (String) -> Unit,
     deleteSelectedFromList: (String, Boolean) -> Unit,
@@ -124,7 +124,7 @@ fun ConfirmDeleteFileDialog(
 @Composable
 fun ShowActionButton(
     viewState: MediaViewState,
-    actionState: MediaFragmentAction,
+    actionState: MediaViewAction,
     notifyMediaScanner: Boolean,
     deleteAllSelectedFiles: () -> Unit,
     modifier: Modifier

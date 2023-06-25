@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.ui.media.MediaFragmentAction
+import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 fun HomeRoute(
     openTextsScreen: (String?) -> Unit,
     openMusicAndAudioScreen: () -> Unit,
-    openMediaScreen: (MediaFragmentAction, SharedMediaListModel?) -> Unit,
+    openMediaScreen: (MediaViewAction, SharedMediaListModel?) -> Unit,
     openAudioRecorderScreen: () -> Unit,
     onShowSnackbar: suspend (String, String) -> Boolean,
     modifier: Modifier = Modifier,
@@ -47,7 +47,7 @@ fun HomeRoute(
                 openTextsScreen((sharedData as SharedDataState.SharedText).text)
             } else if (sharedData is SharedDataState.SharedMedias) {
                 openMediaScreen(
-                    MediaFragmentAction.ENCRYPT_MEDIA,
+                    MediaViewAction.ENCRYPT_MEDIA,
                     SharedMediaListModel((sharedData as SharedDataState.SharedMedias).medias)
                 )
             }
@@ -82,7 +82,7 @@ fun HomeRoute(
     HomeScreen(
         cards = cards, onItemClicked = {
             when (it) {
-                FileTypeEnum.Photo -> openMediaScreen(MediaFragmentAction.DECRYPT_MEDIA, null)
+                FileTypeEnum.Photo -> openMediaScreen(MediaViewAction.DECRYPT_MEDIA, null)
                 FileTypeEnum.Audio -> openMusicAndAudioScreen()
                 FileTypeEnum.Text -> openTextsScreen(null)
                 else -> Unit
