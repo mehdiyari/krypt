@@ -80,7 +80,6 @@ fun MediaScreenContent(
         FileList(selectedMediaItems, removeItemFromList, onDeleteClicked = {
             val encrypted = actionState == DECRYPT_MEDIA
             showDeleteDialogForItem = it to encrypted
-            deleteSelectedFromList(it, encrypted)
         }, modifier = modifier.padding(8.dp))
 
         if (showDeleteDialogForItem != null) {
