@@ -226,6 +226,7 @@ class MediasViewModel @Inject constructor(
         true
     }
 
+    // TODO: disabled, we should refactor after migration
     fun onDecryptSharedMedia(images: List<Uri>?) {
         if (!images.isNullOrEmpty()) {
             onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
