@@ -80,7 +80,7 @@ fun MediaScreenContent(
             val encrypted = actionState == DECRYPT_MEDIA
             showDeleteDialogForItem = it to encrypted
             deleteSelectedFromList(it, encrypted)
-        })
+        }, modifier = modifier.padding(8.dp))
 
         if (showDeleteDialogForItem != null) {
             ConfirmDeleteFileDialog(onDismiss = {
@@ -126,11 +126,11 @@ fun ShowActionButton(
     viewState: MediaViewState,
     actionState: MediaFragmentAction,
     notifyMediaScanner: Boolean,
-    deleteAllSelectedFiles: () -> Unit
+    deleteAllSelectedFiles: () -> Unit,
+    modifier: Modifier
 ) {
     val context = LocalContext.current
     if (viewState is MediaViewState.EncryptDecryptState) {
-
         val buttonTextAndDeleteText: Pair<String, String> = when (actionState) {
             PICK_MEDIA, ENCRYPT_MEDIA -> {
                 (stringResource(id = R.string.encrypt_action) to stringResource(id = R.string.delete_files_after_encrypt_dialog_message))
@@ -144,13 +144,11 @@ fun ShowActionButton(
                 "" to ""
             }
         }
-
         val encryptDecryptState = viewState as? MediaViewState.EncryptDecryptState
-
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End,
-            modifier = Modifier.padding(20.dp)
+            modifier = modifier.padding(20.dp)
         ) {
             ActionFloatingButton(buttonTextAndDeleteText.first) {
                 androidx.appcompat.app.AlertDialog.Builder(context)
@@ -172,7 +170,7 @@ fun ShowActionButton(
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start,
-            modifier = Modifier.padding(20.dp)
+            modifier = modifier.padding(20.dp)
         ) {
             DeleteAllFilesFloatingButton(deleteAllSelectedFiles = deleteAllSelectedFiles)
         }
@@ -295,7 +293,7 @@ fun FileList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 8.dp),
+        contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(selectedMediaItems) { selectedMediaItem ->
@@ -303,7 +301,6 @@ fun FileList(
                 item = selectedMediaItem,
                 onRemoveClicked = { onRemoveClicked(selectedMediaItem.path) },
                 onDeleteClicked = { onDeleteClicked(selectedMediaItem.path) },
-                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -317,11 +314,11 @@ fun FileItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation()
     ) {
-        Row(modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)) {
+        Row(modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)) {
             if (item.path.isNotBlank()) {
                 GlideImage(
                     imageModel = item.path,
@@ -361,7 +358,7 @@ fun FileItem(
         Row(
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(8.dp)
+                .padding(bottom = 8.dp, end = 8.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.Delete,
