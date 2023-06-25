@@ -1,13 +1,11 @@
 package ir.mehdiyari.krypt.ui.media
 
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.crypto.FileCrypt
 import ir.mehdiyari.krypt.data.file.FileEntity
@@ -18,6 +16,7 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -34,7 +33,8 @@ class MediasViewModel @Inject constructor(
     private val filesUtilities: FilesUtilities,
     private val filesRepository: FilesRepository,
     private val mediaStoreManager: MediaStoreManager,
-    private val thumbsUtils: ThumbsUtils
+    private val thumbsUtils: ThumbsUtils,
+    private val falleryBuilderProvider: FalleryBuilderProvider,
 ) : ViewModel() {
 
     private val _mediaViewState = MutableStateFlow<MediaViewState>(
@@ -61,7 +61,7 @@ class MediasViewModel @Inject constructor(
         }
     }
 
-    fun onSelectedMedias(medias: Array<String>) {
+    fun onSelectedMedias(medias: List<String>) {
         viewModelScope.launch {
             if (isEncryptAction()) {
                 _selectedMedias.emit(medias.map {
@@ -330,4 +330,10 @@ class MediasViewModel @Inject constructor(
             }
         }
     }
+
+    fun getDefaultFalleryOptions(): FalleryOptions =
+        falleryBuilderProvider.getDefaultFalleryOptions()
+
+    fun getKryptFalleryOptions(): FalleryOptions =
+        falleryBuilderProvider.getMediaPickerForDecrypting()
 }
