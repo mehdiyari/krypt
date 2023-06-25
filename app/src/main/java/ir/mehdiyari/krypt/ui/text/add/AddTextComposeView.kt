@@ -45,7 +45,6 @@ fun TopBar(
     Surface(
         modifier = modifier
             .height(56.dp),
-        shadowElevation = 8.dp
     ) {
         Row {
             IconButton(modifier = Modifier
