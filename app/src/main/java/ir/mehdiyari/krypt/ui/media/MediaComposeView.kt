@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -183,7 +184,11 @@ fun OperationResult(
     @DrawableRes imageRes: Int, @StringRes messageRes: Int, modifier: Modifier = Modifier
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Image(
@@ -200,7 +205,11 @@ fun OperationResult(
 @Composable
 fun OperationStart(modifier: Modifier = Modifier) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircularProgressIndicator()
         Text(
@@ -398,11 +407,23 @@ fun OperationStartViewPreview() {
 
 @Preview
 @Composable
-fun OperationResultPreview() {
+fun OperationSuccessPreview() {
     KryptTheme {
         Surface {
             OperationResult(
                 imageRes = R.drawable.operation_done, messageRes = R.string.operation_successfully
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun OperationFailedPreview() {
+    KryptTheme {
+        Surface {
+            OperationResult(
+                imageRes = R.drawable.operation_failed, messageRes = R.string.operation_failed
             )
         }
     }
