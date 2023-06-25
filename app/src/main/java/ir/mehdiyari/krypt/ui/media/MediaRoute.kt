@@ -25,12 +25,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.app.MainViewModel
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MediaRoute(
     modifier: Modifier = Modifier,
     viewModel: MediasViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
 ) {
     val actionState by viewModel.viewAction.collectAsStateWithLifecycle()
@@ -55,7 +57,8 @@ fun MediaRoute(
         kryptFalleryOptions = viewModel.getKryptFalleryOptions(),
         onBackPressed = onBackPressed,
         onSelectMedia = viewModel::onSelectedMedias,
-        checkForOpenPickerForDecryptMode = viewModel::checkForOpenPickerForDecryptMode
+        checkForOpenPickerForDecryptMode = viewModel::checkForOpenPickerForDecryptMode,
+        onStopAutoLocker = mainViewModel::onStopLocker
     )
 
     val messageState by viewModel.messageFlow.collectAsStateWithLifecycle(null)
@@ -84,6 +87,7 @@ fun MediaScreen(
     onBackPressed: () -> Unit,
     onSelectMedia: (List<String>) -> Unit,
     checkForOpenPickerForDecryptMode: () -> Boolean,
+    onStopAutoLocker: () -> Unit,
 ) {
     val isFalleryOpenedBefore = remember { mutableStateOf(false) }
     val falleryLauncher = rememberLauncherForActivityResult(getFalleryActivityResultContract()) {
@@ -159,6 +163,7 @@ fun MediaScreen(
         if (!isFalleryOpenedBefore.value) {
             if (actionState == MediaFragmentAction.PICK_MEDIA) {
                 SideEffect {
+                    onStopAutoLocker()
                     falleryLauncher.launch(defaultFalleryOptions)
                     isFalleryOpenedBefore.value = true
                 }
@@ -173,6 +178,7 @@ fun MediaScreen(
                     onBackPressed()
                 } else {
                     SideEffect {
+                        onStopAutoLocker()
                         falleryLauncher.launch(kryptFalleryOptions)
                         isFalleryOpenedBefore.value = true
                     }
