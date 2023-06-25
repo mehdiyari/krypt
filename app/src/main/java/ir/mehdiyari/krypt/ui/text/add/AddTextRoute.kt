@@ -142,7 +142,12 @@ fun AddTextScreen(
                 modifier = Modifier.align(Alignment.BottomEnd)
             )
         } else {
-            SaveTextFab(onSaveClick = saveNote, modifier = Modifier.align(Alignment.BottomEnd))
+            SaveTextFab(
+                onSaveClick = saveNote,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            )
         }
     }
 }

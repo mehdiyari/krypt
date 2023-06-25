@@ -118,8 +118,14 @@ fun EditAndDeleteButtons(
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
-        DeleteTextFab(onDeleteClick = deleteNote, modifier = Modifier.padding(4.dp))
-        SaveTextFab(onSaveClick = saveNote, modifier = Modifier.padding(4.dp))
+        DeleteTextFab(
+            onDeleteClick = deleteNote,
+            modifier = Modifier.padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
+        )
+        SaveTextFab(
+            onSaveClick = saveNote,
+            modifier = Modifier.padding(bottom = 16.dp, start = 8.dp, end = 16.dp)
+        )
     }
 
 }
