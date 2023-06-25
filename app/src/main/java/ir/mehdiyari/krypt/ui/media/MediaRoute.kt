@@ -16,8 +16,11 @@ import androidx.navigation.fragment.findNavController
 import ir.mehdiyari.krypt.R
 
 @Composable
-fun MediaRoute(modifier: Modifier = Modifier, viewModel: MediasViewModel = hiltViewModel()) {
-
+fun MediaRoute(
+    modifier: Modifier = Modifier,
+    viewModel: MediasViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit,
+) {
     val actionState by viewModel.viewAction.collectAsStateWithLifecycle()
     val viewState by viewModel.mediaViewState.collectAsStateWithLifecycle()
     var notifyMediaScanner by remember { mutableStateOf(true) }
