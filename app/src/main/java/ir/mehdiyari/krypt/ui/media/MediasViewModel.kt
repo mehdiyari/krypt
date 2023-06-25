@@ -16,12 +16,12 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
 
@@ -220,13 +220,17 @@ class MediasViewModel @Inject constructor(
         }
     }
 
-    suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getMediasCount() > 0L
+    fun checkForOpenPickerForDecryptMode(): Boolean = try {
+        runBlocking { filesRepository.getMediasCount() > 0L }
+    } catch (t: Throwable) {
+        true
+    }
 
     fun onDecryptSharedMedia(images: List<Uri>?) {
         if (!images.isNullOrEmpty()) {
             onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
                 filesUtilities.isPhotoPath(it) || filesUtilities.isVideoPath(it)
-            }.toTypedArray())
+            })
         }
     }
 
