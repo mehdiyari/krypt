@@ -22,7 +22,9 @@ import ir.mehdiyari.krypt.R
 
 @Composable
 fun AddTextRoute(
-    modifier: Modifier = Modifier, viewModel: AddTextViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: AddTextViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit,
 ) {
 
     val sharedText = viewModel.addTextArgs.sharedText
@@ -47,7 +49,7 @@ fun AddTextRoute(
         (argsState as? AddTextArgsViewState.Error)?.let {
             Toast.makeText(context, it.errorResId, Toast.LENGTH_LONG)
                 .show()
-            //FIXME MHD: close screen
+            onBackPressed()
         }
     }
 
@@ -56,7 +58,7 @@ fun AddTextRoute(
         if (saveNoteState == true) {
             Toast.makeText(context, R.string.successfully_encrypt_note, Toast.LENGTH_LONG)
                 .show()
-            //FIXME MHD: close screen
+            onBackPressed()
         } else if (saveNoteState == false) {
             Toast.makeText(context, R.string.failed_to_encrypt_note, Toast.LENGTH_LONG)
                 .show()
@@ -66,7 +68,7 @@ fun AddTextRoute(
     val deleteNoteState by viewModel.deleteNoteState.collectAsStateWithLifecycle()
     LaunchedEffect(deleteNoteState) {
         if (deleteNoteState == true) {
-            //FIXME MHD: close screen
+            onBackPressed()
             Toast.makeText(
                 context,
                 R.string.delete_text_was_successfully,
@@ -100,7 +102,8 @@ fun AddTextRoute(
         deleteNote = {
             viewModel.deleteNote()
         },
-        modifier = modifier
+        modifier = modifier,
+        onNavigationIconClicked = onBackPressed,
     )
 
 
@@ -115,12 +118,13 @@ fun AddTextScreen(
     isEditMode: Boolean,
     saveNote: () -> Unit,
     deleteNote: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationIconClicked: () -> Unit
 ) {
     Box(modifier = modifier) {
         Column {
             TopBar(text = title, onTextChanged = onTitleChanged, onNavigationClickIcon = {
-
+                onNavigationIconClicked()
             }, modifier = Modifier.fillMaxWidth())
             ContentTextField(
                 text = content,

@@ -68,7 +68,7 @@ fun KryptNaveHost(
             navController.popBackStack()
         })
 
-        addTextScreen()
+        addTextScreen { navController.popBackStack() }
 
         mediaScreen { navController.popBackStack() }
 

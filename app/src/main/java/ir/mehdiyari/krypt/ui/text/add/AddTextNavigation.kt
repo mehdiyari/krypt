@@ -24,7 +24,9 @@ fun NavController.navigateToAddText(textId: Long = -1L, sharedText: String = "")
     this.navigate("$ROUTE_ADD_TEXT?$KEY_TEXT_Id=$textId&$KEY_SHARED_TEXT=$sharedText")
 }
 
-fun NavGraphBuilder.addTextScreen() {
+fun NavGraphBuilder.addTextScreen(
+    onBackPressed: () -> Unit
+) {
     composable(
         "$ROUTE_ADD_TEXT?$KEY_TEXT_Id={$KEY_TEXT_Id}&$KEY_SHARED_TEXT={$KEY_SHARED_TEXT}",
         arguments = listOf(
@@ -39,7 +41,8 @@ fun NavGraphBuilder.addTextScreen() {
         )
     ) {
         AddTextRoute(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onBackPressed = onBackPressed,
         )
     }
 }
