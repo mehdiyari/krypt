@@ -39,7 +39,7 @@ fun TextsRoute(
     viewModel: TextsViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
 ) {
-
+    viewModel.getTextFiles()
     val texts by viewModel.textFilesList.collectAsStateWithLifecycle()
 
     TextsScreen(

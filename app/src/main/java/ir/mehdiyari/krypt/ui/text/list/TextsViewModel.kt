@@ -22,11 +22,7 @@ class TextsViewModel @Inject constructor(
     private val _textFilesList = MutableStateFlow<List<TextEntity>>(listOf())
     val textFilesList = _textFilesList.asStateFlow()
 
-    init {
-        getTextFiles()
-    }
-
-    private fun getTextFiles() {
+    fun getTextFiles() {
         viewModelScope.launch(ioDispatcher) {
             filesRepository.getAllTextFiles().map {
                 val metaDataText = it.metaData
