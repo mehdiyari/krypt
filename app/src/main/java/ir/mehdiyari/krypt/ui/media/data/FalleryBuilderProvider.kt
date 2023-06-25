@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media
+package ir.mehdiyari.krypt.ui.media.data
 
 import android.content.Context
 import android.content.Intent
