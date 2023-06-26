@@ -1,6 +1,7 @@
 package ir.mehdiyari.krypt.ui.data
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -31,6 +32,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -70,6 +72,17 @@ fun DataRoute(
             }
 
             DeleteBackupFileDialog(modifier, deleteDialogState, viewModel)
+        }
+    }
+
+    val message = viewModel.generalMessageFlow.collectAsStateWithLifecycle(initialValue = null)
+    if (message.value != null) {
+        if (message.value == R.string.saving_backup_permission_error) {
+            // TODO: request storage permission
+        } else {
+            Toast.makeText(
+                LocalContext.current, message.value!!, Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
