@@ -1,22 +1,15 @@
 package ir.mehdiyari.krypt.ui.data
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,13 +23,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -191,108 +182,7 @@ fun BackupView(
 }
 
 @Composable
-fun BackupList(
-    modifier: Modifier = Modifier,
-    backupList: State<List<BackupViewData>> = mutableStateOf(
-        listOf(
-            BackupViewData(1, "", "300 MB"),
-            BackupViewData(2, "", "254 MB"),
-            BackupViewData(3, "", "3 GB"),
-        )
-    ),
-    onSaveClick: (Int) -> Unit = {},
-    onDeleteClick: (Int) -> Unit = {},
-) {
-    if (backupList.value.isNotEmpty()) {
-        Column {
-            Text(
-                text = stringResource(id = R.string.all_backups),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 22.dp, end = 22.dp, top = 8.dp)
-            )
-
-            LazyRow(contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp)) {
-                items(backupList.value) { backupItem ->
-                    BackupItem(modifier, backupItem, onSaveClick, onDeleteClick)
-                }
-            }
-
-            DataBaseDivider(modifier)
-        }
-    }
-
-}
-
-@Composable
-fun BackupItem(
-    modifier: Modifier,
-    backupViewData: BackupViewData =
-        BackupViewData(1, "", "300 MB"),
-    onSaveClick: (Int) -> Unit = {},
-    onDeleteClick: (Int) -> Unit = {}
-) {
-    Card(
-        modifier = modifier
-            .width(150.dp)
-            .padding(4.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "${stringResource(id = R.string.backup_card_title)} #${backupViewData.id}",
-                textAlign = TextAlign.Center,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Image(
-                painter = painterResource(R.drawable.ic_backup_file),
-                contentDescription = "",
-                modifier = modifier.padding(6.dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
-            )
-
-            val dateTimeString = backupViewData.dateTime.ifBlank {
-                stringResource(id = R.string.no_backup_yet)
-            }
-
-            Text(
-                text = dateTimeString,
-                fontSize = 14.sp
-            )
-
-            Row(modifier = modifier.padding(bottom = 8.dp, top = 16.dp)) {
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_save_as), "", modifier = modifier
-                        .selectable(false, onClick = {
-                            onSaveClick(backupViewData.id)
-                        }, role = Role.Button, enabled = true)
-                        .padding(start = 6.dp, end = 6.dp)
-                        .size(18.dp)
-                )
-
-                Icon(
-                    Icons.Filled.Delete, "", modifier = modifier
-                        .selectable(false, onClick = {
-                            onDeleteClick(backupViewData.id)
-                        }, role = Role.Button, enabled = true)
-                        .padding(start = 6.dp, end = 6.dp)
-                        .size(18.dp)
-                )
-            }
-
-            Spacer(modifier = modifier.size(2.dp))
-        }
-    }
-}
-
-@Composable
-private fun DataBaseDivider(modifier: Modifier) {
+fun DataBaseDivider(modifier: Modifier) {
     Divider(
         modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)
     )
@@ -347,13 +237,18 @@ fun DeleteBackupFileDialog(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun DataScreenPreview() {
+fun DataScreenPreview(
+    @PreviewParameter(
+        BackupsPreviewParameterProvider::class,
+        limit = 5
+    ) backupList: List<BackupViewData>
+) {
     KryptTheme {
         DataScreenScaffold(modifier = Modifier) {
             Column {
                 FileSizeView(Modifier, mutableStateOf("500 MB"))
                 BackupView(Modifier)
-                BackupList()
+                BackupList(Modifier, mutableStateOf(backupList), {}, {})
             }
         }
     }
