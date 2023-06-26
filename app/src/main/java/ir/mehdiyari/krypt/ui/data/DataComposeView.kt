@@ -40,36 +40,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable
-fun DataScreen(
-    viewModel: DataViewModel = viewModel(),
-    onNavigationClicked: () -> Unit = {}
+fun DataRoute(
+    viewModel: DataViewModel = hiltViewModel(),
+    onNavigationClicked: () -> Unit,
+    modifier: Modifier,
 ) {
-    KryptTheme {
-        DataScreenScaffold(onNavigationClicked = onNavigationClicked) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-            ) {
-                val fileSizeState = viewModel.fileSizes.collectAsState()
-                FileSizeView(fileSizeState)
-                val lastBackupState = viewModel.lastBackupDateTime.collectAsState()
-                val backupState = viewModel.backupViewState.collectAsState()
-                BackupView(lastBackupState, backupState, viewModel::backupNow)
-                val backupList = viewModel.backups.collectAsState()
+    DataScreenScaffold(modifier = modifier, onNavigationClicked = onNavigationClicked) {
+        Column(
+            modifier = modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+        ) {
+            val fileSizeState = viewModel.fileSizes.collectAsStateWithLifecycle()
+            FileSizeView(modifier, fileSizeState)
+            val lastBackupState = viewModel.lastBackupDateTime.collectAsStateWithLifecycle()
+            val backupState = viewModel.backupViewState.collectAsStateWithLifecycle()
+            BackupView(modifier, lastBackupState, backupState, viewModel::backupNow)
+            val backupList = viewModel.backups.collectAsStateWithLifecycle()
 
-                val deleteDialogState = remember { mutableStateOf(false to -1) }
-                BackupList(backupList, viewModel::onSaveBackup) {
-                    deleteDialogState.value = true to it
-                }
-
-                DeleteBackupFileDialog(deleteDialogState, viewModel)
+            val deleteDialogState = remember { mutableStateOf(false to -1) }
+            BackupList(modifier, backupList, viewModel::onSaveBackup) {
+                deleteDialogState.value = true to it
             }
+
+            DeleteBackupFileDialog(modifier, deleteDialogState, viewModel)
         }
     }
 }
@@ -79,6 +79,7 @@ fun DataScreen(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DataScreenScaffold(
+    modifier: Modifier,
     onNavigationClicked: () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
@@ -99,7 +100,7 @@ fun DataScreenScaffold(
                     ) {
                         Icon(
                             Icons.Filled.ArrowBack, "",
-                            modifier = Modifier.padding(start = 4.dp)
+                            modifier = modifier.padding(start = 4.dp)
                         )
                     }
                 }
@@ -107,7 +108,7 @@ fun DataScreenScaffold(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -117,10 +118,9 @@ fun DataScreenScaffold(
 }
 
 @Composable
-@Preview
-fun FileSizeView(fileSizeState: State<String> = mutableStateOf("500 MB")) {
+fun FileSizeView(modifier: Modifier, fileSizeState: State<String>) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -136,34 +136,34 @@ fun FileSizeView(fileSizeState: State<String> = mutableStateOf("500 MB")) {
             text = fileSizeState.value,
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = modifier.padding(top = 8.dp)
         )
 
-        DataBaseDivider()
+        DataBaseDivider(modifier)
     }
 }
 
 @Composable
-@Preview
 fun BackupView(
+    modifier: Modifier,
     lastBackupState: State<String?> = mutableStateOf("2022 April 22 - 22:30"),
     backupState: State<BackupViewState?> = mutableStateOf(null),
     backupNowClick: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
     ) {
         ConstraintLayout(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             val (title, dateTime) = createRefs()
 
             Text(
                 text = stringResource(id = R.string.last_backup_date),
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.constrainAs(title) {
+                modifier = modifier.constrainAs(title) {
                     start.linkTo(parent.start, margin = 20.dp)
                 }
             )
@@ -177,7 +177,7 @@ fun BackupView(
             Text(
                 text = dateTimeString,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.constrainAs(dateTime) {
+                modifier = modifier.constrainAs(dateTime) {
                     end.linkTo(parent.end, margin = 20.dp)
                 }
             )
@@ -186,17 +186,17 @@ fun BackupView(
         val stateValue = backupState.value
         if (stateValue is BackupViewState.Started) {
             CircularProgressIndicator(
-                modifier = Modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp)
+                modifier = modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp)
             )
         } else {
             val colorIfError = if (stateValue is BackupViewState.Failed) {
-                 MaterialTheme.colorScheme.error
+                MaterialTheme.colorScheme.error
             } else {
-                 MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.primary
             }
 
             Button(
-                modifier = Modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp),
+                modifier = modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorIfError
@@ -209,6 +209,7 @@ fun BackupView(
                     is BackupViewState.Failed -> {
                         Text(text = stringResource(id = R.string.retry_backup))
                     }
+
                     else -> {
                         Text(text = stringResource(id = R.string.backup))
                     }
@@ -216,13 +217,13 @@ fun BackupView(
             }
         }
 
-        DataBaseDivider()
+        DataBaseDivider(modifier)
     }
 }
 
 @Composable
-@Preview
 fun BackupList(
+    modifier: Modifier = Modifier,
     backupList: State<List<BackupViewData>> = mutableStateOf(
         listOf(
             BackupViewData(1, "", "300 MB"),
@@ -239,31 +240,31 @@ fun BackupList(
                 text = stringResource(id = R.string.all_backups),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 8.dp)
+                modifier = modifier.padding(start = 22.dp, end = 22.dp, top = 8.dp)
             )
 
             LazyRow(contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp)) {
                 items(backupList.value) { backupItem ->
-                    BackupItem(backupItem, onSaveClick, onDeleteClick)
+                    BackupItem(modifier, backupItem, onSaveClick, onDeleteClick)
                 }
             }
 
-            DataBaseDivider()
+            DataBaseDivider(modifier)
         }
     }
 
 }
 
 @Composable
-@Preview
 fun BackupItem(
+    modifier: Modifier,
     backupViewData: BackupViewData =
         BackupViewData(1, "", "300 MB"),
     onSaveClick: (Int) -> Unit = {},
     onDeleteClick: (Int) -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .width(150.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(8.dp),
@@ -282,8 +283,8 @@ fun BackupItem(
             Image(
                 painter = painterResource(R.drawable.ic_backup_file),
                 contentDescription = "",
-                modifier = Modifier.padding(6.dp),
-                colorFilter = ColorFilter.tint( MaterialTheme.colorScheme.onSurface)
+                modifier = modifier.padding(6.dp),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
             )
 
             val dateTimeString = backupViewData.dateTime.ifBlank {
@@ -295,10 +296,10 @@ fun BackupItem(
                 fontSize = 14.sp
             )
 
-            Row(modifier = Modifier.padding(bottom = 8.dp, top = 16.dp)) {
+            Row(modifier = modifier.padding(bottom = 8.dp, top = 16.dp)) {
 
                 Icon(
-                    painter = painterResource(R.drawable.ic_save_as), "", modifier = Modifier
+                    painter = painterResource(R.drawable.ic_save_as), "", modifier = modifier
                         .selectable(false, onClick = {
                             onSaveClick(backupViewData.id)
                         }, role = Role.Button, enabled = true)
@@ -307,7 +308,7 @@ fun BackupItem(
                 )
 
                 Icon(
-                    Icons.Filled.Delete, "", modifier = Modifier
+                    Icons.Filled.Delete, "", modifier = modifier
                         .selectable(false, onClick = {
                             onDeleteClick(backupViewData.id)
                         }, role = Role.Button, enabled = true)
@@ -316,26 +317,27 @@ fun BackupItem(
                 )
             }
 
-            Spacer(modifier = Modifier.size(2.dp))
+            Spacer(modifier = modifier.size(2.dp))
         }
     }
 }
 
 @Composable
-private fun DataBaseDivider() {
+private fun DataBaseDivider(modifier: Modifier) {
     Divider(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)
+        modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)
     )
 }
 
 @Composable
-@Preview
 private fun DeleteBackupFileDialog(
+    modifier: Modifier,
     deleteDialogState: MutableState<Pair<Boolean, Int>> = mutableStateOf(true to -1),
     viewModel: DataViewModel? = null
 ) {
     if (deleteDialogState.value.first) {
         AlertDialog(
+            modifier = modifier,
             onDismissRequest = {
                 deleteDialogState.value = false to -1
             },
@@ -344,7 +346,7 @@ private fun DeleteBackupFileDialog(
             },
             text = {
                 Text(
-                    modifier = Modifier.padding(bottom = 10.dp),
+                    modifier = modifier.padding(bottom = 10.dp),
                     text = stringResource(id = R.string.delete_backup_file)
                 )
             },
@@ -373,14 +375,15 @@ private fun DeleteBackupFileDialog(
 }
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun TestAllDataViewsTogether() {
+fun DataScreenPreview() {
     KryptTheme {
-        DataScreenScaffold {
+        DataScreenScaffold(modifier = Modifier) {
             Column {
-                FileSizeView()
-                BackupView()
+                FileSizeView(Modifier, mutableStateOf("500 MB"))
+                BackupView(Modifier)
                 BackupList()
             }
         }

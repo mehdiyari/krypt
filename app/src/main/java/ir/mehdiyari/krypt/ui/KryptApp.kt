@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.data.navigateToData
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
@@ -61,7 +62,7 @@ fun KryptApp(
                 mainMenuBottomSheetState,
                 onSelectMainMenuItem = {
                     when (it) {
-                        R.string.menu_data_usage -> TODO("navigateToDataUsageFragment")
+                        R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
                         R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
                         R.string.menu_settings -> TODO("navigateToSettingsFragment")
                         R.string.menu_help -> TODO("openBrowser")
