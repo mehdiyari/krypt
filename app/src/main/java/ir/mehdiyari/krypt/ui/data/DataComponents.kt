@@ -26,13 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -230,26 +227,5 @@ fun DeleteBackupFileDialog(
                 }
             }
         )
-    }
-}
-
-
-@SuppressLint("UnrememberedMutableState")
-@Composable
-@Preview
-fun DataScreenPreview(
-    @PreviewParameter(
-        BackupsPreviewParameterProvider::class,
-        limit = 5
-    ) backupList: List<BackupViewData>
-) {
-    KryptTheme {
-        DataScreenScaffold(modifier = Modifier) {
-            Column {
-                FileSizeView(Modifier, mutableStateOf("500 MB"))
-                BackupView(Modifier)
-                BackupList(Modifier, mutableStateOf(backupList), {}, {})
-            }
-        }
     }
 }

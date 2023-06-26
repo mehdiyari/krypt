@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.data
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -9,9 +10,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable
 fun DataRoute(
@@ -49,6 +53,26 @@ fun DataRoute(
             Toast.makeText(
                 LocalContext.current, message.value!!, Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+@Preview
+fun DataRoutePreview(
+    @PreviewParameter(
+        BackupsPreviewParameterProvider::class,
+        limit = 5
+    ) backupList: List<BackupViewData>
+) {
+    KryptTheme {
+        DataScreenScaffold(modifier = Modifier) {
+            Column {
+                FileSizeView(Modifier, mutableStateOf("500 MB"))
+                BackupView(Modifier)
+                BackupList(Modifier, mutableStateOf(backupList), {}, {})
+            }
         }
     }
 }
