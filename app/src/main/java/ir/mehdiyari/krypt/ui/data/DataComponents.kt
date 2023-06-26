@@ -26,10 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.utils.KryptTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -103,9 +105,9 @@ fun FileSizeView(modifier: Modifier, fileSizeState: State<String>) {
 @Composable
 fun BackupView(
     modifier: Modifier,
-    lastBackupState: State<String?> = mutableStateOf("2022 April 22 - 22:30"),
-    backupState: State<BackupViewState?> = mutableStateOf(null),
-    backupNowClick: () -> Unit = {}
+    lastBackupState: State<String?>,
+    backupState: State<BackupViewState?>,
+    backupNowClick: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -189,7 +191,7 @@ fun DataBaseDivider(modifier: Modifier) {
 fun DeleteBackupFileDialog(
     modifier: Modifier,
     deleteDialogState: MutableState<Pair<Boolean, Int>> = mutableStateOf(true to -1),
-    viewModel: DataViewModel? = null
+    onDeleteBackUp: (Int) -> Unit,
 ) {
     if (deleteDialogState.value.first) {
         AlertDialog(
@@ -209,7 +211,7 @@ fun DeleteBackupFileDialog(
             confirmButton = {
                 OutlinedButton(
                     onClick = {
-                        viewModel?.onDeleteBackup(deleteDialogState.value.second)
+                        onDeleteBackUp(deleteDialogState.value.second)
                         deleteDialogState.value = false to -1
                     },
                 ) {
@@ -227,5 +229,55 @@ fun DeleteBackupFileDialog(
                 }
             }
         )
+    }
+}
+
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+@Preview
+fun FileSizePreview() {
+    KryptTheme {
+        FileSizeView(modifier = Modifier, fileSizeState = mutableStateOf("500 MB"))
+    }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+@Preview
+fun DeleteBackupFileDialogPreview() {
+    KryptTheme {
+        DeleteBackupFileDialog(
+            modifier = Modifier,
+            deleteDialogState = mutableStateOf(true to R.string.delete_backup_file),
+            onDeleteBackUp = {},
+        )
+    }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+@Preview
+fun BackupViewPreview() {
+    KryptTheme {
+        BackupView(
+            modifier = Modifier,
+            lastBackupState = mutableStateOf("2022 April 22 - 22:30"),
+            backupState = mutableStateOf(null),
+            backupNowClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview
+fun DataScreenScaffoldPreview() {
+    KryptTheme {
+        DataScreenScaffold(
+            modifier = Modifier,
+            onNavigationClicked = {},
+        ) {
+
+        }
     }
 }

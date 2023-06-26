@@ -41,7 +41,7 @@ fun DataRoute(
                 deleteDialogState.value = true to it
             }
 
-            DeleteBackupFileDialog(modifier, deleteDialogState, viewModel)
+            DeleteBackupFileDialog(modifier, deleteDialogState, viewModel::onDeleteBackup)
         }
     }
 
@@ -69,9 +69,9 @@ fun DataRoutePreview(
     KryptTheme {
         DataScreenScaffold(modifier = Modifier) {
             Column {
-                FileSizeView(Modifier, mutableStateOf("500 MB"))
-                BackupView(Modifier)
-                BackupList(Modifier, mutableStateOf(backupList), {}, {})
+                FileSizePreview()
+                BackupViewPreview()
+                BackupListPreview(backupList = backupList)
             }
         }
     }
