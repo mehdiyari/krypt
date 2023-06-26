@@ -8,10 +8,6 @@
         android:name="ir.mehdiyari.krypt.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
-        android:id="@+id/dataFragment"
-        android:name="ir.mehdiyari.krypt.ui.data.DataFragment"
-        android:label="DataFragment" />
-    <fragment
         android:id="@+id/recordVoiceFragment"
         android:name="ir.mehdiyari.krypt.ui.voice.record.RecordVoiceFragment"
         android:label="RecordVoiceFragment" />
