@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,6 +36,7 @@ fun AudiosRoute(
     onNavigateToRecordAudio: () -> Unit,
 ) {
     audiosViewModel.getAudios()
+    val playingAudio = musicPlayerViewModel.currentAudioPlaying.collectAsStateWithLifecycle()
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -63,14 +63,14 @@ fun AudiosRoute(
             AudioList(
                 modifier = modifier.padding(top = it.calculateTopPadding()),
                 audiosState,
-                musicPlayerViewModel.currentAudioPlaying,
+                playingAudio,
                 musicPlayerViewModel::onAudioAction,
                 musicPlayerBottomSheetState,
             )
         }
 
         AddNewVoiceButton(modifier = modifier.align(Alignment.BottomEnd), onNavigateToRecordAudio)
-        val playingAudio = musicPlayerViewModel.currentAudioPlaying.collectAsState()
+
         val sliderState = remember { mutableLongStateOf(playingAudio.value?.currentValue ?: 0L) }
         if (musicPlayerBottomSheetState.currentValue == SheetValue.Expanded) {
             MusicPlayerBottomSheet(
