@@ -70,8 +70,8 @@
     <string name="settings_lock_auto_5_min">5 Minute</string>
     <string name="settings_lock_auto_10_min">10 Minute</string>
     <string name="settings_lock_auto_15_min">15 Minute</string>
-    <string name="settings_lock_auto_30_min">30 m</string>
-    <string name="settings_lock_auto_1_hour">1 h</string>
+    <string name="settings_lock_auto_30_min">30 Minute</string>
+    <string name="settings_lock_auto_1_hour">1 Hour</string>
     <string name="shared_media_not_found">We can\'t find selected media for encrypt.</string>
     <string name="navigation_error">Error while navigation</string>
     <string name="settings_delete_account_text">Delete account</string>
