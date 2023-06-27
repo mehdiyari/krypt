@@ -21,6 +21,7 @@ import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
+import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +46,7 @@ fun KryptApp(
                         }
 
                         R.string.add_audio -> {
-                            TODO("navigateToAudioRecorderFragment")
+                            kryptAppState.navController.navigateToAddVoice()
                         }
 
                         R.string.add_text -> {

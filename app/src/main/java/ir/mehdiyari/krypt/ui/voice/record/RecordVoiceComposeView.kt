@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
@@ -47,38 +47,41 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RecordVoiceScreen(
-    viewModel: RecordVoiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navController: NavController? = null,
+    viewModel: RecordVoiceViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit,
 ) {
     KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
-        RecordToolbar(navController, snackbarHostState) {
+        RecordToolbar(onBackPressed, snackbarHostState) {
             val recordState = viewModel.recordVoiceViewState.collectAsState()
 
             when (recordState.value) {
                 is RecordVoiceViewState.NavigateUp -> {
-                    navController?.navigateUp()
+                    onBackPressed()
                     return@RecordToolbar
                 }
+
                 is RecordVoiceViewState.MicError -> {
                     Toast.makeText(
                         LocalContext.current,
                         R.string.microphone_error,
                         Toast.LENGTH_LONG
                     ).show()
-                    navController?.navigateUp()
+                    onBackPressed()
                     return@RecordToolbar
                 }
+
                 is RecordVoiceViewState.RecordSavedSuccessfully -> {
-                    HandleSuccessState(navController)
+                    HandleSuccessState(onBackPressed)
                     return@RecordToolbar
                 }
+
                 is RecordVoiceViewState.RecordSavedFailed -> {
                     RecordRetrySnackbar(
                         snackbarHostState,
                         viewModel::saveRecordRetry,
-                        navController,
+                        onBackPressed,
                         coroutineScope
                     )
                     return@RecordToolbar
@@ -109,7 +112,7 @@ fun RecordVoiceScreen(
 private fun RecordRetrySnackbar(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     retry: () -> Unit = {},
-    navController: NavController? = null,
+    onBackPressed: () -> Unit = {},
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ) {
     val title = stringResource(id = R.string.voice_recorded_failed)
@@ -123,21 +126,21 @@ private fun RecordRetrySnackbar(
             if (this == SnackbarResult.ActionPerformed) {
                 retry()
             } else if (this == SnackbarResult.Dismissed) {
-                navController?.navigateUp()
+                onBackPressed()
             }
         }
     }
 }
 
 @Composable
-private fun HandleSuccessState(navController: NavController?) {
+private fun HandleSuccessState(onBackPressed: () -> Unit) {
     Toast.makeText(
         LocalContext.current,
         R.string.voice_recorded_successfully,
         Toast.LENGTH_SHORT
     ).show()
 
-    navController?.navigateUp()
+    onBackPressed()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -145,7 +148,7 @@ private fun HandleSuccessState(navController: NavController?) {
 @Composable
 @Preview
 private fun RecordToolbar(
-    navigateUpCallback: NavController? = null,
+    navigateUpCallback: () -> Unit = {},
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     content: @Composable() (() -> Unit)? = null,
 ) {
@@ -157,7 +160,7 @@ private fun RecordToolbar(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navigateUpCallback?.navigateUp()
+                        navigateUpCallback()
                     }) {
                         Icon(Icons.Filled.ArrowBack, "")
                     }
@@ -336,7 +339,7 @@ private fun RecordActionButton(
             Image(
                 painter = painterResource(id = iconId),
                 contentDescription = "",
-                colorFilter = ColorFilter.tint( MaterialTheme.colorScheme.onPrimary)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
             )
 
             Text(
