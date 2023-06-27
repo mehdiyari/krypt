@@ -4,116 +4,56 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerBottomSheet
 import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerEntity
-import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerViewModel
-import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun AudiosScreen(
-    navController: NavController? = null,
-    audiosViewModel: AudiosViewModel = viewModel(),
-    musicPlayerViewModel: MusicPlayerViewModel
-) {
-    val musicPlayerBottomSheetState = rememberModalBottomSheetState()
-    KryptTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(text = stringResource(id = R.string.audios_library))
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            navController?.navigateUp()
-                        }) {
-                            Icon(Icons.Filled.ArrowBack, "")
-                        }
-                    }
-                )
-            }
-        ) {
-            AudioList(
-                audiosViewModel.audios.collectAsState(),
-                musicPlayerViewModel.currentAudioPlaying,
-                musicPlayerViewModel::onAudioAction,
-                musicPlayerBottomSheetState,
-            )
-        }
 
-        AddNewVoiceButton(navController)
-        val playingAudio = musicPlayerViewModel.currentAudioPlaying.collectAsState()
-        val sliderState = remember {
-            mutableStateOf(playingAudio.value?.currentValue ?: 0L)
-        }
-        MusicPlayerBottomSheet(
-            musicPlayerBottomSheetState,
-            playingAudio.value?.title ?: "",
-            sliderState,
-            playingAudio.value?.duration ?: 0L,
-            musicPlayerViewModel::onPrevClicked,
-            musicPlayerViewModel::onNextClicked,
-            musicPlayerViewModel::onPlayPauseClicked,
-        )
-    }
-}
-
-@Preview
 @Composable
 fun AddNewVoiceButton(
-    navController: NavController? = null
+    modifier: Modifier,
+    onNavigateToRecordAudio: () -> Unit,
 ) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(15.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = {
-                TODO("navigate to record audio")
-            },
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_add_audio_24),
-                    contentDescription = ""
-                )
-            },
-            text = {
-                Text(text = stringResource(id = R.string.add_new_audio))
-            }
-        )
-    }
+    ExtendedFloatingActionButton(
+        modifier = modifier.padding(16.dp),
+        onClick = {
+            onNavigateToRecordAudio()
+        },
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_add_audio_24),
+                contentDescription = "",
+                tint = Color.White
+            )
+        },
+        text = {
+            Text(text = stringResource(id = R.string.add_new_audio))
+        }
+    )
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AudioList(
+fun AudioList(
+    modifier: Modifier,
     audios: State<List<AudioEntity>> = mutableStateOf(
         listOf(
             AudioEntity(1L, "Voice #60", "08:30", "2023/01/26 18:00:00"),
@@ -133,18 +73,21 @@ private fun AudioList(
     musicPlayerBottomSheetState: SheetState
 ) {
     val playingAudioState = currentAudioPlaying.collectAsState()
-    LazyColumn(content = {
-        items(audios.value.size, key = {
-            audios.value[it].id
-        }) {
-            AudioItem(
-                audios.value[it],
-                playingAudioState,
-                onActionClicked,
-                musicPlayerBottomSheetState
-            )
-        }
-    }, contentPadding = PaddingValues(top = 8.dp, bottom = 70.dp, start = 6.dp, end = 6.dp))
+    LazyColumn(
+        modifier = modifier,
+        content = {
+            items(audios.value.size, key = {
+                audios.value[it].id
+            }) {
+                AudioItem(
+                    audios.value[it],
+                    playingAudioState,
+                    onActionClicked,
+                    musicPlayerBottomSheetState
+                )
+            }
+        }, contentPadding = PaddingValues(top = 8.dp, bottom = 70.dp, start = 6.dp, end = 6.dp)
+    )
 }
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -182,9 +125,7 @@ fun AudioItem(
         ) {
             IconButton(onClick = {
                 onActionClicked.invoke(audioEntity)
-                scope.launch {
-                    musicPlayerBottomSheetState.show()
-                }
+                scope.launch { musicPlayerBottomSheetState.show() }
             }) {
                 val playPauseIcon =
                     if (playingAudioState.value?.id == audioEntity.id && musicPlayerBottomSheetState.currentValue == SheetValue.Expanded) {

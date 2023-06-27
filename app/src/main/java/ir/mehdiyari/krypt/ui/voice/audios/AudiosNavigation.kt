@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.voice.audios
 
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -15,7 +16,8 @@ fun NavGraphBuilder.audiosRoute(
     onNavigateToRecordAudio: () -> Unit,
 ) {
     composable(ROUTE_AUDIOS) {
-        AudiosScreen(
+        AudiosRoute(
+            modifier = Modifier,
             onBackPressed = onBackPressed,
             onNavigateToRecordAudio = onNavigateToRecordAudio
         )
