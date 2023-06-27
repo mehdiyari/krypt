@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -97,12 +98,11 @@ fun AddAudioScreenContent(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-@Preview
 private fun RecordRetrySnackbar(
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    retry: () -> Unit = {},
-    onBackPressed: () -> Unit = {},
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    snackbarHostState: SnackbarHostState,
+    retry: () -> Unit,
+    onBackPressed: () -> Unit,
+    coroutineScope: CoroutineScope,
 ) {
     val title = stringResource(id = R.string.voice_recorded_failed)
     val action = stringResource(id = R.string.voice_recorder_retry)
@@ -129,7 +129,7 @@ private fun HandleSuccessState(onBackPressed: () -> Unit) {
 }
 
 @Composable
-fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
+fun RotateAnimationForRecordImage(isPaused: Boolean) {
     var currentRotation by remember { mutableFloatStateOf(0f) }
     val rotation = remember { Animatable(currentRotation) }
     if (!isPaused) {
@@ -168,12 +168,10 @@ fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
 @Composable
 fun RecordVoiceViews(
     modifier: Modifier,
-    timerStateFlow: StateFlow<String> = MutableStateFlow("00:00:00"),
-    recordButtonsState: StateFlow<RecordActionButtonsState> = MutableStateFlow(
-        RecordActionButtonsState()
-    ),
-    recordUIVisibilityState: Boolean = false,
-    isPaused: Boolean = false
+    timerStateFlow: StateFlow<String>,
+    recordButtonsState: StateFlow<RecordActionButtonsState>,
+    recordUIVisibilityState: Boolean,
+    isPaused: Boolean,
 ) {
     AnimatedVisibility(visible = recordUIVisibilityState, enter = scaleIn(), exit = scaleOut()) {
         Column(
@@ -195,7 +193,7 @@ fun RecordVoiceViews(
 @Composable
 fun TimerText(
     modifier: Modifier,
-    numberStateFlow: StateFlow<String> = MutableStateFlow("00:00:01")
+    numberStateFlow: StateFlow<String>,
 ) {
     val value = numberStateFlow.collectAsState()
     AnimatedContent(targetState = value.value, transitionSpec = {
@@ -216,9 +214,7 @@ fun TimerText(
 @Composable
 fun RecordControlsButtons(
     modifier: Modifier,
-    recordActionButtonsState: StateFlow<RecordActionButtonsState> = MutableStateFlow(
-        RecordActionButtonsState()
-    )
+    recordActionButtonsState: StateFlow<RecordActionButtonsState>,
 ) {
     val recordActionButtonsModel = recordActionButtonsState.collectAsState().value
     AnimatedContent(
@@ -265,9 +261,9 @@ fun RecordControlsButtons(
 @Composable
 private fun RecordActionButton(
     modifier: Modifier,
-    onClick: (() -> Unit)? = null,
-    @DrawableRes iconId: Int = R.drawable.ic_record_stoped,
-    @StringRes textId: Int = R.string.record_pause,
+    onClick: (() -> Unit)?,
+    @DrawableRes iconId: Int,
+    @StringRes textId: Int,
 ) {
     Button(
         onClick = {
@@ -293,8 +289,8 @@ private fun RecordActionButton(
 @Composable
 fun RecordButton(
     modifier: Modifier,
-    startRecordCallback: () -> Unit = {},
-    visibility: Boolean = true
+    startRecordCallback: () -> Unit,
+    visibility: Boolean
 ) {
     AnimatedVisibility(visible = visibility, enter = scaleIn(), exit = scaleOut()) {
         Column(
@@ -314,5 +310,90 @@ fun RecordButton(
                 )
             }
         }
+    }
+}
+
+@Composable
+@Preview
+private fun RecordRetrySnackbarPreview() {
+    KryptTheme {
+        RecordRetrySnackbar(
+            snackbarHostState = remember { SnackbarHostState() },
+            retry = {},
+            onBackPressed = {},
+            coroutineScope = rememberCoroutineScope(),
+        )
+    }
+}
+
+@Composable
+@Preview
+fun RotateAnimationForRecordImagePreview() {
+    KryptTheme {
+        RotateAnimationForRecordImage(isPaused = false)
+    }
+}
+
+@Composable
+@Preview
+fun RecordVoiceViewsPreview() {
+    KryptTheme {
+        RecordVoiceViews(
+            modifier = Modifier,
+            timerStateFlow = MutableStateFlow("00:00:00"),
+            recordButtonsState = MutableStateFlow(
+                RecordActionButtonsState()
+            ),
+            recordUIVisibilityState = false,
+            isPaused = false
+        )
+    }
+}
+
+@Composable
+fun TimerTextPreview() {
+    KryptTheme {
+        TimerText(
+            modifier = Modifier,
+            numberStateFlow = MutableStateFlow("00:00:01"),
+        )
+    }
+}
+
+@Composable
+@Preview
+fun RecordControlsButtonsPreview() {
+    KryptTheme {
+        RecordControlsButtons(
+            modifier = Modifier,
+            recordActionButtonsState = MutableStateFlow(
+                RecordActionButtonsState()
+            )
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun RecordActionButtonPreview() {
+    KryptTheme {
+        RecordActionButton(
+            modifier = Modifier,
+            onClick = null,
+            iconId = R.drawable.ic_record_stoped,
+            textId = R.string.record_pause,
+        )
+    }
+}
+
+@Composable
+@Preview
+fun RecordButtonPreview() {
+    KryptTheme {
+        RecordButton(
+            modifier = Modifier,
+            startRecordCallback = { /*TODO*/ },
+            visibility = true,
+        )
     }
 }
