@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,12 +39,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddAudioScreenContent(
     modifier: Modifier,
-    viewModel: RecordVoiceViewModel,
     onBackPressed: () -> Unit,
     snackbarHostState: SnackbarHostState,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    recordVoiceViewState: StateFlow<RecordVoiceViewState>,
+    onSaveRecordRetry: () -> Unit,
+    startRecord: () -> Unit,
+    recordTimerState: StateFlow<String>,
+    actionButtonState: StateFlow<RecordActionButtonsState>,
 ) {
-    val recordState = viewModel.recordVoiceViewState.collectAsState()
+    val recordState = recordVoiceViewState.collectAsStateWithLifecycle()
     when (recordState.value) {
         is RecordVoiceViewState.NavigateUp -> {
             onBackPressed()
@@ -66,7 +71,7 @@ fun AddAudioScreenContent(
         is RecordVoiceViewState.RecordSavedFailed -> {
             RecordRetrySnackbar(
                 snackbarHostState,
-                viewModel::saveRecordRetry,
+                onSaveRecordRetry,
                 onBackPressed,
                 coroutineScope
             )
@@ -77,13 +82,13 @@ fun AddAudioScreenContent(
     }
 
     RecordButton(
-        modifier, viewModel::startRecord, recordState.value is RecordVoiceViewState.Initialize
+        modifier, startRecord, recordState.value is RecordVoiceViewState.Initialize
     )
 
     RecordVoiceViews(
         modifier,
-        timerStateFlow = viewModel.recordTimer,
-        recordButtonsState = viewModel.actionsButtonState,
+        timerStateFlow = recordTimerState,
+        recordButtonsState = actionButtonState,
         recordUIVisibilityState = recordState.value is RecordVoiceViewState.RecordStarted,
         isPaused = (recordState.value as? RecordVoiceViewState.RecordStarted)?.isPaused
             ?: false

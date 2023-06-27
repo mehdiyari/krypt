@@ -44,6 +44,16 @@ fun RecordAudioRoute(
     }, snackbarHost = {
         SnackbarHost(hostState = snackbarHostState)
     }) {
-        AddAudioScreenContent(modifier, viewModel, onBackPressed, snackbarHostState, coroutineScope)
+        AddAudioScreenContent(
+            modifier = modifier,
+            onBackPressed = onBackPressed,
+            snackbarHostState = snackbarHostState,
+            coroutineScope = coroutineScope,
+            recordVoiceViewState = viewModel.recordVoiceViewState,
+            onSaveRecordRetry = viewModel::saveRecordRetry,
+            startRecord = viewModel::startRecord,
+            recordTimerState = viewModel.recordTimer,
+            actionButtonState = viewModel.actionsButtonState,
+        )
     }
 }
