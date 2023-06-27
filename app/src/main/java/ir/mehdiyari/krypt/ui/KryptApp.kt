@@ -20,6 +20,7 @@ import ir.mehdiyari.krypt.ui.data.navigateToData
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
+import ir.mehdiyari.krypt.ui.settings.navigateToSettings
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
 import ir.mehdiyari.krypt.utils.KryptTheme
@@ -65,7 +66,7 @@ fun KryptApp(
                     when (it) {
                         R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
                         R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
-                        R.string.menu_settings -> TODO("navigateToSettingsFragment")
+                        R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
                         R.string.menu_help -> TODO("openBrowser")
                     }
                 },

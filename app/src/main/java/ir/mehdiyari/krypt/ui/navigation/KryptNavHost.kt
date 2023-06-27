@@ -13,6 +13,7 @@ import ir.mehdiyari.krypt.ui.logout.createAccountScreen
 import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
+import ir.mehdiyari.krypt.ui.settings.settingsRoute
 import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 import ir.mehdiyari.krypt.ui.splash.splashScreen
 import ir.mehdiyari.krypt.ui.text.add.addTextScreen
@@ -80,6 +81,7 @@ fun KryptNaveHost(
         dataScreen { navController.popBackStack() }
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
+        settingsRoute { navController.popBackStack() }
     }
 }
 

@@ -8,13 +8,9 @@ import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.KryptApp
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -37,10 +33,6 @@ class MainActivity : ComponentActivity(), AppLockerStopApi {
         lifecycleScope.launch {
             viewModel.automaticLockState.collectLatest {
                 if (it) {
-                    val currentDestination =
-                        findViewById<FragmentContainerView>(R.id.kryptNavigationFragment)
-                            ?.findNavController()
-                            ?.currentDestination?.id
 
 //                    if (!listOf<String>(
 //                            R.id.splashFragment,
