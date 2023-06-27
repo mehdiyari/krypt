@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs'
     id 'com.google.devtools.ksp'
     id 'kotlin-kapt'
 }
@@ -60,11 +59,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     ksp "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-
-
-    def nav_version = "2.5.3"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     def room_version = "2.5.1"
     implementation "androidx.room:room-ktx:$room_version"
