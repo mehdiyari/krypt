@@ -19,7 +19,10 @@ import ir.mehdiyari.krypt.ui.text.add.addTextScreen
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
 import ir.mehdiyari.krypt.ui.text.list.textsScreen
+import ir.mehdiyari.krypt.ui.voice.audios.audiosRoute
+import ir.mehdiyari.krypt.ui.voice.audios.navigateToAudios
 import ir.mehdiyari.krypt.ui.voice.record.addVoiceScreen
+import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
 
 @Composable
 fun KryptNaveHost(
@@ -57,7 +60,9 @@ fun KryptNaveHost(
                     mediaFragmentAction
                 )
             },
-            openMusicAndAudioScreen = {},
+            openMusicAndAudioScreen = {
+                navController.navigateToAudios()
+            },
             openAudioRecorderScreen = {},
             onShowSnackbar = onShowSnackbar
         )
@@ -74,6 +79,7 @@ fun KryptNaveHost(
         mediaScreen { navController.popBackStack() }
         dataScreen { navController.popBackStack() }
         addVoiceScreen { navController.popBackStack() }
+        audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
     }
 }
 

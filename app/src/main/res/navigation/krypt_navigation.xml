@@ -7,10 +7,4 @@
         android:name="ir.mehdiyari.krypt.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
 
-    <fragment
-        android:id="@+id/audiosFragment"
-        android:name="ir.mehdiyari.krypt.ui.voice.audios.AudiosFragment"
-        android:label="AudiosFragment">
-    </fragment>
-
 </navigation>
