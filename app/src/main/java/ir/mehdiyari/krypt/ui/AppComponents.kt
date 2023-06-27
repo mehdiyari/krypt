@@ -52,10 +52,13 @@ fun KryptBottomAppBar(
     onLockClicked: () -> Unit
 ) {
     BottomAppBar(
+        tonalElevation = 8.dp,
         modifier = Modifier.clip(
             MaterialTheme.shapes.small.copy(
-                topStart = CornerSize(24.dp),
-                topEnd = CornerSize(24.dp)
+                topStart = CornerSize(28.dp),
+                topEnd = CornerSize(28.dp),
+                bottomEnd = CornerSize(0.dp),
+                bottomStart = CornerSize(0.dp),
             )
         ),
     ) {
@@ -89,7 +92,7 @@ fun AddFab(
     mainMenuBottomSheetState: SheetState,
     coroutineScope: CoroutineScope
 ) {
-    FloatingActionButton(onClick = {
+    FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondary, onClick = {
         coroutineScope.launch {
             if (addItemsBottomSheetState.isVisible) {
                 addItemsBottomSheetState.hide()
@@ -101,7 +104,7 @@ fun AddFab(
     }) {
         Icon(
             Icons.Filled.Add,
-            tint = MaterialTheme.colorScheme.onPrimary,
+            tint = MaterialTheme.colorScheme.onSecondary,
             contentDescription = stringResource(id = R.string.add_items)
         )
     }

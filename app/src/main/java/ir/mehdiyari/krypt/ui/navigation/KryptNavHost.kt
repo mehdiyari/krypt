@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import ir.mehdiyari.krypt.ui.KryptAppState
+import ir.mehdiyari.krypt.ui.data.dataScreen
 import ir.mehdiyari.krypt.ui.home.homeScreen
 import ir.mehdiyari.krypt.ui.home.navigateToHome
 import ir.mehdiyari.krypt.ui.login.loginScreen
@@ -18,6 +19,7 @@ import ir.mehdiyari.krypt.ui.text.add.addTextScreen
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
 import ir.mehdiyari.krypt.ui.text.list.textsScreen
+import ir.mehdiyari.krypt.ui.voice.record.addVoiceScreen
 
 @Composable
 fun KryptNaveHost(
@@ -69,9 +71,9 @@ fun KryptNaveHost(
         })
 
         addTextScreen { navController.popBackStack() }
-
         mediaScreen { navController.popBackStack() }
-
+        dataScreen { navController.popBackStack() }
+        addVoiceScreen { navController.popBackStack() }
     }
 }
 

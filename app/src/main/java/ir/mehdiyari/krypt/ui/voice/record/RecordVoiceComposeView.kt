@@ -10,20 +10,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,70 +29,63 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun RecordVoiceScreen(
-    viewModel: RecordVoiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navController: NavController? = null,
+fun AddAudioScreenContent(
+    viewModel: RecordVoiceViewModel,
+    onBackPressed: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope
 ) {
-    KryptTheme {
-        val snackbarHostState = remember { SnackbarHostState() }
-        val coroutineScope: CoroutineScope = rememberCoroutineScope()
-        RecordToolbar(navController, snackbarHostState) {
-            val recordState = viewModel.recordVoiceViewState.collectAsState()
-
-            when (recordState.value) {
-                is RecordVoiceViewState.NavigateUp -> {
-                    navController?.navigateUp()
-                    return@RecordToolbar
-                }
-                is RecordVoiceViewState.MicError -> {
-                    Toast.makeText(
-                        LocalContext.current,
-                        R.string.microphone_error,
-                        Toast.LENGTH_LONG
-                    ).show()
-                    navController?.navigateUp()
-                    return@RecordToolbar
-                }
-                is RecordVoiceViewState.RecordSavedSuccessfully -> {
-                    HandleSuccessState(navController)
-                    return@RecordToolbar
-                }
-                is RecordVoiceViewState.RecordSavedFailed -> {
-                    RecordRetrySnackbar(
-                        snackbarHostState,
-                        viewModel::saveRecordRetry,
-                        navController,
-                        coroutineScope
-                    )
-                    return@RecordToolbar
-                }
-
-                else -> Unit
-            }
-
-            RecordButton(
-                viewModel::startRecord,
-                recordState.value is RecordVoiceViewState.Initialize
-            )
-
-            RecordUI(
-                timerStateFlow = viewModel.recordTimer,
-                recordButtonsState = viewModel.actionsButtonState,
-                recordUIVisibilityState = recordState.value is RecordVoiceViewState.RecordStarted,
-                isPaused = (recordState.value as? RecordVoiceViewState.RecordStarted)?.isPaused
-                    ?: false
-            )
+    val recordState = viewModel.recordVoiceViewState.collectAsState()
+    when (recordState.value) {
+        is RecordVoiceViewState.NavigateUp -> {
+            onBackPressed()
+            return
         }
+
+        is RecordVoiceViewState.MicError -> {
+            Toast.makeText(
+                LocalContext.current, R.string.microphone_error, Toast.LENGTH_LONG
+            ).show()
+            onBackPressed()
+            return
+        }
+
+        is RecordVoiceViewState.RecordSavedSuccessfully -> {
+            HandleSuccessState(onBackPressed)
+            return
+        }
+
+        is RecordVoiceViewState.RecordSavedFailed -> {
+            RecordRetrySnackbar(
+                snackbarHostState,
+                viewModel::saveRecordRetry,
+                onBackPressed,
+                coroutineScope
+            )
+            return
+        }
+
+        else -> Unit
     }
+
+    RecordButton(
+        viewModel::startRecord, recordState.value is RecordVoiceViewState.Initialize
+    )
+
+    RecordVoiceViews(
+        timerStateFlow = viewModel.recordTimer,
+        recordButtonsState = viewModel.actionsButtonState,
+        recordUIVisibilityState = recordState.value is RecordVoiceViewState.RecordStarted,
+        isPaused = (recordState.value as? RecordVoiceViewState.RecordStarted)?.isPaused
+            ?: false
+    )
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -109,65 +94,31 @@ fun RecordVoiceScreen(
 private fun RecordRetrySnackbar(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     retry: () -> Unit = {},
-    navController: NavController? = null,
+    onBackPressed: () -> Unit = {},
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ) {
     val title = stringResource(id = R.string.voice_recorded_failed)
     val action = stringResource(id = R.string.voice_recorder_retry)
     coroutineScope.launch {
         snackbarHostState.showSnackbar(
-            message = title,
-            actionLabel = action,
-            duration = SnackbarDuration.Indefinite
+            message = title, actionLabel = action, duration = SnackbarDuration.Indefinite
         ).apply {
             if (this == SnackbarResult.ActionPerformed) {
                 retry()
             } else if (this == SnackbarResult.Dismissed) {
-                navController?.navigateUp()
+                onBackPressed()
             }
         }
     }
 }
 
 @Composable
-private fun HandleSuccessState(navController: NavController?) {
+private fun HandleSuccessState(onBackPressed: () -> Unit) {
     Toast.makeText(
-        LocalContext.current,
-        R.string.voice_recorded_successfully,
-        Toast.LENGTH_SHORT
+        LocalContext.current, R.string.voice_recorded_successfully, Toast.LENGTH_SHORT
     ).show()
 
-    navController?.navigateUp()
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-@Preview
-private fun RecordToolbar(
-    navigateUpCallback: NavController? = null,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    content: @Composable() (() -> Unit)? = null,
-) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.record_audio))
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navigateUpCallback?.navigateUp()
-                    }) {
-                        Icon(Icons.Filled.ArrowBack, "")
-                    }
-                }
-            )
-        }, content = {
-            content?.invoke()
-        }, snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        })
+    onBackPressed()
 }
 
 @Composable
@@ -177,10 +128,8 @@ fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
     if (!isPaused) {
         LaunchedEffect(true) {
             rotation.animateTo(
-                targetValue = currentRotation + 360f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(3500, easing = LinearEasing),
-                    repeatMode = RepeatMode.Restart
+                targetValue = currentRotation + 360f, animationSpec = infiniteRepeatable(
+                    animation = tween(3500, easing = LinearEasing), repeatMode = RepeatMode.Restart
                 )
             ) {
                 currentRotation = this.value
@@ -189,8 +138,7 @@ fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
     } else {
         LaunchedEffect(true) {
             rotation.animateTo(
-                targetValue = 0f,
-                animationSpec = repeatable(
+                targetValue = 0f, animationSpec = repeatable(
                     animation = tween(300, easing = LinearEasing),
                     repeatMode = RepeatMode.Restart,
                     iterations = 1
@@ -210,10 +158,9 @@ fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
-fun RecordUI(
+fun RecordVoiceViews(
     timerStateFlow: StateFlow<String> = MutableStateFlow("00:00:00"),
     recordButtonsState: StateFlow<RecordActionButtonsState> = MutableStateFlow(
         RecordActionButtonsState()
@@ -242,22 +189,15 @@ fun RecordUI(
 @Preview
 fun TimerText(numberStateFlow: StateFlow<String> = MutableStateFlow("00:00:01")) {
     val value = numberStateFlow.collectAsState()
-    AnimatedContent(
-        targetState = value.value,
-        transitionSpec = {
-            EnterTransition.None with ExitTransition.None
-        }
-    ) { target ->
+    AnimatedContent(targetState = value.value, transitionSpec = {
+        EnterTransition.None with ExitTransition.None
+    }, label = "") { target ->
         Text(
             modifier = Modifier
                 .padding(top = 20.dp, bottom = 10.dp)
                 .animateEnterExit(
-                    enter = scaleIn(),
-                    exit = scaleOut()
-                ),
-            text = target,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+                    enter = scaleIn(), exit = scaleOut()
+                ), text = target, fontSize = 16.sp, fontWeight = FontWeight.Bold
         )
     }
 }
@@ -273,8 +213,7 @@ fun RecordControlsButtons(
 ) {
     val recordActionButtonsModel = recordActionButtonsState.collectAsState().value
     AnimatedContent(
-        targetState = recordActionButtonsModel.hashCode(),
-        transitionSpec = {
+        targetState = recordActionButtonsModel.hashCode(), transitionSpec = {
             EnterTransition.None with ExitTransition.None
         }, label = ""
     ) {
@@ -284,11 +223,9 @@ fun RecordControlsButtons(
                     recordActionButtonsModel.stop.second,
                     R.drawable.ic_record_stoped,
                     R.string.record_pause,
-                    Modifier
-                        .animateEnterExit(
-                            enter = scaleIn(),
-                            exit = scaleOut()
-                        )
+                    Modifier.animateEnterExit(
+                        enter = scaleIn(), exit = scaleOut()
+                    )
                 )
             }
 
@@ -297,11 +234,9 @@ fun RecordControlsButtons(
                     recordActionButtonsModel.resume.second,
                     R.drawable.ic_record_resumed,
                     R.string.record_resume,
-                    Modifier
-                        .animateEnterExit(
-                            enter = scaleIn(),
-                            exit = scaleOut()
-                        )
+                    Modifier.animateEnterExit(
+                        enter = scaleIn(), exit = scaleOut()
+                    )
                 )
             }
 
@@ -327,16 +262,13 @@ private fun RecordActionButton(
     Button(
         onClick = {
             onClick?.invoke()
-        },
-        modifier = modifier
-            .padding(10.dp),
-        shape = CircleShape
+        }, modifier = modifier.padding(10.dp), shape = CircleShape
     ) {
         Row {
             Image(
                 painter = painterResource(id = iconId),
                 contentDescription = "",
-                colorFilter = ColorFilter.tint( MaterialTheme.colorScheme.onPrimary)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
             )
 
             Text(
@@ -366,22 +298,9 @@ fun RecordButton(startRecordCallback: () -> Unit = {}, visibility: Boolean = tru
                 shape = CircleShape
             ) {
                 Text(
-                    text = stringResource(id = R.string.record_audio),
-                    textAlign = TextAlign.Center
+                    text = stringResource(id = R.string.record_audio), textAlign = TextAlign.Center
                 )
             }
-        }
-    }
-}
-
-@Composable
-@Preview
-fun PreviewRecord() {
-    KryptTheme {
-        RecordToolbar {
-            RecordUI(
-                recordUIVisibilityState = true
-            )
         }
     }
 }
