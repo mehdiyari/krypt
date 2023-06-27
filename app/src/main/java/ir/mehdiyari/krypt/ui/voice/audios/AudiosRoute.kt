@@ -74,6 +74,7 @@ fun AudiosRoute(
         val sliderState = remember { mutableLongStateOf(playingAudio.value?.currentValue ?: 0L) }
         if (musicPlayerBottomSheetState.currentValue == SheetValue.Expanded) {
             MusicPlayerBottomSheet(
+                modifier,
                 musicPlayerBottomSheetState,
                 playingAudio.value?.title ?: "",
                 sliderState,
