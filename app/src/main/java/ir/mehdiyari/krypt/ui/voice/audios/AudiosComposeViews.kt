@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -29,7 +29,6 @@ import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerBottomSheet
 import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerEntity
 import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerViewModel
 import ir.mehdiyari.krypt.utils.KryptTheme
-import ir.mehdiyari.krypt.utils.getAnimationNavUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -97,12 +96,7 @@ fun AddNewVoiceButton(
     ) {
         ExtendedFloatingActionButton(
             onClick = {
-                navController
-                    ?.navigate(
-                        resId = R.id.action_audiosFragment_to_recordVoiceFragment,
-                        args = null,
-                        navOptions = getAnimationNavUtils()
-                    )
+                TODO("navigate to record audio")
             },
             icon = {
                 Icon(
