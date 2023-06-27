@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddAudioScreenContent(
+    modifier: Modifier,
     viewModel: RecordVoiceViewModel,
     onBackPressed: () -> Unit,
     snackbarHostState: SnackbarHostState,
@@ -76,10 +77,11 @@ fun AddAudioScreenContent(
     }
 
     RecordButton(
-        viewModel::startRecord, recordState.value is RecordVoiceViewState.Initialize
+        modifier, viewModel::startRecord, recordState.value is RecordVoiceViewState.Initialize
     )
 
     RecordVoiceViews(
+        modifier,
         timerStateFlow = viewModel.recordTimer,
         recordButtonsState = viewModel.actionsButtonState,
         recordUIVisibilityState = recordState.value is RecordVoiceViewState.RecordStarted,
@@ -123,7 +125,7 @@ private fun HandleSuccessState(onBackPressed: () -> Unit) {
 
 @Composable
 fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
-    var currentRotation by remember { mutableStateOf(0f) }
+    var currentRotation by remember { mutableFloatStateOf(0f) }
     val rotation = remember { Animatable(currentRotation) }
     if (!isPaused) {
         LaunchedEffect(true) {
@@ -159,8 +161,8 @@ fun RotateAnimationForRecordImage(isPaused: Boolean = false) {
 }
 
 @Composable
-@Preview
 fun RecordVoiceViews(
+    modifier: Modifier,
     timerStateFlow: StateFlow<String> = MutableStateFlow("00:00:00"),
     recordButtonsState: StateFlow<RecordActionButtonsState> = MutableStateFlow(
         RecordActionButtonsState()
@@ -170,7 +172,7 @@ fun RecordVoiceViews(
 ) {
     AnimatedVisibility(visible = recordUIVisibilityState, enter = scaleIn(), exit = scaleOut()) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(20.dp),
@@ -178,22 +180,24 @@ fun RecordVoiceViews(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             RotateAnimationForRecordImage(isPaused)
-            TimerText(timerStateFlow)
-            RecordControlsButtons(recordButtonsState)
+            TimerText(modifier, timerStateFlow)
+            RecordControlsButtons(modifier, recordButtonsState)
         }
     }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-@Preview
-fun TimerText(numberStateFlow: StateFlow<String> = MutableStateFlow("00:00:01")) {
+fun TimerText(
+    modifier: Modifier,
+    numberStateFlow: StateFlow<String> = MutableStateFlow("00:00:01")
+) {
     val value = numberStateFlow.collectAsState()
     AnimatedContent(targetState = value.value, transitionSpec = {
-        EnterTransition.None with ExitTransition.None
+        EnterTransition.None togetherWith ExitTransition.None
     }, label = "") { target ->
         Text(
-            modifier = Modifier
+            modifier = modifier
                 .padding(top = 20.dp, bottom = 10.dp)
                 .animateEnterExit(
                     enter = scaleIn(), exit = scaleOut()
@@ -205,8 +209,8 @@ fun TimerText(numberStateFlow: StateFlow<String> = MutableStateFlow("00:00:01"))
 @SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-@Preview
 fun RecordControlsButtons(
+    modifier: Modifier,
     recordActionButtonsState: StateFlow<RecordActionButtonsState> = MutableStateFlow(
         RecordActionButtonsState()
     )
@@ -214,34 +218,35 @@ fun RecordControlsButtons(
     val recordActionButtonsModel = recordActionButtonsState.collectAsState().value
     AnimatedContent(
         targetState = recordActionButtonsModel.hashCode(), transitionSpec = {
-            EnterTransition.None with ExitTransition.None
+            EnterTransition.None togetherWith ExitTransition.None
         }, label = ""
     ) {
         Row {
             if (recordActionButtonsModel.stop.first) {
                 RecordActionButton(
+                    modifier.animateEnterExit(
+                        enter = scaleIn(), exit = scaleOut()
+                    ),
                     recordActionButtonsModel.stop.second,
                     R.drawable.ic_record_stoped,
                     R.string.record_pause,
-                    Modifier.animateEnterExit(
-                        enter = scaleIn(), exit = scaleOut()
-                    )
                 )
             }
 
             if (recordActionButtonsModel.resume.first) {
                 RecordActionButton(
+                    modifier.animateEnterExit(
+                        enter = scaleIn(), exit = scaleOut()
+                    ),
                     recordActionButtonsModel.resume.second,
                     R.drawable.ic_record_resumed,
                     R.string.record_resume,
-                    Modifier.animateEnterExit(
-                        enter = scaleIn(), exit = scaleOut()
-                    )
                 )
             }
 
             if (recordActionButtonsModel.save.first) {
                 RecordActionButton(
+                    modifier,
                     recordActionButtonsModel.save.second,
                     R.drawable.ic_save_as,
                     R.string.record_save
@@ -254,10 +259,10 @@ fun RecordControlsButtons(
 
 @Composable
 private fun RecordActionButton(
+    modifier: Modifier,
     onClick: (() -> Unit)? = null,
     @DrawableRes iconId: Int = R.drawable.ic_record_stoped,
     @StringRes textId: Int = R.string.record_pause,
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     Button(
         onClick = {
@@ -273,27 +278,29 @@ private fun RecordActionButton(
 
             Text(
                 text = stringResource(id = textId),
-                modifier = Modifier.padding(start = 4.dp, top = 2.dp)
+                modifier = modifier.padding(start = 4.dp, top = 2.dp)
             )
         }
     }
 }
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
-@Preview
-fun RecordButton(startRecordCallback: () -> Unit = {}, visibility: Boolean = true) {
+fun RecordButton(
+    modifier: Modifier,
+    startRecordCallback: () -> Unit = {},
+    visibility: Boolean = true
+) {
     AnimatedVisibility(visible = visibility, enter = scaleIn(), exit = scaleOut()) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                modifier = Modifier.size(120.dp),
+                modifier = modifier.size(120.dp),
                 onClick = { startRecordCallback.invoke() },
                 shape = CircleShape
             ) {

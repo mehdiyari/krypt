@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.ui.voice.record
 
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -14,6 +15,6 @@ fun NavGraphBuilder.addVoiceScreen(
     onBackPressed: () -> Unit
 ) {
     composable(ROUTE_ADD_VOICE) {
-        RecordAudioRoute(onBackPressed = onBackPressed)
+        RecordAudioRoute(modifier = Modifier, onBackPressed = onBackPressed)
     }
 }

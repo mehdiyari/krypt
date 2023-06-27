@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mehdiyari.krypt.R
@@ -23,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RecordAudioRoute(
+    modifier: Modifier,
     viewModel: RecordVoiceViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
 ) {
@@ -42,6 +44,6 @@ fun RecordAudioRoute(
     }, snackbarHost = {
         SnackbarHost(hostState = snackbarHostState)
     }) {
-        AddAudioScreenContent(viewModel, onBackPressed, snackbarHostState, coroutineScope)
+        AddAudioScreenContent(modifier, viewModel, onBackPressed, snackbarHostState, coroutineScope)
     }
 }
