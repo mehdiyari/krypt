@@ -3,7 +3,6 @@ package ir.mehdiyari.krypt.ui.voice.audios
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,11 +60,12 @@ fun AudiosRoute(
         ) {
             val audiosState = audiosViewModel.audios.collectAsStateWithLifecycle()
             AudioList(
-                modifier = modifier.padding(top = it.calculateTopPadding()),
+                modifier = modifier,
                 audiosState,
                 playingAudio,
                 musicPlayerViewModel::onAudioAction,
                 musicPlayerBottomSheetState,
+                topPadding = it.calculateTopPadding(),
             )
         }
 

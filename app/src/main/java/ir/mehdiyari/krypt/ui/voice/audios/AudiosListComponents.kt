@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -44,10 +45,11 @@ fun AudioList(
     audios: State<List<AudioEntity>>,
     currentAudioPlaying: State<MusicPlayerEntity?>,
     onActionClicked: (AudioEntity) -> Unit,
-    musicPlayerBottomSheetState: SheetState
+    musicPlayerBottomSheetState: SheetState,
+    topPadding: Dp,
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.padding(top = topPadding),
         content = {
             items(audios.value.size, key = {
                 audios.value[it].id
@@ -150,7 +152,8 @@ fun AudioListPreview(
                 )
             ),
             onActionClicked = {},
-            musicPlayerBottomSheetState = rememberModalBottomSheetState()
+            musicPlayerBottomSheetState = rememberModalBottomSheetState(),
+            topPadding = 0.dp
         )
     }
 }
