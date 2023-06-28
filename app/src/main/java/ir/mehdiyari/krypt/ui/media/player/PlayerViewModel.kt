@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.media.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val fileCrypt: FileCrypt,
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val fileUtils: FilesUtilities,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -34,7 +34,7 @@ class PlayerViewModel @Inject constructor(
                 } else {
                     try {
                         _playerViewState.emit(PlayerState.Decrypting)
-                        if (fileCrypt.decryptFileToPath(path, newPath)) {
+                        if (kryptCryptographyHelper.decryptFile(path, newPath).isSuccess) {
                             _playerViewState.emit(PlayerState.EncryptedCashedVideo(newPath))
                         } else {
                             _playerViewState.emit(PlayerState.ForceClose)

@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.media.data
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.Media
 import ir.mehdiyari.fallery.repo.AbstractBucketContentProvider
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.utils.FilesUtilities
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class EncryptedMediasBucketContentProvider @Inject constructor(
     private val filesRepository: FilesRepository,
-    private val fileCrypt: FileCrypt,
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val filesUtilities: FilesUtilities,
     private val thumbsUtils: ThumbsUtils
 ) : AbstractBucketContentProvider {
@@ -37,7 +37,11 @@ class EncryptedMediasBucketContentProvider @Inject constructor(
                             filesUtilities.generateStableNameFilePathForMediaThumbnail(it.metaData)
 
                         if (!File(finalPath).exists()) {
-                            if (fileCrypt.decryptFileToPath(it.metaData, finalPath)) {
+                            if (kryptCryptographyHelper.decryptFile(
+                                    it.metaData,
+                                    finalPath
+                                ).isSuccess
+                            ) {
                                 it to finalPath
                             } else {
                                 it to filesUtilities.getNameOfFile(it.filePath)

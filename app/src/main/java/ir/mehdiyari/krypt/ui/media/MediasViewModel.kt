@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.crypto.FileCrypt
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
@@ -30,7 +30,7 @@ import javax.inject.Inject
 class MediasViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
-    private val fileCrypt: FileCrypt,
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val filesUtilities: FilesUtilities,
     private val filesRepository: FilesRepository,
     private val mediaStoreManager: MediaStoreManager,
@@ -117,7 +117,7 @@ class MediasViewModel @Inject constructor(
                     thumbnailPath = null
                 }
 
-                if (fileCrypt.encryptFileToPath(mediaPath, destinationPath)) {
+                if (kryptCryptographyHelper.encryptFile(mediaPath, destinationPath).isSuccess) {
                     encryptedResults.add(
                         (isPhoto to destinationPath) to encryptThumbnail(
                             thumbnailPath
@@ -161,21 +161,26 @@ class MediasViewModel @Inject constructor(
         }
     }
 
-    private fun encryptThumbnail(thumbnailPath: String?): String? = if (thumbnailPath != null) {
-        try {
-            val thumbEncryptedPath =
-                filesUtilities.generateEncryptedFilePathForMediaThumbnail(thumbnailPath)
-            if (fileCrypt.encryptFileToPath(thumbnailPath, thumbEncryptedPath)) {
-                thumbEncryptedPath
-            } else {
+    private suspend fun encryptThumbnail(thumbnailPath: String?): String? =
+        if (thumbnailPath != null) {
+            try {
+                val thumbEncryptedPath =
+                    filesUtilities.generateEncryptedFilePathForMediaThumbnail(thumbnailPath)
+                if (kryptCryptographyHelper.encryptFile(
+                        thumbnailPath,
+                        thumbEncryptedPath
+                    ).isSuccess
+                ) {
+                    thumbEncryptedPath
+                } else {
+                    null
+                }
+            } catch (t: Throwable) {
                 null
             }
-        } catch (t: Throwable) {
+        } else {
             null
         }
-    } else {
-        null
-    }
 
     private fun decrypt(
         medias: Array<String>,
@@ -198,7 +203,11 @@ class MediasViewModel @Inject constructor(
                     )
                 }
 
-                if (fileCrypt.decryptFileToPath(encryptedMedia.filePath, destinationPath)) {
+                if (kryptCryptographyHelper.decryptFile(
+                        encryptedMedia.filePath,
+                        destinationPath
+                    ).isSuccess
+                ) {
                     decryptedResult.add(destinationPath to encryptedMedia.id)
                 }
             }

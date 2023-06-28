@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.crypto;
+package ir.mehdiyari.krypt.crypto.utils;
 
 import java.nio.charset.StandardCharsets;
 

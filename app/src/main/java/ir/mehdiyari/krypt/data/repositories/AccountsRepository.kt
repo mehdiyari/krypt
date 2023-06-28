@@ -1,6 +1,14 @@
 package ir.mehdiyari.krypt.data.repositories
 
-import ir.mehdiyari.krypt.crypto.*
+import ir.mehdiyari.krypt.crypto.api.KryptKeyGenerator
+import ir.mehdiyari.krypt.crypto.utils.Base64
+import ir.mehdiyari.krypt.crypto.utils.HashingUtils
+import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.utils.combineWith
+import ir.mehdiyari.krypt.crypto.utils.getAfterIndex
+import ir.mehdiyari.krypt.crypto.utils.getBeforeIndex
+import ir.mehdiyari.krypt.crypto.utils.getBytesBetweenIndexes
+import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.data.account.AccountEntity
 import ir.mehdiyari.krypt.data.account.AccountsDao
 import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
@@ -14,8 +22,9 @@ import javax.inject.Singleton
 class AccountsRepository @Inject constructor(
     private val accountsDao: AccountsDao,
     private val symmetricHelper: SymmetricHelper,
-    private val passwordKeyGenerator: PasswordKeyGenerator,
-    private val currentUser: CurrentUser
+    private val kryptKeyGenerator: KryptKeyGenerator,
+    private val currentUser: CurrentUser,
+    private val hashingUtils: HashingUtils,
 ) {
     suspend fun addAccount(
         name: String,
@@ -26,9 +35,12 @@ class AccountsRepository @Inject constructor(
         if (password.trim().length < 12) return false to PasswordLengthThrowable()
         if (password != passwordConfig) return false to PasswordsNotMatchThrowable()
 
-        val salt = passwordKeyGenerator.generateSalt()
+        val salt = hashingUtils.generateRandomSalt()
         val iv = symmetricHelper.createInitVector()
-        val key = passwordKeyGenerator.generate32BytesKeyFromPassword(password, salt)
+        val result = kryptKeyGenerator.generateKey(password, salt)
+        if (result.isFailure) return false to result.exceptionOrNull()
+
+        val key = result.getOrThrow()
 
         val encryptedNameBytes = symmetricHelper.encrypt(
             data = name.toUtf8Bytes(),
@@ -62,12 +74,13 @@ class AccountsRepository @Inject constructor(
         val nameData = Base64.decode(account.encryptedName)
         val iv = nameData.getAfterIndex(nameData.size - 16)
         val salt = nameData.getBytesBetweenIndexes(
-            nameData.size - 32, nameData.size - 16
+            nameData.size - (SymmetricHelper.INITIALIZE_VECTOR_SIZE + HashingUtils.SALT_SIZE),
+            nameData.size - SymmetricHelper.INITIALIZE_VECTOR_SIZE
         )
 
         val encryptedName = nameData.getBeforeIndex(nameData.size - 32)
 
-        val keyAsBytes = passwordKeyGenerator.generate32BytesKeyFromPassword(password, salt)
+        val keyAsBytes = kryptKeyGenerator.generateKey(password, salt).getOrThrow()
         val secretKey = SecretKeySpec(
             keyAsBytes,
             "AES"
@@ -102,9 +115,9 @@ class AccountsRepository @Inject constructor(
         val salt = nameData.getBytesBetweenIndexes(
             nameData.size - 32, nameData.size - 16
         )
-        val keyBytes = passwordKeyGenerator.generate32BytesKeyFromPassword(
+        val keyBytes = kryptKeyGenerator.generateKey(
             password, salt
-        )
+        ).getOrThrow()
 
         return keyBytes.contentEquals(currentUser.key)
     }
