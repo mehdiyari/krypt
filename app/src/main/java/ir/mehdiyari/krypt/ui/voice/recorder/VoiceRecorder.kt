@@ -3,7 +3,6 @@ package ir.mehdiyari.krypt.ui.voice.recorder
 import android.media.MediaRecorder
 import android.os.Build
 import androidx.annotation.WorkerThread
-import dagger.Lazy
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -11,41 +10,43 @@ import java.io.File
 import javax.inject.Inject
 
 class VoiceRecorder @Inject constructor(
-    private val mediaRecorder: Lazy<MediaRecorder?>,
+    private val mediaRecorderFactory: VoiceRecorderFactory,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) {
     private var isRecording: Boolean = false
     private var filePath = ""
 
-    fun getMediaRecorderInstance(): MediaRecorder? = mediaRecorder.get()
+    private val mediaRecorder by lazy {
+        mediaRecorderFactory.provideMediaRecorder()
+    }
 
     @WorkerThread
     suspend fun startRecord(path: String) = withContext(ioDispatcher) {
         filePath = path
-        getMediaRecorderInstance()?.setOutputFile(path)
-        getMediaRecorderInstance()?.prepare()
-        getMediaRecorderInstance()?.start()
+        mediaRecorder!!.setOutputFile(path)
+        mediaRecorder?.prepare()
+        mediaRecorder?.start()
         isRecording = true
     }
 
     fun pauseRecord() {
         isRecording = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getMediaRecorderInstance()?.pause()
+            mediaRecorder?.pause()
         }
     }
 
     fun resumeRecording() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getMediaRecorderInstance()?.resume()
+            mediaRecorder?.resume()
             isRecording = true
         }
     }
 
     fun stopRecord() {
         isRecording = false
-        getMediaRecorderInstance()?.stop()
-        getMediaRecorderInstance()?.release()
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
     }
 
     fun deleteAudioCacheFile(): Boolean {
@@ -64,11 +65,11 @@ class VoiceRecorder @Inject constructor(
     }
 
     fun setOnErrorListener(listener: MediaRecorder.OnErrorListener) {
-        getMediaRecorderInstance()?.setOnErrorListener(listener)
+        mediaRecorder?.setOnErrorListener(listener)
     }
 
     fun setOnInfoListener(listener: MediaRecorder.OnInfoListener) {
-        getMediaRecorderInstance()?.setOnInfoListener(listener)
+        mediaRecorder?.setOnInfoListener(listener)
     }
 
     fun getRecordFilePath(): String = filePath
