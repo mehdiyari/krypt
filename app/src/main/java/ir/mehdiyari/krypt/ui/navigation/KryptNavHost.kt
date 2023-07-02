@@ -64,8 +64,6 @@ fun KryptNaveHost(
             openMusicAndAudioScreen = {
                 navController.navigateToAudios()
             },
-            openAudioRecorderScreen = {},
-            onShowSnackbar = onShowSnackbar
         )
 
         textsScreen(onTextClick = {

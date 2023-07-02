@@ -23,16 +23,12 @@ fun NavGraphBuilder.homeScreen(
     openTextsScreen: (String?) -> Unit,
     openMusicAndAudioScreen: () -> Unit,
     openMediaScreen: (MediaViewAction, SharedMediaListModel?) -> Unit,
-    openAudioRecorderScreen: () -> Unit,
-    onShowSnackbar: suspend (String, String) -> Boolean,
 ) {
     composable(ROUTE_HOME) {
         HomeRoute(
             openTextsScreen = openTextsScreen,
             openMusicAndAudioScreen = openMusicAndAudioScreen,
             openMediaScreen = openMediaScreen,
-            openAudioRecorderScreen = openAudioRecorderScreen,
-            onShowSnackbar = onShowSnackbar,
             modifier = Modifier.fillMaxSize()
         )
     }
