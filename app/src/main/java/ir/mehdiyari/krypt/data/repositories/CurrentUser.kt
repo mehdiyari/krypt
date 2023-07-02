@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.data.repositories
 
-data class CurrentUser(
-    var accountName:String? = null,
+class CurrentUser(
+    var accountName: String? = null,
     var key: ByteArray? = null
 ) {
     override fun equals(other: Any?): Boolean = false

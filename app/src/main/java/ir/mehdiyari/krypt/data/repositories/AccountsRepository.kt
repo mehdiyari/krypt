@@ -1,5 +1,8 @@
 package ir.mehdiyari.krypt.data.repositories
 
+import ir.mehdiyari.krypt.app.user.CurrentUserManager
+import ir.mehdiyari.krypt.app.user.UserKeyProvider
+import ir.mehdiyari.krypt.app.user.UsernameProvider
 import ir.mehdiyari.krypt.crypto.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.crypto.utils.Base64
 import ir.mehdiyari.krypt.crypto.utils.HashingUtils
@@ -23,7 +26,9 @@ class AccountsRepository @Inject constructor(
     private val accountsDao: AccountsDao,
     private val symmetricHelper: SymmetricHelper,
     private val kryptKeyGenerator: KryptKeyGenerator,
-    private val currentUser: CurrentUser,
+    private val currentUserManager: CurrentUserManager,
+    private val usernameProvider: UsernameProvider,
+    private val userKeyProvider: UserKeyProvider,
     private val hashingUtils: HashingUtils,
 ) {
     suspend fun addAccount(
@@ -69,7 +74,7 @@ class AccountsRepository @Inject constructor(
         accountName: String,
         password: String
     ): Boolean {
-        currentUser.clear()
+        currentUserManager.clearCurrentUser()
         val account = accountsDao.getAccountWithName(accountName) ?: return false
         val nameData = Base64.decode(account.encryptedName)
         val iv = nameData.getAfterIndex(nameData.size - 16)
@@ -99,8 +104,7 @@ class AccountsRepository @Inject constructor(
         val decryptedStrName = String(decryptedName)
 
         return if (decryptedStrName.trim() == accountName.trim()) {
-            currentUser.accountName = accountName.trim()
-            currentUser.key = keyAsBytes
+            currentUserManager.setCurrentUser(accountName.trim(), keyAsBytes)
             true
         } else {
             false
@@ -110,7 +114,8 @@ class AccountsRepository @Inject constructor(
     suspend fun validatePassword(
         password: String
     ): Boolean {
-        val account = accountsDao.getAccountWithName(currentUser.accountName!!) ?: return false
+        val account =
+            accountsDao.getAccountWithName(usernameProvider.getUsername()!!) ?: return false
         val nameData = Base64.decode(account.encryptedName)
         val salt = nameData.getBytesBetweenIndexes(
             nameData.size - 32, nameData.size - 16
@@ -119,10 +124,10 @@ class AccountsRepository @Inject constructor(
             password, salt
         ).getOrThrow()
 
-        return keyBytes.contentEquals(currentUser.key)
+        return SecretKeySpec(keyBytes, "AES") == userKeyProvider.getKey()
     }
 
     suspend fun deleteCurrentAccount() {
-        accountsDao.deleteCurrentAccount(currentUser.accountName!!)
+        accountsDao.deleteCurrentAccount(usernameProvider.getUsername()!!)
     }
 }

@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.app
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
+import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val currentUser: CurrentUser,
+    private val currentUserManager: CurrentUserManager,
     @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -32,7 +32,7 @@ class MainViewModel @Inject constructor(
         if (autoLockValue != AutoLockItemsEnum.Disabled) {
             lockerTimerJob = viewModelScope.launch(defaultDispatcher) {
                 delay(autoLockValue.value * 1000L)
-                currentUser.clear()
+                currentUserManager.clearCurrentUser()
                 _automaticLockState.emit(true)
             }
         }

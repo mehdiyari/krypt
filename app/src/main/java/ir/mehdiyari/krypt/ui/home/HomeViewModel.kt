@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val filesRepository: FilesRepository,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
-    private val currentUser: CurrentUser
+    private val currentUserManager: CurrentUserManager
 ) : ViewModel() {
 
     private val _filesCounts = MutableStateFlow<List<HomeCardsModel>>(listOf())
@@ -42,6 +42,7 @@ class HomeViewModel @Inject constructor(
                         it.second
                     )
                 )
+
                 FileTypeEnum.Text -> homeCardList.add(
                     HomeCardsModel(
                         R.drawable.ic_editor_50,
@@ -49,6 +50,7 @@ class HomeViewModel @Inject constructor(
                         it.second
                     )
                 )
+
                 else -> {
                     if (mediaCount == -1L) {
                         mediaCount = it.second
@@ -69,6 +71,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun lockKrypt() {
-        currentUser.clear()
+        currentUserManager.clearCurrentUser()
     }
 }
