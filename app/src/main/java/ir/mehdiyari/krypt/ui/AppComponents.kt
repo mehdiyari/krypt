@@ -19,11 +19,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,13 +41,9 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KryptBottomAppBar(
-    addItemsBottomSheetState: SheetState,
-    mainMenuBottomSheetState: SheetState,
-    coroutineScope: CoroutineScope,
-    onLockClicked: () -> Unit
+    openMenuSheet: () -> Unit, onLockClicked: () -> Unit
 ) {
     BottomAppBar(
         tonalElevation = 8.dp,
@@ -62,14 +56,12 @@ fun KryptBottomAppBar(
             )
         ),
     ) {
-        IconButton(modifier = Modifier
-            .weight(1f)
-            .wrapContentWidth(Alignment.Start), onClick = {
-            coroutineScope.launch {
-                addItemsBottomSheetState.hide()
-                mainMenuBottomSheetState.show()
-            }
-        }) {
+        IconButton(
+            modifier = Modifier
+                .weight(1f)
+                .wrapContentWidth(Alignment.Start),
+            onClick = openMenuSheet
+        ) {
             Icon(
                 Icons.Filled.Menu,
                 contentDescription = stringResource(id = R.string.krypt_main_menu)
@@ -85,23 +77,13 @@ fun KryptBottomAppBar(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddFab(
-    addItemsBottomSheetState: SheetState,
-    mainMenuBottomSheetState: SheetState,
-    coroutineScope: CoroutineScope
+    openAddItemSheet: () -> Unit
 ) {
-    FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondary, onClick = {
-        coroutineScope.launch {
-            if (addItemsBottomSheetState.isVisible) {
-                addItemsBottomSheetState.hide()
-            } else {
-                mainMenuBottomSheetState.hide()
-                addItemsBottomSheetState.show()
-            }
-        }
-    }) {
+    FloatingActionButton(
+        containerColor = MaterialTheme.colorScheme.secondary, onClick = openAddItemSheet
+    ) {
         Icon(
             Icons.Filled.Add,
             tint = MaterialTheme.colorScheme.onSecondary,
@@ -113,111 +95,91 @@ fun AddFab(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuBottomSheet(
-    mainMenuBottomSheetState: SheetState,
-    onSelectMainMenuItem: (Int) -> Unit,
-    scope: CoroutineScope
+    scope: CoroutineScope, onSelectMainMenuItem: (Int) -> Unit, hideBottomSheet: () -> Unit
 ) {
-    ModalBottomSheet(
-        sheetState = mainMenuBottomSheetState,
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(14.dp)
-            ) {
-                Text(
-                    text = stringResource(id = R.string.app_name),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.SansSerif
-                )
-                Text(
-                    text = stringResource(id = R.string.app_menu_subtitle),
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
-            }
-            MAIN_MENU_ITEMS.forEach {
-                ListItem(
-                    modifier = Modifier.selectable(selected = false, onClick = {
-                        onSelectMainMenuItem(it.second)
-                        scope.launch {
-                            mainMenuBottomSheetState.hide()
-                        }
-                    }),
-                    headlineContent = {},
-                    leadingContent = {
-                        Row {
-                            Icon(
-                                painterResource(id = it.first),
-                                contentDescription = stringResource(id = it.second),
-                            )
-                            Text(
-                                stringResource(id = it.second),
-                                textAlign = TextAlign.Start,
-                                modifier = Modifier.padding(start = 16.dp, top = 1.dp)
-                            )
-                        }
-                    }
-                )
-            }
-        },
-        onDismissRequest = {}
-    )
+    val sheetState = rememberModalBottomSheetState()
+    ModalBottomSheet(sheetState = sheetState, content = {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.SansSerif
+            )
+            Text(
+                text = stringResource(id = R.string.app_menu_subtitle),
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
+        }
+        MAIN_MENU_ITEMS.forEach {
+            ListItem(modifier = Modifier.selectable(selected = false, onClick = {
+                onSelectMainMenuItem(it.second)
+                scope.launch {
+                    sheetState.hide()
+                }.invokeOnCompletion {
+                    hideBottomSheet()
+                }
+            }), headlineContent = {}, leadingContent = {
+                Row {
+                    Icon(
+                        painterResource(id = it.first),
+                        contentDescription = stringResource(id = it.second),
+                    )
+                    Text(
+                        stringResource(id = it.second),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(start = 16.dp, top = 1.dp)
+                    )
+                }
+            })
+        }
+    }, onDismissRequest = hideBottomSheet)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBottomSheet(
-    addItemsBottomSheetState: SheetState,
-    onSelectAddItemMenuItem: (Int) -> Unit,
-    scope: CoroutineScope
+    scope: CoroutineScope, onSelectAddItemMenuItem: (Int) -> Unit, hideBottomSheet: () -> Unit
 ) {
-    ModalBottomSheet(
-        sheetState = addItemsBottomSheetState,
-        content = {
-            ADD_ITEMS.forEach {
-                ListItem(
-                    modifier = Modifier.selectable(selected = false, onClick = {
-                        onSelectAddItemMenuItem(it.second)
-                        scope.launch {
-                            addItemsBottomSheetState.hide()
-                        }
-                    }),
-                    headlineContent = {},
-                    trailingContent = {
 
-                    },
-                    leadingContent = {
-                        Row {
-                            Icon(
-                                painterResource(id = it.first),
-                                contentDescription = stringResource(id = it.second)
-                            )
-                            Text(
-                                stringResource(id = it.second),
-                                modifier = Modifier.padding(start = 16.dp, top = 1.dp)
-                            )
-                        }
+    val sheetState = rememberModalBottomSheetState()
+
+    ModalBottomSheet(
+        sheetState = sheetState, content = {
+            ADD_ITEMS.forEach {
+                ListItem(modifier = Modifier.selectable(selected = false, onClick = {
+                    onSelectAddItemMenuItem(it.second)
+                    scope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        hideBottomSheet()
                     }
-                )
+                }), headlineContent = {}, leadingContent = {
+                    Row {
+                        Icon(
+                            painterResource(id = it.first),
+                            contentDescription = stringResource(id = it.second)
+                        )
+                        Text(
+                            stringResource(id = it.second),
+                            modifier = Modifier.padding(start = 16.dp, top = 1.dp)
+                        )
+                    }
+                })
             }
-        },
-        onDismissRequest = {}
+        }, onDismissRequest = hideBottomSheet
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun BottomAppBarPreview() {
     KryptTheme {
-        KryptBottomAppBar(
-            addItemsBottomSheetState = rememberModalBottomSheetState(),
-            mainMenuBottomSheetState = rememberModalBottomSheetState(),
-            coroutineScope = rememberCoroutineScope()
-        ) {
-
-        }
+        KryptBottomAppBar(openMenuSheet = {}, onLockClicked = {})
     }
 }

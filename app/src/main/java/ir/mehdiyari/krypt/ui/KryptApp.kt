@@ -6,14 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.data.navigateToData
@@ -32,72 +33,61 @@ fun KryptApp(
 ) {
     KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
-        val addItemsBottomSheetState = rememberModalBottomSheetState()
-        val mainMenuBottomSheetState = rememberModalBottomSheetState()
 
-        if (addItemsBottomSheetState.currentValue == SheetValue.Expanded) {
-            AddBottomSheet(
-                addItemsBottomSheetState,
-                onSelectAddItemMenuItem = {
-                    when (it) {
-                        R.string.add_media -> {
-                            kryptAppState.navController.navigateToMedia(
-                                MediaViewAction.PICK_MEDIA
-                            )
-                        }
+        var openAddItem by remember { mutableStateOf(false) }
+        var openMenu by remember { mutableStateOf(false) }
 
-                        R.string.add_audio -> {
-                            kryptAppState.navController.navigateToAddVoice()
-                        }
-
-                        R.string.add_text -> {
-                            kryptAppState.navController.navigateToAddText()
-                        }
+        if (openAddItem) {
+            AddBottomSheet(scope = kryptAppState.coroutineScope, onSelectAddItemMenuItem = {
+                when (it) {
+                    R.string.add_media -> {
+                        kryptAppState.navController.navigateToMedia(
+                            MediaViewAction.PICK_MEDIA
+                        )
                     }
-                },
-                kryptAppState.coroutineScope
-            )
+
+                    R.string.add_audio -> {
+                        kryptAppState.navController.navigateToAddVoice()
+                    }
+
+                    R.string.add_text -> {
+                        kryptAppState.navController.navigateToAddText()
+                    }
+                }
+            }, hideBottomSheet = {
+                openAddItem = false
+            })
         }
 
-        if (mainMenuBottomSheetState.currentValue == SheetValue.Expanded) {
-            MainMenuBottomSheet(
-                mainMenuBottomSheetState,
-                onSelectMainMenuItem = {
-                    when (it) {
-                        R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
-                        R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
-                        R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
-                        R.string.menu_help -> TODO("openBrowser")
-                    }
-                },
-                kryptAppState.coroutineScope
-            )
+        if (openMenu) {
+            MainMenuBottomSheet(scope = kryptAppState.coroutineScope, onSelectMainMenuItem = {
+                when (it) {
+                    R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
+                    R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
+                    R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
+                    R.string.menu_help -> TODO("openBrowser")
+                }
+            }, hideBottomSheet = { openMenu = false })
         }
 
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
+        Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
                 if (kryptAppState.isInHomeRoute) {
-                    KryptBottomAppBar(
-                        addItemsBottomSheetState,
-                        mainMenuBottomSheetState,
-                        kryptAppState.coroutineScope,
-                        onLockClicked = {
-                            TODO("viewModel.lockKrypt(), restartApp")
-                        })
+                    KryptBottomAppBar(openMenuSheet = {
+                        openMenu = true
+                    }, onLockClicked = {
+                        TODO("viewModel.lockKrypt(), restartApp")
+                    })
                 }
             },
             floatingActionButtonPosition = FabPosition.Center, // Currently in Material3 docked FAB is not supported (https://issuetracker.google.com/issues/223757073)
             floatingActionButton = {
                 if (kryptAppState.isInHomeRoute) {
-                    AddFab(
-                        addItemsBottomSheetState = addItemsBottomSheetState,
-                        mainMenuBottomSheetState = mainMenuBottomSheetState,
-                        coroutineScope = kryptAppState.coroutineScope
-                    )
+                    AddFab(openAddItemSheet = {
+                        openAddItem = true
+                    })
                 }
-            }
-        ) { padding ->
+            }) { padding ->
 
             Column(
                 modifier = Modifier
@@ -105,14 +95,13 @@ fun KryptApp(
                     .padding(padding)
             ) {
 
-                KryptNaveHost(kryptAppState = kryptAppState,
-                    onShowSnackbar = { message, action ->
-                        snackbarHostState.showSnackbar(
-                            message = message,
-                            actionLabel = action,
-                            duration = SnackbarDuration.Short,
-                        ) == SnackbarResult.ActionPerformed
-                    })
+                KryptNaveHost(kryptAppState = kryptAppState, onShowSnackbar = { message, action ->
+                    snackbarHostState.showSnackbar(
+                        message = message,
+                        actionLabel = action,
+                        duration = SnackbarDuration.Short,
+                    ) == SnackbarResult.ActionPerformed
+                })
             }
         }
     }
