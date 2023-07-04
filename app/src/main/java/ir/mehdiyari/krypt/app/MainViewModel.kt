@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
+import ir.mehdiyari.krypt.app.user.UserKeyProvider
+import ir.mehdiyari.krypt.app.user.UsernameProvider
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
@@ -13,6 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.crypto.SecretKey
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +23,8 @@ class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val currentUserManager: CurrentUserManager,
     @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
+    private val usernameProvider: UsernameProvider,
+    private val userKeyProvider: UserKeyProvider,
 ) : ViewModel() {
 
     private val _restartAppMutableStateFlow = MutableStateFlow(false)
@@ -60,5 +65,18 @@ class MainViewModel @Inject constructor(
     override fun onCleared() {
         releaseTimer()
         super.onCleared()
+    }
+
+    fun getCurrentUser(): Pair<String?, SecretKey?> =
+        usernameProvider.getUsername() to userKeyProvider.getKey()
+
+    fun setNameAndKey(name: String?, key: ByteArray?) {
+        if (name != null && key != null) {
+            if (!currentUserManager.isUserAvailable()) {
+                currentUserManager.setCurrentUser(
+                    name, key
+                )
+            }
+        }
     }
 }
