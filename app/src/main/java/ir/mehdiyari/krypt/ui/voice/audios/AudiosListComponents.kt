@@ -33,7 +33,6 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntity
 import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerEntity
 import ir.mehdiyari.krypt.utils.KryptTheme
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
