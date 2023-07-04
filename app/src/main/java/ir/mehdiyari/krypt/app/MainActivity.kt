@@ -20,11 +20,20 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    companion object {
+        const val NAME = "name"
+        const val KEY = "key"
+    }
+
     private val viewModel: MainViewModel by viewModels()
     private val shareDataViewModel by viewModels<ShareDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var (name, key) = getNameAndKey(savedInstanceState)
         super.onCreate(savedInstanceState)
+        viewModel.setNameAndKey(name, key)
+        name = null; key = null;
+
         onNewIntent(intent)
         setContent {
             KryptApp(
@@ -84,4 +93,24 @@ class MainActivity : ComponentActivity() {
         viewModel.onStartLocker()
         super.onStop()
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        putNameAndKey(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun putNameAndKey(outState: Bundle) {
+        val currentUser = viewModel.getCurrentUser()
+        outState.putString(NAME, currentUser.first)
+        outState.putByteArray(KEY, currentUser.second?.encoded)
+    }
+
+    private fun getNameAndKey(savedInstanceState: Bundle?): Pair<String?, ByteArray?> =
+        savedInstanceState?.let {
+            val name = it.getString(NAME)
+            val key = it.getByteArray(KEY)
+            it.remove(NAME)
+            it.remove(KEY)
+            return Pair(name, key)
+        } ?: (null to null)
 }
