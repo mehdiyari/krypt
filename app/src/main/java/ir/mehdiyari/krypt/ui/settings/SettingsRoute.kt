@@ -11,11 +11,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -32,7 +33,7 @@ fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
     onNavigationClickIcon: () -> Unit = {}
 ) {
-    val automaticallyLockAppSheetState = rememberModalBottomSheetState()
+    var openAutoLockBottomSheet by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val deleteDialogState = remember { mutableStateOf(false) }
 
@@ -92,20 +93,26 @@ fun SettingsRoute(
                     modifier,
                     viewModel,
                     deleteDialogState,
-                    automaticallyLockAppSheetState,
-                    scope,
                     topPadding = it.calculateTopPadding(),
+                    openAutoLockBottomSheet = {
+                        openAutoLockBottomSheet = true
+                    }
                 )
             }
         }
     }
 
-    AutomaticallyLockModalBottomSheet(
-        modifier = modifier,
-        automaticallyLockAppSheetState,
-        viewModel.automaticallyLockSelectedItem,
-        scope
-    ) {
-        viewModel.onSelectAutoLockItem(it)
+    if (openAutoLockBottomSheet){
+        AutomaticallyLockModalBottomSheet(
+            modifier = modifier,
+            viewModel.automaticallyLockSelectedItem,
+            scope,
+            onItemClicked = {
+                viewModel.onSelectAutoLockItem(it)
+            },
+            dismiss = {
+                openAutoLockBottomSheet = false
+            }
+        )
     }
 }

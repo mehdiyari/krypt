@@ -9,8 +9,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
@@ -35,16 +33,13 @@ fun SettingsScreenContent(
     modifier: Modifier,
     viewModel: SettingsViewModel,
     deleteDialogState: MutableState<Boolean>,
-    automaticallyLockAppSheetState: SheetState,
-    scope: CoroutineScope,
     topPadding: Dp,
+    openAutoLockBottomSheet: () -> Unit
 ) {
     Row(modifier = modifier.padding(top = topPadding)) {
         SettingItems(modifier = modifier) {
             if (it == R.string.settings_lock_auto) {
-                scope.launch {
-                    automaticallyLockAppSheetState.show()
-                }
+                openAutoLockBottomSheet()
             } else if (it == R.string.settings_delete_account_text) {
                 deleteDialogState.value = true
             }
@@ -114,24 +109,26 @@ fun ShowDeleteConfirmDialog(
 @Composable
 fun AutomaticallyLockModalBottomSheet(
     modifier: Modifier,
-    automaticallyLockAppSheetState: SheetState,
     automaticallyLockSelectedItem: StateFlow<AutoLockItemsEnum>,
     scope: CoroutineScope,
     onItemClicked: (AutoLockItemsEnum) -> Unit,
+    dismiss: () -> Unit
 ) {
-    if (automaticallyLockAppSheetState.currentValue == SheetValue.Hidden) {
-        return
-    }
     val lastSelectedId = automaticallyLockSelectedItem.collectAsStateWithLifecycle().value
+    val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
-        sheetState = automaticallyLockAppSheetState,
+        sheetState = sheetState,
         content = {
             AUTO_LOCK_CRYPT_ITEMS.forEach {
                 ListItem(
                     modifier = modifier.selectable(selected = false, onClick = {
                         onItemClicked(it.first)
                         scope.launch {
-                            automaticallyLockAppSheetState.hide()
+                            sheetState.hide()
+                        }.invokeOnCompletion {
+                            if (sheetState.isVisible.not()){
+                                dismiss()
+                            }
                         }
                     }),
                     headlineContent = {},
@@ -148,7 +145,7 @@ fun AutomaticallyLockModalBottomSheet(
                 )
             }
         },
-        onDismissRequest = {}
+        onDismissRequest = {dismiss()}
     )
 }
 
@@ -169,9 +166,9 @@ fun AutomaticallyLockModalBottomSheetPreview() {
     KryptTheme {
         AutomaticallyLockModalBottomSheet(
             modifier = Modifier,
-            automaticallyLockAppSheetState = rememberModalBottomSheetState(),
             automaticallyLockSelectedItem = MutableStateFlow(AutoLockItemsEnum.OneMinute),
             scope = rememberCoroutineScope(),
+            {}
         ) {}
     }
 }
