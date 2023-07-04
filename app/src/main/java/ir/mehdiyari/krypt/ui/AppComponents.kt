@@ -95,7 +95,7 @@ fun AddFab(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuBottomSheet(
-    scope: CoroutineScope, onSelectMainMenuItem: (Int) -> Unit, hideBottomSheet: () -> Unit
+    scope: CoroutineScope, onSelectMainMenuItem: (Int) -> Unit, dismissBottomSheet: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(sheetState = sheetState, content = {
@@ -122,7 +122,9 @@ fun MainMenuBottomSheet(
                 scope.launch {
                     sheetState.hide()
                 }.invokeOnCompletion {
-                    hideBottomSheet()
+                    if (sheetState.isVisible.not()) {
+                        dismissBottomSheet()
+                    }
                 }
             }), headlineContent = {}, leadingContent = {
                 Row {
@@ -138,13 +140,13 @@ fun MainMenuBottomSheet(
                 }
             })
         }
-    }, onDismissRequest = hideBottomSheet)
+    }, onDismissRequest = dismissBottomSheet)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBottomSheet(
-    scope: CoroutineScope, onSelectAddItemMenuItem: (Int) -> Unit, hideBottomSheet: () -> Unit
+    scope: CoroutineScope, onSelectAddItemMenuItem: (Int) -> Unit, dismissBottomSheet: () -> Unit
 ) {
 
     val sheetState = rememberModalBottomSheetState()
@@ -157,7 +159,9 @@ fun AddBottomSheet(
                     scope.launch {
                         sheetState.hide()
                     }.invokeOnCompletion {
-                        hideBottomSheet()
+                        if (sheetState.isVisible.not()) {
+                            dismissBottomSheet()
+                        }
                     }
                 }), headlineContent = {}, leadingContent = {
                     Row {
@@ -172,7 +176,7 @@ fun AddBottomSheet(
                     }
                 })
             }
-        }, onDismissRequest = hideBottomSheet
+        }, onDismissRequest = dismissBottomSheet
     )
 }
 

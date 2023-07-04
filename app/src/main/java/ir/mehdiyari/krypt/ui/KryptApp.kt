@@ -54,7 +54,7 @@ fun KryptApp(
                         kryptAppState.navController.navigateToAddText()
                     }
                 }
-            }, hideBottomSheet = {
+            }, dismissBottomSheet = {
                 openAddItem = false
             })
         }
@@ -65,7 +65,7 @@ fun KryptApp(
                     R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
                     R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
                 }
-            }, hideBottomSheet = { openMenu = false })
+            }, dismissBottomSheet = { openMenu = false })
         }
 
         Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) },
