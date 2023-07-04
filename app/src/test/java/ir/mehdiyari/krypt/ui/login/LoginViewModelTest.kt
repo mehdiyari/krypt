@@ -31,7 +31,6 @@ class LoginViewModelTest {
         runTest(dispatcher) {
             val accounts = listOf("Mehdi", "Richard", "Tomas")
             coEvery { accountsRepository.getAllAccountsName() } returns accounts
-            loginViewModel.getAccountNames()
             Assert.assertEquals(accounts, loginViewModel.allUserNamesState.value)
         }
 
@@ -43,8 +42,6 @@ class LoginViewModelTest {
             val collectorJob = launch {
                 loginViewModel.closeLoginState.collect(collector)
             }
-
-            loginViewModel.getAccountNames()
 
             launch {
                 coVerify(exactly = 1) { collector.emit(true) }
