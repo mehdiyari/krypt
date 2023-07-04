@@ -13,9 +13,6 @@ import ir.mehdiyari.krypt.data.account.AccountsDao
 import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.database.KryptDataBase
 import ir.mehdiyari.krypt.data.file.FilesDao
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
-import javax.crypto.SecretKey
-import javax.crypto.spec.SecretKeySpec
 import javax.inject.Singleton
 
 @Module
@@ -46,17 +43,6 @@ class LocalModule {
     fun provideBackupDao(
         kryptDataBase: KryptDataBase
     ): BackupDao = kryptDataBase.backupDao()
-
-
-    @Provides
-    @Singleton
-    fun provideCurrentUser(): CurrentUser = CurrentUser()
-
-    @Provides
-    fun provideCurrentAccountKey(currentUser: CurrentUser): SecretKey = SecretKeySpec(
-        currentUser.key!!,
-        "AES"
-    )
 
     @Provides
     @Singleton

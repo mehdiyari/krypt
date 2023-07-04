@@ -200,7 +200,7 @@ class FilesUtilities @Inject constructor(
     fun getStableEncryptedThumbPathForDecryptedThumb(fileName: String): String =
         "${getFilesDir()}/$fileName"
 
-    fun getFilePathForVoceRecord(): String = "${getCashDir()}/v_${System.nanoTime()}.enc"
+    fun getFilePathForVoiceRecord(): String = "${getCashDir()}/v_${System.nanoTime()}.enc"
 
     fun getRealFilePathForRecordedVoice(): String =
         "${getFilesDir()}/v_${System.nanoTime()}.${AUDIO_EXT}"

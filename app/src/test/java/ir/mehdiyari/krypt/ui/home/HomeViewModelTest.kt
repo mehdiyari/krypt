@@ -2,12 +2,10 @@ package ir.mehdiyari.krypt.ui.home
 
 import io.mockk.coEvery
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
+import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -21,12 +19,12 @@ class HomeViewModelTest {
 
     private val fileRepository = mockk<FilesRepository>(relaxed = true)
     private val dispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())
-    private val currentUser = spyk(CurrentUser("Richard", "JhR4$^*&^kdHJAJan".toUtf8Bytes()))
+    private val currentUserManager = mockk<CurrentUserManager>(relaxed = true)
 
     private val homeViewModel = HomeViewModel(
         fileRepository,
         dispatcher,
-        currentUser
+        currentUserManager,
     )
 
     @Test
@@ -38,7 +36,7 @@ class HomeViewModelTest {
             FileTypeEnum.Audio to 0,
         )
 
-        homeViewModel.getHomeData()
+        homeViewModel.getHomeItems()
         homeViewModel.filesCounts.value.also {
             // media
             Assert.assertEquals(
@@ -76,9 +74,7 @@ class HomeViewModelTest {
     fun `when automatically locker call lockKrypt - then verify clean function of currentUser called`() =
         runTest(dispatcher) {
             homeViewModel.lockKrypt()
-            verify(exactly = 1) { currentUser.clear() }
-            Assert.assertNull(currentUser.accountName)
-            Assert.assertNull(currentUser.key)
+            verify(exactly = 1) { currentUserManager.clearCurrentUser() }
         }
 
 }

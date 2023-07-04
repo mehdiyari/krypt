@@ -3,7 +3,9 @@ package ir.mehdiyari.krypt.app
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
+import ir.mehdiyari.krypt.app.user.CurrentUserManager
+import ir.mehdiyari.krypt.app.user.UserKeyProvider
+import ir.mehdiyari.krypt.app.user.UsernameProvider
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
@@ -13,27 +15,32 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.crypto.SecretKey
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val currentUser: CurrentUser,
-    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher
+    private val currentUserManager: CurrentUserManager,
+    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
+    private val usernameProvider: UsernameProvider,
+    private val userKeyProvider: UserKeyProvider,
 ) : ViewModel() {
 
-    private val _automaticLockState = MutableStateFlow(false)
-    val automaticLockState: StateFlow<Boolean> = _automaticLockState
+    private val _restartAppMutableStateFlow = MutableStateFlow(false)
+    val restartAppStateFlow: StateFlow<Boolean> = _restartAppMutableStateFlow
     private var lockerTimerJob: Job? = null
 
     fun onStartLocker() {
-        releaseTimer()
-        val autoLockValue = settingsRepository.getLockAutomaticallyValue()
-        if (autoLockValue != AutoLockItemsEnum.Disabled) {
-            lockerTimerJob = viewModelScope.launch(defaultDispatcher) {
-                delay(autoLockValue.value * 1000L)
-                currentUser.clear()
-                _automaticLockState.emit(true)
+        if (currentUserManager.isUserAvailable()) {
+            releaseTimer()
+            val autoLockValue = settingsRepository.getLockAutomaticallyValue()
+            if (autoLockValue != AutoLockItemsEnum.Disabled) {
+                lockerTimerJob = viewModelScope.launch(defaultDispatcher) {
+                    delay(autoLockValue.value * 1000L)
+                    currentUserManager.clearCurrentUser()
+                    _restartAppMutableStateFlow.emit(true)
+                }
             }
         }
     }
@@ -42,8 +49,34 @@ class MainViewModel @Inject constructor(
         releaseTimer()
     }
 
+    fun onLockMenuClicked() {
+        viewModelScope.launch {
+            onStopLocker()
+            currentUserManager.clearCurrentUser()
+            _restartAppMutableStateFlow.emit(true)
+        }
+    }
+
     private fun releaseTimer() {
         lockerTimerJob?.cancel()
         lockerTimerJob = null
+    }
+
+    override fun onCleared() {
+        releaseTimer()
+        super.onCleared()
+    }
+
+    fun getCurrentUser(): Pair<String?, SecretKey?> =
+        usernameProvider.getUsername() to userKeyProvider.getKey()
+
+    fun setNameAndKey(name: String?, key: ByteArray?) {
+        if (name != null && key != null) {
+            if (!currentUserManager.isUserAvailable()) {
+                currentUserManager.setCurrentUser(
+                    name, key
+                )
+            }
+        }
     }
 }

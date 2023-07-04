@@ -13,5 +13,4 @@ class KryptApplication : Application() {
             return
         }
     }
-
 }
