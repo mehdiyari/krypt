@@ -1,6 +1,7 @@
 package ir.mehdiyari.krypt.ui.voice.audios
 
 import android.annotation.SuppressLint
+import androidx.annotation.BoolRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -45,8 +46,9 @@ fun AudioList(
     audios: State<List<AudioEntity>>,
     currentAudioPlaying: State<MusicPlayerEntity?>,
     onActionClicked: (AudioEntity) -> Unit,
-    musicPlayerBottomSheetState: SheetState,
+    openMusicPlayerBottomSheet: () -> Unit,
     topPadding: Dp,
+    isMusicPlayerSheetOpened: Boolean
 ) {
     LazyColumn(
         modifier = modifier.padding(top = topPadding),
@@ -59,7 +61,8 @@ fun AudioList(
                     audios.value[it],
                     currentAudioPlaying,
                     onActionClicked,
-                    musicPlayerBottomSheetState
+                    openMusicPlayerBottomSheet,
+                    isMusicPlayerSheetOpened
                 )
             }
         }, contentPadding = PaddingValues(top = 8.dp, bottom = 70.dp, start = 6.dp, end = 6.dp)
@@ -74,7 +77,8 @@ fun AudioItem(
     audioEntity: AudioEntity,
     playingAudioState: State<MusicPlayerEntity?>,
     onActionClicked: (AudioEntity) -> Unit,
-    musicPlayerBottomSheetState: SheetState
+    openMusicPlayerBottomSheet: () -> Unit,
+    isMusicPlayerSheetOpened: Boolean
 ) {
     val scope = rememberCoroutineScope()
     Card(
@@ -92,10 +96,10 @@ fun AudioItem(
         ) {
             IconButton(onClick = {
                 onActionClicked.invoke(audioEntity)
-                scope.launch { musicPlayerBottomSheetState.show() }
+                openMusicPlayerBottomSheet()
             }) {
                 val playPauseIcon =
-                    if (playingAudioState.value?.id == audioEntity.id && musicPlayerBottomSheetState.currentValue == SheetValue.Expanded) {
+                    if (playingAudioState.value?.id == audioEntity.id && isMusicPlayerSheetOpened) {
                         painterResource(id = R.drawable.ic_pause)
                     } else {
                         painterResource(id = R.drawable.ic_audio_play)
@@ -152,8 +156,9 @@ fun AudioListPreview(
                 )
             ),
             onActionClicked = {},
-            musicPlayerBottomSheetState = rememberModalBottomSheetState(),
-            topPadding = 0.dp
+            {},
+            topPadding = 0.dp,
+            false
         )
     }
 }
@@ -178,7 +183,8 @@ fun AudioItemPreview(
                 )
             ),
             onActionClicked = {},
-            musicPlayerBottomSheetState = rememberModalBottomSheetState()
+            {},
+            true
         )
     }
 }

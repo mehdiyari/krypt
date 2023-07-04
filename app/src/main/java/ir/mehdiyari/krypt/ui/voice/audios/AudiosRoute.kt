@@ -14,8 +14,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -41,7 +44,7 @@ fun AudiosRoute(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        val musicPlayerBottomSheetState = rememberModalBottomSheetState()
+        var openMusicPlayerBottomSheet by remember { mutableStateOf(false) }
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -64,25 +67,27 @@ fun AudiosRoute(
                 audiosState,
                 playingAudio,
                 musicPlayerViewModel::onAudioAction,
-                musicPlayerBottomSheetState,
+                { openMusicPlayerBottomSheet = true },
                 topPadding = it.calculateTopPadding(),
+                openMusicPlayerBottomSheet
             )
         }
 
         AddNewVoiceButton(modifier = modifier.align(Alignment.BottomEnd), onNavigateToRecordAudio)
 
         val sliderState = remember { mutableLongStateOf(playingAudio.value?.currentValue ?: 0L) }
-        if (musicPlayerBottomSheetState.currentValue == SheetValue.Expanded) {
+        if (openMusicPlayerBottomSheet) {
             MusicPlayerBottomSheet(
                 modifier,
-                musicPlayerBottomSheetState,
                 playingAudio.value?.title ?: "",
                 sliderState,
                 playingAudio.value?.duration ?: 0L,
                 musicPlayerViewModel::onPrevClicked,
                 musicPlayerViewModel::onNextClicked,
-                musicPlayerViewModel::onPlayPauseClicked,
-            )
+                musicPlayerViewModel::onPlayPauseClicked
+            ) {
+                openMusicPlayerBottomSheet = false
+            }
         }
 
     }

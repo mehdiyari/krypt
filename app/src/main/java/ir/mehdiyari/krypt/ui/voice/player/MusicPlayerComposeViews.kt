@@ -49,16 +49,17 @@ import ir.mehdiyari.krypt.utils.convertToReadableTime
 @Composable
 fun MusicPlayerBottomSheet(
     modifier: Modifier,
-    playerSheetState: SheetState = rememberModalBottomSheetState(),
     title: String = "Stairway to Heaven",
     sliderState: MutableState<Long> = mutableLongStateOf(300L),
     maxValue: Long = 896L,
     onPrevClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
     onPlayPauseClicked: () -> Unit = {},
+    dismissBottomSheet: () -> Unit = {}
 ) {
+    val sheetState = rememberModalBottomSheetState()
     KryptTheme {
-        ModalBottomSheet(modifier = modifier, sheetState = playerSheetState, content = {
+        ModalBottomSheet(modifier = modifier, sheetState = sheetState, content = {
             MusicPlayerView(
                 modifier,
                 title,
@@ -68,7 +69,9 @@ fun MusicPlayerBottomSheet(
                 onNextClicked,
                 onPlayPauseClicked
             )
-        }, onDismissRequest = {})
+        }, onDismissRequest = {
+            dismissBottomSheet()
+        })
     }
 }
 
