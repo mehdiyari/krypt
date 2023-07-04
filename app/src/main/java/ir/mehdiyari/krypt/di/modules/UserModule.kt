@@ -1,32 +1,29 @@
 package ir.mehdiyari.krypt.di.modules
 
-import android.app.Application
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ir.mehdiyari.krypt.app.KryptApplication
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
 import ir.mehdiyari.krypt.app.user.UsernameProvider
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UserModule {
+abstract class UserModule {
 
-    @Provides
-    fun provideUsernameProvider(
-        application: Application
-    ): UsernameProvider = (application as KryptApplication)
+    @Binds
+    abstract fun provideUsernameProvider(
+        currentUserManager: ir.mehdiyari.krypt.app.CurrentUserManager
+    ): UsernameProvider
 
-    @Provides
-    fun provideUserKeyProvider(
-        application: Application
-    ): UserKeyProvider = (application as KryptApplication)
+    @Binds
+    abstract fun provideUserKeyProvider(
+        currentUserManager: ir.mehdiyari.krypt.app.CurrentUserManager
+    ): UserKeyProvider
 
-    @Provides
-    fun provideCurrentUserManager(
-        application: Application
-    ): CurrentUserManager = (application as KryptApplication)
+    @Binds
+    abstract fun provideCurrentUserManager(
+        currentUserManager: ir.mehdiyari.krypt.app.CurrentUserManager
+    ): ir.mehdiyari.krypt.app.user.CurrentUserManager
 
 }
