@@ -3,7 +3,6 @@ package ir.mehdiyari.krypt.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -26,10 +25,11 @@ import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KryptApp(
-    kryptAppState: KryptAppState = rememberKryptAppState()
+    kryptAppState: KryptAppState = rememberKryptAppState(),
+    onLockAppClicked: () -> Unit,
+    onStopLocker: () -> Unit,
 ) {
     KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
@@ -63,9 +63,7 @@ fun KryptApp(
             MainMenuBottomSheet(scope = kryptAppState.coroutineScope, onSelectMainMenuItem = {
                 when (it) {
                     R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
-                    R.string.menu_change_password -> TODO("navigateToChangePasswordFragment")
                     R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
-                    R.string.menu_help -> TODO("openBrowser")
                 }
             }, hideBottomSheet = { openMenu = false })
         }
@@ -76,7 +74,7 @@ fun KryptApp(
                     KryptBottomAppBar(openMenuSheet = {
                         openMenu = true
                     }, onLockClicked = {
-                        TODO("viewModel.lockKrypt(), restartApp")
+                        onLockAppClicked()
                     })
                 }
             },
@@ -94,14 +92,16 @@ fun KryptApp(
                     .fillMaxSize()
                     .padding(padding)
             ) {
-
-                KryptNaveHost(kryptAppState = kryptAppState, onShowSnackbar = { message, action ->
-                    snackbarHostState.showSnackbar(
-                        message = message,
-                        actionLabel = action,
-                        duration = SnackbarDuration.Short,
-                    ) == SnackbarResult.ActionPerformed
-                })
+                KryptNaveHost(
+                    kryptAppState = kryptAppState,
+                    onStopLocker = onStopLocker,
+                    onShowSnackbar = { message, action ->
+                        snackbarHostState.showSnackbar(
+                            message = message,
+                            actionLabel = action,
+                            duration = SnackbarDuration.Short,
+                        ) == SnackbarResult.ActionPerformed
+                    })
             }
         }
     }

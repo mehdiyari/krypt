@@ -25,15 +25,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.app.MainViewModel
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MediaRoute(
     modifier: Modifier = Modifier,
     viewModel: MediasViewModel = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
+    onStopLocker: () -> Unit,
 ) {
     val actionState by viewModel.viewAction.collectAsStateWithLifecycle()
     val viewState by viewModel.mediaViewState.collectAsStateWithLifecycle()
@@ -63,7 +62,7 @@ fun MediaRoute(
         onBackPressed = onBackPressed,
         onSelectMedia = viewModel::onSelectedMedias,
         checkForOpenPickerForDecryptMode = viewModel::checkForOpenPickerForDecryptMode,
-        onStopAutoLocker = mainViewModel::onStopLocker
+        onStopAutoLocker = onStopLocker
     )
 
     val messageState by viewModel.messageFlow.collectAsStateWithLifecycle(null)

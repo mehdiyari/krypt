@@ -19,21 +19,23 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val currentUserManager: CurrentUserManager,
-    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher
+    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _automaticLockState = MutableStateFlow(false)
-    val automaticLockState: StateFlow<Boolean> = _automaticLockState
+    private val _restartAppMutableStateFlow = MutableStateFlow(false)
+    val restartAppStateFlow: StateFlow<Boolean> = _restartAppMutableStateFlow
     private var lockerTimerJob: Job? = null
 
     fun onStartLocker() {
-        releaseTimer()
-        val autoLockValue = settingsRepository.getLockAutomaticallyValue()
-        if (autoLockValue != AutoLockItemsEnum.Disabled) {
-            lockerTimerJob = viewModelScope.launch(defaultDispatcher) {
-                delay(autoLockValue.value * 1000L)
-                currentUserManager.clearCurrentUser()
-                _automaticLockState.emit(true)
+        if (currentUserManager.isUserAvailable()) {
+            releaseTimer()
+            val autoLockValue = settingsRepository.getLockAutomaticallyValue()
+            if (autoLockValue != AutoLockItemsEnum.Disabled) {
+                lockerTimerJob = viewModelScope.launch(defaultDispatcher) {
+                    delay(autoLockValue.value * 1000L)
+                    currentUserManager.clearCurrentUser()
+                    _restartAppMutableStateFlow.emit(true)
+                }
             }
         }
     }
@@ -42,8 +44,21 @@ class MainViewModel @Inject constructor(
         releaseTimer()
     }
 
+    fun onLockMenuClicked() {
+        viewModelScope.launch {
+            onStopLocker()
+            currentUserManager.clearCurrentUser()
+            _restartAppMutableStateFlow.emit(true)
+        }
+    }
+
     private fun releaseTimer() {
         lockerTimerJob?.cancel()
         lockerTimerJob = null
+    }
+
+    override fun onCleared() {
+        releaseTimer()
+        super.onCleared()
     }
 }

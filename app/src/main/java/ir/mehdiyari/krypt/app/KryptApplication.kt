@@ -38,4 +38,6 @@ class KryptApplication : Application(), UsernameProvider, UserKeyProvider, Curre
         currentUser.clear()
     }
 
+    override fun isUserAvailable(): Boolean =
+        currentUser.accountName != null && currentUser.key != null
 }

@@ -22,13 +22,18 @@ fun NavController.navigateToMedia(action: MediaViewAction) {
     this.navigate("$ROUTE_MEDIA/${action.value}")
 }
 
-fun NavGraphBuilder.mediaScreen(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.mediaScreen(
+    onBackPressed: () -> Unit,
+    onStopLocker: () -> Unit
+) {
     composable(
         "$ROUTE_MEDIA/{$KEY_MEDIA_ACTION}",
         arguments = listOf(navArgument(KEY_MEDIA_ACTION) { type = NavType.IntType })
     ) {
-
-        MediaRoute(modifier = Modifier.fillMaxSize(), onBackPressed = onBackPressed)
-
+        MediaRoute(
+            modifier = Modifier.fillMaxSize(),
+            onBackPressed = onBackPressed,
+            onStopLocker = onStopLocker,
+        )
     }
 }

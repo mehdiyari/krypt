@@ -6,4 +6,5 @@ interface CurrentUserManager {
 
     fun clearCurrentUser()
 
+    fun isUserAvailable(): Boolean
 }

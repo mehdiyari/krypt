@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(), AppLockerStopApi {
+class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
     private val shareDataViewModel by viewModels<ShareDataViewModel>()
@@ -26,22 +26,17 @@ class MainActivity : ComponentActivity(), AppLockerStopApi {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onNewIntent(intent)
-        setContent{
-            KryptApp()
+        setContent {
+            KryptApp(
+                onLockAppClicked = viewModel::onLockMenuClicked,
+                onStopLocker = viewModel::onStopLocker
+            )
         }
 
         lifecycleScope.launch {
-            viewModel.automaticLockState.collectLatest {
+            viewModel.restartAppStateFlow.collectLatest {
                 if (it) {
-
-//                    if (!listOf<String>(
-//                            R.id.splashFragment,
-//                            R.id.loginFragment,
-//                            R.id.createAccountFragment
-//                        ).contains(currentDestination)
-//                    ) {
-//                        restartApp()
-//                    }
+                    restartApp()
                 }
             }
         }
@@ -78,18 +73,15 @@ class MainActivity : ComponentActivity(), AppLockerStopApi {
         super.onStart()
     }
 
-    fun restartApp() {
+    private fun restartApp() {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         ProcessPhoenix.triggerRebirth(this, intent)
+        finish()
     }
 
     override fun onStop() {
         viewModel.onStartLocker()
         super.onStop()
-    }
-
-    override fun stopAppLockerManually() {
-        viewModel.onStopLocker()
     }
 }

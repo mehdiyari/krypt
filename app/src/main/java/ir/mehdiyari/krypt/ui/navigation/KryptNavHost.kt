@@ -30,7 +30,8 @@ fun KryptNaveHost(
     kryptAppState: KryptAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
-    startDestination: String = ROUTE_SPLASH
+    startDestination: String = ROUTE_SPLASH,
+    onStopLocker: () -> Unit,
 ) {
     val navController = kryptAppState.navController
     NavHost(
@@ -75,7 +76,7 @@ fun KryptNaveHost(
         })
 
         addTextScreen { navController.popBackStack() }
-        mediaScreen { navController.popBackStack() }
+        mediaScreen({ navController.popBackStack() }, onStopLocker = onStopLocker)
         dataScreen { navController.popBackStack() }
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
