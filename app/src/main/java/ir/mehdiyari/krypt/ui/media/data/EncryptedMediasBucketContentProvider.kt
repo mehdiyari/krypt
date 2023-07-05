@@ -6,8 +6,8 @@ import ir.mehdiyari.fallery.repo.AbstractBucketContentProvider
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
 import ir.mehdiyari.krypt.utils.FilesUtilities
-import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File

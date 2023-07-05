@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.mehdiyari.krypt.ui.media.utils.getRealPathBasedOnUri
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*

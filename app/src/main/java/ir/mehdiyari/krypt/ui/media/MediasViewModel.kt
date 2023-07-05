@@ -13,9 +13,9 @@ import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.ui.media.data.FalleryBuilderProvider
+import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
-import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
