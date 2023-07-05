@@ -16,7 +16,6 @@ import javax.inject.Singleton
 class FilesUtilities @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-
     companion object {
         const val KRYPT_FILES_PREFIX = "krypt_"
         const val KRYPT_THUMBS_FILES_PREFIX = "thumb_"
@@ -194,9 +193,6 @@ class FilesUtilities @Inject constructor(
         ""
     }
 
-    /**
-     *
-     */
     fun getStableEncryptedThumbPathForDecryptedThumb(fileName: String): String =
         "${getFilesDir()}/$fileName"
 
