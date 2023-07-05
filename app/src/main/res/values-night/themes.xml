@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Krypt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Status bar color. -->
