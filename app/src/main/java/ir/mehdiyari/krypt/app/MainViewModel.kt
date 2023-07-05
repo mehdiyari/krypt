@@ -10,6 +10,7 @@ import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
+import ir.mehdiyari.krypt.app.di.SplashDelay
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
