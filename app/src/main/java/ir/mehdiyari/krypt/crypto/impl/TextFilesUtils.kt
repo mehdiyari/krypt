@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.utils
+package ir.mehdiyari.krypt.crypto.impl
 
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.crypto.utils.Base64
@@ -7,6 +7,7 @@ import ir.mehdiyari.krypt.crypto.utils.combineWith
 import ir.mehdiyari.krypt.crypto.utils.getAfterIndex
 import ir.mehdiyari.krypt.crypto.utils.getBeforeIndex
 import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
+import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import javax.inject.Inject
 

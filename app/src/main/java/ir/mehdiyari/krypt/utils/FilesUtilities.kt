@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.mehdiyari.krypt.ui.media.utils.getRealPathBasedOnUri
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -16,7 +17,6 @@ import javax.inject.Singleton
 class FilesUtilities @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-
     companion object {
         const val KRYPT_FILES_PREFIX = "krypt_"
         const val KRYPT_THUMBS_FILES_PREFIX = "thumb_"
@@ -194,9 +194,6 @@ class FilesUtilities @Inject constructor(
         ""
     }
 
-    /**
-     *
-     */
     fun getStableEncryptedThumbPathForDecryptedThumb(fileName: String): String =
         "${getFilesDir()}/$fileName"
 

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.utils
+package ir.mehdiyari.krypt.app.imageloader
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable

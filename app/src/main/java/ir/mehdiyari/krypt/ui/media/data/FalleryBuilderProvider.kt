@@ -12,9 +12,9 @@ import ir.mehdiyari.fallery.main.fallery.FalleryBuilder
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.app.imageloader.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.ui.media.player.PlayerActivity
 import ir.mehdiyari.krypt.ui.media.player.addExtraForPlayerToIntent
-import ir.mehdiyari.krypt.utils.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.utils.getFileProviderAuthority
 import ir.mehdiyari.krypt.utils.isInDarkTheme
 import javax.inject.Inject
