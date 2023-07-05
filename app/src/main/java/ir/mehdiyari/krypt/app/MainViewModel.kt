@@ -10,7 +10,6 @@ import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
-import ir.mehdiyari.krypt.app.di.SplashDelay
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -30,12 +29,10 @@ class MainViewModel @Inject constructor(
     @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
     private val usernameProvider: UsernameProvider,
     private val userKeyProvider: UserKeyProvider,
-    @SplashDelay splashDelay: Long,
     accountsRepository: AccountsRepository
 ) : ViewModel() {
 
     val splashUiState = flow {
-        delay(splashDelay)
         emit(SplashUiState.Success(accountsRepository.isAccountExists()))
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SplashUiState.Loading)
 
