@@ -14,8 +14,6 @@ import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.settings.settingsRoute
-import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
-import ir.mehdiyari.krypt.ui.splash.splashScreen
 import ir.mehdiyari.krypt.ui.text.add.addTextScreen
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
@@ -29,9 +27,9 @@ import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
 fun KryptNaveHost(
     kryptAppState: KryptAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    modifier: Modifier = Modifier,
-    startDestination: String = ROUTE_SPLASH,
+    startDestination: String,
     onStopLocker: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val navController = kryptAppState.navController
     NavHost(
@@ -39,12 +37,6 @@ fun KryptNaveHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        splashScreen(accountExists = {
-            navController.navigateToLogin()
-        }, noAccountExists = {
-            navController.navigateToCreateAccount()
-        })
-
         loginScreen(onCreateAccountClicked = {
             navController.navigateToCreateAccount()
         }, onLoginSuccess = {

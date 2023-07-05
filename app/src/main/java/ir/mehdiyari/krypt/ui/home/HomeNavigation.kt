@@ -7,15 +7,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
-import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 
 const val ROUTE_HOME = "home"
 
 fun NavController.navigateToHome() {
     this.navigate(ROUTE_HOME) {
-        popUpTo(ROUTE_SPLASH) {
-            inclusive = true
-        }
+        popBackStack()
     }
 }
 

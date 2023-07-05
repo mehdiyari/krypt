@@ -17,6 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.data.navigateToData
+import ir.mehdiyari.krypt.ui.login.ROUTE_LOGIN
+import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
@@ -28,6 +30,7 @@ import ir.mehdiyari.krypt.utils.KryptTheme
 @Composable
 fun KryptApp(
     kryptAppState: KryptAppState = rememberKryptAppState(),
+    hasAnyAccount: Boolean,
     onLockAppClicked: () -> Unit,
     onStopLocker: () -> Unit,
 ) {
@@ -95,6 +98,7 @@ fun KryptApp(
                 KryptNaveHost(
                     kryptAppState = kryptAppState,
                     onStopLocker = onStopLocker,
+                    startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
                     onShowSnackbar = { message, action ->
                         snackbarHostState.showSnackbar(
                             message = message,

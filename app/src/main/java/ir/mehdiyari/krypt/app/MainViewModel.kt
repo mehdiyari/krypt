@@ -6,14 +6,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
 import ir.mehdiyari.krypt.app.user.UsernameProvider
+import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
+import ir.mehdiyari.krypt.app.di.SplashDelay
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.crypto.SecretKey
 import javax.inject.Inject
@@ -25,7 +30,14 @@ class MainViewModel @Inject constructor(
     @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
     private val usernameProvider: UsernameProvider,
     private val userKeyProvider: UserKeyProvider,
+    @SplashDelay splashDelay: Long,
+    accountsRepository: AccountsRepository
 ) : ViewModel() {
+
+    val splashUiState = flow {
+        delay(splashDelay)
+        emit(SplashUiState.Success(accountsRepository.isAccountExists()))
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SplashUiState.Loading)
 
     private val _restartAppMutableStateFlow = MutableStateFlow(false)
     val restartAppStateFlow: StateFlow<Boolean> = _restartAppMutableStateFlow

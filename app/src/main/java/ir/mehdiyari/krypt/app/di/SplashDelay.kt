@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.splash.di
+package ir.mehdiyari.krypt.app.di
 
 import javax.inject.Qualifier
 

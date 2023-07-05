@@ -8,11 +8,18 @@ import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.ui.KryptApp
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -29,14 +36,32 @@ class MainActivity : ComponentActivity() {
     private val shareDataViewModel by viewModels<ShareDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         var (name, key) = getNameAndKey(savedInstanceState)
         super.onCreate(savedInstanceState)
         viewModel.setNameAndKey(name, key)
         name = null; key = null;
 
+        var splashUiState: SplashUiState by mutableStateOf(SplashUiState.Loading)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.splashUiState.collect{
+                    splashUiState = it
+                }
+            }
+        }
+
+        splashScreen.setKeepOnScreenCondition {
+            when (splashUiState) {
+                SplashUiState.Loading -> true
+                is SplashUiState.Success -> false
+            }
+        }
+
         onNewIntent(intent)
         setContent {
             KryptApp(
+                hasAnyAccount = (splashUiState as? SplashUiState.Success)?.isAnyAccountsExists ?: false,
                 onLockAppClicked = viewModel::onLockMenuClicked,
                 onStopLocker = viewModel::onStopLocker
             )

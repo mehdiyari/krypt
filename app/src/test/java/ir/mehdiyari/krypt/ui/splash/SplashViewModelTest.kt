@@ -5,6 +5,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import ir.mehdiyari.krypt.app.SplashUiState
 import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -44,7 +45,7 @@ class SplashViewModelTest {
             launch {
                 delay(splashDelay + 5)
                 coVerify(exactly = 1) {
-                    collector.emit(SplashScreenUiState.Success(true))
+                    collector.emit(SplashUiState.Success(true))
                 }
                 collectorJob.cancel()
             }
@@ -61,16 +62,16 @@ class SplashViewModelTest {
             launch {
                 delay(splashDelay + 5)
                 coVerify(exactly = 1) {
-                    collector.emit(SplashScreenUiState.Success(false))
+                    collector.emit(SplashUiState.Success(false))
                 }
                 collectorJob.cancel()
             }
         }
 
-    private fun TestScope.mockIsAccountExistsAndReturnCollector(isExist: Boolean): Pair<FlowCollector<SplashScreenUiState>, Job> {
+    private fun TestScope.mockIsAccountExistsAndReturnCollector(isExist: Boolean): Pair<FlowCollector<SplashUiState>, Job> {
         coEvery { accountRepository.isAccountExists() } returns isExist
 
-        val collector = mockk<FlowCollector<SplashScreenUiState?>>(relaxed = true)
+        val collector = mockk<FlowCollector<SplashUiState?>>(relaxed = true)
         val collectorJob = launch {
             splashViewModel.splashUiState.collect(collector)
         }

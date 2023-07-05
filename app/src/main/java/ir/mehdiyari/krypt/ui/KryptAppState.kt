@@ -11,10 +11,9 @@ import androidx.navigation.compose.rememberNavController
 import ir.mehdiyari.krypt.ui.home.ROUTE_HOME
 import ir.mehdiyari.krypt.ui.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
-import ir.mehdiyari.krypt.ui.splash.ROUTE_SPLASH
 import kotlinx.coroutines.CoroutineScope
 
-val authDestinations = setOf(ROUTE_SPLASH, ROUTE_LOGIN, ROUTE_CREATE_ACCOUNT)
+val authDestinations = setOf(ROUTE_LOGIN, ROUTE_CREATE_ACCOUNT)
 
 @Stable
 class KryptAppState(
