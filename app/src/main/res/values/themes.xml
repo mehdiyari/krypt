@@ -7,4 +7,8 @@
     <style name="Theme.Krypt.Splash" parent="Theme.SplashScreen">
         <item name="postSplashScreenTheme">@style/Theme.Krypt</item>
     </style>
+
+    <style name="Theme.Krypt.Splash" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.Krypt</item>
+    </style>
 </resources>
