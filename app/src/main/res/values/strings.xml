@@ -121,4 +121,6 @@
     <string name="microphone_error">Unfortunately there is a problem with your microphone.</string>
     <string name="add_new_audio">Record</string>
     <string name="microphone_permission_error">"We need microphone permission to record audio."</string>
+    <string name="manager_external_permission">Manage Storage Permission</string>
+    <string name="manager_external_permission_description">Krypt needs access to the external storage to encrypt and decrypt, backup and restore files.</string>
 </resources>

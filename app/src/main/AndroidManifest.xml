@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- This app category is Disk and file encryption or backup and restore app so,
+    base on official documents there is no problem for publishing on google play -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
     <!-- Removing these kind of permissions if it's added by third-parties -->
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE"

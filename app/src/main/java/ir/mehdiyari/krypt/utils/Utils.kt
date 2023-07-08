@@ -1,5 +1,10 @@
 package ir.mehdiyari.krypt.utils
 
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Environment
+
 fun getFileProviderAuthority(packageName: String): String = "${packageName}.provider"
 
 fun formatSize(size: Long): String {
@@ -32,5 +37,15 @@ fun Long.convertToReadableTime(): String {
         String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
     } else {
         String.format("%02d:%02d", minutes, remainingSeconds)
+    }
+}
+
+fun checkIfAppIsStorageManager(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    Environment.isExternalStorageManager()
+} else true
+
+fun Context.requestGrantManagerStoragePermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        startActivity(Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
     }
 }

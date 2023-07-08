@@ -25,6 +25,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
+import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
+import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -34,6 +37,7 @@ fun MediaRoute(
     onBackPressed: () -> Unit,
     onStopLocker: () -> Unit,
 ) {
+    val managerStoragePermissionState = remember { mutableStateOf(false) }
     val actionState by viewModel.viewAction.collectAsStateWithLifecycle()
     val viewState by viewModel.mediaViewState.collectAsStateWithLifecycle()
     var notifyMediaScanner by remember { mutableStateOf(true) }
@@ -43,19 +47,35 @@ fun MediaRoute(
         return
     }
 
-    MediaScreen(
-        modifier = modifier,
+    MediaScreen(modifier = modifier,
         actionState = actionState,
-        viewState = viewState,
+        viewState = (viewState as? MediaViewState.EncryptDecryptState)?.let {
+            it.copy(onEncryptOrDecryptAction = { deleteAfterEncryption, notifyMediaScanner ->
+                if (!checkIfAppIsStorageManager()) {
+                    managerStoragePermissionState.value = true
+                } else {
+                    it.onEncryptOrDecryptAction.invoke(deleteAfterEncryption, notifyMediaScanner)
+                }
+            })
+        } ?: viewState,
         notifyMediaScanner = notifyMediaScanner,
         onNotifyChanged = { notifyMediaScanner = it },
-        deleteAllSelectedFiles = { viewModel.deleteAllSelectedFiles() },
+        deleteAllSelectedFiles = {
+            if (!checkIfAppIsStorageManager()) {
+                managerStoragePermissionState.value = true
+            } else {
+                viewModel.deleteAllSelectedFiles()
+            }
+        },
         removeItemFromList = { viewModel.removeSelectedFromList(it) },
         deleteSelectedFromList = { path, encrypted ->
-            viewModel.deleteSelectedFromList(
-                path,
-                encrypted
-            )
+            if (!checkIfAppIsStorageManager()) {
+                managerStoragePermissionState.value = true
+            } else {
+                viewModel.deleteSelectedFromList(
+                    path, encrypted
+                )
+            }
         },
         defaultFalleryOptions = viewModel.getDefaultFalleryOptions(),
         kryptFalleryOptions = viewModel.getKryptFalleryOptions(),
@@ -68,10 +88,16 @@ fun MediaRoute(
     val messageState by viewModel.messageFlow.collectAsStateWithLifecycle(null)
     if (messageState != null) {
         Toast.makeText(
-            LocalContext.current,
-            messageState ?: R.string.something_went_wrong,
-            Toast.LENGTH_SHORT
+            LocalContext.current, messageState ?: R.string.something_went_wrong, Toast.LENGTH_SHORT
         ).show()
+    }
+
+    val context = LocalContext.current
+    if (managerStoragePermissionState.value) {
+        ManageExternalPermissionDialog(modifier = Modifier, state = managerStoragePermissionState) {
+            managerStoragePermissionState.value = false
+            context.requestGrantManagerStoragePermission()
+        }
     }
 }
 
@@ -182,9 +208,7 @@ fun MediaScreen(
                 val context = LocalContext.current
                 if (!checkForOpenPickerForDecryptMode()) {
                     Toast.makeText(
-                        context,
-                        R.string.no_encrypted_file_found,
-                        Toast.LENGTH_LONG
+                        context, R.string.no_encrypted_file_found, Toast.LENGTH_LONG
                     ).show()
                     onBackPressed()
                 } else {
