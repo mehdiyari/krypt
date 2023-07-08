@@ -2,7 +2,9 @@ package ir.mehdiyari.krypt.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectable
@@ -98,49 +100,55 @@ fun MainMenuBottomSheet(
     scope: CoroutineScope, onSelectMainMenuItem: (Int) -> Unit, dismissBottomSheet: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
-    ModalBottomSheet(sheetState = sheetState, content = {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(14.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.SansSerif
-            )
-            Text(
-                text = stringResource(id = R.string.app_menu_subtitle),
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
-        }
-        MAIN_MENU_ITEMS.forEach {
-            ListItem(modifier = Modifier.selectable(selected = false, onClick = {
-                onSelectMainMenuItem(it.second)
-                scope.launch {
-                    sheetState.hide()
-                }.invokeOnCompletion {
-                    if (sheetState.isVisible.not()) {
-                        dismissBottomSheet()
+    ModalBottomSheet(
+        sheetState = sheetState,
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(14.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif
+                )
+                Text(
+                    text = stringResource(id = R.string.app_menu_subtitle),
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+            }
+            MAIN_MENU_ITEMS.forEach {
+                ListItem(modifier = Modifier.selectable(selected = false, onClick = {
+                    onSelectMainMenuItem(it.second)
+                    scope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        if (sheetState.isVisible.not()) {
+                            dismissBottomSheet()
+                        }
                     }
-                }
-            }), headlineContent = {}, leadingContent = {
-                Row {
-                    Icon(
-                        painterResource(id = it.first),
-                        contentDescription = stringResource(id = it.second),
-                    )
-                    Text(
-                        stringResource(id = it.second),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(start = 16.dp, top = 1.dp)
-                    )
-                }
-            })
-        }
-    }, onDismissRequest = dismissBottomSheet)
+                }), headlineContent = {}, leadingContent = {
+                    Row {
+                        Icon(
+                            painterResource(id = it.first),
+                            contentDescription = stringResource(id = it.second),
+                        )
+                        Text(
+                            stringResource(id = it.second),
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding(start = 16.dp, top = 1.dp)
+                        )
+                    }
+                })
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
+        },
+        onDismissRequest = dismissBottomSheet
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,6 +184,9 @@ fun AddBottomSheet(
                     }
                 })
             }
+
+            Spacer(modifier = Modifier.height(50.dp))
+
         }, onDismissRequest = dismissBottomSheet
     )
 }

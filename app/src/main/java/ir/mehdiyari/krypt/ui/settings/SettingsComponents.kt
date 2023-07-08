@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreenContent(
     modifier: Modifier,
@@ -144,6 +143,8 @@ fun AutomaticallyLockModalBottomSheet(
                     }
                 )
             }
+
+            Spacer(modifier = Modifier.height(50.dp))
         },
         onDismissRequest = {dismiss()}
     )
