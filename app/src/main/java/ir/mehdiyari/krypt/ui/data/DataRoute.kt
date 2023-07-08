@@ -15,7 +15,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
 import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
+import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
 
 @Composable
 fun DataRoute(
@@ -23,6 +26,7 @@ fun DataRoute(
     onNavigationClicked: () -> Unit,
     modifier: Modifier,
 ) {
+    val managerStoragePermissionState = remember { mutableStateOf(false) }
     DataScreenScaffold(modifier = modifier, onNavigationClicked = onNavigationClicked) {
         Column(
             modifier = modifier
@@ -37,7 +41,13 @@ fun DataRoute(
             val backupList = viewModel.backups.collectAsStateWithLifecycle()
 
             val deleteDialogState = remember { mutableStateOf(false to -1) }
-            BackupList(modifier, backupList, viewModel::onSaveBackup) {
+            BackupList(modifier, backupList, {
+                if (!checkIfAppIsStorageManager()) {
+                    managerStoragePermissionState.value = true
+                } else {
+                    viewModel.onSaveBackup(it)
+                }
+            }) {
                 deleteDialogState.value = true to it
             }
 
@@ -48,11 +58,19 @@ fun DataRoute(
     val message = viewModel.generalMessageFlow.collectAsStateWithLifecycle(initialValue = null)
     if (message.value != null) {
         if (message.value == R.string.saving_backup_permission_error) {
-            // TODO: request storage permission
+            managerStoragePermissionState.value = true
         } else {
             Toast.makeText(
                 LocalContext.current, message.value!!, Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    val context = LocalContext.current
+    if (managerStoragePermissionState.value) {
+        ManageExternalPermissionDialog(modifier = modifier, state = managerStoragePermissionState) {
+            managerStoragePermissionState.value = false
+            context.requestGrantManagerStoragePermission()
         }
     }
 }
