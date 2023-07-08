@@ -4,7 +4,6 @@ androidLibraryPlugin = "7.4.1"
 kspPlugin = "1.8.21-1.0.11"
 kotlinAndroidPlugin = "1.8.21"
 hiltAndroidGradlePlugin = "2.46.1"
-
 constraintlayout = "2.1.4"
 hiltNavigationCompose = "1.0.0"
 ktx = "1.10.1"
