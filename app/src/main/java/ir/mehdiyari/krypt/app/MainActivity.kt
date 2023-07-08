@@ -5,46 +5,72 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainerView
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
+import androidx.lifecycle.repeatOnLifecycle
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.ui.KryptApp
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), AppLockerStopApi {
+class MainActivity : ComponentActivity() {
+
+    companion object {
+        const val NAME = "name"
+        const val KEY = "key"
+    }
 
     private val viewModel: MainViewModel by viewModels()
     private val shareDataViewModel by viewModels<ShareDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        var (name, key) = getNameAndKey(savedInstanceState)
         super.onCreate(savedInstanceState)
+        viewModel.setNameAndKey(name, key)
+        name = null; key = null;
+
+        var splashUiState: SplashUiState by mutableStateOf(SplashUiState.Loading)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.splashUiState.collect{
+                    splashUiState = it
+                }
+            }
+        }
+
+        splashScreen.setKeepOnScreenCondition {
+            when (splashUiState) {
+                SplashUiState.Loading -> true
+                is SplashUiState.Success -> false
+            }
+        }
+
         onNewIntent(intent)
-        setContentView(R.layout.activity_main)
+        setContent {
+            KryptApp(
+                hasAnyAccount = (splashUiState as? SplashUiState.Success)?.isAnyAccountsExists ?: false,
+                onLockAppClicked = viewModel::onLockMenuClicked,
+                onStopLocker = viewModel::onStopLocker
+            )
+        }
 
         lifecycleScope.launch {
-            viewModel.automaticLockState.collectLatest {
+            viewModel.restartAppStateFlow.collectLatest {
                 if (it) {
-                    val currentDestination =
-                        findViewById<FragmentContainerView>(R.id.kryptNavigationFragment)
-                            ?.findNavController()
-                            ?.currentDestination?.id
-
-                    if (!listOf(
-                            R.id.splashFragment,
-                            R.id.loginFragment,
-                            R.id.createAccountFragment
-                        ).contains(currentDestination)
-                    ) {
-                        restartApp()
-                    }
+                    restartApp()
                 }
             }
         }
@@ -81,10 +107,11 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
         super.onStart()
     }
 
-    fun restartApp() {
+    private fun restartApp() {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         ProcessPhoenix.triggerRebirth(this, intent)
+        finish()
     }
 
     override fun onStop() {
@@ -92,7 +119,23 @@ class MainActivity : AppCompatActivity(), AppLockerStopApi {
         super.onStop()
     }
 
-    override fun stopAppLockerManually() {
-        viewModel.onStopLocker()
+    override fun onSaveInstanceState(outState: Bundle) {
+        putNameAndKey(outState)
+        super.onSaveInstanceState(outState)
     }
+
+    private fun putNameAndKey(outState: Bundle) {
+        val currentUser = viewModel.getCurrentUser()
+        outState.putString(NAME, currentUser.first)
+        outState.putByteArray(KEY, currentUser.second?.encoded)
+    }
+
+    private fun getNameAndKey(savedInstanceState: Bundle?): Pair<String?, ByteArray?> =
+        savedInstanceState?.let {
+            val name = it.getString(NAME)
+            val key = it.getByteArray(KEY)
+            it.remove(NAME)
+            it.remove(KEY)
+            return Pair(name, key)
+        } ?: (null to null)
 }

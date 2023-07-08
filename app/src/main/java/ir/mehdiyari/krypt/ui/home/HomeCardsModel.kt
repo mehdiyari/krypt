@@ -5,6 +5,6 @@ import androidx.annotation.StringRes
 
 data class HomeCardsModel(
     @DrawableRes val icon: Int,
-    @StringRes val name:Int,
+    @StringRes val name: Int,
     val counts: Long
 )

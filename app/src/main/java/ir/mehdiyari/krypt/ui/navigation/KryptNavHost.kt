@@ -1,0 +1,78 @@
+package ir.mehdiyari.krypt.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import ir.mehdiyari.krypt.ui.KryptAppState
+import ir.mehdiyari.krypt.ui.data.dataScreen
+import ir.mehdiyari.krypt.ui.home.homeScreen
+import ir.mehdiyari.krypt.ui.home.navigateToHome
+import ir.mehdiyari.krypt.ui.login.loginScreen
+import ir.mehdiyari.krypt.ui.login.navigateToLogin
+import ir.mehdiyari.krypt.ui.logout.createAccountScreen
+import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
+import ir.mehdiyari.krypt.ui.media.mediaScreen
+import ir.mehdiyari.krypt.ui.media.navigateToMedia
+import ir.mehdiyari.krypt.ui.settings.settingsRoute
+import ir.mehdiyari.krypt.ui.text.add.addTextScreen
+import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
+import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
+import ir.mehdiyari.krypt.ui.text.list.textsScreen
+import ir.mehdiyari.krypt.ui.voice.audios.audiosRoute
+import ir.mehdiyari.krypt.ui.voice.audios.navigateToAudios
+import ir.mehdiyari.krypt.ui.voice.record.addVoiceScreen
+import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
+
+@Composable
+fun KryptNaveHost(
+    kryptAppState: KryptAppState,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+    startDestination: String,
+    onStopLocker: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val navController = kryptAppState.navController
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = startDestination
+    ) {
+        loginScreen(onCreateAccountClicked = {
+            navController.navigateToCreateAccount()
+        }, onLoginSuccess = {
+            navController.navigateToHome()
+        }, showSnackBar = onShowSnackbar)
+
+        createAccountScreen(onCreateAccountSuccess = {
+            navController.navigateToLogin()
+        }, onShowSnackbar = onShowSnackbar)
+
+        homeScreen(
+            openTextsScreen = { navController.navigateToTexts() },
+            openMediaScreen = { mediaFragmentAction, sharedMediaListModel ->
+                navController.navigateToMedia(
+                    mediaFragmentAction
+                )
+            },
+            openMusicAndAudioScreen = {
+                navController.navigateToAudios()
+            },
+        )
+
+        textsScreen(onTextClick = {
+            navController.navigateToAddText(textId = it)
+        }, onNewNoteClick = {
+            navController.navigateToAddText()
+        }, onBackPressed = {
+            navController.popBackStack()
+        })
+
+        addTextScreen { navController.popBackStack() }
+        mediaScreen({ navController.popBackStack() }, onStopLocker = onStopLocker)
+        dataScreen { navController.popBackStack() }
+        addVoiceScreen { navController.popBackStack() }
+        audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
+        settingsRoute { navController.popBackStack() }
+    }
+}
+

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
-import ir.mehdiyari.krypt.ui.voice.audios.AudioEntity
+import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntity
 import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaDataJsonParser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

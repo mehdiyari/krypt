@@ -1,35 +1,41 @@
 package ir.mehdiyari.krypt.ui.media
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.ui.media.data.FalleryBuilderProvider
+import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
-import ir.mehdiyari.krypt.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class MediasViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
     private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val filesUtilities: FilesUtilities,
     private val filesRepository: FilesRepository,
     private val mediaStoreManager: MediaStoreManager,
-    private val thumbsUtils: ThumbsUtils
+    private val thumbsUtils: ThumbsUtils,
+    private val falleryBuilderProvider: FalleryBuilderProvider,
 ) : ViewModel() {
 
     private val _mediaViewState = MutableStateFlow<MediaViewState>(
@@ -37,7 +43,7 @@ class MediasViewModel @Inject constructor(
     )
     val mediaViewState = _mediaViewState.asStateFlow()
 
-    private val _latestAction = MutableStateFlow(MediaFragmentAction.DEFAULT)
+    private val _latestAction = MutableStateFlow(MediaViewAction.DEFAULT)
     val viewAction = _latestAction.asStateFlow()
 
     private val _selectedMedias = MutableStateFlow<List<SelectedMediaItems>>(listOf())
@@ -46,17 +52,17 @@ class MediasViewModel @Inject constructor(
     private val _messageFlow = MutableSharedFlow<Int>()
     val messageFlow = _messageFlow.asSharedFlow()
 
-    fun onActionReceived(
-        action: MediaFragmentAction
-    ) {
-        if (viewAction.value == MediaFragmentAction.DEFAULT) {
+    private val args = MediaArgs(savedStateHandle)
+
+    init {
+        if (viewAction.value == MediaViewAction.DEFAULT) {
             viewModelScope.launch {
-                _latestAction.emit(action)
+                _latestAction.emit(args.action)
             }
         }
     }
 
-    fun onSelectedMedias(medias: Array<String>) {
+    fun onSelectedMedias(medias: List<String>) {
         viewModelScope.launch {
             if (isEncryptAction()) {
                 _selectedMedias.emit(medias.map {
@@ -224,22 +230,27 @@ class MediasViewModel @Inject constructor(
         }
     }
 
-    suspend fun checkForOpenPickerForDecryptMode(): Boolean = filesRepository.getMediasCount() > 0L
+    fun checkForOpenPickerForDecryptMode(): Boolean = try {
+        runBlocking { filesRepository.getMediasCount() > 0L }
+    } catch (t: Throwable) {
+        true
+    }
 
+    // TODO: disabled, we should refactor after migration
     fun onDecryptSharedMedia(images: List<Uri>?) {
         if (!images.isNullOrEmpty()) {
             onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
                 filesUtilities.isPhotoPath(it) || filesUtilities.isVideoPath(it)
-            }.toTypedArray())
+            })
         }
     }
 
-    private fun isDecryptAction(): Boolean = viewAction.value == MediaFragmentAction.DECRYPT_MEDIA
+    private fun isDecryptAction(): Boolean = viewAction.value == MediaViewAction.DECRYPT_MEDIA
 
     private fun isEncryptAction(): Boolean = viewAction.value.let { action ->
-        action == MediaFragmentAction.PICK_MEDIA ||
-                action == MediaFragmentAction.TAKE_MEDIA ||
-                action == MediaFragmentAction.ENCRYPT_MEDIA
+        action == MediaViewAction.PICK_MEDIA ||
+                action == MediaViewAction.TAKE_MEDIA ||
+                action == MediaViewAction.ENCRYPT_MEDIA
     }
 
     override fun onCleared() {
@@ -254,7 +265,7 @@ class MediasViewModel @Inject constructor(
                 _messageFlow.emit(R.string.file_removed_from_list)
             }
             if (selectedMediasFlow.value.isEmpty()) {
-                _latestAction.emit(MediaFragmentAction.DEFAULT)
+                _latestAction.emit(MediaViewAction.DEFAULT)
             } else {
                 _mediaViewState.emit(
                     MediaViewState.EncryptDecryptState(
@@ -301,7 +312,7 @@ class MediasViewModel @Inject constructor(
 
             suspend fun closeMedia() {
                 _selectedMedias.emit(listOf())
-                _latestAction.emit(MediaFragmentAction.DEFAULT)
+                _latestAction.emit(MediaViewAction.DEFAULT)
             }
 
             _mediaViewState.emit(MediaViewState.OperationStart)
@@ -334,4 +345,10 @@ class MediasViewModel @Inject constructor(
             }
         }
     }
+
+    fun getDefaultFalleryOptions(): FalleryOptions =
+        falleryBuilderProvider.getDefaultFalleryOptions()
+
+    fun getKryptFalleryOptions(): FalleryOptions =
+        falleryBuilderProvider.getMediaPickerForDecrypting()
 }

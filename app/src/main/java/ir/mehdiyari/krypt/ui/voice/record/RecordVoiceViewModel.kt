@@ -58,19 +58,16 @@ class RecordVoiceViewModel @Inject constructor(
 
     val actionsButtonState = _actionsButtonState.asStateFlow()
 
-    init {
-        voiceRecorder.setOnErrorListener { _, _, _ ->
-            _recordVoiceViewState.value = RecordVoiceViewState.MicError
-        }
-    }
-
     fun startRecord() {
         if (!voiceRecorder.isInRecordingState()) {
             _recordVoiceViewState.value = RecordVoiceViewState.RecordStarted(isPaused = false)
             startTimer()
 
             viewModelScope.launch {
-                voiceRecorder.startRecord(filesUtilities.getFilePathForVoceRecord())
+                voiceRecorder.startRecord(filesUtilities.getFilePathForVoiceRecord())
+                voiceRecorder.setOnErrorListener { _, _, _ ->
+                    _recordVoiceViewState.value = RecordVoiceViewState.MicError
+                }
             }
         }
     }

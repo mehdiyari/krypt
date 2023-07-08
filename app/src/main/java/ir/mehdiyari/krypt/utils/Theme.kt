@@ -1,31 +1,33 @@
 package ir.mehdiyari.krypt.utils
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 
-val LightColors = lightColors(
+val LightColors = lightColorScheme(
     primary = Color(0xFF2196F3),
-    primaryVariant = Color(0xFF1976D2),
+    primaryContainer = Color(0xFF1976D2),
     onPrimary = Color(0xFFFFFFFF),
     secondary = Color(0xFF4CAF50),
-    secondaryVariant = Color(0xFF68B66B),
+    secondaryContainer = Color(0xFF68B66B),
     onSecondary = Color(0xFFFFFFFF),
     surface = Color(0xFFFFFFFF),
     onSurface = Color(0xFF000000),
     error = Color(0xFFB00020)
 )
 
-val DarkColors = darkColors(
+val DarkColors = darkColorScheme(
     primary = Color(0xFFBB86FC),
-    primaryVariant = Color(0xFF3700B3),
+    primaryContainer = Color(0xFF3700B3),
     onPrimary = Color(0xFF000000),
     secondary = Color(0xFF03DAC5),
-    secondaryVariant = Color(0xFF03DAC5),
+    secondaryContainer = Color(0xFF03DAC5),
     onSecondary = Color(0xFF000000),
     surface = Color(0xFF121212),
     onSurface = Color(0xFFFFFFFF),
@@ -34,5 +36,9 @@ val DarkColors = darkColors(
 
 @Composable
 fun KryptTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    MaterialTheme(colors = if (darkTheme) DarkColors else LightColors, content = content)
+    MaterialTheme(colorScheme = if (darkTheme) DarkColors else LightColors, content = content)
+}
+
+fun Context.isInDarkTheme(): Boolean {
+    return (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
