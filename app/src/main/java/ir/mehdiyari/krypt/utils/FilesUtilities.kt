@@ -26,6 +26,7 @@ class FilesUtilities @Inject constructor(
         const val DEFAULT_PHOTO_EXT = "jpg"
         const val DEFAULT_VIDEO_EXT = "mp4"
         const val VIDEO_CACHE_FOLDER = "3xP"
+        const val AUDIO_CACHE_FOLDER = "4xP"
         const val AUDIO_EXT = "amr"
 
         val photoExtensions = listOf(
@@ -216,6 +217,14 @@ class FilesUtilities @Inject constructor(
         }
     }
 
+    fun deleteCachedAudioDIR() {
+        try {
+            File("${getFilesDir()}/${AUDIO_CACHE_FOLDER}").deleteRecursively()
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
     private fun String.getExtension(): String = try {
         if (this.isNotBlank()) {
             this.substring(this.lastIndexOf('.') + 1, this.length)
@@ -233,4 +242,9 @@ class FilesUtilities @Inject constructor(
 
     fun getRealFilePathForRecordedVoice(): String =
         "${getFilesDir()}/v_${System.nanoTime()}.${AUDIO_EXT}"
+
+    fun generateCacheAudioPath(name: String): String =
+        "${getFilesDir()}/${AUDIO_CACHE_FOLDER}/".apply {
+            File(this).mkdirs()
+        } + name
 }
