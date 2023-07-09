@@ -57,4 +57,7 @@ interface FilesDao {
         thumbFileName: String,
         mediaType: List<FileTypeEnum> = listOf(FileTypeEnum.Photo, FileTypeEnum.Video)
     ): FileEntity?
+
+    @Update(entity = FileEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateFile(fileEntity: FileEntity)
 }

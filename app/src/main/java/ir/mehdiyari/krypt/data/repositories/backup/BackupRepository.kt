@@ -1,52 +1,76 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.crypto.FileCrypt
-import ir.mehdiyari.krypt.crypto.getBestBufferSizeForFile
-import ir.mehdiyari.krypt.crypto.toByteArray
-import ir.mehdiyari.krypt.crypto.toUtf8Bytes
+import ir.mehdiyari.krypt.app.user.UserKeyProvider
+import ir.mehdiyari.krypt.app.user.UsernameProvider
+import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.crypto.utils.Base64
+import ir.mehdiyari.krypt.crypto.utils.HashingUtils
+import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
+import ir.mehdiyari.krypt.crypto.utils.combineWith
+import ir.mehdiyari.krypt.crypto.utils.getBestBufferSizeForFile
+import ir.mehdiyari.krypt.crypto.utils.getBytesBetweenIndexes
+import ir.mehdiyari.krypt.crypto.utils.toByteArray
+import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.data.account.AccountEntity
 import ir.mehdiyari.krypt.data.account.AccountsDao
 import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.backup.BackupEntity
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FilesDao
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import javax.crypto.Cipher
 import javax.crypto.CipherOutputStream
+import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
 class BackupRepository @Inject constructor(
     private val accountsDao: AccountsDao,
     private val filesDao: FilesDao,
     private val backupDao: BackupDao,
-    private val currentUser: CurrentUser,
+    private val usernameProvider: UsernameProvider,
     private val dbBackupModelJsonAdapter: DBBackupModelJsonAdapter,
     private val fileUtils: FilesUtilities,
-    private val fileCrypt: FileCrypt
+    private val kryptCryptographyHelper: KryptCryptographyHelper,
+    private val symmetricHelper: SymmetricHelper,
+    private val userKeyProvider: UserKeyProvider,
 ) {
 
     /**
      *  Backup from all data's in db with all encrypted files.
      *
      *  Output File Schema:
-     *  [^IV[EN_PART:[^DB_SIZE, ^EN_DB, ^F_SIZE, ^EN_F_CONTENT, ^F_SIZE, ^EN_F_CONTENT]]]
+     *  [Salt[^IV[EN_PART:[^DB_SIZE, ^EN_DB, ^F_SIZE, ^EN_F_CONTENT, ^F_SIZE, ^EN_F_CONTENT]]]]
      */
     suspend fun backupAll(): Boolean {
-        val user = accountsDao.getAccountWithName(currentUser.accountName!!)!!
-        val files = filesDao.getAllFiles(currentUser.accountName!!).filter {
+        val user = accountsDao.getAccountWithName(usernameProvider.getUsername()!!)!!
+        val salt =
+            Base64.decode(user.encryptedName)
+                .let { name ->
+                    name.getBytesBetweenIndexes(
+                        start = name.size - (SymmetricHelper.INITIALIZE_VECTOR_SIZE + HashingUtils.SALT_SIZE),
+                        end = name.size - SymmetricHelper.INITIALIZE_VECTOR_SIZE
+                    )
+                }
+
+        val files = filesDao.getAllFiles(usernameProvider.getUsername()!!).filter {
             File(it.filePath).exists()
         }
 
-        val backupFilePath = fileUtils.generateBackupFilePath(currentUser.accountName!!)
+        val backupFilePath = fileUtils.generateBackupFilePath(usernameProvider.getUsername()!!)
         val backupFile = File(backupFilePath)
 
-        val (cipher, initVector) = fileCrypt.getCipherAndInitVector()
+        val (cipher, initVector) = symmetricHelper.getAESCipher() to symmetricHelper.createInitVector()
+        cipher.init(Cipher.ENCRYPT_MODE, userKeyProvider.getKey(), IvParameterSpec(initVector))
+
         FileOutputStream(backupFile).use { backupStream ->
+
+            // write salt
+            backupStream.write(salt)
 
             // write init vector to raw stream
             backupStream.write(initVector)
@@ -54,8 +78,14 @@ class BackupRepository @Inject constructor(
             // create cipher stream in top of normal stream
             CipherOutputStream(backupStream, cipher).use { encryptedBackupStream ->
 
+                val encryptInitVector = symmetricHelper.createInitVector()
                 val dbEncryptedBytes =
-                    fileCrypt.encryptDataWithIVAtFirst(createDBBackupAsBytes(user, files))
+                    encryptInitVector.combineWith(
+                        kryptCryptographyHelper.encryptBytes(
+                            createDBBackupAsBytes(user, files),
+                            encryptInitVector
+                        ).getOrThrow()
+                    )
 
                 // write size and encrypted content of db backup to [encryptedBackupStream]
                 encryptedBackupStream.write(dbEncryptedBytes.size.toLong().toByteArray())
@@ -71,7 +101,7 @@ class BackupRepository @Inject constructor(
             BackupEntity(
                 filePath = backupFilePath,
                 dateTime = System.currentTimeMillis(),
-                account = currentUser.accountName!!
+                account = usernameProvider.getUsername()!!
             )
         )
 
@@ -114,11 +144,11 @@ class BackupRepository @Inject constructor(
     }
 
     suspend fun getBackupRecord(): List<BackupEntity> = backupDao.getAllBackups(
-        currentUser.accountName!!
+        usernameProvider.getUsername()!!
     )
 
     suspend fun getLastBackUpDateTime(): String {
-        val dateTime = backupDao.getLastBackupRecord(currentUser.accountName!!)
+        val dateTime = backupDao.getLastBackupRecord(usernameProvider.getUsername()!!)
         return if (dateTime == null) {
             ""
         } else {
@@ -137,21 +167,19 @@ class BackupRepository @Inject constructor(
 
     suspend fun deleteBackupWithId(backupFileId: Int) {
         backupDao.getEntityWithId(
-            backupFileId, currentUser.accountName!!
+            backupFileId, usernameProvider.getUsername()!!
         )!!.also {
             File(it.filePath).delete()
-            backupDao.deleteBackupWithId(backupFileId, currentUser.accountName!!)
+            backupDao.deleteBackupWithId(backupFileId, usernameProvider.getUsername()!!)
         }
     }
 
     suspend fun getBackupFilePathWithId(backupFileId: Int): String {
-        return backupDao.getEntityWithId(backupFileId, currentUser.accountName!!)!!.let {
-            it.filePath
-        }
+        return backupDao.getEntityWithId(backupFileId, usernameProvider.getUsername()!!)!!.filePath
     }
 
     suspend fun deleteCachedBackupFiles() {
-        backupDao.getAllBackupFiles(currentUser.accountName!!)?.forEach {
+        backupDao.getAllBackupFiles(usernameProvider.getUsername()!!)?.forEach {
             try {
                 File(it).delete()
             } catch (t: Throwable) {

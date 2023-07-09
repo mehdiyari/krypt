@@ -5,7 +5,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.documentfile.provider.DocumentFile
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.mehdiyari.krypt.ui.media.utils.getRealPathBasedOnUri
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -16,7 +18,6 @@ import javax.inject.Singleton
 class FilesUtilities @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-
     companion object {
         const val KRYPT_FILES_PREFIX = "krypt_"
         const val KRYPT_THUMBS_FILES_PREFIX = "thumb_"
@@ -25,6 +26,34 @@ class FilesUtilities @Inject constructor(
         const val DEFAULT_PHOTO_EXT = "jpg"
         const val DEFAULT_VIDEO_EXT = "mp4"
         const val VIDEO_CACHE_FOLDER = "3xP"
+        const val AUDIO_CACHE_FOLDER = "4xP"
+        const val AUDIO_EXT = "amr"
+
+        val photoExtensions = listOf(
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "bmp",
+            "webp",
+            "tiff",
+            "raw",
+            "svg"
+        )
+
+        val videoExtensions = listOf(
+            "mp4",
+            "mov",
+            "avi",
+            "wmv",
+            "mkv",
+            "flv",
+            "webm",
+            "m4v",
+            "mpeg",
+            "3gp",
+            "ogv"
+        )
     }
 
     fun generateFilePathForMedia(
@@ -119,7 +148,7 @@ class FilesUtilities @Inject constructor(
         }
 
         cursor?.close()
-        return false
+        return photoExtensions.contains(File(path).extension)
     }
 
     @SuppressLint("Range")
@@ -137,7 +166,7 @@ class FilesUtilities @Inject constructor(
         }
 
         cursor?.close()
-        return false
+        return videoExtensions.contains(File(path).extension)
     }
 
     fun getPathFromUri(uri: Uri): String? = context.getRealPathBasedOnUri(uri)
@@ -151,6 +180,11 @@ class FilesUtilities @Inject constructor(
 
     fun generateRestoreFilePath(): String =
         "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+
+    fun x(path: String) {
+        val file = DocumentFile.fromFile(File(path))
+
+    }
 
     fun copyBackupFileToKryptFolder(backupFilePath: String): String {
         return File(backupFilePath).let {
@@ -183,6 +217,14 @@ class FilesUtilities @Inject constructor(
         }
     }
 
+    fun deleteCachedAudioDIR() {
+        try {
+            File("${getFilesDir()}/${AUDIO_CACHE_FOLDER}").deleteRecursively()
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
     private fun String.getExtension(): String = try {
         if (this.isNotBlank()) {
             this.substring(this.lastIndexOf('.') + 1, this.length)
@@ -193,9 +235,16 @@ class FilesUtilities @Inject constructor(
         ""
     }
 
-    /**
-     *
-     */
     fun getStableEncryptedThumbPathForDecryptedThumb(fileName: String): String =
         "${getFilesDir()}/$fileName"
+
+    fun getFilePathForVoiceRecord(): String = "${getCashDir()}/v_${System.nanoTime()}.enc"
+
+    fun getRealFilePathForRecordedVoice(): String =
+        "${getFilesDir()}/v_${System.nanoTime()}.${AUDIO_EXT}"
+
+    fun generateCacheAudioPath(name: String): String =
+        "${getFilesDir()}/${AUDIO_CACHE_FOLDER}/".apply {
+            File(this).mkdirs()
+        } + name
 }

@@ -1,34 +1,33 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroidPlugin)
+    alias(libs.plugins.kspPlugin)
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs'
+    id 'kotlin-kapt'
 }
 
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
+
         applicationId "ir.mehdiyari.krypt"
         minSdk 23
-        targetSdk 32
-        versionCode 14
-        versionName "2.1.0"
+        targetSdk 33
+        versionCode 15
+        versionName "3.0.0-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
-        // Enables Jetpack Compose for this module
         compose true
     }
 
     composeOptions {
-        kotlinCompilerVersion "1.6.10"
-        kotlinCompilerExtensionVersion "1.2.0-alpha02"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     buildTypes {
@@ -48,58 +47,56 @@ android {
 }
 
 dependencies {
+    implementation libs.coreKtx
+    implementation libs.appCompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    testImplementation libs.junit
+    androidTestImplementation libs.testExt
+    androidTestImplementation libs.espressoCore
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation libs.lifecycleViewModeKtx
+    implementation libs.lifecycleViewModelCompose
+    ksp libs.lifecycleCompiler
 
-    def lifecycle_version = "2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation libs.room
+    ksp libs.roomCompiler
 
+    implementation libs.hiltAndroid
+    implementation libs.hiltNavigationCompose
+    kapt libs.hiltCompiler
 
-    def nav_version = "2.5.1"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    def composeBom = platform(libs.composeBom)
+    implementation composeBom
+    androidTestImplementation composeBom
 
-    def room_version = "2.4.3"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation libs.composeActivity
+    implementation libs.composeAnimation
+    implementation libs.composeUiTooling
+    androidTestImplementation libs.composeJunit4UiTest
+    implementation libs.material3
 
-    def hilt_version = "2.38.1"
-    implementation "com.google.dagger:hilt-android:${hilt_version}"
-    kapt "com.google.dagger:hilt-compiler:${hilt_version}"
+    implementation libs.lifecycleViewModelCompose
+    implementation libs.navigationCompose
+    implementation libs.constraintlayoutCompose
 
-    implementation 'androidx.activity:activity-compose:1.5.1'
-    implementation 'androidx.compose.material:material:1.2.0'
-    implementation 'androidx.compose.animation:animation:1.2.0'
-    implementation 'androidx.compose.ui:ui-tooling:1.2.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0'
-    implementation "androidx.navigation:navigation-compose:2.5.1"
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha03"
+    implementation libs.coroutinesAndroid
+    implementation libs.coroutinesCore
 
+    implementation libs.fallery
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation libs.glide
+    ksp libs.glideCompiler
+    implementation libs.landscapistGlide
 
-    implementation "androidx.browser:browser:1.4.0"
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+    implementation libs.moshiKotlin
+    implementation libs.processPhoenix
+    implementation libs.exoplayer
 
-    implementation 'com.github.mehdiyari:Fallery:1.0.2'
+    testImplementation libs.mockk
+    testImplementation libs.coroutinesTest
+    testImplementation libs.turbine
 
-    implementation 'com.github.bumptech.glide:glide:4.13.2'
-    kapt 'com.github.bumptech.glide:compiler:4.13.2'
-    implementation "com.github.skydoves:landscapist-glide:1.6.1"
-
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
-    implementation 'com.jakewharton:process-phoenix:2.1.2'
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
+    implementation(libs.lifecycleRuntimeCompose)
+    implementation(libs.splashscreen)
 }

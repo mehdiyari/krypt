@@ -5,6 +5,14 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- This app category is Disk and file encryption or backup and restore app so,
+    base on official documents there is no problem for publishing on google play -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <!-- Removing these kind of permissions if it's added by third-parties -->
     <uses-permission
@@ -23,12 +31,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Krypt"
+        android:theme="@style/Theme.Krypt.Splash"
         tools:targetApi="31">
         <activity
             android:name=".ui.media.player.PlayerActivity"
             android:exported="false"
-            android:launchMode="singleInstancePerTask"
+            android:launchMode="singleTop"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.Krypt" />
 
@@ -36,7 +44,6 @@
             android:name=".app.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.Krypt"
             android:windowSoftInputMode="stateHidden|adjustResize">
 
             <intent-filter>

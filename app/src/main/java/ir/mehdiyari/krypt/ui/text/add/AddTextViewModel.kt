@@ -1,15 +1,16 @@
 package ir.mehdiyari.krypt.ui.text.add
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.crypto.impl.TextFilesUtils
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.ui.text.list.TextEntity
-import ir.mehdiyari.krypt.utils.TextFilesUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,10 +19,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTextViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val textFilesUtils: TextFilesUtils,
     private val filesRepository: FilesRepository,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+
+    val addTextArgs = AddTextArgs(savedStateHandle)
 
     private val _saveNoteState = MutableStateFlow<Boolean?>(null)
     val saveNoteState = _saveNoteState.asStateFlow()
@@ -35,18 +39,33 @@ class AddTextViewModel @Inject constructor(
     private val _argsTextViewState = MutableStateFlow<AddTextArgsViewState?>(null)
     val argsTextViewState = _argsTextViewState.asStateFlow()
 
+    init {
+        val textId = addTextArgs.textId
+        if (textId != -1L) {
+            viewModelScope.launch(ioDispatcher) {
+                filesRepository.getFileById(textId).also {
+                    handleInputTextFileEntity(it, textId)
+                }
+            }
+        }
+    }
+
     fun saveNote(title: String, content: String) {
+        if (title.trim().isEmpty()) {
+            _saveNoteValidation.value = R.string.title_must_not_empty
+            return
+        }
+
+        if (content.isEmpty()) {
+            _saveNoteValidation.value = R.string.content_must_not_empty
+            return
+        }
+
+        if (argsTextViewState.value is AddTextArgsViewState.TextArg) {
+            return updateNote(title, content)
+        }
+
         viewModelScope.launch(ioDispatcher) {
-            if (title.trim().isEmpty()) {
-                _saveNoteValidation.emit(R.string.title_must_not_empty)
-                return@launch
-            }
-
-            if (content.isEmpty()) {
-                _saveNoteValidation.emit(R.string.content_must_not_empty)
-                return@launch
-            }
-
             textFilesUtils.mapTitleAndContentToFile(title, content).also { textFile ->
                 val encryptedFileResult = textFilesUtils.encryptTextFiles(textFile)
                 if (encryptedFileResult.first) {
@@ -73,11 +92,31 @@ class AddTextViewModel @Inject constructor(
         }
     }
 
-    fun handleInputTextID(textId: Long) {
-        if (textId != -1L) {
-            viewModelScope.launch(ioDispatcher) {
-                filesRepository.getFileById(textId).also {
-                    handleInputTextFileEntity(it, textId)
+    private fun updateNote(title: String, content: String) {
+        val textEntity = (argsTextViewState.value as? AddTextArgsViewState.TextArg)?.textEntity
+        if (textEntity == null) {
+            _argsTextViewState.value = AddTextArgsViewState.Error(R.string.something_went_wrong)
+            return
+        }
+
+        viewModelScope.launch(ioDispatcher) {
+            textFilesUtils.mapTitleAndContentToFile(title, content).also { textFile ->
+                val encryptedFileResult = textFilesUtils.encryptTextFiles(textFile)
+                if (encryptedFileResult.first) {
+                    textFile.delete()
+                    val localTextEntity = filesRepository.getFileById(textEntity.id)!!
+                    filesRepository.updateFile(
+                        localTextEntity.copy(
+                            filePath = encryptedFileResult.second!!,
+                            metaData = textFilesUtils.getEncryptedBase64MetaDataFromTitleAndContent(
+                                title = title,
+                                content = content,
+                            ) ?: ""
+                        )
+                    )
+                    _saveNoteState.emit(true)
+                } else {
+                    _saveNoteState.emit(false)
                 }
             }
         }

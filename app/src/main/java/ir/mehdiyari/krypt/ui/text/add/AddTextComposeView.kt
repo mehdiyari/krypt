@@ -1,14 +1,24 @@
 package ir.mehdiyari.krypt.ui.text.add
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -16,146 +26,74 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTextComposeView(
-    viewModel: AddTextViewModel = viewModel(),
-    sharedContentText: String? = null,
-    onNavigationClickIcon: () -> Unit = {}
-) {
-    KryptTheme {
-        val argsState = viewModel.argsTextViewState.collectAsState().value
-        if (argsState is AddTextArgsViewState.Error) {
-            return@KryptTheme
-        }
-
-        val textTitleField = remember { mutableStateOf(TextFieldValue()) }
-        val textContentField = remember { mutableStateOf(TextFieldValue()) }
-
-        val isPreviewMode = argsState is AddTextArgsViewState.TextArg
-
-        if (isPreviewMode) {
-            argsState as AddTextArgsViewState.TextArg
-            textTitleField.value = TextFieldValue(argsState.textEntity.title)
-            textContentField.value = TextFieldValue(argsState.textEntity.content)
-        } else {
-            textContentField.value = TextFieldValue(sharedContentText ?: "")
-        }
-
-        Scaffold(
-            topBar = {
-                TopBarSurface(
-                    onNavigationClickIcon,
-                    textTitleField,
-                    isPreviewMode = isPreviewMode
-                )
-            }, content = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    ContentTextField(
-                        textContentField,
-                        isPreviewMode = isPreviewMode
-                    )
-                }
-            })
-
-        if (!isPreviewMode) {
-            SaveTextFab {
-                viewModel.saveNote(textTitleField.value.text.trim(), textContentField.value.text)
-            }
-        } else {
-            DeleteTextFab {
-                viewModel.deleteNote()
-            }
-        }
-    }
-}
-
-@Composable
-@Preview
-private fun TopBarSurface(
-    onNavigationClickIcon: () -> Unit = {},
-    textTitleField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
-    isPreviewMode: Boolean = false
+fun TopBar(
+    text: String,
+    onTextChanged: (String) -> Unit,
+    onNavigationClickIcon: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp),
-        elevation = 8.dp
+        modifier = modifier
+            .height(56.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
+        Row {
             IconButton(modifier = Modifier
                 .fillMaxHeight()
-                .padding(0.dp),
-                onClick = {
-                    onNavigationClickIcon()
-                }) {
+                .padding(0.dp), onClick = {
+                onNavigationClickIcon()
+            }) {
                 Icon(Icons.Filled.ArrowBack, "")
             }
 
             TextField(
-                value = textTitleField.value,
+                value = text,
                 onValueChange = {
-                    if (it.text.length < 32) {
-                        textTitleField.value = it
+                    if (it.length < 32) {
+                        onTextChanged(it)
                     }
                 },
                 label = { Text(text = stringResource(id = R.string.text_title)) },
-                modifier = Modifier
-                    .fillMaxHeight(),
                 textStyle = TextStyle(
-                    color = MaterialTheme.colors.onBackground,
-                    fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold
                 ),
                 shape = RectangleShape,
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = MaterialTheme.colors.onSurface,
+                    containerColor = Color.Transparent,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
                 ),
                 singleLine = true,
-                readOnly = isPreviewMode
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
-private fun ContentTextField(
-    textContentField: MutableState<TextFieldValue> = mutableStateOf(TextFieldValue("Test")),
-    isPreviewMode: Boolean = false
+fun ContentTextField(
+    text: String,
+    onTextChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     TextField(
-        value = textContentField.value,
-        onValueChange = { textContentField.value = it },
+        value = text,
+        onValueChange = onTextChanged,
         label = { Text(text = stringResource(id = R.string.text_content)) },
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
-            .padding(bottom = if (isPreviewMode) 0.dp else 55.dp),
+        modifier = modifier,
         textStyle = TextStyle(
-            color = MaterialTheme.colors.onBackground,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 18.sp,
             localeList = LocaleList.current,
             textDirection = TextDirection.ContentOrRtl,
@@ -163,63 +101,105 @@ private fun ContentTextField(
         ),
         shape = RectangleShape,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.Transparent,
-            textColor = MaterialTheme.colors.onSurface,
+            containerColor = Color.Transparent,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
         ),
-        readOnly = isPreviewMode
     )
 }
 
 @Composable
-@Preview
-private fun SaveTextFab(
-    onSaveClick: () -> Unit = {}
+fun EditAndDeleteButtons(
+    deleteNote: () -> Unit,
+    saveNote: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(15.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = { onSaveClick() },
-            icon = {
-                Icon(
-                    Icons.Filled.Done,
-                    contentDescription = stringResource(id = R.string.save_text)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.save_text)) },
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary
+    Row(modifier = modifier) {
+        DeleteTextFab(
+            onDeleteClick = deleteNote,
+            modifier = Modifier.padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
+        )
+        SaveTextFab(
+            onSaveClick = saveNote,
+            modifier = Modifier.padding(bottom = 16.dp, start = 8.dp, end = 16.dp)
         )
     }
+
+}
+
+@Composable
+fun SaveTextFab(
+    onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ExtendedFloatingActionButton(
+        onClick = { onSaveClick() },
+        icon = {
+            Icon(
+                Icons.Filled.Done, contentDescription = stringResource(id = R.string.save_text)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.save_text)) },
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        modifier = modifier,
+    )
 }
 
 
 @Composable
-@Preview
-private fun DeleteTextFab(
-    onDeleteClick: () -> Unit = {}
+fun DeleteTextFab(
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(15.dp)
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = { onDeleteClick() },
-            icon = {
-                Icon(
-                    Icons.Filled.Delete,
-                    contentDescription = stringResource(id = R.string.delete_text)
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.delete_text)) },
-            backgroundColor = MaterialTheme.colors.error,
-            contentColor = MaterialTheme.colors.onError
-        )
+    ExtendedFloatingActionButton(
+        onClick = { onDeleteClick() },
+        icon = {
+            Icon(
+                Icons.Filled.Delete, contentDescription = stringResource(id = R.string.delete_text)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.delete_text)) },
+        containerColor = MaterialTheme.colorScheme.error,
+        contentColor = MaterialTheme.colorScheme.onError,
+        modifier = modifier,
+    )
+}
+
+@Preview
+@Composable
+fun TopBarPreview() {
+    KryptTheme {
+        Surface {
+            TopBar(text = "Title", onTextChanged = {}, onNavigationClickIcon = {})
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ContentTextFieldPreview() {
+    KryptTheme {
+        Surface {
+            ContentTextField(
+                text = "Content",
+                onTextChanged = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun EditAndDeleteButtonsPreview() {
+    KryptTheme {
+        Surface {
+            EditAndDeleteButtons(deleteNote = { /*TODO*/ }, saveNote = { /*TODO*/ })
+        }
     }
 }
