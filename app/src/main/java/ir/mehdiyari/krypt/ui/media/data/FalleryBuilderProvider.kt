@@ -34,7 +34,6 @@ class FalleryBuilderProvider @Inject constructor(
         .setFalleryToolbarTitleText(R.string.app_name)
         .setMediaCountEnabled(true)
         .setGrantExternalStoragePermission(true)
-        .setGrantSharedStoragePermission(true)
         .setMediaObserverEnabled(true)
         .setCaptionEnabledOptions(CaptionEnabledOptions(false))
         .setFallerySpanCountMode(FalleryBucketsSpanCountMode.UserZoomInOrZoomOut)
@@ -58,6 +57,7 @@ class FalleryBuilderProvider @Inject constructor(
 
     fun getMediaPickerForDecrypting(): FalleryOptions {
         return getBaseOptionsOfFallery(deviceGalleryImageLoader, context)
+            .setGrantExternalStoragePermission(false)
             .setContentProviders(
                 encryptedMediasBucketContentProvider,
                 encryptedMediasBucketProvider
