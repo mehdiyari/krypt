@@ -11,6 +11,7 @@ class SettingsRepository @Inject constructor(
 ) {
     companion object {
         const val AUTO_LOCK_SHARED_PREF_KEY = "auto_lock_status"
+        const val DEFAULT_VALUE = -1
     }
 
     fun storeLockAutomatically(autoLockItemsEnum: AutoLockItemsEnum) {
@@ -19,8 +20,8 @@ class SettingsRepository @Inject constructor(
     }
 
     fun getLockAutomaticallyValue(): AutoLockItemsEnum {
-        val autoLockValue = sharedPreferences.getInt(AUTO_LOCK_SHARED_PREF_KEY, -1)
-        return if (autoLockValue == -1) {
+        val autoLockValue = sharedPreferences.getInt(AUTO_LOCK_SHARED_PREF_KEY, DEFAULT_VALUE)
+        return if (autoLockValue == DEFAULT_VALUE) {
             AutoLockItemsEnum.Disabled
         } else {
             AutoLockItemsEnum.values().firstOrNull {
