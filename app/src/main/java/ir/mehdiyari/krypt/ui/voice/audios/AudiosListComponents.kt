@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,7 +33,6 @@ import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntity
 import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerEntity
 import ir.mehdiyari.krypt.utils.KryptTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AudioList(
     modifier: Modifier,
@@ -65,7 +63,6 @@ fun AudioList(
 }
 
 @SuppressLint("StateFlowValueCalledInComposition")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AudioItem(
     modifier: Modifier,
@@ -75,7 +72,6 @@ fun AudioItem(
     openMusicPlayerBottomSheet: () -> Unit,
     isMusicPlayerSheetOpened: Boolean
 ) {
-    val scope = rememberCoroutineScope()
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -131,7 +127,6 @@ fun AudioItem(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
