@@ -27,6 +27,32 @@ class FilesUtilities @Inject constructor(
         const val DEFAULT_VIDEO_EXT = "mp4"
         const val VIDEO_CACHE_FOLDER = "3xP"
         const val AUDIO_EXT = "amr"
+
+        val photoExtensions = listOf(
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "bmp",
+            "webp",
+            "tiff",
+            "raw",
+            "svg"
+        )
+
+        val videoExtensions = listOf(
+            "mp4",
+            "mov",
+            "avi",
+            "wmv",
+            "mkv",
+            "flv",
+            "webm",
+            "m4v",
+            "mpeg",
+            "3gp",
+            "ogv"
+        )
     }
 
     fun generateFilePathForMedia(
@@ -121,7 +147,7 @@ class FilesUtilities @Inject constructor(
         }
 
         cursor?.close()
-        return false
+        return photoExtensions.contains(File(path).extension)
     }
 
     @SuppressLint("Range")
@@ -139,7 +165,7 @@ class FilesUtilities @Inject constructor(
         }
 
         cursor?.close()
-        return false
+        return videoExtensions.contains(File(path).extension)
     }
 
     fun getPathFromUri(uri: Uri): String? = context.getRealPathBasedOnUri(uri)
