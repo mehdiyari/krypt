@@ -2,6 +2,7 @@ package ir.mehdiyari.krypt.ui.media.data
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.mehdiyari.fallery.imageLoader.FalleryImageLoader
@@ -50,7 +51,9 @@ class FalleryBuilderProvider @Inject constructor(
             context.startActivity(
                 Intent(context, PlayerActivity::class.java).addExtraForPlayerToIntent(
                     it, false
-                )
+                ).apply {
+                    flags = FLAG_ACTIVITY_NEW_TASK
+                }
             )
         }.build()
     }
@@ -64,7 +67,9 @@ class FalleryBuilderProvider @Inject constructor(
             ).setOnVideoPlayClick {
                 ContextCompat.startActivity(
                     context,
-                    Intent(context, PlayerActivity::class.java).addExtraForPlayerToIntent(it, true),
+                    Intent(context, PlayerActivity::class.java).apply {
+                        flags = FLAG_ACTIVITY_NEW_TASK
+                    }.addExtraForPlayerToIntent(it, true),
                     null
                 )
             }
