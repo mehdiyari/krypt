@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.android.exoplayer2.R
+import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 import ir.mehdiyari.krypt.utils.convertToReadableTime
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -168,7 +168,7 @@ fun MusicPlayerView(
             ConstraintLayout {
                 val (prev, play, next) = createRefs()
                 Image(
-                    painter = painterResource(id = R.drawable.exo_controls_previous),
+                    painter = painterResource(id = R.drawable.ic_media_perv),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Gray),
                     modifier = modifier
@@ -182,9 +182,9 @@ fun MusicPlayerView(
 
                 Image(
                     painter = if (playState.value)
-                        painterResource(id = R.drawable.exo_controls_play)
+                        painterResource(id = R.drawable.ic_media_play)
                     else
-                        painterResource(id = R.drawable.exo_controls_pause),
+                        painterResource(id = R.drawable.ic_media_pause),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                     modifier = modifier
@@ -199,7 +199,7 @@ fun MusicPlayerView(
                 )
 
                 Image(
-                    painter = painterResource(id = R.drawable.exo_controls_next),
+                    painter = painterResource(id = R.drawable.ic_media_next),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(Color.Gray),
                     modifier = modifier
