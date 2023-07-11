@@ -1,3 +1,24 @@
+## 3.0.1-alpha
+
+1. Minor bug fixes
+
+## 3.0.0-alpha
+
+1. Remove all fragments and refactor the navigation System with compose
+2. Compatible app with android 13+
+3. Add voice recorder feature
+4. Add music player feature
+5. Add restore feature infra
+6. Migrate to Android splash screen
+7. Add CI/CD
+8. Add edit-note feature
+9. Update library versions
+10. Add gradle version catalog
+11. Remove unused utils
+12. Remove unused resources
+13. Refactor current user logic
+14. Refactor cryptography logic
+
 ## 2.1.0
 
 1. Redesign the media page
