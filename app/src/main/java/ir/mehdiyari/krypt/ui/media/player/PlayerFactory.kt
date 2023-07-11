@@ -2,7 +2,7 @@ package ir.mehdiyari.krypt.ui.media.player
 
 import android.content.Context
 import android.content.Intent
-import com.google.android.exoplayer2.ExoPlayer
+import androidx.media3.exoplayer.ExoPlayer
 
 object PlayerFactory {
 

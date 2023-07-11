@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.data.navigateToData
+import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
@@ -33,6 +34,7 @@ fun KryptApp(
     hasAnyAccount: Boolean,
     onLockAppClicked: () -> Unit,
     onStopLocker: () -> Unit,
+    sharedDataViewModel: ShareDataViewModel,
 ) {
     KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
@@ -99,6 +101,7 @@ fun KryptApp(
                     kryptAppState = kryptAppState,
                     onStopLocker = onStopLocker,
                     startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
+                    sharedDataViewModel = sharedDataViewModel,
                     onShowSnackbar = { message, action ->
                         snackbarHostState.showSnackbar(
                             message = message,

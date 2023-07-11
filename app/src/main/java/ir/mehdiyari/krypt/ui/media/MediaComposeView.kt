@@ -54,6 +54,7 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.DECRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.ENCRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.PICK_MEDIA
+import ir.mehdiyari.krypt.ui.media.MediaViewAction.SHARED_MEDIA
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 
@@ -132,7 +133,7 @@ fun ShowActionButton(
     val context = LocalContext.current
     if (viewState is MediaViewState.EncryptDecryptState) {
         val buttonTextAndDeleteText: Pair<String, String> = when (actionState) {
-            PICK_MEDIA, ENCRYPT_MEDIA -> {
+            PICK_MEDIA, ENCRYPT_MEDIA, SHARED_MEDIA -> {
                 (stringResource(id = R.string.encrypt_action) to stringResource(id = R.string.delete_files_after_encrypt_dialog_message))
             }
 

@@ -14,6 +14,7 @@ class ShareDataViewModel @Inject constructor() : ViewModel() {
 
     private val _sharedData = MutableStateFlow<SharedDataState?>(null)
     val sharedData = _sharedData.asStateFlow()
+    private val imagesList = mutableListOf<Uri>()
 
     fun handleSharedText(sharedText: String?) {
         if (!sharedText.isNullOrBlank()) {
@@ -32,8 +33,15 @@ class ShareDataViewModel @Inject constructor() : ViewModel() {
     fun handleSharedMedias(vararg images: Uri) {
         if (images.isNotEmpty()) {
             viewModelScope.launch {
+                images.forEach(imagesList::add)
                 _sharedData.emit(SharedDataState.SharedMedias(images.toList()))
             }
         }
     }
+
+    fun clearImages() {
+        imagesList.clear()
+    }
+
+    fun getSharedImages(): List<Uri> = imagesList.toList()
 }
