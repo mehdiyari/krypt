@@ -17,6 +17,7 @@ import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.settings.settingsRoute
 import ir.mehdiyari.krypt.ui.text.add.addTextScreen
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
+import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
 import ir.mehdiyari.krypt.ui.text.list.textsScreen
 import ir.mehdiyari.krypt.ui.voice.audios.audiosRoute
 import ir.mehdiyari.krypt.ui.voice.audios.navigateToAudios
@@ -50,8 +51,11 @@ fun KryptNaveHost(
 
         homeScreen(
             sharedDataViewModel = sharedDataViewModel,
-            openTextsScreen = {
+            openAddTextScreen = {
                 navController.navigateToAddText(sharedText = it ?: "")
+            },
+            openTextsScreen = {
+                navController.navigateToTexts()
             },
             openMediaScreen = { mediaViewAction ->
                 navController.navigateToMedia(
