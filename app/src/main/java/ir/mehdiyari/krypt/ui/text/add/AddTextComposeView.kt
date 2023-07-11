@@ -142,8 +142,6 @@ fun SaveTextFab(
             )
         },
         text = { Text(text = stringResource(id = R.string.save_text)) },
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier,
     )
 }
