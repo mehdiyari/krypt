@@ -17,33 +17,30 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
-import ir.mehdiyari.krypt.ui.media.SharedMediaListModel
 import ir.mehdiyari.krypt.utils.KryptTheme
 
 @Composable
 fun HomeRoute(
     openTextsScreen: (String?) -> Unit,
     openMusicAndAudioScreen: () -> Unit,
-    openMediaScreen: (MediaViewAction, SharedMediaListModel?) -> Unit,
+    openMediaScreen: (MediaViewAction) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    shareDataViewModel: ShareDataViewModel = androidx.lifecycle.viewmodel.compose.viewModel() // FIXME MHD: Handle Shared view model
+    sharedDataViewModel: ShareDataViewModel
 ) {
     viewModel.getHomeItems()
     val cards by viewModel.filesCounts.collectAsStateWithLifecycle()
-    val sharedData by shareDataViewModel.sharedData.collectAsStateWithLifecycle()
-
+    val sharedData by sharedDataViewModel.sharedData.collectAsStateWithLifecycle()
     DisposableEffect(sharedData) {
         if (sharedData != null) {
             if (sharedData is SharedDataState.SharedText) {
                 openTextsScreen((sharedData as SharedDataState.SharedText).text)
             } else if (sharedData is SharedDataState.SharedMedias) {
                 openMediaScreen(
-                    MediaViewAction.ENCRYPT_MEDIA,
-                    SharedMediaListModel((sharedData as SharedDataState.SharedMedias).medias)
+                    MediaViewAction.SHARED_MEDIA
                 )
             }
-            shareDataViewModel.clearSharedData()
+            sharedDataViewModel.clearSharedData()
         }
 
         onDispose { }
@@ -52,7 +49,7 @@ fun HomeRoute(
     HomeScreen(
         cards = cards, onItemClicked = {
             when (it) {
-                FileTypeEnum.Photo -> openMediaScreen(MediaViewAction.DECRYPT_MEDIA, null)
+                FileTypeEnum.Photo -> openMediaScreen(MediaViewAction.DECRYPT_MEDIA)
                 FileTypeEnum.Audio -> openMusicAndAudioScreen()
                 FileTypeEnum.Text -> openTextsScreen(null)
                 else -> Unit

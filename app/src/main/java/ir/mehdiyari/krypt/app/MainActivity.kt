@@ -19,7 +19,6 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.ui.KryptApp
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -61,9 +60,11 @@ class MainActivity : ComponentActivity() {
         onNewIntent(intent)
         setContent {
             KryptApp(
-                hasAnyAccount = (splashUiState as? SplashUiState.Success)?.isAnyAccountsExists ?: false,
+                hasAnyAccount = (splashUiState as? SplashUiState.Success)?.isAnyAccountsExists
+                    ?: false,
                 onLockAppClicked = viewModel::onLockMenuClicked,
-                onStopLocker = viewModel::onStopLocker
+                onStopLocker = viewModel::onStopLocker,
+                sharedDataViewModel = shareDataViewModel,
             )
         }
 
