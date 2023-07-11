@@ -16,8 +16,8 @@ android {
         applicationId "ir.mehdiyari.krypt"
         minSdk 23
         targetSdk 33
-        versionCode 16
-        versionName "3.0.1-alpha"
+        versionCode 17
+        versionName "3.0.2-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
