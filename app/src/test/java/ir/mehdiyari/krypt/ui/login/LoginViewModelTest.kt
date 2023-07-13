@@ -4,7 +4,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch

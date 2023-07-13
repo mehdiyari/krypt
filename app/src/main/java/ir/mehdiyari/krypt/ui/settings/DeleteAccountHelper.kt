@@ -1,8 +1,8 @@
 package ir.mehdiyari.krypt.ui.settings
 
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import javax.inject.Inject
