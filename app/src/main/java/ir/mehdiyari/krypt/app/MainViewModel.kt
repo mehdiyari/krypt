@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
 import ir.mehdiyari.krypt.app.user.UsernameProvider
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum

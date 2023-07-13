@@ -4,7 +4,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
 import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
 import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable
 import ir.mehdiyari.krypt.ui.logout.throwables.PasswordsNotMatchThrowable
