@@ -236,19 +236,20 @@ class MediasViewModel @Inject constructor(
         true
     }
 
-    // TODO: disabled, we should refactor after migration
-    fun onDecryptSharedMedia(images: List<Uri>?) {
+    private fun onEncryptSharedMedia(images: List<Uri>?) {
         if (!images.isNullOrEmpty()) {
-            onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
-                filesUtilities.isPhotoPath(it) || filesUtilities.isVideoPath(it)
-            })
+            viewModelScope.launch(ioDispatcher) {
+                onSelectedMedias(images.mapNotNull { filesUtilities.getPathFromUri(it) }.filter {
+                    filesUtilities.isPhotoPath(it) || filesUtilities.isVideoPath(it)
+                })
+            }
         }
     }
 
     private fun isDecryptAction(): Boolean = viewAction.value == MediaViewAction.DECRYPT_MEDIA
 
     private fun isEncryptAction(): Boolean = viewAction.value.let { action ->
-        action == MediaViewAction.PICK_MEDIA ||
+        action == MediaViewAction.PICK_MEDIA || action == MediaViewAction.SHARED_MEDIA ||
                 action == MediaViewAction.TAKE_MEDIA ||
                 action == MediaViewAction.ENCRYPT_MEDIA
     }
@@ -351,4 +352,10 @@ class MediasViewModel @Inject constructor(
 
     fun getKryptFalleryOptions(): FalleryOptions =
         falleryBuilderProvider.getMediaPickerForDecrypting()
+
+    fun setSharedImages(sharedImages: List<Uri>) {
+        if (args.action == MediaViewAction.SHARED_MEDIA) {
+            onEncryptSharedMedia(sharedImages)
+        }
+    }
 }

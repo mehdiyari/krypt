@@ -1,7 +1,12 @@
 package ir.mehdiyari.krypt.ui.media.player
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,13 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.utils.KryptTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 fun PlayerComposeView(
     player: ExoPlayer? = null,
     decryptVideoPathState: StateFlow<PlayerState?>? = null
@@ -31,13 +37,13 @@ fun PlayerComposeView(
             is PlayerState.NormalVideo, is PlayerState.EncryptedCashedVideo -> {
                 AndroidView(
                     factory = {
-                        StyledPlayerView(it).apply {
+                        PlayerView(it).apply {
                             this.player = player
                             this.setShowShuffleButton(false)
                             this.setShowSubtitleButton(false)
                             this.setShowNextButton(false)
                             this.setShowPreviousButton(false)
-                            this.setShowBuffering(StyledPlayerView.SHOW_BUFFERING_ALWAYS)
+                            this.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS)
                             this.keepScreenOn = true
                         }
                     }, modifier = Modifier
@@ -46,9 +52,11 @@ fun PlayerComposeView(
                         .background(Color.Black)
                 )
             }
+
             is PlayerState.Decrypting -> {
                 ProgressBar(withText = true)
             }
+
             else -> {
                 ProgressBar(withText = false)
             }
@@ -69,7 +77,7 @@ private fun ProgressBar(withText: Boolean = false) {
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(top = 20.dp),
-                color =  MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }

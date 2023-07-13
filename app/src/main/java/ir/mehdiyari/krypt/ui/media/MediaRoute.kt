@@ -26,6 +26,7 @@ import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
+import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
 import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
 
@@ -36,7 +37,11 @@ fun MediaRoute(
     viewModel: MediasViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
     onStopLocker: () -> Unit,
+    sharedDataViewModel: ShareDataViewModel,
 ) {
+    viewModel.setSharedImages(sharedDataViewModel.getSharedImages())
+    sharedDataViewModel.clearImages()
+
     val managerStoragePermissionState = remember { mutableStateOf(false) }
     val actionState by viewModel.viewAction.collectAsStateWithLifecycle()
     val viewState by viewModel.mediaViewState.collectAsStateWithLifecycle()
@@ -151,7 +156,7 @@ fun MediaScreen(
             MediaViewState.OperationStart -> OperationStart()
             MediaViewState.OperationFinished -> {
                 val textRes = when (actionState) {
-                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA -> R.string.encrypt_successfully
+                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA, MediaViewAction.SHARED_MEDIA -> R.string.encrypt_successfully
                     MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_successfully
                     else -> R.string.operation_successfully
                 }
@@ -160,7 +165,7 @@ fun MediaScreen(
 
             MediaViewState.OperationFailed -> {
                 val textRes = when (actionState) {
-                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA -> R.string.encrypt_failed
+                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA, MediaViewAction.SHARED_MEDIA -> R.string.encrypt_failed
                     MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_failed
                     else -> R.string.operation_failed
                 }

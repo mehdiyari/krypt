@@ -25,7 +25,7 @@ glide = "4.15.1"
 landscapistGlide = "1.6.1"
 moshiKotlin = "1.13.0"
 processPhoenix = "2.1.2"
-exoplayer = "2.19.0"
+exoplayer = "1.1.0"
 mockk = "1.12.7"
 turbine = "0.9.0"
 splashscreen = "1.0.1"
@@ -51,7 +51,7 @@ composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "
 composeActivity = { group = "androidx.activity", name = "activity-compose" }
 composeAnimation = { group = "androidx.compose.animation", name = "animation" }
 composeUiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-composeJunit4UiTest = { group = "ndroidx.compose.ui", name = "ui-test-junit4" }
+composeJunit4UiTest = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 constraintlayoutCompose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
@@ -64,7 +64,8 @@ glideCompiler = { group = "com.github.bumptech.glide", name = "compiler", versio
 landscapistGlide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "landscapistGlide" }
 moshiKotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }
 processPhoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "processPhoenix" }
-exoplayer = { group = "com.google.android.exoplayer", name = "exoplayer", version.ref = "exoplayer" }
+exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "exoplayer" }
+media3UI = { group = "androidx.media3", name = "media3-ui", version.ref = "exoplayer" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }

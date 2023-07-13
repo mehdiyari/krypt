@@ -16,8 +16,8 @@ android {
         applicationId "ir.mehdiyari.krypt"
         minSdk 23
         targetSdk 33
-        versionCode 15
-        versionName "3.0.0-alpha"
+        versionCode 16
+        versionName "3.0.1-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -92,6 +92,7 @@ dependencies {
     implementation libs.moshiKotlin
     implementation libs.processPhoenix
     implementation libs.exoplayer
+    implementation libs.media3UI
 
     testImplementation libs.mockk
     testImplementation libs.coroutinesTest
