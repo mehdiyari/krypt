@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories
+package ir.mehdiyari.krypt.data.repositories.settings
 
 import android.content.SharedPreferences
 import io.mockk.clearAllMocks
