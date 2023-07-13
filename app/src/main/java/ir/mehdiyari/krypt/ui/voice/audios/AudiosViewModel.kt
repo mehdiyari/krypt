@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.ui.voice.audios
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntity
 import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntityMapper
 import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaDataJsonParser

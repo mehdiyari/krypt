@@ -6,7 +6,7 @@ import io.mockk.verify
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
