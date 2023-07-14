@@ -181,6 +181,7 @@ class DefaultFilesRepository @Inject constructor(
         filedDao.getFileById(usernameProvider.getUsername()!!, id)
     }
 
+    @Singleton
     class FileWrapper @Inject constructor() {
         fun delete(filePath: String) = File(filePath).delete()
     }
