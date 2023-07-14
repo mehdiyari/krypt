@@ -19,8 +19,9 @@ class DefaultFilesRepository @Inject constructor(
     private val backupDao: BackupDao,
     private val usernameProvider: UsernameProvider,
     private val filesUtilities: FilesUtilities,
+    private val fileWrapper: FileWrapper,
     @DispatcherIO private val ioDispatcher: CoroutineDispatcher
-): FilesRepository {
+) : FilesRepository {
 
     override suspend fun getAllFilesTypeCounts(): List<Pair<FileTypeEnum, Long>> =
         mutableListOf<Pair<FileTypeEnum, Long>>().apply {
@@ -95,12 +96,12 @@ class DefaultFilesRepository @Inject constructor(
     override suspend fun deleteEncryptedFilesFromKryptDBAndFileSystem(files: List<FileEntity>) {
         filedDao.deleteFiles(files)
         files.forEach {
-            File(it.filePath).delete()
+            fileWrapper.delete(it.filePath)
             if (
                 it.metaData.isNotBlank()
                 && (it.type == FileTypeEnum.Photo || it.type == FileTypeEnum.Video)
             ) {
-                File(it.metaData).delete()
+                fileWrapper.delete(it.metaData)
             }
         }
     }
@@ -178,5 +179,9 @@ class DefaultFilesRepository @Inject constructor(
 
     override suspend fun getAudioById(id: Long): FileEntity? = withContext(ioDispatcher) {
         filedDao.getFileById(usernameProvider.getUsername()!!, id)
+    }
+
+    class FileWrapper @Inject constructor() {
+        fun delete(filePath: String) = File(filePath).delete()
     }
 }

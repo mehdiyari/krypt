@@ -7,6 +7,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.unmockkAll
 import ir.mehdiyari.krypt.app.user.UsernameProvider
 import ir.mehdiyari.krypt.data.backup.BackupDao
@@ -32,6 +33,7 @@ class FilesRepositoryTest {
     private lateinit var usernameProvider: UsernameProvider
     private lateinit var filesUtilities: FilesUtilities
     private lateinit var filesRepository: FilesRepository
+    private lateinit var fileWrapper: DefaultFilesRepository.FileWrapper
 
     @Before
     fun setup() {
@@ -39,11 +41,13 @@ class FilesRepositoryTest {
         backupDao = mockk<BackupDao>()
         usernameProvider = mockk<UsernameProvider>()
         filesUtilities = mockk<FilesUtilities>()
+        fileWrapper = mockk()
         filesRepository = DefaultFilesRepository(
             filesDao,
             backupDao,
             usernameProvider,
             filesUtilities,
+            fileWrapper,
             ioDispatcher
         )
     }
@@ -124,32 +128,7 @@ class FilesRepositoryTest {
         val username = "testUsername"
         val medias = arrayOf("media1", "/path/media2")
         val nameOfFile = "media2"
-        val allEncryptedMedia = listOf(
-            FileEntity(
-                filePath = "media1",
-                accountName = "",
-                metaData = "",
-                type = FileTypeEnum.Photo
-            ),
-            FileEntity(
-                filePath = "/path/media2",
-                accountName = "",
-                metaData = "",
-                type = FileTypeEnum.Photo
-            ),
-            FileEntity(
-                filePath = "media3",
-                accountName = "",
-                metaData = "",
-                type = FileTypeEnum.Photo
-            ),
-            FileEntity(
-                filePath = "media",
-                accountName = "",
-                metaData = "media2",
-                type = FileTypeEnum.Photo
-            )
-        )
+        val allEncryptedMedia = generateFileEntity()
 
         coEvery { usernameProvider.getUsername() } returns username
         coEvery { filesDao.getAllMedia(username) } returns allEncryptedMedia
@@ -162,4 +141,48 @@ class FilesRepositoryTest {
         assertEquals("/path/media2", result[1].filePath)
         assertEquals("media2", result[2].metaData)
     }
+
+    @Test
+    fun `deleteEncryptedFilesFromKryptDBAndFileSystem should delete all given files`() = runTest {
+        val files = generateFileEntity()
+
+        coEvery { filesDao.deleteFiles(any()) } just runs
+        coEvery { fileWrapper.delete(any()) } returns true
+
+        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(files)
+
+        coVerify { filesDao.deleteFiles(files) }
+        coVerify { fileWrapper.delete("media1") }
+        coVerify { fileWrapper.delete("/path/media2") }
+        coVerify { fileWrapper.delete("media3") }
+        coVerify { fileWrapper.delete("media") }
+    }
+
+    private fun generateFileEntity() = listOf(
+        FileEntity(
+            filePath = "media1",
+            accountName = "",
+            metaData = "",
+            type = FileTypeEnum.Photo
+        ),
+        FileEntity(
+            filePath = "/path/media2",
+            accountName = "",
+            metaData = "",
+            type = FileTypeEnum.Photo
+        ),
+        FileEntity(
+            filePath = "media3",
+            accountName = "",
+            metaData = "",
+            type = FileTypeEnum.Photo
+        ),
+        FileEntity(
+            filePath = "media",
+            accountName = "",
+            metaData = "media2",
+            type = FileTypeEnum.Photo
+        )
+    )
+
 }
