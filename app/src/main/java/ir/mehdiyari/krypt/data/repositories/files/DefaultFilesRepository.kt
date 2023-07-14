@@ -128,7 +128,7 @@ class DefaultFilesRepository @Inject constructor(
         } catch (t: Throwable) {
             null
         })?.map {
-            File(it).length()
+            fileWrapper.length(it)
         }?.forEach {
             total += it
         }
@@ -184,5 +184,7 @@ class DefaultFilesRepository @Inject constructor(
     @Singleton
     class FileWrapper @Inject constructor() {
         fun delete(filePath: String) = File(filePath).delete()
+
+        fun length(filePath: String) = File(filePath).length()
     }
 }

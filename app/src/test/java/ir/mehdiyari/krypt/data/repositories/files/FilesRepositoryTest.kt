@@ -60,22 +60,31 @@ class FilesRepositoryTest {
 
     @Test
     fun `getAllFilesTypeCounts should return correct counts`() = runTest {
-        // Arrange
         val username = "testUser"
         every { usernameProvider.getUsername() } returns username
         coEvery { filesDao.getFilesCountBasedOnType(username, any()) } returns 1
 
-        // Act
         val result = filesRepository.getAllFilesTypeCounts()
 
-        // Assert
         assertEquals(FileTypeEnum.values().size, result.size)
         assertTrue(result.all { it.second == 1L })
     }
 
     @Test
+    fun `getAllFilesTypeCounts should return 0 if usernameProvider#getUsername() is null`() =
+        runTest {
+            val username: String? = null
+            every { usernameProvider.getUsername() } returns username
+            coEvery { filesDao.getFilesCountBasedOnType("username", any()) } returns 1
+
+            val result = filesRepository.getAllFilesTypeCounts()
+
+            assertEquals(FileTypeEnum.values().size, result.size)
+            assertTrue(result.all { it.second == 0L })
+        }
+
+    @Test
     fun `insertFiles should correctly insert files`() = runTest {
-        // Arrange
         val username = "testUser"
         val files = listOf(
             FileEntity(
@@ -89,16 +98,13 @@ class FilesRepositoryTest {
         every { usernameProvider.getUsername() } returns username
         coEvery { filesDao.insertFiles(any()) } just Runs
 
-        // Act
         filesRepository.insertFiles(files)
 
-        // Assert
         coVerify { filesDao.insertFiles(files.map { it.copy(accountName = username) }) }
     }
 
     @Test
     fun `getMediasCount should return correct count`() = runTest {
-        // Arrange
         val username = "testUser"
         val photoCount = 3L
         val videoCount = 2L
@@ -116,10 +122,8 @@ class FilesRepositoryTest {
             )
         } returns videoCount
 
-        // Act
         val result = filesRepository.getMediasCount()
 
-        // Assert
         assertEquals(photoCount + videoCount, result)
     }
 
@@ -156,6 +160,34 @@ class FilesRepositoryTest {
         coVerify { fileWrapper.delete("/path/media2") }
         coVerify { fileWrapper.delete("media3") }
         coVerify { fileWrapper.delete("media") }
+    }
+
+    @Test
+    fun `getAllFilesSize should return total size of all files`() = runTest {
+        val username = "test_user"
+        val backupFiles = listOf("backup_file1", "backup_file2")
+        val daoFiles = listOf("dao_file1", "dao_file2")
+        val backupFilesSize = 100L
+        val daoFilesSize = 200L
+        coEvery { backupDao.getAllBackupFiles(username) } returns backupFiles
+        coEvery { filesDao.getAllFilesPath(username) } returns daoFiles
+        coEvery { fileWrapper.length(any()) } returnsMany listOf(
+            backupFilesSize,
+            backupFilesSize,
+            daoFilesSize,
+            daoFilesSize
+        )
+        every { usernameProvider.getUsername() } returns username
+
+        val totalSize = filesRepository.getAllFilesSize()
+
+        coVerify { backupDao.getAllBackupFiles(username) }
+        coVerify { filesDao.getAllFilesPath(username) }
+        coVerify { fileWrapper.length("backup_file1") }
+        coVerify { fileWrapper.length("backup_file2") }
+        coVerify { fileWrapper.length("dao_file1") }
+        coVerify { fileWrapper.length("dao_file2") }
+        assertEquals((backupFilesSize * backupFiles.size + daoFilesSize * daoFiles.size), totalSize)
     }
 
     private fun generateFileEntity() = listOf(
