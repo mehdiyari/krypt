@@ -59,7 +59,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllFilesTypeCounts should return correct counts`() = runTest {
+    fun `getAllFilesTypeCounts should return correct counts`(): Unit = runTest {
         val username = "testUser"
         every { usernameProvider.getUsername() } returns username
         coEvery { filesDao.getFilesCountBasedOnType(username, any()) } returns 1
@@ -71,7 +71,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllFilesTypeCounts should return 0 if usernameProvider#getUsername() is null`() =
+    fun `getAllFilesTypeCounts should return 0 if usernameProvider#getUsername() is null`(): Unit =
         runTest {
             val username: String? = null
             every { usernameProvider.getUsername() } returns username
@@ -84,7 +84,7 @@ class FilesRepositoryTest {
         }
 
     @Test
-    fun `insertFiles should correctly insert files`() = runTest {
+    fun `insertFiles should correctly insert files`(): Unit = runTest {
         val username = "testUser"
         val files = listOf(
             FileEntity(
@@ -104,7 +104,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getMediasCount should return correct count`() = runTest {
+    fun `getMediasCount should return correct count`(): Unit = runTest {
         val username = "testUser"
         val photoCount = 3L
         val videoCount = 2L
@@ -128,7 +128,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `mapThumbnailsAndNameToFileEntity should return correct FileEntity list`() = runTest {
+    fun `mapThumbnailsAndNameToFileEntity should return correct FileEntity list`(): Unit = runTest {
         val username = "testUsername"
         val medias = arrayOf("media1", "/path/media2")
         val nameOfFile = "media2"
@@ -147,23 +147,24 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `deleteEncryptedFilesFromKryptDBAndFileSystem should delete all given files`() = runTest {
-        val files = generateFileEntity()
+    fun `deleteEncryptedFilesFromKryptDBAndFileSystem should delete all given files`(): Unit =
+        runTest {
+            val files = generateFileEntity()
 
-        coEvery { filesDao.deleteFiles(any()) } just runs
-        coEvery { fileWrapper.delete(any()) } returns true
+            coEvery { filesDao.deleteFiles(any()) } just runs
+            coEvery { fileWrapper.delete(any()) } returns true
 
-        filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(files)
+            filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(files)
 
-        coVerify { filesDao.deleteFiles(files) }
-        coVerify { fileWrapper.delete("media1") }
-        coVerify { fileWrapper.delete("/path/media2") }
-        coVerify { fileWrapper.delete("media3") }
-        coVerify { fileWrapper.delete("media") }
-    }
+            coVerify { filesDao.deleteFiles(files) }
+            coVerify { fileWrapper.delete("media1") }
+            coVerify { fileWrapper.delete("/path/media2") }
+            coVerify { fileWrapper.delete("media3") }
+            coVerify { fileWrapper.delete("media") }
+        }
 
     @Test
-    fun `getAllFilesSize should return total size of all files`() = runTest {
+    fun `getAllFilesSize should return total size of all files`(): Unit = runTest {
         val username = "test_user"
         val backupFiles = listOf("backup_file1", "backup_file2")
         val daoFiles = listOf("dao_file1", "dao_file2")
@@ -191,7 +192,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getLastEncryptedMediaThumbnail returns the last thumbnail of media`() = runTest {
+    fun `getLastEncryptedMediaThumbnail returns the last thumbnail of media`(): Unit = runTest {
         val username = "test"
         val files = generateFileEntity()
 
@@ -210,7 +211,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getLastEncryptedPhotoThumbnail returns the last thumbnail of photo`() = runTest {
+    fun `getLastEncryptedPhotoThumbnail returns the last thumbnail of photo`(): Unit = runTest {
         val username = "test"
         val files = generateFileEntity()
 
@@ -227,7 +228,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getLastEncryptedVideoThumbnail returns the last thumbnail of video`() = runTest {
+    fun `getLastEncryptedVideoThumbnail returns the last thumbnail of video`(): Unit = runTest {
         val username = "test"
         val files = generateFileEntity()
 
@@ -244,7 +245,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllTextFiles returns the text files of current account`() = runTest {
+    fun `getAllTextFiles returns the text files of current account`(): Unit = runTest {
         val username = "test"
         val files = generateFileEntity().filter { it.type == FileTypeEnum.Text }
 
@@ -262,7 +263,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getFileById returns a file by its id if the file exists`() = runTest {
+    fun `getFileById returns a file by its id if the file exists`(): Unit = runTest {
         val username = "test"
         val file = generateFileEntity().firstOrNull { it.id == 10L }
 
@@ -278,7 +279,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getFileById returns null if the file not exists`() = runTest {
+    fun `getFileById returns null if the file not exists`(): Unit = runTest {
         val username = "test"
 
         every { usernameProvider.getUsername() } returns username
@@ -293,7 +294,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllFiles returns all files`() = runTest {
+    fun `getAllFiles returns all files`(): Unit = runTest {
         val username = "test"
 
         every { usernameProvider.getUsername() } returns username
@@ -311,7 +312,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllImages should return all images`() = runTest {
+    fun `getAllImages should return all images`(): Unit = runTest {
         val expected = generateFileEntity().filter { it.type == FileTypeEnum.Photo }
         val username = "test_user"
 
@@ -329,7 +330,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllVideos should return all videos`() = runTest {
+    fun `getAllVideos should return all videos`(): Unit = runTest {
         val expected = generateFileEntity().filter { it.type == FileTypeEnum.Video }
         val username = "test_user"
 
@@ -347,7 +348,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getPhotosCount should return photos count`() = runTest {
+    fun `getPhotosCount should return photos count`(): Unit = runTest {
         val expected = 5L
         val username = "test_user"
         every { usernameProvider.getUsername() } returns username
@@ -364,7 +365,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAudiosCount should return audios count`() = runTest {
+    fun `getAudiosCount should return audios count`(): Unit = runTest {
         val expected = 3L
         val username = "test_user"
 
@@ -382,7 +383,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getVideosCount should return videos count`() = runTest {
+    fun `getVideosCount should return videos count`(): Unit = runTest {
         val expected = 4L
         val username = "test_user"
 
@@ -400,7 +401,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getFileByThumbPath should return file by thumb path`() = runTest {
+    fun `getFileByThumbPath should return file by thumb path`(): Unit = runTest {
         val username = "test_user"
         every { usernameProvider.getUsername() } returns username
         coEvery {
@@ -416,7 +417,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAllAudioFiles should return all audio files`() = runTest {
+    fun `getAllAudioFiles should return all audio files`(): Unit = runTest {
         val expected = generateFileEntity().filter { it.type == FileTypeEnum.Audio }
         val username = "test_user"
 
@@ -434,7 +435,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `updateFile should update file`() = runTest {
+    fun `updateFile should update file`(): Unit = runTest {
         val fileEntity = generateFileEntity().first()
         coEvery { filesDao.updateFile(fileEntity) } just Runs
 
@@ -444,7 +445,7 @@ class FilesRepositoryTest {
     }
 
     @Test
-    fun `getAudioById should return audio file by id`() = runTest {
+    fun `getAudioById should return audio file by id`(): Unit = runTest {
         val expected = generateFileEntity().firstOrNull { it.id == 11L }
         val username = "test_user"
 

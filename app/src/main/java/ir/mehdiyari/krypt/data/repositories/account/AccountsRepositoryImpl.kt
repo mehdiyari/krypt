@@ -31,6 +31,7 @@ class AccountsRepositoryImpl @Inject constructor(
     private val userKeyProvider: UserKeyProvider,
     private val hashingUtils: HashingUtils,
 ) : AccountsRepository {
+
     override suspend fun addAccount(
         name: String,
         password: String,
