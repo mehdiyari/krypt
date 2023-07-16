@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultSettingsRepository @Inject constructor(
+class SettingsRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : SettingsRepository {
     companion object {

@@ -22,7 +22,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultAccountsRepository @Inject constructor(
+class AccountsRepositoryImpl @Inject constructor(
     private val accountsDao: AccountsDao,
     private val symmetricHelper: SymmetricHelper,
     private val kryptKeyGenerator: KryptKeyGenerator,
