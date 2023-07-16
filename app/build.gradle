@@ -53,6 +53,8 @@ dependencies {
     androidTestImplementation libs.testExt
     androidTestImplementation libs.espressoCore
 
+    api(libs.composeActivity)
+
     implementation libs.lifecycleViewModeKtx
     implementation libs.lifecycleViewModelCompose
     ksp libs.lifecycleCompiler

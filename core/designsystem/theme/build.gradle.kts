@@ -35,7 +35,6 @@ dependencies {
     val composeBom = platform(libs.composeBom)
     api(composeBom)
     debugApi(composeBom)
-    api(libs.composeActivity)
     api(libs.composeAnimation)
     api(libs.composeUiTooling)
     api(libs.material3)
