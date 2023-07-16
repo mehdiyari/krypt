@@ -1,12 +1,7 @@
 package ir.mehdiyari.krypt.ui.media.player
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +18,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -32,7 +27,7 @@ fun PlayerComposeView(
     player: ExoPlayer? = null,
     decryptVideoPathState: StateFlow<PlayerState?>? = null
 ) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         when (decryptVideoPathState?.collectAsState()?.value) {
             is PlayerState.NormalVideo, is PlayerState.EncryptedCashedVideo -> {
                 AndroidView(

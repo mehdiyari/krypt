@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
 import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
 
@@ -84,7 +84,7 @@ fun DataRoutePreview(
         limit = 5
     ) backupList: List<BackupViewData>
 ) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         DataScreenScaffold(modifier = Modifier) {
             Column {
                 FileSizePreview()

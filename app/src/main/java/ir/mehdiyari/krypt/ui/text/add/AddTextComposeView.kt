@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -169,7 +169,7 @@ fun DeleteTextFab(
 @Preview
 @Composable
 fun TopBarPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             TopBar(text = "Title", onTextChanged = {}, onNavigationClickIcon = {})
         }
@@ -179,7 +179,7 @@ fun TopBarPreview() {
 @Preview
 @Composable
 fun ContentTextFieldPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             ContentTextField(
                 text = "Content",
@@ -195,7 +195,7 @@ fun ContentTextFieldPreview() {
 @Preview
 @Composable
 fun EditAndDeleteButtonsPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             EditAndDeleteButtons(deleteNote = { /*TODO*/ }, saveNote = { /*TODO*/ })
         }

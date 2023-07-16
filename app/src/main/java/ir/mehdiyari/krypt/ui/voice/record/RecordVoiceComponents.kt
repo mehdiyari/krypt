@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -316,7 +316,7 @@ fun RecordButton(
 @Composable
 @Preview
 private fun RecordRetrySnackbarPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         RecordRetrySnackbar(
             snackbarHostState = remember { SnackbarHostState() },
             retry = {},
@@ -329,7 +329,7 @@ private fun RecordRetrySnackbarPreview() {
 @Composable
 @Preview
 fun RotateAnimationForRecordImagePreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         RotateAnimationForRecordImage(isPaused = false)
     }
 }
@@ -337,7 +337,7 @@ fun RotateAnimationForRecordImagePreview() {
 @Composable
 @Preview
 fun RecordVoiceViewsPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         RecordVoiceViews(
             modifier = Modifier,
             timerStateFlow = MutableStateFlow("00:00:00"),
@@ -352,7 +352,7 @@ fun RecordVoiceViewsPreview() {
 
 @Composable
 fun TimerTextPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         TimerText(
             modifier = Modifier,
             numberStateFlow = MutableStateFlow("00:00:01"),
@@ -363,7 +363,7 @@ fun TimerTextPreview() {
 @Composable
 @Preview
 fun RecordControlsButtonsPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         RecordControlsButtons(
             modifier = Modifier,
             recordActionButtonsState = MutableStateFlow(
@@ -376,7 +376,7 @@ fun RecordControlsButtonsPreview() {
 @Composable
 @Preview
 private fun RecordActionButtonPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         RecordActionButton(
             modifier = Modifier,
             onClick = null,
@@ -389,7 +389,7 @@ private fun RecordActionButtonPreview() {
 @Composable
 @Preview
 fun RecordButtonPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         RecordButton(
             modifier = Modifier,
             startRecordCallback = { /*TODO*/ },

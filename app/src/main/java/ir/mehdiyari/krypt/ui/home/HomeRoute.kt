@@ -17,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun HomeRoute(
@@ -81,7 +81,7 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::class) cards: List<HomeCardsModel>) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             HomeScreen(cards = cards, onItemClicked = {})
         }

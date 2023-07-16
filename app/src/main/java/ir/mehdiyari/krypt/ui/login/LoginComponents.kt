@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.PasswordTextField
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun LoginFields(
@@ -176,7 +176,7 @@ fun DropDownTextField(
 @Preview
 @Composable
 fun LoginFieldsPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             LoginFields(usernames = List(5) { "UserName$it" },
                 selectedUserName = "UserName0",
@@ -192,7 +192,7 @@ fun LoginFieldsPreview() {
 private fun DropDownTextFieldPreview(@PreviewParameter(UserNamesPreviewParameterProvider::class) usernames: List<String>) {
 
 
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             DropDownTextField(items = usernames, usernames[0], {})
         }

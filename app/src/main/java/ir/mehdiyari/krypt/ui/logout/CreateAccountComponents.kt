@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.PasswordTextField
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun CreateAccountItems(
@@ -97,7 +97,7 @@ fun CreateAccountItems(
 @Composable
 @Preview
 fun CreateAccountItemsPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             CreateAccountItems("Mohammad", {}, "123456", {}, "123456", {})
         }

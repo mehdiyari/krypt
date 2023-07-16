@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -237,7 +237,7 @@ fun DeleteBackupFileDialog(
 @Composable
 @Preview
 fun FileSizePreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         FileSizeView(modifier = Modifier, fileSizeState = mutableStateOf("500 MB"))
     }
 }
@@ -246,7 +246,7 @@ fun FileSizePreview() {
 @Composable
 @Preview
 fun DeleteBackupFileDialogPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         DeleteBackupFileDialog(
             modifier = Modifier,
             deleteDialogState = mutableStateOf(true to R.string.delete_backup_file),
@@ -259,7 +259,7 @@ fun DeleteBackupFileDialogPreview() {
 @Composable
 @Preview
 fun BackupViewPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         BackupView(
             modifier = Modifier,
             lastBackupState = mutableStateOf("2022 April 22 - 22:30"),
@@ -272,7 +272,7 @@ fun BackupViewPreview() {
 @Composable
 @Preview
 fun DataScreenScaffoldPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         DataScreenScaffold(
             modifier = Modifier,
             onNavigationClicked = {},

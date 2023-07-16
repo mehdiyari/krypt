@@ -55,7 +55,7 @@ import ir.mehdiyari.krypt.ui.media.MediaViewAction.DECRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.ENCRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.PICK_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.SHARED_MEDIA
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 
 @Composable
@@ -398,7 +398,7 @@ fun FileItem(
 @Preview
 @Composable
 fun OperationStartViewPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             OperationStart()
         }
@@ -408,7 +408,7 @@ fun OperationStartViewPreview() {
 @Preview
 @Composable
 fun OperationSuccessPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             OperationResult(
                 imageRes = R.drawable.operation_done, messageRes = R.string.operation_successfully
@@ -420,7 +420,7 @@ fun OperationSuccessPreview() {
 @Preview
 @Composable
 fun OperationFailedPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             OperationResult(
                 imageRes = R.drawable.operation_failed, messageRes = R.string.operation_failed
@@ -432,7 +432,7 @@ fun OperationFailedPreview() {
 @Preview
 @Composable
 fun FileItemPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider::class) items: List<SelectedMediaItems>) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             FileItem(
                 item = items[0],
@@ -447,7 +447,7 @@ fun FileItemPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider
 @Preview
 @Composable
 fun FileListPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider::class) items: List<SelectedMediaItems>) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             FileList(
                 selectedMediaItems = items,
@@ -462,7 +462,7 @@ fun FileListPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider
 @Preview
 @Composable
 fun ConfirmDeletePreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             ConfirmDeleteFileDialog(
                 onDismiss = { /*TODO*/ },

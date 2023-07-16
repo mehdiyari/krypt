@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun CreateAccountRoute(
@@ -126,7 +126,7 @@ fun CreateAccountScreen(
 @Preview
 @Composable
 fun CreateAccountScreenPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         Surface {
             CreateAccountScreen(
                 onCreateAccountClicked = { userName, password, confirmPassword -> },

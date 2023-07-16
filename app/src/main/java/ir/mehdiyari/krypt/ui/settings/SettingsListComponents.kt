@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun SettingItems(
@@ -101,7 +101,7 @@ fun SettingsItemCard(
 @Composable
 @Preview
 fun SettingsItemCardPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         SettingsItemCard(
             modifier = Modifier,
             iconResId = R.drawable.ic_lock_clock_24,
@@ -114,7 +114,7 @@ fun SettingsItemCardPreview() {
 @Composable
 @Preview
 fun SettingItemsPreview() {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         SettingItems(modifier = Modifier, onItemClick = {})
     }
 }

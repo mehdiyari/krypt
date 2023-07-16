@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun BackupList(
@@ -147,7 +147,7 @@ fun BackupItemPreview(
         limit = 1
     ) backupList: List<BackupViewData>
 ) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         BackupItem(
             modifier = Modifier,
             backupViewData = backupList[0],
@@ -167,7 +167,7 @@ fun BackupListPreview(
         limit = 5
     ) backupList: List<BackupViewData>
 ) {
-    KryptTheme {
+    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
         BackupList(
             modifier = Modifier,
             backupList = mutableStateOf(backupList),
