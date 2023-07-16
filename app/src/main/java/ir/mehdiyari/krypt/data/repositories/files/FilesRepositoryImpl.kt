@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultFilesRepository @Inject constructor(
+class FilesRepositoryImpl @Inject constructor(
     private val filedDao: FilesDao,
     private val backupDao: BackupDao,
     private val usernameProvider: UsernameProvider,

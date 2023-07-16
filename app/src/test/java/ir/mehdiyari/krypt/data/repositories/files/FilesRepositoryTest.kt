@@ -33,7 +33,7 @@ class FilesRepositoryTest {
     private lateinit var usernameProvider: UsernameProvider
     private lateinit var filesUtilities: FilesUtilities
     private lateinit var filesRepository: FilesRepository
-    private lateinit var fileWrapper: DefaultFilesRepository.FileWrapper
+    private lateinit var fileWrapper: FilesRepositoryImpl.FileWrapper
 
     @Before
     fun setup() {
@@ -42,7 +42,7 @@ class FilesRepositoryTest {
         usernameProvider = mockk<UsernameProvider>()
         filesUtilities = mockk<FilesUtilities>()
         fileWrapper = mockk()
-        filesRepository = DefaultFilesRepository(
+        filesRepository = FilesRepositoryImpl(
             filesDao,
             backupDao,
             usernameProvider,

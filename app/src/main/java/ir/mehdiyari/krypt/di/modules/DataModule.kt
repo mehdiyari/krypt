@@ -5,21 +5,21 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
-import ir.mehdiyari.krypt.data.repositories.account.DefaultAccountsRepository
-import ir.mehdiyari.krypt.data.repositories.files.DefaultFilesRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepositoryImpl
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.data.repositories.settings.DefaultSettingsRepository
+import ir.mehdiyari.krypt.data.repositories.files.FilesRepositoryImpl
 import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
+import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepositoryImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
     @Binds
-    abstract fun bindSettingsRepository(impl: DefaultSettingsRepository): SettingsRepository
+    abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
 
     @Binds
-    abstract fun bindAccountRepository(impl: DefaultAccountsRepository): AccountsRepository
+    abstract fun bindAccountRepository(impl: AccountsRepositoryImpl): AccountsRepository
 
     @Binds
-    abstract fun bindFilesRepository(impl: DefaultFilesRepository): FilesRepository
+    abstract fun bindFilesRepository(impl: FilesRepositoryImpl): FilesRepository
 }
