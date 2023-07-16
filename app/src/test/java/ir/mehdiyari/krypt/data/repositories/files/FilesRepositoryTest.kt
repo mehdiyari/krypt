@@ -190,6 +190,272 @@ class FilesRepositoryTest {
         assertEquals((backupFilesSize * backupFiles.size + daoFilesSize * daoFiles.size), totalSize)
     }
 
+    @Test
+    fun `getLastEncryptedMediaThumbnail returns the last thumbnail of media`() = runTest {
+        val username = "test"
+        val files = generateFileEntity()
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Photo,
+                FileTypeEnum.Video
+            )
+        } returns files
+
+        val result = filesRepository.getLastEncryptedMediaThumbnail()
+
+        assertEquals("media6", result)
+    }
+
+    @Test
+    fun `getLastEncryptedPhotoThumbnail returns the last thumbnail of photo`() = runTest {
+        val username = "test"
+        val files = generateFileEntity()
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username, FileTypeEnum.Photo
+            )
+        } returns files
+
+        val result = filesRepository.getLastEncryptedPhotoThumbnail()
+
+        assertEquals("media6", result)
+    }
+
+    @Test
+    fun `getLastEncryptedVideoThumbnail returns the last thumbnail of video`() = runTest {
+        val username = "test"
+        val files = generateFileEntity()
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username, FileTypeEnum.Video
+            )
+        } returns files
+
+        val result = filesRepository.getLastEncryptedVideoThumbnail()
+
+        assertEquals("media6", result)
+    }
+
+    @Test
+    fun `getAllTextFiles returns the text files of current account`() = runTest {
+        val username = "test"
+        val files = generateFileEntity().filter { it.type == FileTypeEnum.Text }
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Text
+            )
+        } returns files
+
+        val result = filesRepository.getAllTextFiles()
+
+        assertEquals(files, result)
+    }
+
+    @Test
+    fun `getFileById returns a file by its id if the file exists`() = runTest {
+        val username = "test"
+        val file = generateFileEntity().firstOrNull { it.id == 10L }
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getFileById(username, 10)
+        } returns file
+
+        val result = filesRepository.getFileById(10L)
+
+        assertEquals(file, result)
+        coVerify { filesDao.getFileById(username, 10) }
+    }
+
+    @Test
+    fun `getFileById returns null if the file not exists`() = runTest {
+        val username = "test"
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getFileById(username, 1)
+        } returns null
+
+        val result = filesRepository.getFileById(1)
+
+        assertEquals(null, result)
+        coVerify { filesDao.getFileById(username, 1) }
+    }
+
+    @Test
+    fun `getAllFiles returns all files`() = runTest {
+        val username = "test"
+
+        every { usernameProvider.getUsername() } returns username
+
+        val files = generateFileEntity()
+
+        coEvery {
+            filesDao.getAllFiles(username)
+        } returns files
+
+        val result = filesRepository.getAllFiles()
+
+        assertEquals(files, result)
+        coVerify { filesDao.getAllFiles(username) }
+    }
+
+    @Test
+    fun `getAllImages should return all images`() = runTest {
+        val expected = generateFileEntity().filter { it.type == FileTypeEnum.Photo }
+        val username = "test_user"
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllMedia(
+                username,
+                listOf(FileTypeEnum.Photo)
+            )
+        } returns expected
+
+        val actual = filesRepository.getAllImages()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `getAllVideos should return all videos`() = runTest {
+        val expected = generateFileEntity().filter { it.type == FileTypeEnum.Video }
+        val username = "test_user"
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllMedia(
+                username,
+                listOf(FileTypeEnum.Video)
+            )
+        } returns expected
+
+        val actual = filesRepository.getAllVideos()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `getPhotosCount should return photos count`() = runTest {
+        val expected = 5L
+        val username = "test_user"
+        every { usernameProvider.getUsername() } returns username
+
+        coEvery {
+            filesDao.getFilesCountBasedOnType(
+                username, FileTypeEnum.Photo
+            )
+        } returns expected
+
+        val actual = filesRepository.getPhotosCount()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `getAudiosCount should return audios count`() = runTest {
+        val expected = 3L
+        val username = "test_user"
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Audio
+            )
+        } returns expected
+
+        val actual = filesRepository.getAudiosCount()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `getVideosCount should return videos count`() = runTest {
+        val expected = 4L
+        val username = "test_user"
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Video
+            )
+        } returns expected
+
+        val actual = filesRepository.getVideosCount()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `getFileByThumbPath should return file by thumb path`() = runTest {
+        val username = "test_user"
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getMediaFileByPath(
+                username,
+                "thumb_path"
+            )
+        } returns generateFileEntity().first()
+
+        filesRepository.getFileByThumbPath("thumb_path")
+
+        coVerify { filesDao.getMediaFileByPath(username, "thumb_path") }
+    }
+
+    @Test
+    fun `getAllAudioFiles should return all audio files`() = runTest {
+        val expected = generateFileEntity().filter { it.type == FileTypeEnum.Audio }
+        val username = "test_user"
+
+        every { usernameProvider.getUsername() } returns username
+        coEvery {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Audio
+            )
+        } returns expected
+
+        val actual = filesRepository.getAllAudioFiles()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `updateFile should update file`() = runTest {
+        val fileEntity = generateFileEntity().first()
+        coEvery { filesDao.updateFile(fileEntity) } just Runs
+
+        filesRepository.updateFile(fileEntity)
+
+        coVerify { filesDao.updateFile(fileEntity) }
+    }
+
+    @Test
+    fun `getAudioById should return audio file by id`() = runTest {
+        val expected = generateFileEntity().firstOrNull { it.id == 11L }
+        val username = "test_user"
+
+        every { usernameProvider.getUsername() } returns username
+
+        coEvery { filesDao.getFileById(username, 11L) } returns expected
+        val actual = filesRepository.getAudioById(11L)
+
+        assertEquals(expected, actual)
+    }
+
     private fun generateFileEntity() = listOf(
         FileEntity(
             filePath = "media1",
@@ -198,6 +464,7 @@ class FilesRepositoryTest {
             type = FileTypeEnum.Photo
         ),
         FileEntity(
+            id = 10,
             filePath = "/path/media2",
             accountName = "",
             metaData = "",
@@ -214,6 +481,25 @@ class FilesRepositoryTest {
             accountName = "",
             metaData = "media2",
             type = FileTypeEnum.Photo
+        ),
+        FileEntity(
+            filePath = "media5",
+            accountName = "",
+            metaData = "media5",
+            type = FileTypeEnum.Text
+        ),
+        FileEntity(
+            id = 11,
+            filePath = "media7",
+            accountName = "",
+            metaData = "media7",
+            type = FileTypeEnum.Audio
+        ),
+        FileEntity(
+            filePath = "media6",
+            accountName = "",
+            metaData = "media6",
+            type = FileTypeEnum.Video
         )
     )
 
