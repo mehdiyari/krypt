@@ -13,7 +13,7 @@ import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepositoryImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataModule {
+abstract class RepositoryBindingModule {
     @Binds
     abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
 
