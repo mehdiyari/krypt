@@ -18,7 +18,7 @@ import ir.mehdiyari.krypt.utils.FilesUtilities
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -27,7 +27,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class FilesRepositoryTest {
 
-    private val ioDispatcher = UnconfinedTestDispatcher()
+    private val ioDispatcher = StandardTestDispatcher()
     private lateinit var filesDao: FilesDao
     private lateinit var backupDao: BackupDao
     private lateinit var usernameProvider: UsernameProvider
