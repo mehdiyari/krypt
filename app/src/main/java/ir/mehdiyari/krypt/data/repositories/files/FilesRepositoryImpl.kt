@@ -9,7 +9,6 @@ import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -179,12 +178,5 @@ class FilesRepositoryImpl @Inject constructor(
 
     override suspend fun getAudioById(id: Long): FileEntity? = withContext(ioDispatcher) {
         filedDao.getFileById(usernameProvider.getUsername()!!, id)
-    }
-
-    @Singleton
-    class FileWrapper @Inject constructor() {
-        fun delete(filePath: String) = File(filePath).delete()
-
-        fun length(filePath: String) = File(filePath).length()
     }
 }

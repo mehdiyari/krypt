@@ -33,7 +33,7 @@ class FilesRepositoryTest {
     private lateinit var usernameProvider: UsernameProvider
     private lateinit var filesUtilities: FilesUtilities
     private lateinit var filesRepository: FilesRepository
-    private lateinit var fileWrapper: FilesRepositoryImpl.FileWrapper
+    private lateinit var fileWrapper: FileWrapper
 
     @Before
     fun setup() {
