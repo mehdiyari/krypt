@@ -1,6 +1,7 @@
 package ir.mehdiyari.krypt.data.repositories.account
 
 interface AccountsRepository {
+
     suspend fun addAccount(
         name: String,
         password: String,
