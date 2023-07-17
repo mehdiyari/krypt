@@ -46,5 +46,5 @@ dependencies {
     androidTestApi(libs.androidx.compose.ui.test)
     debugApi(libs.androidx.compose.ui.testManifest)
 
-    api(libs.androidx.test.runner)
+//    api(libs.androidx.test.runner)
 }
