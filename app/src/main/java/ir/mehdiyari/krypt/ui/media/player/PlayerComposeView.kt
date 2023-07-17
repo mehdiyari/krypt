@@ -27,7 +27,7 @@ fun PlayerComposeView(
     player: ExoPlayer? = null,
     decryptVideoPathState: StateFlow<PlayerState?>? = null
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         when (decryptVideoPathState?.collectAsState()?.value) {
             is PlayerState.NormalVideo, is PlayerState.EncryptedCashedVideo -> {
                 AndroidView(

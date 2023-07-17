@@ -64,7 +64,7 @@ fun MusicPlayerBottomSheet(
     dismissBottomSheet: () -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState()
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         ModalBottomSheet(modifier = modifier.fillMaxWidth(), sheetState = sheetState, content = {
             MusicPlayerView(
                 modifier,
@@ -263,7 +263,7 @@ fun RotateAnimationForMusicPlayer(
 @Composable
 @Preview
 fun MusicPlayerViewPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         MusicPlayerView(
             modifier = Modifier,
             title = "Stairway to Heaven",

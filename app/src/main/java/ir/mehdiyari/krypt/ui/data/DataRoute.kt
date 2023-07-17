@@ -84,7 +84,7 @@ fun DataRoutePreview(
         limit = 5
     ) backupList: List<BackupViewData>
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         DataScreenScaffold(modifier = Modifier) {
             Column {
                 FileSizePreview()

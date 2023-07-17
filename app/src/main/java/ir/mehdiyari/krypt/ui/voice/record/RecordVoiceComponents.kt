@@ -316,7 +316,7 @@ fun RecordButton(
 @Composable
 @Preview
 private fun RecordRetrySnackbarPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         RecordRetrySnackbar(
             snackbarHostState = remember { SnackbarHostState() },
             retry = {},
@@ -329,7 +329,7 @@ private fun RecordRetrySnackbarPreview() {
 @Composable
 @Preview
 fun RotateAnimationForRecordImagePreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         RotateAnimationForRecordImage(isPaused = false)
     }
 }
@@ -337,7 +337,7 @@ fun RotateAnimationForRecordImagePreview() {
 @Composable
 @Preview
 fun RecordVoiceViewsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         RecordVoiceViews(
             modifier = Modifier,
             timerStateFlow = MutableStateFlow("00:00:00"),
@@ -352,7 +352,7 @@ fun RecordVoiceViewsPreview() {
 
 @Composable
 fun TimerTextPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         TimerText(
             modifier = Modifier,
             numberStateFlow = MutableStateFlow("00:00:01"),
@@ -363,7 +363,7 @@ fun TimerTextPreview() {
 @Composable
 @Preview
 fun RecordControlsButtonsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         RecordControlsButtons(
             modifier = Modifier,
             recordActionButtonsState = MutableStateFlow(
@@ -376,7 +376,7 @@ fun RecordControlsButtonsPreview() {
 @Composable
 @Preview
 private fun RecordActionButtonPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         RecordActionButton(
             modifier = Modifier,
             onClick = null,
@@ -389,7 +389,7 @@ private fun RecordActionButtonPreview() {
 @Composable
 @Preview
 fun RecordButtonPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         RecordButton(
             modifier = Modifier,
             startRecordCallback = { /*TODO*/ },

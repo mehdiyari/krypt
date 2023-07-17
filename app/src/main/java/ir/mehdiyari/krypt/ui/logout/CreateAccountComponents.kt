@@ -97,7 +97,7 @@ fun CreateAccountItems(
 @Composable
 @Preview
 fun CreateAccountItemsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             CreateAccountItems("Mohammad", {}, "123456", {}, "123456", {})
         }

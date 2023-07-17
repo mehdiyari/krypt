@@ -126,7 +126,7 @@ fun CreateAccountScreen(
 @Preview
 @Composable
 fun CreateAccountScreenPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             CreateAccountScreen(
                 onCreateAccountClicked = { userName, password, confirmPassword -> },

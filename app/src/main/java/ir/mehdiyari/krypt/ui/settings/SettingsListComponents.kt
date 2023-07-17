@@ -101,7 +101,7 @@ fun SettingsItemCard(
 @Composable
 @Preview
 fun SettingsItemCardPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         SettingsItemCard(
             modifier = Modifier,
             iconResId = R.drawable.ic_lock_clock_24,
@@ -114,7 +114,7 @@ fun SettingsItemCardPreview() {
 @Composable
 @Preview
 fun SettingItemsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         SettingItems(modifier = Modifier, onItemClick = {})
     }
 }

@@ -36,7 +36,7 @@ fun KryptApp(
     onStopLocker: () -> Unit,
     sharedDataViewModel: ShareDataViewModel,
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
 
         var openAddItem by remember { mutableStateOf(false) }

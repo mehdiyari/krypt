@@ -176,7 +176,7 @@ fun DropDownTextField(
 @Preview
 @Composable
 fun LoginFieldsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             LoginFields(usernames = List(5) { "UserName$it" },
                 selectedUserName = "UserName0",
@@ -192,7 +192,7 @@ fun LoginFieldsPreview() {
 private fun DropDownTextFieldPreview(@PreviewParameter(UserNamesPreviewParameterProvider::class) usernames: List<String>) {
 
 
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             DropDownTextField(items = usernames, usernames[0], {})
         }

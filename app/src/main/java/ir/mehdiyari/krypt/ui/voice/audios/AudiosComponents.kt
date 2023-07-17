@@ -41,7 +41,7 @@ fun AddNewVoiceButton(
 @Composable
 @Preview
 fun AddNewVoiceButtonPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         AddNewVoiceButton(Modifier) {
 
         }

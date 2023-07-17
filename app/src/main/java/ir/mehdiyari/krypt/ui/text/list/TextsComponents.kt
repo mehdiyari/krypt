@@ -99,7 +99,7 @@ fun TextCard(
 @Preview
 @Composable
 fun TextCardPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             TextCard(
                 text = TextEntity(id = 10001L, title = "Title", content = "Text"),

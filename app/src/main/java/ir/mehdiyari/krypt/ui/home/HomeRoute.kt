@@ -81,7 +81,7 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::class) cards: List<HomeCardsModel>) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             HomeScreen(cards = cards, onItemClicked = {})
         }

@@ -133,7 +133,7 @@ fun AudioItem(
 fun AudioListPreview(
     @PreviewParameter(AudioPreviewParameterProvider::class) audios: List<AudioEntity>
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         AudioList(
             modifier = Modifier,
             audios = mutableStateOf(audios),
@@ -160,7 +160,7 @@ fun AudioListPreview(
 fun AudioItemPreview(
     @PreviewParameter(AudioPreviewParameterProvider::class) audios: List<AudioEntity>
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         AudioItem(
             modifier = Modifier,
             audioEntity = audios[0],

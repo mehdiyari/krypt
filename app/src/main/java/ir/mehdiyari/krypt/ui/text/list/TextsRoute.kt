@@ -109,7 +109,7 @@ fun TextsScreen(
 @Composable
 fun TextsScreenPreview(@PreviewParameter(TextsPreviewParameterProvider::class) texts: List<TextEntity>) {
 
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             TextsScreen(
                 texts = texts,

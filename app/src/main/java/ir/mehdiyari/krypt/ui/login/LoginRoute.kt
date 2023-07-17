@@ -97,7 +97,7 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             LoginScreen(
                 accounts = List(5) { "UserName$it" },

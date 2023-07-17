@@ -237,7 +237,7 @@ fun DeleteBackupFileDialog(
 @Composable
 @Preview
 fun FileSizePreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         FileSizeView(modifier = Modifier, fileSizeState = mutableStateOf("500 MB"))
     }
 }
@@ -246,7 +246,7 @@ fun FileSizePreview() {
 @Composable
 @Preview
 fun DeleteBackupFileDialogPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         DeleteBackupFileDialog(
             modifier = Modifier,
             deleteDialogState = mutableStateOf(true to R.string.delete_backup_file),
@@ -259,7 +259,7 @@ fun DeleteBackupFileDialogPreview() {
 @Composable
 @Preview
 fun BackupViewPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         BackupView(
             modifier = Modifier,
             lastBackupState = mutableStateOf("2022 April 22 - 22:30"),
@@ -272,7 +272,7 @@ fun BackupViewPreview() {
 @Composable
 @Preview
 fun DataScreenScaffoldPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         DataScreenScaffold(
             modifier = Modifier,
             onNavigationClicked = {},

@@ -51,7 +51,7 @@ fun PasswordTextField(
 @Preview
 @Composable
 fun PasswordTextFieldEmptyPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             PasswordTextField(
                 password = "",
@@ -67,7 +67,7 @@ fun PasswordTextFieldEmptyPreview() {
 @Preview
 @Composable
 fun PasswordTextFieldFilledPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             PasswordTextField(
                 password = "123456",
@@ -130,7 +130,7 @@ fun ManageExternalPermissionDialog(
 @Composable
 @Preview
 fun ManageExternalPermissionDialogPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         ManageExternalPermissionDialog(modifier = Modifier, state = mutableStateOf(true)) {
 
         }

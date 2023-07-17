@@ -169,7 +169,7 @@ fun DeleteTextFab(
 @Preview
 @Composable
 fun TopBarPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             TopBar(text = "Title", onTextChanged = {}, onNavigationClickIcon = {})
         }
@@ -179,7 +179,7 @@ fun TopBarPreview() {
 @Preview
 @Composable
 fun ContentTextFieldPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             ContentTextField(
                 text = "Content",
@@ -195,7 +195,7 @@ fun ContentTextFieldPreview() {
 @Preview
 @Composable
 fun EditAndDeleteButtonsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         Surface {
             EditAndDeleteButtons(deleteNote = { /*TODO*/ }, saveNote = { /*TODO*/ })
         }

@@ -194,7 +194,7 @@ fun AddBottomSheet(
 @Preview
 @Composable
 fun BottomAppBarPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         KryptBottomAppBar(openMenuSheet = {}, onLockClicked = {})
     }
 }

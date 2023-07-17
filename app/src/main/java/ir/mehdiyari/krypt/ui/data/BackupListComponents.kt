@@ -147,7 +147,7 @@ fun BackupItemPreview(
         limit = 1
     ) backupList: List<BackupViewData>
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         BackupItem(
             modifier = Modifier,
             backupViewData = backupList[0],
@@ -167,7 +167,7 @@ fun BackupListPreview(
         limit = 5
     ) backupList: List<BackupViewData>
 ) {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         BackupList(
             modifier = Modifier,
             backupList = mutableStateOf(backupList),

@@ -154,7 +154,7 @@ fun AutomaticallyLockModalBottomSheet(
 @Composable
 @Preview
 fun ListItemsPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         SettingItems(modifier = Modifier, onItemClick = {})
     }
 }
@@ -164,7 +164,7 @@ fun ListItemsPreview() {
 @Composable
 @Preview
 fun AutomaticallyLockModalBottomSheetPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         AutomaticallyLockModalBottomSheet(
             modifier = Modifier,
             automaticallyLockSelectedItem = MutableStateFlow(AutoLockItemsEnum.OneMinute),
@@ -178,7 +178,7 @@ fun AutomaticallyLockModalBottomSheetPreview() {
 @Composable
 @Preview
 fun ShowDeleteConfirmDialogPreview() {
-    ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme {
+    KryptTheme {
         ShowDeleteConfirmDialog(
             modifier = Modifier,
             onDeleteCurrentAccount = {},
