@@ -1,7 +1,6 @@
 package ir.mehdiyari.krypt.core.designsystem.theme
 
-import android.content.Context
-import android.content.res.Configuration
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -9,7 +8,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-
+@VisibleForTesting
 val LightColors = lightColorScheme(
     primary = Color(0xFF2196F3),
     primaryContainer = Color(0xFF1976D2),
@@ -22,6 +21,7 @@ val LightColors = lightColorScheme(
     error = Color(0xFFB00020)
 )
 
+@VisibleForTesting
 val DarkColors = darkColorScheme(
     primary = Color(0xFFBB86FC),
     primaryContainer = Color(0xFF3700B3),

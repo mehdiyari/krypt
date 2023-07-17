@@ -22,7 +22,7 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildFeatures{
+    buildFeatures {
         compose = true
     }
 
@@ -32,12 +32,19 @@ android {
 }
 
 dependencies {
-    val composeBom = platform(libs.composeBom)
+    val composeBom = platform(libs.androidx.compose.bom)
     api(composeBom)
-    debugApi(composeBom)
-    api(libs.composeAnimation)
-    api(libs.composeUiTooling)
-    api(libs.material3)
-    androidTestApi(libs.composeJunit4UiTest)
+    androidTestApi(composeBom)
 
+    api(libs.androidx.compose.material3)
+
+    // Android Studio Preview support
+    api(libs.androidx.compose.ui.tooling.preview)
+    debugApi(libs.androidx.compose.ui.tooling)
+
+    // UI Tests
+    androidTestApi(libs.androidx.compose.ui.test)
+    debugApi(libs.androidx.compose.ui.testManifest)
+
+    api(libs.androidx.test.runner)
 }
