@@ -91,5 +91,5 @@ dependencies {
     implementation(libs.lifecycleRuntimeCompose)
     implementation(libs.splashscreen)
 
-    implementation(project(":core:designsystem:theme"))
+    implementation(project(":shared:designsystem:theme"))
 }
