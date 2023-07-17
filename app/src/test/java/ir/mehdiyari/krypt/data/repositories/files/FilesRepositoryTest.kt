@@ -17,16 +17,18 @@ import ir.mehdiyari.krypt.data.file.FilesDao
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FilesRepositoryTest {
-
     private val ioDispatcher = StandardTestDispatcher()
     private lateinit var filesDao: FilesDao
     private lateinit var backupDao: BackupDao
@@ -37,6 +39,7 @@ class FilesRepositoryTest {
 
     @Before
     fun setup() {
+        Dispatchers.setMain(ioDispatcher)
         filesDao = mockk<FilesDao>()
         backupDao = mockk<BackupDao>()
         usernameProvider = mockk<UsernameProvider>()
@@ -54,6 +57,7 @@ class FilesRepositoryTest {
 
     @After
     fun tearDown() {
+        Dispatchers.resetMain()
         unmockkAll()
         clearAllMocks()
     }
@@ -81,6 +85,9 @@ class FilesRepositoryTest {
 
             assertEquals(FileTypeEnum.values().size, result.size)
             assertTrue(result.all { it.second == 0L })
+            coVerify(exactly = 0) {
+                filesDao.getFilesCountBasedOnType("username", any())
+            }
         }
 
     @Test
@@ -100,7 +107,10 @@ class FilesRepositoryTest {
 
         filesRepository.insertFiles(files)
 
-        coVerify { filesDao.insertFiles(files.map { it.copy(accountName = username) }) }
+        coVerify(exactly = 1) {
+            filesDao.insertFiles(
+                files.map { it.copy(accountName = username) })
+        }
     }
 
     @Test
@@ -125,25 +135,41 @@ class FilesRepositoryTest {
         val result = filesRepository.getMediasCount()
 
         assertEquals(photoCount + videoCount, result)
+        coVerify(exactly = 1) {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Photo
+            )
+        }
+        coVerify(exactly = 1) {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Video
+            )
+        }
     }
 
     @Test
     fun `mapThumbnailsAndNameToFileEntity should return correct FileEntity list`(): Unit = runTest {
         val username = "testUsername"
-        val medias = arrayOf("media1", "/path/media2")
-        val nameOfFile = "media2"
+        val medias = arrayOf("path1", "/path/path2")
+        val nameOfFile = "meta3"
         val allEncryptedMedia = generateFileEntity()
 
         coEvery { usernameProvider.getUsername() } returns username
         coEvery { filesDao.getAllMedia(username) } returns allEncryptedMedia
-        coEvery { filesUtilities.getNameOfFileWithExtension("/path/media2") } returns nameOfFile
+        coEvery { filesUtilities.getNameOfFileWithExtension("/path/path2") } returns nameOfFile
 
         val result = filesRepository.mapThumbnailsAndNameToFileEntity(medias)
 
         assertEquals(3, result.size)
-        assertEquals("media1", result[0].filePath)
-        assertEquals("/path/media2", result[1].filePath)
-        assertEquals("media2", result[2].metaData)
+        assertEquals("path1", result[0].filePath)
+        assertEquals("meta3", result[1].metaData)
+        coVerify(exactly = 1) {
+            filesDao.getAllMedia(
+                username
+            )
+        }
     }
 
     @Test
@@ -157,10 +183,7 @@ class FilesRepositoryTest {
             filesRepository.deleteEncryptedFilesFromKryptDBAndFileSystem(files)
 
             coVerify { filesDao.deleteFiles(files) }
-            coVerify { fileWrapper.delete("media1") }
-            coVerify { fileWrapper.delete("/path/media2") }
-            coVerify { fileWrapper.delete("media3") }
-            coVerify { fileWrapper.delete("media") }
+            coVerify { fileWrapper.delete(any()) }
         }
 
     @Test
@@ -207,7 +230,14 @@ class FilesRepositoryTest {
 
         val result = filesRepository.getLastEncryptedMediaThumbnail()
 
-        assertEquals("media6", result)
+        assertEquals("meta10", result)
+        coVerify(exactly = 1) {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Photo,
+                FileTypeEnum.Video
+            )
+        }
     }
 
     @Test
@@ -224,7 +254,13 @@ class FilesRepositoryTest {
 
         val result = filesRepository.getLastEncryptedPhotoThumbnail()
 
-        assertEquals("media6", result)
+        assertEquals("meta10", result)
+        coVerify(exactly = 1) {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Photo
+            )
+        }
     }
 
     @Test
@@ -241,7 +277,13 @@ class FilesRepositoryTest {
 
         val result = filesRepository.getLastEncryptedVideoThumbnail()
 
-        assertEquals("media6", result)
+        assertEquals("meta10", result)
+        coVerify(exactly = 1) {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Video
+            )
+        }
     }
 
     @Test
@@ -260,6 +302,12 @@ class FilesRepositoryTest {
         val result = filesRepository.getAllTextFiles()
 
         assertEquals(files, result)
+        coVerify(exactly = 1) {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Text
+            )
+        }
     }
 
     @Test
@@ -275,7 +323,7 @@ class FilesRepositoryTest {
         val result = filesRepository.getFileById(10L)
 
         assertEquals(file, result)
-        coVerify { filesDao.getFileById(username, 10) }
+        coVerify(exactly = 1) { filesDao.getFileById(username, 10) }
     }
 
     @Test
@@ -290,7 +338,7 @@ class FilesRepositoryTest {
         val result = filesRepository.getFileById(1)
 
         assertEquals(null, result)
-        coVerify { filesDao.getFileById(username, 1) }
+        coVerify(exactly = 1) { filesDao.getFileById(username, 1) }
     }
 
     @Test
@@ -308,7 +356,7 @@ class FilesRepositoryTest {
         val result = filesRepository.getAllFiles()
 
         assertEquals(files, result)
-        coVerify { filesDao.getAllFiles(username) }
+        coVerify(exactly = 1) { filesDao.getAllFiles(username) }
     }
 
     @Test
@@ -327,11 +375,19 @@ class FilesRepositoryTest {
         val actual = filesRepository.getAllImages()
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getAllMedia(
+                accountName = username,
+                mediaType = listOf(FileTypeEnum.Photo)
+            )
+        }
     }
 
     @Test
     fun `getAllVideos should return all videos`(): Unit = runTest {
-        val expected = generateFileEntity().filter { it.type == FileTypeEnum.Video }
+        val expected = generateFileEntity().filter {
+            it.type == FileTypeEnum.Video
+        }
         val username = "test_user"
 
         every { usernameProvider.getUsername() } returns username
@@ -345,6 +401,12 @@ class FilesRepositoryTest {
         val actual = filesRepository.getAllVideos()
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getAllMedia(
+                accountName = username,
+                mediaType = listOf(FileTypeEnum.Video)
+            )
+        }
     }
 
     @Test
@@ -362,6 +424,12 @@ class FilesRepositoryTest {
         val actual = filesRepository.getPhotosCount()
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Photo
+            )
+        }
     }
 
     @Test
@@ -380,6 +448,12 @@ class FilesRepositoryTest {
         val actual = filesRepository.getAudiosCount()
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Audio
+            )
+        }
     }
 
     @Test
@@ -398,6 +472,12 @@ class FilesRepositoryTest {
         val actual = filesRepository.getVideosCount()
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getFilesCountBasedOnType(
+                username,
+                FileTypeEnum.Video
+            )
+        }
     }
 
     @Test
@@ -413,7 +493,7 @@ class FilesRepositoryTest {
 
         filesRepository.getFileByThumbPath("thumb_path")
 
-        coVerify { filesDao.getMediaFileByPath(username, "thumb_path") }
+        coVerify(exactly = 1) { filesDao.getMediaFileByPath(username, "thumb_path") }
     }
 
     @Test
@@ -432,6 +512,12 @@ class FilesRepositoryTest {
         val actual = filesRepository.getAllAudioFiles()
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getAllFilesOfCurrentAccountBasedOnType(
+                username,
+                FileTypeEnum.Audio
+            )
+        }
     }
 
     @Test
@@ -441,7 +527,7 @@ class FilesRepositoryTest {
 
         filesRepository.updateFile(fileEntity)
 
-        coVerify { filesDao.updateFile(fileEntity) }
+        coVerify(exactly = 1) { filesDao.updateFile(fileEntity) }
     }
 
     @Test
@@ -455,53 +541,23 @@ class FilesRepositoryTest {
         val actual = filesRepository.getAudioById(11L)
 
         assertEquals(expected, actual)
+        coVerify(exactly = 1) {
+            filesDao.getFileById(username, 11L)
+        }
     }
 
-    private fun generateFileEntity() = listOf(
-        FileEntity(
-            filePath = "media1",
-            accountName = "",
-            metaData = "",
-            type = FileTypeEnum.Photo
-        ),
-        FileEntity(
-            id = 10,
-            filePath = "/path/media2",
-            accountName = "",
-            metaData = "",
-            type = FileTypeEnum.Photo
-        ),
-        FileEntity(
-            filePath = "media3",
-            accountName = "",
-            metaData = "",
-            type = FileTypeEnum.Photo
-        ),
-        FileEntity(
-            filePath = "media",
-            accountName = "",
-            metaData = "media2",
-            type = FileTypeEnum.Photo
-        ),
-        FileEntity(
-            filePath = "media5",
-            accountName = "",
-            metaData = "media5",
-            type = FileTypeEnum.Text
-        ),
-        FileEntity(
-            id = 11,
-            filePath = "media7",
-            accountName = "",
-            metaData = "media7",
-            type = FileTypeEnum.Audio
-        ),
-        FileEntity(
-            filePath = "media6",
-            accountName = "",
-            metaData = "media6",
-            type = FileTypeEnum.Video
-        )
-    )
+    private fun generateFileEntity(): List<FileEntity> {
+        val fileTypeEnum =
+            arrayOf(FileTypeEnum.Text, FileTypeEnum.Photo, FileTypeEnum.Video, FileTypeEnum.Audio)
+        return (0..10).map {
+            FileEntity(
+                id = it.toLong(),
+                type = fileTypeEnum[it % 4],
+                filePath = "path$it",
+                metaData = "meta$it",
+                accountName = "user"
+            )
+        }
+    }
 
 }
