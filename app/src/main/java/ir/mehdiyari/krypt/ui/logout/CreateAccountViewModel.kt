@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
 import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable

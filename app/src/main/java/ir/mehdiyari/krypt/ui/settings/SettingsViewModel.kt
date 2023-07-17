@@ -3,8 +3,8 @@ package ir.mehdiyari.krypt.ui.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
-import ir.mehdiyari.krypt.data.repositories.SettingsRepository
+import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
+import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

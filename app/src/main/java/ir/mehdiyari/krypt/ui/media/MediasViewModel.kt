@@ -10,7 +10,7 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import ir.mehdiyari.krypt.ui.media.data.FalleryBuilderProvider
 import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils

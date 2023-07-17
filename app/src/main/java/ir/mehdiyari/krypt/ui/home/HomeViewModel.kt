@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.repositories.FilesRepository
+import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

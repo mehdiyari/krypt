@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories
+package ir.mehdiyari.krypt.data.repositories.account
 
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
@@ -22,7 +22,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AccountsRepository @Inject constructor(
+class AccountsRepositoryImpl @Inject constructor(
     private val accountsDao: AccountsDao,
     private val symmetricHelper: SymmetricHelper,
     private val kryptKeyGenerator: KryptKeyGenerator,
@@ -30,8 +30,9 @@ class AccountsRepository @Inject constructor(
     private val usernameProvider: UsernameProvider,
     private val userKeyProvider: UserKeyProvider,
     private val hashingUtils: HashingUtils,
-) {
-    suspend fun addAccount(
+) : AccountsRepository {
+
+    override suspend fun addAccount(
         name: String,
         password: String,
         passwordConfig: String
@@ -66,11 +67,12 @@ class AccountsRepository @Inject constructor(
         return true to null
     }
 
-    suspend fun getAllAccountsName(): List<String> = accountsDao.getAccounts().map { it.name }
+    override suspend fun getAllAccountsName(): List<String> =
+        accountsDao.getAccounts().map { it.name }
 
-    suspend fun isAccountExists(): Boolean = accountsDao.isAnyAccountExist()
+    override suspend fun isAccountExists(): Boolean = accountsDao.isAnyAccountExist()
 
-    suspend fun login(
+    override suspend fun login(
         accountName: String,
         password: String
     ): Boolean {
@@ -111,7 +113,7 @@ class AccountsRepository @Inject constructor(
         }
     }
 
-    suspend fun validatePassword(
+    override suspend fun validatePassword(
         password: String
     ): Boolean {
         val account =
@@ -127,7 +129,7 @@ class AccountsRepository @Inject constructor(
         return SecretKeySpec(keyBytes, "AES") == userKeyProvider.getKey()
     }
 
-    suspend fun deleteCurrentAccount() {
+    override suspend fun deleteCurrentAccount() {
         accountsDao.deleteCurrentAccount(usernameProvider.getUsername()!!)
     }
 }
