@@ -1,13 +1,13 @@
-package ir.mehdiyari.krypt.crypto.impl
+package ir.mehdiyari.krypt.cryptography.impl
 
-import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.cryptography.api.ByteCryptography
 import ir.mehdiyari.krypt.cryptography.api.FileCryptography
+import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
+import javax.crypto.SecretKey
 import javax.inject.Inject
 
-class KryptCryptographyHelperImpl @Inject constructor(
-    private val userKeyProvider: UserKeyProvider,
+internal class KryptCryptographyHelperImpl @Inject constructor(
+    private val userKeyProvider: () -> SecretKey?,
     private val byteCryptography: ByteCryptography,
     private val fileCryptography: FileCryptography,
 ) : KryptCryptographyHelper {
@@ -16,27 +16,27 @@ class KryptCryptographyHelperImpl @Inject constructor(
         fileCryptography.encryptFile(
             sourcePath = sourcePath,
             destinationPath = destinationPath,
-            key = userKeyProvider.getKey()!!,
+            key = userKeyProvider()!!,
         )
 
     override suspend fun decryptFile(sourcePath: String, destinationPath: String): Result<Unit> =
         fileCryptography.decryptFile(
             sourcePath = sourcePath,
             destinationPath = destinationPath,
-            key = userKeyProvider.getKey()!!,
+            key = userKeyProvider()!!,
         )
 
     override suspend fun encryptBytes(bytes: ByteArray, initVector: ByteArray): Result<ByteArray> =
         byteCryptography.encryptBytes(
             bytes = bytes,
             initVector = initVector,
-            key = userKeyProvider.getKey()!!,
+            key = userKeyProvider()!!,
         )
 
     override suspend fun decryptBytes(bytes: ByteArray, initVector: ByteArray): Result<ByteArray> =
         byteCryptography.decryptBytes(
             bytes = bytes,
             initVector = initVector,
-            key = userKeyProvider.getKey()!!
+            key = userKeyProvider()!!
         )
 }

@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.crypto.impl
 
-import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.cryptography.utils.Base64
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.cryptography.utils.combineWith

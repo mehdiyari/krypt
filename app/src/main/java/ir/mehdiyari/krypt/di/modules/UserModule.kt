@@ -1,29 +1,45 @@
 package ir.mehdiyari.krypt.di.modules
 
 import dagger.Binds
+import dagger.Lazy
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ir.mehdiyari.krypt.app.CurrentUserManagerImpl
+import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
 import ir.mehdiyari.krypt.app.user.UsernameProvider
+import javax.crypto.SecretKey
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class UserModule {
+abstract class UserBindingModule {
 
     @Binds
     abstract fun provideUsernameProvider(
-        currentUserManager: ir.mehdiyari.krypt.app.CurrentUserManager
+        currentUserManagerImpl: CurrentUserManagerImpl
     ): UsernameProvider
 
     @Binds
     abstract fun provideUserKeyProvider(
-        currentUserManager: ir.mehdiyari.krypt.app.CurrentUserManager
+        currentUserManagerImpl: CurrentUserManagerImpl
     ): UserKeyProvider
 
     @Binds
     abstract fun provideCurrentUserManager(
-        currentUserManager: ir.mehdiyari.krypt.app.CurrentUserManager
-    ): ir.mehdiyari.krypt.app.user.CurrentUserManager
+        currentUserManagerImpl: CurrentUserManagerImpl
+    ): CurrentUserManager
+
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+class UserModule {
+
+    @Provides
+    fun provideKeyProviderFunction(
+        currentUserManager: Lazy<UserKeyProvider>
+    ): Function0<@JvmWildcard SecretKey?> = currentUserManager.get()::getKey
 
 }

@@ -6,9 +6,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.cryptography.api.ByteCryptography
 import ir.mehdiyari.krypt.cryptography.api.FileCryptography
+import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.impl.ByteCryptographyImpl
 import ir.mehdiyari.krypt.cryptography.impl.FileCryptographyImpl
+import ir.mehdiyari.krypt.cryptography.impl.KryptCryptographyHelperImpl
 import ir.mehdiyari.krypt.cryptography.impl.KryptKeyGeneratorImpl
 
 @Module
@@ -29,4 +31,9 @@ internal abstract class CryptographyBindingModule {
     abstract fun bindKryptKeyGenerator(
         kryptKeyGeneratorImpl: KryptKeyGeneratorImpl
     ): KryptKeyGenerator
+
+    @Binds
+    abstract fun bindKryptCryptographyHelper(
+        kryptCryptographyHelperImpl: KryptCryptographyHelperImpl
+    ): KryptCryptographyHelper
 }
