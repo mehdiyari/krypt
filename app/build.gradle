@@ -49,11 +49,11 @@ android {
 dependencies {
     implementation libs.coreKtx
     implementation libs.appCompat
-    implementation libs.material
-    implementation libs.constraintlayout
     testImplementation libs.junit
     androidTestImplementation libs.testExt
     androidTestImplementation libs.espressoCore
+
+    api(libs.composeActivity)
 
     implementation libs.lifecycleViewModeKtx
     implementation libs.lifecycleViewModelCompose
@@ -65,16 +65,6 @@ dependencies {
     implementation libs.hiltAndroid
     implementation libs.hiltNavigationCompose
     kapt libs.hiltCompiler
-
-    def composeBom = platform(libs.composeBom)
-    implementation composeBom
-    androidTestImplementation composeBom
-
-    implementation libs.composeActivity
-    implementation libs.composeAnimation
-    implementation libs.composeUiTooling
-    androidTestImplementation libs.composeJunit4UiTest
-    implementation libs.material3
 
     implementation libs.lifecycleViewModelCompose
     implementation libs.navigationCompose
@@ -100,4 +90,6 @@ dependencies {
 
     implementation(libs.lifecycleRuntimeCompose)
     implementation(libs.splashscreen)
+
+    implementation(project(":shared:designsystem:theme"))
 }

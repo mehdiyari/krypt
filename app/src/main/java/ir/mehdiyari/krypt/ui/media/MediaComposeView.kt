@@ -55,7 +55,7 @@ import ir.mehdiyari.krypt.ui.media.MediaViewAction.DECRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.ENCRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.PICK_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.SHARED_MEDIA
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 
 @Composable

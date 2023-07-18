@@ -15,7 +15,7 @@ espressoCore = "3.5.1"
 lifecycle = "2.6.1"
 room = "2.5.2"
 hilt = "2.46.1"
-composeBom = "2023.04.01"
+composeBom = "2023.06.01"
 material3 = "1.1.1"
 navigationCompose = "2.6.0"
 constraintlayoutCompose = "1.1.0-alpha10"
@@ -29,6 +29,8 @@ exoplayer = "1.1.0"
 mockk = "1.12.7"
 turbine = "0.9.0"
 splashscreen = "1.0.1"
+androidxTestRunner = "1.5.2"
+
 
 [libraries]
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
@@ -47,13 +49,17 @@ roomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = 
 hiltAndroid = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hiltNavigationCompose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 hiltCompiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 composeActivity = { group = "androidx.activity", name = "activity-compose" }
-composeAnimation = { group = "androidx.compose.animation", name = "animation" }
-composeUiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-composeJunit4UiTest = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+
 navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+
 constraintlayoutCompose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 coroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -70,6 +76,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 hiltAndroidGradleClassPath = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
