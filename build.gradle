@@ -7,8 +7,8 @@ buildscript {
 
 plugins {
     alias libs.plugins.androidApplication apply false
-    alias libs.plugins.androidLibraryPlugin apply false
-    alias libs.plugins.kotlinAndroidPlugin apply false
+    alias libs.plugins.android.library apply false
+    alias libs.plugins.kotlin.android apply false
     alias libs.plugins.kspPlugin apply false
 }
 

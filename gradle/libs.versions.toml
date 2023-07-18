@@ -4,6 +4,7 @@ androidLibraryPlugin = "7.4.1"
 kspPlugin = "1.8.21-1.0.11"
 kotlinAndroidPlugin = "1.8.21"
 hiltAndroidGradlePlugin = "2.46.1"
+androidxComposeCompiler = "1.4.7"
 constraintlayout = "2.1.4"
 hiltNavigationCompose = "1.0.0"
 ktx = "1.10.1"
@@ -77,9 +78,13 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 hiltAndroidGradleClassPath = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinAndroidPlugin" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-androidLibraryPlugin = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
-kotlinAndroidPlugin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
+android-library = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
 kspPlugin = { id = "com.google.devtools.ksp", version.ref = "kspPlugin" }
