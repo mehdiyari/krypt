@@ -100,4 +100,6 @@ dependencies {
 
     implementation(libs.lifecycleRuntimeCompose)
     implementation(libs.splashscreen)
+
+    implementation project(":shared:dispatchers")
 }

@@ -9,7 +9,8 @@ import ir.mehdiyari.krypt.crypto.impl.TextFilesUtils
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.ui.text.list.TextEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ class AddTextViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val textFilesUtils: TextFilesUtils,
     private val filesRepository: FilesRepository,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     val addTextArgs = AddTextArgs(savedStateHandle)

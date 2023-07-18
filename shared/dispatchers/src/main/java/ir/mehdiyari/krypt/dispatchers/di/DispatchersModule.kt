@@ -1,25 +1,26 @@
-package ir.mehdiyari.krypt.di.modules
+package ir.mehdiyari.krypt.dispatchers.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-@Module
 @InstallIn(SingletonComponent::class)
-class DispatcherModule {
+@Module
+class DispatchersModule {
 
     @Provides
-    @DispatcherIO
+    @DispatchersType(DispatchersQualifierType.IO)
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
+    @Provides
+    @DispatchersType(DispatchersQualifierType.DEFAULT)
+    fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    @DispatcherDefault
-    fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+    @DispatchersType(DispatchersQualifierType.MAIN)
+    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
 }

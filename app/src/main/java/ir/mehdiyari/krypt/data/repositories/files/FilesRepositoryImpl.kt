@@ -5,7 +5,8 @@ import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.file.FilesDao
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -19,7 +20,7 @@ class FilesRepositoryImpl @Inject constructor(
     private val usernameProvider: UsernameProvider,
     private val filesUtilities: FilesUtilities,
     private val fileWrapper: FileWrapper,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) : FilesRepository {
 
     override suspend fun getAllFilesTypeCounts(): List<Pair<FileTypeEnum, Long>> =

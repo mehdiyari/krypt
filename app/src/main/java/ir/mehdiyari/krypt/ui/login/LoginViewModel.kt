@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val accountsRepository: AccountsRepository,
-    @DispatcherIO private val dispatcherIO: CoroutineDispatcher
+    @DispatchersType(DispatchersQualifierType.IO) private val dispatcherIO: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _allAccountsNameState = MutableStateFlow<List<String>>(listOf())

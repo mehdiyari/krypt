@@ -2,7 +2,8 @@ package ir.mehdiyari.krypt.crypto.impl
 
 import ir.mehdiyari.krypt.crypto.api.FileCryptography
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
@@ -17,7 +18,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
 class FileCryptographyImpl @Inject constructor(
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val symmetricHelper: SymmetricHelper,
 ) : FileCryptography {
 
