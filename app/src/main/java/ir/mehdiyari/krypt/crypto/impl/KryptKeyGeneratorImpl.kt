@@ -1,8 +1,8 @@
 package ir.mehdiyari.krypt.crypto.impl
 
 import ir.mehdiyari.krypt.crypto.api.KryptKeyGenerator
-import ir.mehdiyari.krypt.crypto.utils.HashingUtils
-import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
+import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
+import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher

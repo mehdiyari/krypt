@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.crypto.utils
+package ir.mehdiyari.krypt.cryptography.utils
 
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom

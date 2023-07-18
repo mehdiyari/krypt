@@ -102,4 +102,5 @@ dependencies {
     implementation(libs.splashscreen)
 
     implementation project(":shared:dispatchers")
+    implementation project(":shared:cryptography")
 }
