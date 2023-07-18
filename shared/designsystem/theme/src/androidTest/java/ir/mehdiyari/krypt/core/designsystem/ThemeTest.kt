@@ -12,7 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 
 
-class ThemeTest {
+internal class ThemeTest {
 
     @get:Rule
     val composeTestRule:ComposeContentTestRule = createComposeRule()
