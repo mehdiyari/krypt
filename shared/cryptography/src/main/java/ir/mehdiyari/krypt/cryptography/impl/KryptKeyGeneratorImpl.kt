@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.crypto.impl
+package ir.mehdiyari.krypt.cryptography.impl
 
-import ir.mehdiyari.krypt.crypto.api.KryptKeyGenerator
+import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class KryptKeyGeneratorImpl @Inject constructor(
+internal class KryptKeyGeneratorImpl @Inject constructor(
     private val hashingUtils: HashingUtils,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : KryptKeyGenerator {

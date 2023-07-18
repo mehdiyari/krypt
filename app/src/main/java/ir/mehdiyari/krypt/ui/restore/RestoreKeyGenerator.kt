@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.ui.restore
 
-import ir.mehdiyari.krypt.crypto.api.KryptKeyGenerator
+import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
 import java.io.File
 import java.io.FileInputStream

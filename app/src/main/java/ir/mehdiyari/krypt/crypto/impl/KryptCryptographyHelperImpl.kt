@@ -1,12 +1,10 @@
 package ir.mehdiyari.krypt.crypto.impl
 
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.crypto.api.ByteCryptography
-import ir.mehdiyari.krypt.crypto.api.FileCryptography
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.cryptography.api.ByteCryptography
+import ir.mehdiyari.krypt.cryptography.api.FileCryptography
 import javax.inject.Inject
-
-const val BUFFER_SIZE = 8 * 1024
 
 class KryptCryptographyHelperImpl @Inject constructor(
     private val userKeyProvider: UserKeyProvider,

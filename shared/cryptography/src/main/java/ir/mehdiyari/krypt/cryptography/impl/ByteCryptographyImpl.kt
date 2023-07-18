@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.crypto.impl
+package ir.mehdiyari.krypt.cryptography.impl
 
-import ir.mehdiyari.krypt.crypto.api.ByteCryptography
+import ir.mehdiyari.krypt.cryptography.api.ByteCryptography
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import javax.crypto.SecretKey
 import javax.inject.Inject
 
-class ByteCryptographyImpl @Inject constructor(
+internal class ByteCryptographyImpl @Inject constructor(
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val symmetricHelper: SymmetricHelper,
 ) : ByteCryptography {

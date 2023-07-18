@@ -41,4 +41,6 @@ dependencies {
     implementation libs.coreKtx
     androidTestImplementation libs.testExt
     androidTestImplementation libs.espressoCore
+
+    implementation project(":shared:dispatchers")
 }

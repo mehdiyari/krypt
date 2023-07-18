@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.crypto.api
+package ir.mehdiyari.krypt.cryptography.api
 
 interface KryptKeyGenerator {
 

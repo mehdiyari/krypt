@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.crypto.impl
+package ir.mehdiyari.krypt.cryptography.impl
 
-import ir.mehdiyari.krypt.crypto.api.FileCryptography
+import ir.mehdiyari.krypt.cryptography.api.FileCryptography
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
@@ -17,7 +17,9 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
-class FileCryptographyImpl @Inject constructor(
+const val BUFFER_SIZE = 8 * 1024
+
+internal class FileCryptographyImpl @Inject constructor(
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val symmetricHelper: SymmetricHelper,
 ) : FileCryptography {
