@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.crypto.impl
+package ir.mehdiyari.krypt.ui.text.utils
 
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.cryptography.utils.Base64
