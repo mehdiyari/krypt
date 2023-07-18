@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @VisibleForTesting
-val LightColors = lightColorScheme(
+internal val LightColors = lightColorScheme(
     primary = Color(0xFF2196F3),
     primaryContainer = Color(0xFF1976D2),
     onPrimary = Color(0xFFFFFFFF),
@@ -22,7 +22,7 @@ val LightColors = lightColorScheme(
 )
 
 @VisibleForTesting
-val DarkColors = darkColorScheme(
+internal val DarkColors = darkColorScheme(
     primary = Color(0xFFBB86FC),
     primaryContainer = Color(0xFF3700B3),
     onPrimary = Color(0xFF000000),
