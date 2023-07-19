@@ -1,21 +1,17 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kspPlugin)
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'krypt.android.application'
 }
 
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
 android {
-    compileSdk 33
 
     defaultConfig {
 
         applicationId "ir.mehdiyari.krypt"
-        minSdk 23
-        targetSdk 33
         versionCode 16
         versionName "3.0.1-alpha"
 
@@ -35,14 +31,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 }
 

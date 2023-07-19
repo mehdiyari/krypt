@@ -11,6 +11,11 @@ gradlePlugin {
 
     plugins {
 
+        register("kryptAndroidApplication"){
+            id = "krypt.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+
         register("kryptAndroidLibrary"){
             id = "krypt.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
