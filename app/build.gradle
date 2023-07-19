@@ -1,6 +1,7 @@
 plugins {
     id 'krypt.android.application'
     id 'krypt.android.application.flavor'
+    id 'krypt.android.application.compose'
     alias(libs.plugins.kspPlugin)
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
@@ -15,14 +16,6 @@ android {
         versionName "3.0.1-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     buildTypes {
