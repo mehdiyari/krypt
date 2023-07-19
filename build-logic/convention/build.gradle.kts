@@ -16,6 +16,11 @@ gradlePlugin {
             implementationClass = "AndroidApplicationConventionPlugin"
         }
 
+        register("kryptAndroidApplicationFlavor"){
+            id = "krypt.android.application.flavor"
+            implementationClass = "AndroidApplicationFlavorConventionPlugin"
+        }
+
         register("kryptAndroidLibrary"){
             id = "krypt.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

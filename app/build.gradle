@@ -1,11 +1,10 @@
 plugins {
+    id 'krypt.android.application'
+    id 'krypt.android.application.flavor'
     alias(libs.plugins.kspPlugin)
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
-    id 'krypt.android.application'
 }
-
-apply from: "${rootProject.projectDir}/flavors.gradle"
 
 android {
 
