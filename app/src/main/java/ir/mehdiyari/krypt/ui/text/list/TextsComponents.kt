@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 
 @Composable
