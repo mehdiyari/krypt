@@ -27,7 +27,6 @@ enum class KryptFlavor(
 
 fun configureFlavor(extension: CommonExtension<*, *, *, *>) {
     with(extension){
-        println("tesssst: ${extension.namespace}")
         flavorDimensions += FlavorDimension.main.name
 
         productFlavors {
