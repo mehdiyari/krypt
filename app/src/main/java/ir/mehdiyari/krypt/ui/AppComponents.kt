@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.home.ADD_ITEMS
 import ir.mehdiyari.krypt.ui.home.MAIN_MENU_ITEMS
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
