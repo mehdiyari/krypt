@@ -16,4 +16,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Krypt"
 include ':app'
+include ':shared:cryptography'
+include ':shared:dispatchers'
 include ':shared:designsystem:theme'

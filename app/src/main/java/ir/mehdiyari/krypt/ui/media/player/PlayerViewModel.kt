@@ -3,8 +3,9 @@ package ir.mehdiyari.krypt.ui.media.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val fileUtils: FilesUtilities,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _playerViewState = MutableStateFlow<PlayerState?>(null)
