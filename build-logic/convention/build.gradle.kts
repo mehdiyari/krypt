@@ -36,6 +36,11 @@ gradlePlugin {
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
 
+        register("kryptAndroidHilt"){
+            id = "krypt.android.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
+
     }
 
 }

@@ -4,7 +4,7 @@ plugins {
     id 'krypt.android.application.compose'
     alias(libs.plugins.kspPlugin)
     id 'dagger.hilt.android.plugin'
-    id 'kotlin-kapt'
+    id 'krypt.android.hilt'
 }
 
 android {
@@ -42,9 +42,7 @@ dependencies {
     implementation libs.room
     ksp libs.roomCompiler
 
-    implementation libs.hiltAndroid
     implementation libs.hiltNavigationCompose
-    kapt libs.hiltCompiler
 
     implementation libs.lifecycleViewModelCompose
     implementation libs.navigationCompose

@@ -1,6 +1,6 @@
 plugins {
     id 'krypt.android.library'
-    id 'kotlin-kapt'
+    id 'krypt.android.hilt'
 }
 
 android {
@@ -23,9 +23,6 @@ dependencies {
 
     implementation libs.coroutinesAndroid
     implementation libs.coroutinesCore
-
-    implementation libs.hiltAndroid
-    kapt libs.hiltCompiler
 
     implementation libs.coreKtx
     androidTestImplementation libs.testExt
