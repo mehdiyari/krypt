@@ -48,7 +48,6 @@ dependencies {
 
     implementation libs.lifecycleViewModelCompose
     implementation libs.navigationCompose
-    implementation libs.constraintlayoutCompose
 
     implementation libs.coroutinesAndroid
     implementation libs.coroutinesCore

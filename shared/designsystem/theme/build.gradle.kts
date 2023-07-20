@@ -17,6 +17,7 @@ dependencies {
     androidTestApi(composeBom)
 
     api(libs.androidx.compose.material3)
+    api(libs.androidx.constraintLayout.compose) //TODO MHD: Investigate if it's possible to avoid constraint layout
 
     // Android Studio Preview support
     api(libs.androidx.compose.ui.tooling.preview)
