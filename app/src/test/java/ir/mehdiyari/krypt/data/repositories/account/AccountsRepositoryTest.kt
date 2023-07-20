@@ -4,6 +4,7 @@ import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -14,13 +15,16 @@ import ir.mehdiyari.krypt.crypto.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.crypto.utils.HashingUtils
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.utils.toUtf8Bytes
+import ir.mehdiyari.krypt.data.account.AccountEntity
 import ir.mehdiyari.krypt.data.account.AccountsDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import javax.crypto.spec.SecretKeySpec
 
@@ -37,17 +41,22 @@ class AccountsRepositoryTest {
 
     @Before
     fun setup() {
-        accountsDao = mockk<AccountsDao>()
-        symmetricHelper = mockk<SymmetricHelper>()
-        kryptKeyGenerator = mockk<KryptKeyGenerator>()
-        currentUserManager = mockk<CurrentUserManager>()
-        usernameProvider = mockk<UsernameProvider>()
-        userKeyProvider = mockk<UserKeyProvider>()
-        hashingUtils = mockk<HashingUtils>()
+        accountsDao = mockk(relaxed = true)
+        symmetricHelper = mockk(relaxed = true)
+        kryptKeyGenerator = mockk(relaxed = true)
+        currentUserManager = mockk(relaxed = true)
+        usernameProvider = mockk(relaxed = true)
+        userKeyProvider = mockk(relaxed = true)
+        hashingUtils = mockk(relaxed = true)
 
         accountsRepository = AccountsRepositoryImpl(
-            accountsDao, symmetricHelper, kryptKeyGenerator, currentUserManager,
-            usernameProvider, userKeyProvider, hashingUtils
+            accountsDao,
+            symmetricHelper,
+            kryptKeyGenerator,
+            currentUserManager,
+            usernameProvider,
+            userKeyProvider,
+            hashingUtils
         )
     }
 
@@ -96,5 +105,68 @@ class AccountsRepositoryTest {
                 initVector = iv
             )
         }
+    }
+
+    @Test
+    fun `getAllAccountsName should returns all account names`(): Unit = runTest {
+        val accounts = (0..10).map {
+            AccountEntity(
+                name = "name$it",
+                encryptedName = "encryptedName$it"
+            )
+        }
+        coEvery { accountsDao.getAccounts() } returns accounts
+
+        val actual = accountsRepository.getAllAccountsName()
+
+        assertEquals(accounts.map { it.name }, actual)
+        coVerify(exactly = 1) { accountsDao.getAccounts() }
+    }
+
+    @Test
+    fun `isAccountExists should return true if account exists`() = runTest {
+        coEvery { accountsDao.isAnyAccountExist() } returns true
+
+        val actual = accountsRepository.isAccountExists()
+
+        coVerify(exactly = 1) { accountsDao.isAnyAccountExist() }
+        assertEquals(true, actual)
+    }
+
+    @Ignore
+    @Test
+    fun testSuccessfulLogin() = runTest {
+
+        // TODO: Mehdi would take care of it
+        val accountName = "TestAccount"
+        val password = "TestPassword"
+        val account = AccountEntity(accountName, "EncodedTest")
+        coEvery { accountsDao.getAccountWithName(accountName) } returns account
+
+        coEvery {
+            symmetricHelper.decrypt(
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        } returns accountName.toByteArray()
+        coEvery { kryptKeyGenerator.generateKey(password, any()) } returns Result.success(
+            byteArrayOf()
+        )
+        val loginResult = accountsRepository.login(accountName, password)
+        assertTrue(loginResult)
+        coVerify { currentUserManager.setCurrentUser(accountName, any()) }
+    }
+
+    @Test
+    fun `deleteCurrentAccount should delete the current account`() = runTest {
+        val username = "TestUser"
+
+        every { usernameProvider.getUsername() } returns username
+
+        accountsRepository.deleteCurrentAccount()
+
+        coVerify { accountsDao.deleteCurrentAccount(username) }
     }
 }
