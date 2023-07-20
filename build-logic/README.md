@@ -7,7 +7,7 @@ This approach is heavily based on
 [https://developer.squareup.com/blog/herding-elephants/](https://developer.squareup.com/blog/herding-elephants/)
 and
 [https://github.com/jjohannes/idiomatic-gradle](https://github.com/jjohannes/idiomatic-gradle).
-as another example you can look here
+for another example you can look here
 [https://github.com/android/nowinandroid]
 
 By setting up convention plugins in `build-logic`, we can avoid duplicated build script setup,
