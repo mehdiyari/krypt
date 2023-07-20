@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ir.mehdiyari.krypt.core.designsystem.theme"
+    namespace = "ir.mehdiyari.krypt.designsystem.theme"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -25,6 +25,4 @@ dependencies {
     // UI Tests
     androidTestApi(libs.androidx.compose.ui.test)
     debugApi(libs.androidx.compose.ui.testManifest)
-
-//    api(libs.androidx.test.runner)
 }
