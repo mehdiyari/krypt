@@ -3,6 +3,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
+private const val ALIAS_HILT_ANDROID = "hilt.android"
+private const val ALIAS_HILT_COMPILER = "hilt.compiler"
+
 class AndroidHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target){
@@ -11,8 +14,8 @@ class AndroidHiltConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "implementation"(libs.findLibrary("hilt.android").get())
-                "kapt"(libs.findLibrary("hilt.compiler").get())
+                "implementation"(libs.findLibrary(ALIAS_HILT_ANDROID).get())
+                "kapt"(libs.findLibrary(ALIAS_HILT_COMPILER).get())
             }
         }
     }
