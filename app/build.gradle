@@ -1,3 +1,5 @@
+import ir.mehdiyari.krypt.Versions
+
 plugins {
     id 'krypt.android.application'
     id 'krypt.android.application.flavor'
@@ -12,8 +14,8 @@ android {
     defaultConfig {
 
         applicationId "ir.mehdiyari.krypt"
-        versionCode 16
-        versionName "3.0.1-alpha"
+        versionCode Versions.VERSION_CODE
+        versionName Versions.VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
