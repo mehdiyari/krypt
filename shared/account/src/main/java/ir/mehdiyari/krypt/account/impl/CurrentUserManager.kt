@@ -1,9 +1,9 @@
-package ir.mehdiyari.krypt.app
+package ir.mehdiyari.krypt.account.impl
 
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
-import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.app.user.UsernameProvider
-import ir.mehdiyari.krypt.data.repositories.CurrentUser
+import ir.mehdiyari.krypt.account.api.CurrentUserManager
+import ir.mehdiyari.krypt.account.api.UserKeyProvider
+import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.account.entity.CurrentUser
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject

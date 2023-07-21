@@ -4,7 +4,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
+import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

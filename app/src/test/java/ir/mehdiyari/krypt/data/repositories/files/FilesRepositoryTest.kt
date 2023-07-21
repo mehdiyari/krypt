@@ -9,7 +9,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.unmockkAll
-import ir.mehdiyari.krypt.app.user.UsernameProvider
+import ir.mehdiyari.krypt.account.api.UsernameProvider
 import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum

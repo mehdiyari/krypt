@@ -72,5 +72,6 @@ dependencies {
 
     implementation project(":shared:dispatchers")
     implementation project(":shared:cryptography")
+    implementation project(":shared:account")
     implementation(project(":shared:designsystem:theme"))
 }

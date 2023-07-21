@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories
+package ir.mehdiyari.krypt.account.entity
 
 class CurrentUser(
     var accountName: String? = null,

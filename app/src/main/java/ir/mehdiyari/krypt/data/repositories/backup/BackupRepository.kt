@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.app.user.UsernameProvider
+import ir.mehdiyari.krypt.account.api.UserKeyProvider
+import ir.mehdiyari.krypt.account.api.UsernameProvider
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.cryptography.utils.Base64
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.di.modules
+package ir.mehdiyari.krypt.account.di
 
 import dagger.Binds
 import dagger.Lazy
@@ -6,10 +6,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ir.mehdiyari.krypt.app.CurrentUserManagerImpl
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
-import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.app.user.UsernameProvider
+import ir.mehdiyari.krypt.account.api.CurrentUserManager
+import ir.mehdiyari.krypt.account.api.UserKeyProvider
+import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.account.impl.CurrentUserManagerImpl
 import javax.crypto.SecretKey
 
 @Module

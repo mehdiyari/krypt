@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.app.user
+package ir.mehdiyari.krypt.account.api
 
 interface CurrentUserManager {
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
+import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
