@@ -1,33 +1,23 @@
+import ir.mehdiyari.krypt.Versions
+
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroidPlugin)
+    id 'krypt.android.application'
+    id 'krypt.android.application.flavor'
+    id 'krypt.android.application.compose'
     alias(libs.plugins.kspPlugin)
     id 'dagger.hilt.android.plugin'
-    id 'kotlin-kapt'
+    id 'krypt.android.hilt'
 }
 
-apply from: "${rootProject.projectDir}/flavors.gradle"
-
 android {
-    compileSdk 33
 
     defaultConfig {
 
         applicationId "ir.mehdiyari.krypt"
-        minSdk 23
-        targetSdk 33
-        versionCode 16
-        versionName "3.0.1-alpha"
+        versionCode Versions.VERSION_CODE
+        versionName Versions.VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     buildTypes {
@@ -35,14 +25,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 }
 
@@ -62,13 +44,10 @@ dependencies {
     implementation libs.room
     ksp libs.roomCompiler
 
-    implementation libs.hiltAndroid
     implementation libs.hiltNavigationCompose
-    kapt libs.hiltCompiler
 
     implementation libs.lifecycleViewModelCompose
     implementation libs.navigationCompose
-    implementation libs.constraintlayoutCompose
 
     implementation libs.coroutinesAndroid
     implementation libs.coroutinesCore

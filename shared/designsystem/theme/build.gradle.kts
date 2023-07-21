@@ -1,33 +1,13 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.androidLibraryPlugin)
-    alias(libs.plugins.kotlinAndroidPlugin)
+    id("krypt.android.library")
+    id("krypt.android.library.compose")
 }
 
 android {
-    namespace = "ir.mehdiyari.krypt.core.designsystem.theme"
-    compileSdk = 33
+    namespace = "ir.mehdiyari.krypt.designsystem.theme"
 
     defaultConfig {
-        minSdk = 23
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
     }
 }
 
@@ -37,6 +17,7 @@ dependencies {
     androidTestApi(composeBom)
 
     api(libs.androidx.compose.material3)
+    api(libs.androidx.constraintLayout.compose) //TODO MHD: Investigate if it's possible to avoid constraint layout
 
     // Android Studio Preview support
     api(libs.androidx.compose.ui.tooling.preview)
@@ -45,6 +26,4 @@ dependencies {
     // UI Tests
     androidTestApi(libs.androidx.compose.ui.test)
     debugApi(libs.androidx.compose.ui.testManifest)
-
-//    api(libs.androidx.test.runner)
 }
