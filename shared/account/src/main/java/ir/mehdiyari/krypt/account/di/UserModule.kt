@@ -14,7 +14,7 @@ import javax.crypto.SecretKey
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class UserBindingModule {
+internal abstract class UserBindingModule {
 
     @Binds
     abstract fun provideUsernameProvider(
@@ -35,7 +35,7 @@ abstract class UserBindingModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UserModule {
+internal class UserModule {
 
     @Provides
     fun provideKeyProviderFunction(
