@@ -1,6 +1,7 @@
 plugins {
     id 'krypt.android.library'
     id 'krypt.android.hilt'
+    alias(libs.plugins.kspPlugin)
 }
 
 android {
@@ -12,6 +13,9 @@ android {
 }
 
 dependencies {
+    implementation libs.room
+    ksp libs.roomCompiler
+
     implementation libs.coreKtx
     testImplementation libs.junit
     androidTestImplementation libs.testExt
