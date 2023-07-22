@@ -5,8 +5,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ir.mehdiyari.krypt.account.data.local.AccountEntity
-import ir.mehdiyari.krypt.account.data.local.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 import ir.mehdiyari.krypt.file.data.dao.FilesDao

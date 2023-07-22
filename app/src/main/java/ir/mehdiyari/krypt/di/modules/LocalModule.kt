@@ -9,7 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ir.mehdiyari.krypt.account.data.local.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.data.database.KryptDataBase
 import ir.mehdiyari.krypt.file.data.dao.FilesDao

@@ -18,4 +18,5 @@ dependencies {
     androidTestImplementation libs.testExt
 
     implementation project(":shared:cryptography")
+    implementation project(":shared:accounts:account-data")
 }

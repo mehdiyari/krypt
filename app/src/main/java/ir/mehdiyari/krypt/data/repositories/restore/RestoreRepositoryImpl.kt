@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.data.repositories.restore
 
-import ir.mehdiyari.krypt.account.data.local.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
 import ir.mehdiyari.krypt.cryptography.api.ByteCryptography
 import ir.mehdiyari.krypt.cryptography.api.FileCryptography
 import ir.mehdiyari.krypt.cryptography.exceptions.DecryptException

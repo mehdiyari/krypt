@@ -1,9 +1,10 @@
-package ir.mehdiyari.krypt.account.data.local
+package ir.mehdiyari.krypt.accounts.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 
 @Dao
 interface AccountsDao {

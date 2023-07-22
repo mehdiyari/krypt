@@ -2,8 +2,8 @@ package ir.mehdiyari.krypt.data.repositories.backup
 
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
-import ir.mehdiyari.krypt.account.data.local.AccountEntity
-import ir.mehdiyari.krypt.account.data.local.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper

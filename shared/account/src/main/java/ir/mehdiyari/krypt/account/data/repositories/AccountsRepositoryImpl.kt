@@ -3,11 +3,11 @@ package ir.mehdiyari.krypt.account.data.repositories
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
-import ir.mehdiyari.krypt.account.data.local.AccountEntity
-import ir.mehdiyari.krypt.account.data.local.AccountsDao
 import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordsNotMatchThrowable
+import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.utils.Base64
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
