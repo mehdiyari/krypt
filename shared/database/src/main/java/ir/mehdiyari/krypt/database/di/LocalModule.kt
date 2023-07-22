@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.di.modules
+package ir.mehdiyari.krypt.database.di
 
 import android.app.Application
 import android.content.Context
@@ -11,13 +11,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
-import ir.mehdiyari.krypt.data.database.KryptDataBase
+import ir.mehdiyari.krypt.database.KryptDataBase
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class LocalModule {
+internal class LocalModule {
 
     @Provides
     @Singleton

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.database
+package ir.mehdiyari.krypt.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -19,7 +19,7 @@ import ir.mehdiyari.krypt.file.data.mappers.FileTypeEnumMapper
     ], version = 2
 )
 @TypeConverters(FileTypeEnumMapper::class)
-abstract class KryptDataBase : RoomDatabase() {
+internal abstract class KryptDataBase : RoomDatabase() {
     abstract fun accountsDAO(): AccountsDao
     abstract fun filesDAO(): FilesDao
     abstract fun backupDao(): BackupDao

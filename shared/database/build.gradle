@@ -20,4 +20,8 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.testExt
     androidTestImplementation libs.espressoCore
+
+    implementation(project(":shared:accounts:account-data"))
+    implementation(project(":shared:files:files-data"))
+    implementation(project(":shared:files:backup-data"))
 }
