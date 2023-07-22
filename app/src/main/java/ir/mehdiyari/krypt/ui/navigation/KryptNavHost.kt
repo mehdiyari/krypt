@@ -50,8 +50,11 @@ fun KryptNaveHost(
 
         homeScreen(
             sharedDataViewModel = sharedDataViewModel,
-            openTextsScreen = {
+            openAddTextScreen = {
                 navController.navigateToAddText(sharedText = it ?: "")
+            },
+            openTextsScreen = {
+                navController.navigateToTexts()
             },
             openMediaScreen = { mediaViewAction ->
                 navController.navigateToMedia(
