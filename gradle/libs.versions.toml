@@ -4,19 +4,17 @@ androidLibraryPlugin = "7.4.1"
 kspPlugin = "1.8.21-1.0.11"
 kotlinAndroidPlugin = "1.8.21"
 hiltAndroidGradlePlugin = "2.46.1"
-constraintlayout = "2.1.4"
+androidxComposeCompiler = "1.4.7"
 hiltNavigationCompose = "1.0.0"
 ktx = "1.10.1"
 appCompat = "1.6.1"
-material = "1.9.0"
 junit = "4.13.2"
 testExt = "1.1.5"
 espressoCore = "3.5.1"
 lifecycle = "2.6.1"
 room = "2.5.2"
 hilt = "2.46.1"
-composeBom = "2023.04.01"
-material3 = "1.1.1"
+composeBom = "2023.06.01"
 navigationCompose = "2.6.0"
 constraintlayoutCompose = "1.1.0-alpha10"
 coroutines = "1.6.4"
@@ -30,11 +28,10 @@ mockk = "1.12.7"
 turbine = "0.9.0"
 splashscreen = "1.0.1"
 
+
 [libraries]
-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 testExt = { group = "androidx.test.ext", name = "junit", version.ref = "testExt" }
 espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -44,17 +41,20 @@ lifecycleViewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-vi
 lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 room = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 roomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-hiltAndroid = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hiltNavigationCompose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-hiltCompiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 composeActivity = { group = "androidx.activity", name = "activity-compose" }
-composeAnimation = { group = "androidx.compose.animation", name = "animation" }
-composeUiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-composeJunit4UiTest = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
 navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-constraintlayoutCompose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
+
+androidx-constraintLayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 coroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
@@ -71,8 +71,13 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 hiltAndroidGradleClassPath = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinAndroidPlugin" }
+
+
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-androidLibraryPlugin = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
-kotlinAndroidPlugin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
 kspPlugin = { id = "com.google.devtools.ksp", version.ref = "kspPlugin" }

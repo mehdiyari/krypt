@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CurrentUserManager @Inject constructor() : UsernameProvider, UserKeyProvider,
+class CurrentUserManagerImpl @Inject constructor() : UsernameProvider, UserKeyProvider,
     CurrentUserManager {
 
     private val currentUser = CurrentUser(accountName = null, key = null)

@@ -3,11 +3,12 @@ package ir.mehdiyari.krypt.ui.voice.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.ui.voice.recorder.SecondToTimerMapper
 import ir.mehdiyari.krypt.ui.voice.recorder.VoiceRecorder
 import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaData
@@ -29,7 +30,7 @@ class RecordVoiceViewModel @Inject constructor(
     private val voiceRecorder: VoiceRecorder,
     private val filesUtilities: FilesUtilities,
     private val kryptCryptographyHelper: KryptCryptographyHelper,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val filesRepository: FilesRepository,
     private val audioMetaDataJsonAdapter: AudioMetaDataJsonParser,
     private val secondToTimerMapper: SecondToTimerMapper

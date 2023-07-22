@@ -23,7 +23,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable

@@ -7,7 +7,8 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.user.CurrentUserManager
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val filesRepository: FilesRepository,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val currentUserManager: CurrentUserManager
 ) : ViewModel() {
 

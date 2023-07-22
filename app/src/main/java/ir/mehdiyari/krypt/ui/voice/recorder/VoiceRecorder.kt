@@ -3,7 +3,8 @@ package ir.mehdiyari.krypt.ui.voice.recorder
 import android.media.MediaRecorder
 import android.os.Build
 import androidx.annotation.WorkerThread
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 class VoiceRecorder @Inject constructor(
     private val mediaRecorderFactory: VoiceRecorderFactory,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) {
     private var isRecording: Boolean = false
     private var filePath = ""

@@ -8,7 +8,8 @@ import ir.mehdiyari.krypt.app.user.UserKeyProvider
 import ir.mehdiyari.krypt.app.user.UsernameProvider
 import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val currentUserManager: CurrentUserManager,
-    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
+    @DispatchersType(DispatchersQualifierType.DEFAULT) private val defaultDispatcher: CoroutineDispatcher,
     private val usernameProvider: UsernameProvider,
     private val userKeyProvider: UserKeyProvider,
     accountsRepository: AccountsRepository

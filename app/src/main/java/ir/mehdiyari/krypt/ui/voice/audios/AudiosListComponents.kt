@@ -31,7 +31,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntity
 import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerEntity
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun AudioList(

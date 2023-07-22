@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun TextsRoute(

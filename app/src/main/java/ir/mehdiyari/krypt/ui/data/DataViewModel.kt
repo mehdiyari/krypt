@@ -6,7 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherIO
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.formatSize
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class DataViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
     private val filesRepository: FilesRepository,
-    @DispatcherIO private val ioDispatcher: CoroutineDispatcher,
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val filesUtilities: FilesUtilities,
     private val mediaStoreManager: MediaStoreManager,
 ) : ViewModel() {
