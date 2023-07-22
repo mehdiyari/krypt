@@ -4,7 +4,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven(url = "https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
@@ -12,11 +12,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven(url = "https://jitpack.io")
+
     }
 }
 rootProject.name = "Krypt"
-include ':app'
-include ':shared:cryptography'
-include ':shared:dispatchers'
-include ':shared:designsystem:theme'
+include(":app")
+include(":shared:cryptography")
+include(":shared:dispatchers")
+include(":shared:designsystem:theme")
