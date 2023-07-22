@@ -16,13 +16,15 @@ fun NavController.navigateToHome() {
 }
 
 fun NavGraphBuilder.homeScreen(
-    openTextsScreen: (String?) -> Unit,
+    openAddTextScreen: (String?) -> Unit,
+    openTextsScreen: () -> Unit,
     openMusicAndAudioScreen: () -> Unit,
     openMediaScreen: (MediaViewAction) -> Unit,
     sharedDataViewModel: ShareDataViewModel,
 ) {
     composable(ROUTE_HOME) {
         HomeRoute(
+            openAddTextScreen = openAddTextScreen,
             openTextsScreen = openTextsScreen,
             openMusicAndAudioScreen = openMusicAndAudioScreen,
             openMediaScreen = openMediaScreen,

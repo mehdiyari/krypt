@@ -21,7 +21,8 @@ import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
 fun HomeRoute(
-    openTextsScreen: (String?) -> Unit,
+    openAddTextScreen: (String?) -> Unit,
+    openTextsScreen: () -> Unit,
     openMusicAndAudioScreen: () -> Unit,
     openMediaScreen: (MediaViewAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -34,7 +35,7 @@ fun HomeRoute(
     DisposableEffect(sharedData) {
         if (sharedData != null) {
             if (sharedData is SharedDataState.SharedText) {
-                openTextsScreen((sharedData as SharedDataState.SharedText).text)
+                openAddTextScreen((sharedData as SharedDataState.SharedText).text)
             } else if (sharedData is SharedDataState.SharedMedias) {
                 openMediaScreen(
                     MediaViewAction.SHARED_MEDIA
@@ -51,7 +52,7 @@ fun HomeRoute(
             when (it) {
                 FileTypeEnum.Photo -> openMediaScreen(MediaViewAction.DECRYPT_MEDIA)
                 FileTypeEnum.Audio -> openMusicAndAudioScreen()
-                FileTypeEnum.Text -> openTextsScreen(null)
+                FileTypeEnum.Text -> openTextsScreen()
                 else -> Unit
             }
         }, modifier = modifier
