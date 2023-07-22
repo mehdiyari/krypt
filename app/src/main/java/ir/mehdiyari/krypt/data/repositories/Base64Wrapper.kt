@@ -1,9 +1,9 @@
 package ir.mehdiyari.krypt.data.repositories
 
-import ir.mehdiyari.krypt.crypto.utils.Base64
-import ir.mehdiyari.krypt.crypto.utils.HashingUtils
-import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
-import ir.mehdiyari.krypt.crypto.utils.getBytesBetweenIndexes
+import ir.mehdiyari.krypt.cryptography.utils.Base64
+import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
+import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
+import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
 import javax.inject.Inject
 
 class Base64Wrapper @Inject constructor() {
