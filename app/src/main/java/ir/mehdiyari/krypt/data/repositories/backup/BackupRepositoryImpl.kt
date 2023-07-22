@@ -3,7 +3,6 @@ package ir.mehdiyari.krypt.data.repositories.backup
 import ir.mehdiyari.krypt.app.user.UserKeyProvider
 import ir.mehdiyari.krypt.app.user.UsernameProvider
 import ir.mehdiyari.krypt.crypto.api.KryptCryptographyHelper
-import ir.mehdiyari.krypt.crypto.utils.Base64
 import ir.mehdiyari.krypt.crypto.utils.HashingUtils
 import ir.mehdiyari.krypt.crypto.utils.SymmetricHelper
 import ir.mehdiyari.krypt.crypto.utils.combineWith
@@ -17,6 +16,8 @@ import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.backup.BackupEntity
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.data.repositories.Base64Wrapper
+import ir.mehdiyari.krypt.data.repositories.files.FileWrapper
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
@@ -38,6 +39,8 @@ class BackupRepositoryImpl @Inject constructor(
     private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val symmetricHelper: SymmetricHelper,
     private val userKeyProvider: UserKeyProvider,
+    private val base64Wrapper: Base64Wrapper,
+    private val fileWrapper: FileWrapper
 ) : BackupRepository {
 
     /**
@@ -49,7 +52,7 @@ class BackupRepositoryImpl @Inject constructor(
     override suspend fun backupAll(): Boolean {
         val user = accountsDao.getAccountWithName(usernameProvider.getUsername()!!)!!
         val salt =
-            Base64.decode(user.encryptedName)
+            base64Wrapper.decode(user.encryptedName)
                 .let { name ->
                     name.getBytesBetweenIndexes(
                         start = name.size - (SymmetricHelper.INITIALIZE_VECTOR_SIZE + HashingUtils.SALT_SIZE),
@@ -169,7 +172,7 @@ class BackupRepositoryImpl @Inject constructor(
         backupDao.getEntityWithId(
             backupFileId, usernameProvider.getUsername()!!
         )!!.also {
-            File(it.filePath).delete()
+            fileWrapper.delete(it.filePath)
             backupDao.deleteBackupWithId(backupFileId, usernameProvider.getUsername()!!)
         }
     }
@@ -181,7 +184,7 @@ class BackupRepositoryImpl @Inject constructor(
     override suspend fun deleteCachedBackupFiles() {
         backupDao.getAllBackupFiles(usernameProvider.getUsername()!!)?.forEach {
             try {
-                File(it).delete()
+                fileWrapper.delete(it)
             } catch (t: Throwable) {
                 t.printStackTrace()
             }
