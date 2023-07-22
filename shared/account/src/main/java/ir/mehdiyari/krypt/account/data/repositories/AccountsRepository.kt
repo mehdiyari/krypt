@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.account
+package ir.mehdiyari.krypt.account.data.repositories
 
 interface AccountsRepository {
 
@@ -22,4 +22,5 @@ interface AccountsRepository {
     ): Boolean
 
     suspend fun deleteCurrentAccount()
+
 }

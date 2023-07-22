@@ -2,6 +2,8 @@ package ir.mehdiyari.krypt.data.repositories.backup
 
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.account.data.local.AccountEntity
+import ir.mehdiyari.krypt.account.data.local.AccountsDao
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.cryptography.utils.Base64
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
@@ -11,8 +13,6 @@ import ir.mehdiyari.krypt.cryptography.utils.getBestBufferSizeForFile
 import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
 import ir.mehdiyari.krypt.cryptography.utils.toByteArray
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
-import ir.mehdiyari.krypt.data.account.AccountEntity
-import ir.mehdiyari.krypt.data.account.AccountsDao
 import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.backup.BackupEntity
 import ir.mehdiyari.krypt.data.file.FileEntity

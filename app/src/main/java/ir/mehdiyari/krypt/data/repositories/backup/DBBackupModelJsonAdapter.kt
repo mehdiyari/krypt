@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt.data.repositories.backup
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import ir.mehdiyari.krypt.data.account.AccountEntity
+import ir.mehdiyari.krypt.account.data.local.AccountEntity
 import ir.mehdiyari.krypt.data.file.FileEntity
 import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import javax.inject.Inject

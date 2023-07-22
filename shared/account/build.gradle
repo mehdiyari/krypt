@@ -12,7 +12,10 @@ android {
 }
 
 dependencies {
+    implementation libs.room
     implementation libs.coreKtx
     testImplementation libs.junit
     androidTestImplementation libs.testExt
+
+    implementation project(":shared:cryptography")
 }

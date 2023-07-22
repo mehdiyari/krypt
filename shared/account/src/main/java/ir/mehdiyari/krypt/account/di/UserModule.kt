@@ -9,6 +9,8 @@ import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.account.data.repositories.AccountsRepositoryImpl
 import ir.mehdiyari.krypt.account.impl.CurrentUserManagerImpl
 import javax.crypto.SecretKey
 
@@ -30,6 +32,11 @@ internal abstract class UserBindingModule {
     abstract fun provideCurrentUserManager(
         currentUserManagerImpl: CurrentUserManagerImpl
     ): CurrentUserManager
+
+    @Binds
+    abstract fun bindAccountRepository(
+        accountsRepositoryImpl: AccountsRepositoryImpl
+    ): AccountsRepository
 
 }
 

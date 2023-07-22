@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.account
+package ir.mehdiyari.krypt.account.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

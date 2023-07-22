@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.account
+package ir.mehdiyari.krypt.account.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -24,4 +24,5 @@ interface AccountsDao {
 
     @Query("DELETE FROM accounts where name = :accountName")
     suspend fun deleteCurrentAccount(accountName: String)
+
 }

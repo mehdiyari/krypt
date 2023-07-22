@@ -1,8 +1,13 @@
-package ir.mehdiyari.krypt.data.repositories.account
+package ir.mehdiyari.krypt.account.data.repositories
 
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.account.data.local.AccountEntity
+import ir.mehdiyari.krypt.account.data.local.AccountsDao
+import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
+import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable
+import ir.mehdiyari.krypt.account.exeptions.PasswordsNotMatchThrowable
 import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.utils.Base64
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
@@ -12,17 +17,12 @@ import ir.mehdiyari.krypt.cryptography.utils.getAfterIndex
 import ir.mehdiyari.krypt.cryptography.utils.getBeforeIndex
 import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
-import ir.mehdiyari.krypt.data.account.AccountEntity
-import ir.mehdiyari.krypt.data.account.AccountsDao
-import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
-import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable
-import ir.mehdiyari.krypt.ui.logout.throwables.PasswordsNotMatchThrowable
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AccountsRepositoryImpl @Inject constructor(
+internal class AccountsRepositoryImpl @Inject constructor(
     private val accountsDao: AccountsDao,
     private val symmetricHelper: SymmetricHelper,
     private val kryptKeyGenerator: KryptKeyGenerator,

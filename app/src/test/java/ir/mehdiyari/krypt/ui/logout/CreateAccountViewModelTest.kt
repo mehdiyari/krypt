@@ -4,10 +4,10 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.data.repositories.account.AccountsRepository
-import ir.mehdiyari.krypt.ui.logout.throwables.BadAccountNameThrowable
-import ir.mehdiyari.krypt.ui.logout.throwables.PasswordLengthThrowable
-import ir.mehdiyari.krypt.ui.logout.throwables.PasswordsNotMatchThrowable
+import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
+import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable
+import ir.mehdiyari.krypt.account.exeptions.PasswordsNotMatchThrowable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.FlowCollector
