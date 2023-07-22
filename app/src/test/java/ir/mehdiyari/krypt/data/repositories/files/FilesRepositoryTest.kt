@@ -11,9 +11,9 @@ import io.mockk.runs
 import io.mockk.unmockkAll
 import ir.mehdiyari.krypt.account.api.UsernameProvider
 import ir.mehdiyari.krypt.data.backup.BackupDao
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.file.data.dao.FilesDao
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue

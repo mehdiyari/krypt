@@ -15,8 +15,8 @@ import ir.mehdiyari.krypt.cryptography.utils.toByteArray
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
 import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.backup.BackupEntity
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.file.data.dao.FilesDao
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream

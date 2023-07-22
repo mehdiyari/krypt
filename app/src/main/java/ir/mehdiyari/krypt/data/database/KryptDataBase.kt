@@ -9,9 +9,9 @@ import ir.mehdiyari.krypt.account.data.local.AccountEntity
 import ir.mehdiyari.krypt.account.data.local.AccountsDao
 import ir.mehdiyari.krypt.data.backup.BackupDao
 import ir.mehdiyari.krypt.data.backup.BackupEntity
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnumMapper
-import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.file.data.dao.FilesDao
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.mappers.FileTypeEnumMapper
 
 @Database(
     entities = [

@@ -4,8 +4,8 @@ import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.Media
 import ir.mehdiyari.fallery.repo.AbstractBucketContentProvider
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.flow.Flow

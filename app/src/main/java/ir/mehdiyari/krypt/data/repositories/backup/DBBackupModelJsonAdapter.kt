@@ -4,8 +4,8 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import ir.mehdiyari.krypt.account.data.local.AccountEntity
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import javax.inject.Inject
 
 class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel>() {

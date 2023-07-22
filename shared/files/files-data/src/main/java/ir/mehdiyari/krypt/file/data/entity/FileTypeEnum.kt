@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.file
+package ir.mehdiyari.krypt.file.data.entity
 
 enum class FileTypeEnum(val value: String) {
     Photo("photo"),

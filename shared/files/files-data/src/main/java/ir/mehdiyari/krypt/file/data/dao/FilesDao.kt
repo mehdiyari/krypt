@@ -1,6 +1,13 @@
-package ir.mehdiyari.krypt.data.file
+package ir.mehdiyari.krypt.file.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 
 @Dao
 interface FilesDao {

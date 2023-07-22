@@ -10,10 +10,10 @@ import ir.mehdiyari.krypt.cryptography.utils.getAfterIndex
 import ir.mehdiyari.krypt.cryptography.utils.getBeforeIndex
 import ir.mehdiyari.krypt.cryptography.utils.getBestBufferSizeForFile
 import ir.mehdiyari.krypt.cryptography.utils.toLong
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.file.FilesDao
 import ir.mehdiyari.krypt.data.repositories.backup.DBBackupModel
 import ir.mehdiyari.krypt.data.repositories.backup.DBBackupModelJsonAdapter
+import ir.mehdiyari.krypt.file.data.dao.FilesDao
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
