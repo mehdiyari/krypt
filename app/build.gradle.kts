@@ -13,17 +13,20 @@ android {
 
     defaultConfig {
 
-        applicationId ="ir.mehdiyari.krypt"
-        versionCode=Versions.VERSION_CODE
-        versionName =Versions.VERSION_NAME
+        applicationId = "ir.mehdiyari.krypt"
+        versionCode = Versions.VERSION_CODE
+        versionName = Versions.VERSION_NAME
 
-        testInstrumentationRunner ="androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled =false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
@@ -39,10 +42,10 @@ dependencies {
 
     implementation(libs.lifecycleViewModeKtx)
     implementation(libs.lifecycleViewModelCompose)
-    ksp (libs.lifecycleCompiler)
+    ksp(libs.lifecycleCompiler)
 
     implementation(libs.room)
-    ksp (libs.roomCompiler)
+    ksp(libs.roomCompiler)
 
     implementation(libs.hiltNavigationCompose)
 
@@ -55,7 +58,7 @@ dependencies {
     implementation(libs.fallery)
 
     implementation(libs.glide)
-    ksp (libs.glideCompiler)
+    ksp(libs.glideCompiler)
     implementation(libs.landscapistGlide)
 
     implementation(libs.moshiKotlin)
