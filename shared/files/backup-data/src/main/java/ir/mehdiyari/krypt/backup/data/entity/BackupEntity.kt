@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.backup
+package ir.mehdiyari.krypt.backup.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

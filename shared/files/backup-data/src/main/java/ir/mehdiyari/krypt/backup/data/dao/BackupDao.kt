@@ -1,9 +1,10 @@
-package ir.mehdiyari.krypt.data.backup
+package ir.mehdiyari.krypt.backup.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 
 @Dao
 interface BackupDao {

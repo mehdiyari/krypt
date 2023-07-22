@@ -10,7 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.account.data.local.AccountsDao
-import ir.mehdiyari.krypt.data.backup.BackupDao
+import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.data.database.KryptDataBase
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import javax.inject.Singleton

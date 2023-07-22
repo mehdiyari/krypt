@@ -7,8 +7,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ir.mehdiyari.krypt.account.data.local.AccountEntity
 import ir.mehdiyari.krypt.account.data.local.AccountsDao
-import ir.mehdiyari.krypt.data.backup.BackupDao
-import ir.mehdiyari.krypt.data.backup.BackupEntity
+import ir.mehdiyari.krypt.backup.data.dao.BackupDao
+import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.mappers.FileTypeEnumMapper
