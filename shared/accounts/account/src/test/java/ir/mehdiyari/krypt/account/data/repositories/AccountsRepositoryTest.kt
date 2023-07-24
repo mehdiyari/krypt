@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.account
+package ir.mehdiyari.krypt.account.data.repositories
 
 import io.mockk.Runs
 import io.mockk.clearAllMocks
@@ -8,15 +8,15 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.unmockkAll
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
-import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.app.user.UsernameProvider
+import ir.mehdiyari.krypt.account.api.CurrentUserManager
+import ir.mehdiyari.krypt.account.api.UserKeyProvider
+import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
+import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
-import ir.mehdiyari.krypt.data.account.AccountEntity
-import ir.mehdiyari.krypt.data.account.AccountsDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -29,7 +29,8 @@ import org.junit.Test
 import javax.crypto.spec.SecretKeySpec
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AccountsRepositoryTest {
+internal class AccountsRepositoryTest {
+
     private lateinit var accountsDao: AccountsDao
     private lateinit var symmetricHelper: SymmetricHelper
     private lateinit var kryptKeyGenerator: KryptKeyGenerator
@@ -67,7 +68,7 @@ class AccountsRepositoryTest {
     }
 
     @Test
-    fun `addAccount should return true when everything is ok`() = runTest {
+    fun `addAccount should return true when everything is ok`(): Unit = runTest {
         val accountName = "AmirHossein"
         val accountPassword = "StrongPassword123"
         val accountPasswordConfig = "StrongPassword123"
@@ -124,7 +125,7 @@ class AccountsRepositoryTest {
     }
 
     @Test
-    fun `isAccountExists should return true if account exists`() = runTest {
+    fun `isAccountExists should return true if account exists`(): Unit = runTest {
         coEvery { accountsDao.isAnyAccountExist() } returns true
 
         val actual = accountsRepository.isAccountExists()
@@ -135,7 +136,7 @@ class AccountsRepositoryTest {
 
     @Ignore
     @Test
-    fun testSuccessfulLogin() = runTest {
+    fun testSuccessfulLogin(): Unit = runTest {
 
         // TODO: Mehdi would take care of it
         val accountName = "TestAccount"
@@ -160,7 +161,7 @@ class AccountsRepositoryTest {
     }
 
     @Test
-    fun `deleteCurrentAccount should delete the current account`() = runTest {
+    fun `deleteCurrentAccount should delete the current account`(): Unit = runTest {
         val username = "TestUser"
 
         every { usernameProvider.getUsername() } returns username

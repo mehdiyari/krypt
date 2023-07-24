@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.data.repositories.backup
 
-import ir.mehdiyari.krypt.data.backup.BackupEntity
+import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 
 interface BackupRepository {
     suspend fun backupAll(): Boolean
