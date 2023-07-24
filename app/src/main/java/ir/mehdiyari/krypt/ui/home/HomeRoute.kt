@@ -15,9 +15,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
+import ir.mehdiyari.krypt.ui.media.MediaViewAction
 
 @Composable
 fun HomeRoute(

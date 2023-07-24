@@ -27,8 +27,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 
 
 @OptIn(ExperimentalMaterial3Api::class)
