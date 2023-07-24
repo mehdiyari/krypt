@@ -1,12 +1,12 @@
 package ir.mehdiyari.krypt.data.repositories.files
 
-import ir.mehdiyari.krypt.app.user.UsernameProvider
-import ir.mehdiyari.krypt.data.backup.BackupDao
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
-import ir.mehdiyari.krypt.data.file.FilesDao
+import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import ir.mehdiyari.krypt.file.data.dao.FilesDao
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

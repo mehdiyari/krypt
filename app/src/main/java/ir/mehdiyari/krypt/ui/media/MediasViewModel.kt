@@ -8,11 +8,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.ui.media.data.FalleryBuilderProvider
 import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
 import ir.mehdiyari.krypt.utils.FilesUtilities

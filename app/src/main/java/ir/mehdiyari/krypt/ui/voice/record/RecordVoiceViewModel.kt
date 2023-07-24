@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.ui.voice.recorder.SecondToTimerMapper
 import ir.mehdiyari.krypt.ui.voice.recorder.VoiceRecorder
 import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaData

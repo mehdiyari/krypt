@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.data.repositories.files
 
-import ir.mehdiyari.krypt.data.file.FileEntity
-import ir.mehdiyari.krypt.data.file.FileTypeEnum
+import ir.mehdiyari.krypt.file.data.entity.FileEntity
+import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 
 interface FilesRepository {
     suspend fun getAllFilesTypeCounts(): List<Pair<FileTypeEnum, Long>>
