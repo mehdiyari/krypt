@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.data.repositories.files.FilesRepositoryImpl
+import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
+import ir.mehdiyari.krypt.data.repositories.backup.BackupRepositoryImpl
 import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
 import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepositoryImpl
 
@@ -18,4 +20,7 @@ abstract class RepositoryBindingModule {
 
     @Binds
     abstract fun bindFilesRepository(impl: FilesRepositoryImpl): FilesRepository
+
+    @Binds
+    abstract fun bindBackupRepository(impl: BackupRepositoryImpl): BackupRepository
 }

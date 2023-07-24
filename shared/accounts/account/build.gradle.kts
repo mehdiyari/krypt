@@ -15,6 +15,8 @@ dependencies {
     implementation(libs.room)
     implementation(libs.coreKtx)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutinesTest)
     androidTestImplementation(libs.testExt)
 
     implementation(project(":shared:cryptography"))
