@@ -75,5 +75,10 @@ dependencies {
 
     implementation(project(":shared:dispatchers"))
     implementation(project(":shared:cryptography"))
+    implementation(project(":shared:accounts:account"))
+    implementation(project(":shared:database"))
+    implementation(project(":shared:files:files-data"))
+    implementation(project(":shared:files:backup-data"))
+    implementation(project(":shared:accounts:account-data"))
     implementation(project(":shared:designsystem:theme"))
 }
