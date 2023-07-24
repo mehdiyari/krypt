@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.files
+package ir.mehdiyari.krypt.files.logic.repositories.impl
 
 import ir.mehdiyari.krypt.account.api.UsernameProvider
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
@@ -7,14 +7,16 @@ import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
-import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FileWrapper
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FilesRepositoryImpl @Inject constructor(
+internal class FilesRepositoryImpl @Inject constructor(
     private val filedDao: FilesDao,
     private val backupDao: BackupDao,
     private val usernameProvider: UsernameProvider,

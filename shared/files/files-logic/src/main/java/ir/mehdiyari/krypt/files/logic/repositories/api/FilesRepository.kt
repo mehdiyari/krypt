@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.files
+package ir.mehdiyari.krypt.files.logic.repositories.api
 
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum

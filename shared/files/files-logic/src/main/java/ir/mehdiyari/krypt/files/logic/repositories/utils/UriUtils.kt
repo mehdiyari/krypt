@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media.utils
+package ir.mehdiyari.krypt.files.logic.repositories.utils
 
 import android.content.ContentResolver
 import android.content.ContentUris

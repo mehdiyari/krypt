@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.files
+package ir.mehdiyari.krypt.files.logic.impl
 
 import io.mockk.Runs
 import io.mockk.clearAllMocks
@@ -14,7 +14,10 @@ import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
-import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
+import ir.mehdiyari.krypt.files.logic.repositories.impl.FilesRepositoryImpl
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FileWrapper
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +31,8 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FilesRepositoryTest {
+internal class FilesRepositoryTest {
+
     private val ioDispatcher = StandardTestDispatcher()
     private lateinit var filesDao: FilesDao
     private lateinit var backupDao: BackupDao

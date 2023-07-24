@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
-import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
-import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
 import ir.mehdiyari.krypt.utils.MediaStoreManager
 import ir.mehdiyari.krypt.utils.formatSize
 import kotlinx.coroutines.CancellationException

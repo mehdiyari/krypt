@@ -6,8 +6,8 @@ import ir.mehdiyari.fallery.models.MediaBucket
 import ir.mehdiyari.fallery.repo.AbstractMediaBucketProvider
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
-import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
 import java.io.File
 import javax.inject.Inject
 
