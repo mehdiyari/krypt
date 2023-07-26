@@ -82,4 +82,5 @@ dependencies {
     implementation(project(":shared:files:files-logic"))
     implementation(project(":shared:accounts:account-data"))
     implementation(project(":shared:designsystem:theme"))
+    implementation(project(":shared:designsystem:components"))
 }
