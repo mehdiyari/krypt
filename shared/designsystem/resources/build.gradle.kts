@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "ir.mehdiyari.kryot.shared.designsystem.resources"
+    namespace = "ir.mehdiyari.krypt.shared.designsystem.resources"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

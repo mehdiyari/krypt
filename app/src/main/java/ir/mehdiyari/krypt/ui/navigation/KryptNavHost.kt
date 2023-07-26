@@ -8,8 +8,8 @@ import ir.mehdiyari.krypt.ui.data.dataScreen
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.home.homeScreen
 import ir.mehdiyari.krypt.ui.home.navigateToHome
-import ir.mehdiyari.krypt.ui.login.loginScreen
-import ir.mehdiyari.krypt.ui.login.navigateToLogin
+import ir.mehdiyari.krypt.features.auth.login.loginScreen
+import ir.mehdiyari.krypt.features.auth.login.navigateToLogin
 import ir.mehdiyari.krypt.ui.logout.createAccountScreen
 import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen

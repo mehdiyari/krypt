@@ -1,9 +1,8 @@
-package ir.mehdiyari.krypt.ui.login
+package ir.mehdiyari.krypt.features.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
@@ -55,7 +54,7 @@ class LoginViewModel @Inject constructor(
                 }
             } catch (t: Throwable) {
                 t.printStackTrace()
-                _loginState.emit(LoginViewState.FailureLogin(R.string.something_went_wrong))
+                _loginState.emit(LoginViewState.FailureLogin(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong))
             }
         }
     }

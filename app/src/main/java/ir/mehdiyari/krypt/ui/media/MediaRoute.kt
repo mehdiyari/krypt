@@ -93,7 +93,7 @@ fun MediaRoute(
     val messageState by viewModel.messageFlow.collectAsStateWithLifecycle(null)
     if (messageState != null) {
         Toast.makeText(
-            LocalContext.current, messageState ?: R.string.something_went_wrong, Toast.LENGTH_SHORT
+            LocalContext.current, messageState ?: ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong, Toast.LENGTH_SHORT
         ).show()
     }
 

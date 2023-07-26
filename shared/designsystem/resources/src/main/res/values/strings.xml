@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="appIcon_contentDescription">Krypt Icon</string>
+    <string name="account_password">Account Password</string>
+    <string name="account_name">Account Name</string>
+
+
+</resources>

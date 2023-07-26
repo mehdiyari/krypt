@@ -38,7 +38,7 @@ class CreateAccountViewModel @Inject constructor(
                         is PasswordLengthThrowable -> R.string.password_length_error
                         is BadAccountNameThrowable -> R.string.account_length_error
                         is PasswordsNotMatchThrowable -> R.string.password_not_match
-                        else -> R.string.something_went_wrong
+                        else -> ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong
                     }.also {
                         _createAccountViewState.emit(
                             CreateAccountViewState.FailureCreateAccount(

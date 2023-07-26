@@ -1,9 +1,8 @@
-package ir.mehdiyari.krypt.ui.login
+package ir.mehdiyari.krypt.features.auth.login
 
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
@@ -98,7 +97,7 @@ class LoginViewModelTest {
 
             launch {
                 coVerify(exactly = 1) {
-                    collector.emit(LoginViewState.FailureLogin(R.string.something_went_wrong))
+                    collector.emit(LoginViewState.FailureLogin(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong))
                 }
                 collectorJob.cancel()
             }
