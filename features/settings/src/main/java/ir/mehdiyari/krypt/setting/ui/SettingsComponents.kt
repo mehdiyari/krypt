@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.setting.R
 import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SettingsScreenContent(
+internal fun SettingsScreenContent(
     modifier: Modifier,
     viewModel: SettingsViewModel,
     deleteDialogState: MutableState<Boolean>,
@@ -56,7 +56,7 @@ fun SettingsScreenContent(
 
 
 @Composable
-fun ShowDeleteConfirmDialog(
+internal fun ShowDeleteConfirmDialog(
     modifier: Modifier,
     onDeleteCurrentAccount: (String) -> Unit,
     state: MutableState<Boolean>,
@@ -90,7 +90,7 @@ fun ShowDeleteConfirmDialog(
                         onDeleteCurrentAccount.invoke(passwordValue)
                     },
                 ) {
-                    Text(stringResource(id = R.string.YES))
+                    Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.YES))
                 }
 
             },
@@ -100,7 +100,7 @@ fun ShowDeleteConfirmDialog(
                         state.value = false
                     }
                 ) {
-                    Text(stringResource(id = R.string.NO))
+                    Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.NO))
                 }
             }
         )
@@ -109,7 +109,7 @@ fun ShowDeleteConfirmDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AutomaticallyLockModalBottomSheet(
+internal fun AutomaticallyLockModalBottomSheet(
     modifier: Modifier,
     automaticallyLockSelectedItem: StateFlow<AutoLockItemsEnum>,
     scope: CoroutineScope,
@@ -156,7 +156,7 @@ fun AutomaticallyLockModalBottomSheet(
 
 @Composable
 @Preview
-fun ListItemsPreview() {
+internal fun ListItemsPreview() {
     KryptTheme {
         SettingItems(modifier = Modifier, onItemClick = {})
     }
@@ -166,7 +166,7 @@ fun ListItemsPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun AutomaticallyLockModalBottomSheetPreview() {
+internal fun AutomaticallyLockModalBottomSheetPreview() {
     KryptTheme {
         AutomaticallyLockModalBottomSheet(
             modifier = Modifier,
@@ -180,7 +180,7 @@ fun AutomaticallyLockModalBottomSheetPreview() {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun ShowDeleteConfirmDialogPreview() {
+internal fun ShowDeleteConfirmDialogPreview() {
     KryptTheme {
         ShowDeleteConfirmDialog(
             modifier = Modifier,

@@ -19,7 +19,6 @@
 
     <string name="menu_data_usage">Data Usage</string>
     <string name="menu_change_password">Change Password</string>
-    <string name="menu_settings">Settings</string>
     <string name="menu_help">Help</string>
     <string name="app_menu_subtitle">Safe house for your files</string>
 
@@ -30,8 +29,6 @@
     <string name="decrypt_action">Decrypt</string>
     <string name="delete_files_after_encrypt_dialog_message">Do you want to delete these selected files permanently after encrypting?</string>
     <string name="delete_files_after_decrypt_dialog_message">Do you want to delete these selected encrypted files permanently after decrypting?</string>
-    <string name="NO">No</string>
-    <string name="YES">Yes</string>
     <string name="encrypt_successfully">All files encrypted successfully</string>
     <string name="decrypt_successfully">All files decrypted successfully</string>
     <string name="operation_successfully">Operation finished successfully</string>
@@ -55,24 +52,10 @@
     <string name="delete_text_was_successfully">Text file successfully deleted</string>
     <string name="delete_text_was_unsuccessfully">Error while removing text file</string>
 
-    <string name="settings_lock_auto">Lock Automatically</string>
-    <string name="settings_lock_auto_disabled">Disabled</string>
-    <string name="settings_lock_auto_30_second">30 Second</string>
-    <string name="settings_lock_auto_1_min">1 Minute</string>
-    <string name="settings_lock_auto_2_min">2 Minute</string>
-    <string name="settings_lock_auto_5_min">5 Minute</string>
-    <string name="settings_lock_auto_10_min">10 Minute</string>
-    <string name="settings_lock_auto_15_min">15 Minute</string>
-    <string name="settings_lock_auto_30_min">30 Minute</string>
-    <string name="settings_lock_auto_1_hour">1 Hour</string>
+
     <string name="shared_media_not_found">We can\'t find selected media for encrypt.</string>
     <string name="navigation_error">Error while navigation</string>
-    <string name="settings_delete_account_text">Delete account</string>
-    <string name="settings_delete_account_description">Do you want to delete current account? All data will be lost permanently</string>
-    <string name="password_not_match">Passwords does not match</string>
     <string name="password_confirmation">Password Confirm</string>
-    <string name="your_account_deleted">Your account deleted successfully</string>
-    <string name="account_delete_error">Something went wrong during deleting your account. You must sign-in again</string>
     <string name="krypt_file_sizes">App Storage Used</string>
     <string name="last_backup_date">Last Backup </string>
     <string name="no_backup_yet"> 00/00/00 00:00 </string>

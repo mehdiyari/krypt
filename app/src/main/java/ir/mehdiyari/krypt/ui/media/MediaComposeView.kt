@@ -51,11 +51,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.glide.GlideImage
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.DECRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.ENCRYPT_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.PICK_MEDIA
 import ir.mehdiyari.krypt.ui.media.MediaViewAction.SHARED_MEDIA
-import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 
 @Composable
@@ -112,12 +112,12 @@ fun ConfirmDeleteFileDialog(
         OutlinedButton(
             onClick = onConfirmClicked,
         ) {
-            Text(stringResource(id = R.string.YES))
+            Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.YES))
         }
 
     }, dismissButton = {
         OutlinedButton(onClick = onDismiss) {
-            Text(stringResource(id = R.string.NO))
+            Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.NO))
         }
     })
 }
@@ -154,12 +154,13 @@ fun ShowActionButton(
             ActionFloatingButton(buttonTextAndDeleteText.first) {
                 androidx.appcompat.app.AlertDialog.Builder(context)
                     .setMessage(buttonTextAndDeleteText.second)
-                    .setPositiveButton(context.getString(R.string.YES)) { d, _ ->
+                    .setPositiveButton(context.getString(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.YES)) { d, _ ->
                         d.dismiss()
                         encryptDecryptState?.onEncryptOrDecryptAction?.invoke(
                             true, notifyMediaScanner
                         )
-                    }.setNegativeButton(context.getString(R.string.NO)) { d, _ ->
+                    }
+                    .setNegativeButton(context.getString(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.NO)) { d, _ ->
                         d.dismiss()
                         encryptDecryptState?.onEncryptOrDecryptAction?.invoke(
                             false, notifyMediaScanner

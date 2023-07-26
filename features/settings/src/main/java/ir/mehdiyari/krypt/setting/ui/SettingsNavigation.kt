@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController

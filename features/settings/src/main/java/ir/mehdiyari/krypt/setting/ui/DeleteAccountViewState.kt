@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
-sealed class DeleteAccountViewState {
+internal sealed class DeleteAccountViewState {
     object DeleteAccountStarts : DeleteAccountViewState()
     object DeleteAccountFailed : DeleteAccountViewState()
     object DeleteAccountFinished : DeleteAccountViewState()

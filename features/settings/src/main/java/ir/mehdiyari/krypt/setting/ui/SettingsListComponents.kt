@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -28,8 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.setting.R
 
 @Composable
 fun SettingItems(

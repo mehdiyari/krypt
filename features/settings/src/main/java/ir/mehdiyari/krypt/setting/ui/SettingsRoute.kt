@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.size
@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.setting.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsRoute(
+internal fun SettingsRoute(
     modifier: Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
     onNavigationClickIcon: () -> Unit = {}
@@ -41,7 +41,10 @@ fun SettingsRoute(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.menu_settings), fontSize = 18.sp)
+                    Text(
+                        text = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.menu_settings),
+                        fontSize = 18.sp
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = {
@@ -84,7 +87,7 @@ fun SettingsRoute(
                 if (deleteAccountViewState.value != null) {
                     Toast.makeText(
                         LocalContext.current,
-                        R.string.password_not_match,
+                        ir.mehdiyari.krypt.shared.designsystem.resources.R.string.password_not_match,
                         Toast.LENGTH_SHORT
                     ).show()
                 }

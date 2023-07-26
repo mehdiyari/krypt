@@ -7,10 +7,10 @@ import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
-import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
-import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
+import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepository
+import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
