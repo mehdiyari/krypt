@@ -135,7 +135,7 @@ class CreateAccountViewModelTest {
             launch {
                 coVerify(exactly = 1) {
                     collector.emit(
-                        CreateAccountViewState.FailureCreateAccount(R.string.something_went_wrong)
+                        CreateAccountViewState.FailureCreateAccount(ir.mehdiyari.fallery.R.string.something_went_wrong)
                     )
                 }
                 collectorJob.cancel()
