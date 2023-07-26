@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 
 @Composable
 fun CreateAccountItems(
@@ -76,16 +76,17 @@ fun CreateAccountItems(
         )
 
         PasswordTextField(
-            password,
+            password = password,
+            hint = stringResource(id = R.string.account_password),
             onPasswordChanged = onPasswordChanged,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
         PasswordTextField(
-            confirmPassword,
+            password = confirmPassword,
+            hint = stringResource(id = R.string.account_password),
             onPasswordChanged = onConfirmPasswordChanged,
-            hintString = R.string.password_confirmation,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)

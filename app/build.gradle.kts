@@ -81,4 +81,5 @@ dependencies {
     implementation(project(":shared:files:backup-data"))
     implementation(project(":shared:accounts:account-data"))
     implementation(project(":shared:designsystem:theme"))
+    implementation(project(":shared:designsystem:components"))
 }

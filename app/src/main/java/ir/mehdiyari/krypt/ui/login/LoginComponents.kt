@@ -37,8 +37,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 
 @Composable
 fun LoginFields(
@@ -73,8 +73,9 @@ fun LoginFields(
         )
 
         PasswordTextField(
-            password,
-            onPasswordChanged,
+            password = password,
+            hint = stringResource(id = R.string.account_password),
+            onPasswordChanged = onPasswordChanged,
             modifier = modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
