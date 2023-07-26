@@ -101,6 +101,7 @@ fun KryptApp(
                     onStopLocker = onStopLocker,
                     startDestination = if (hasAnyAccount) ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
                     sharedDataViewModel = sharedDataViewModel,
+                    onRestartApp = onLockAppClicked,
                     onShowSnackbar = { message, action ->
                         snackbarHostState.showSnackbar(
                             message = message,

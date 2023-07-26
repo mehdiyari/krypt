@@ -32,6 +32,7 @@ fun KryptNaveHost(
     modifier: Modifier = Modifier,
     sharedDataViewModel: ShareDataViewModel,
     onStopLocker: () -> Unit,
+    onRestartApp: () -> Unit,
 ) {
     val navController = kryptAppState.navController
     NavHost(
@@ -84,7 +85,7 @@ fun KryptNaveHost(
         dataScreen { navController.popBackStack() }
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
-        settingsRoute { navController.popBackStack() }
+        settingsRoute(onRestartApp) { navController.popBackStack() }
     }
 }
 

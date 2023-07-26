@@ -12,9 +12,14 @@ fun NavController.navigateToSettings() {
 }
 
 fun NavGraphBuilder.settingsRoute(
-    onBackPressed: () -> Unit
+    onRestartApp: () -> Unit,
+    onBackPressed: () -> Unit,
 ) {
     composable(ROUTE_SETTINGS) {
-        SettingsRoute(modifier = Modifier, onNavigationClickIcon = onBackPressed)
+        SettingsRoute(
+            modifier = Modifier,
+            onRestartApp = onRestartApp,
+            onNavigationClickIcon = onBackPressed
+        )
     }
 }

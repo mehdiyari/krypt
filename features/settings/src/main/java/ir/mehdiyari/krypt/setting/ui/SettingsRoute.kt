@@ -31,7 +31,8 @@ import ir.mehdiyari.krypt.setting.R
 internal fun SettingsRoute(
     modifier: Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
-    onNavigationClickIcon: () -> Unit = {}
+    onRestartApp: () -> Unit,
+    onNavigationClickIcon: () -> Unit = {},
 ) {
     var openAutoLockBottomSheet by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -75,7 +76,7 @@ internal fun SettingsRoute(
                     Toast.LENGTH_LONG
                 ).show()
 
-                TODO("restart the app")
+                onRestartApp()
             }
 
             DeleteAccountViewState.DeleteAccountStarts -> {
