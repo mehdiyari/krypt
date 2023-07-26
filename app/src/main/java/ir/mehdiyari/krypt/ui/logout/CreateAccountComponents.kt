@@ -45,8 +45,8 @@ fun CreateAccountItems(
         modifier = modifier
     ) {
         Image(
-            painter = painterResource(R.drawable.krypt),
-            contentDescription = stringResource(id = R.string.splash_content_description),
+            painter = painterResource(ir.mehdiyari.krypt.shared.designsystem.resources.R.drawable.krypt),
+            contentDescription = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.appIcon_contentDescription),
             contentScale = ContentScale.Fit,
             modifier = Modifier.size(100.dp)
         )
@@ -63,7 +63,7 @@ fun CreateAccountItems(
             singleLine = true,
             value = userName,
             onValueChange = onUserNameChanged,
-            label = { Text(stringResource(id = R.string.account_name)) },
+            label = { Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.account_name)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 20.dp),
@@ -77,7 +77,7 @@ fun CreateAccountItems(
 
         PasswordTextField(
             password = password,
-            hint = stringResource(id = R.string.account_password),
+            hint = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.account_password),
             onPasswordChanged = onPasswordChanged,
             modifier = Modifier
                 .fillMaxWidth()
@@ -85,7 +85,7 @@ fun CreateAccountItems(
         )
         PasswordTextField(
             password = confirmPassword,
-            hint = stringResource(id = R.string.account_password),
+            hint = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.account_password),
             onPasswordChanged = onConfirmPasswordChanged,
             modifier = Modifier
                 .fillMaxWidth()

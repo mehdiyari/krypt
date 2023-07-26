@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name_password_invalid">Account Name or Password is wrong</string>
+    <string name="button_create_new_account">Create New Account</string>
+    <string name="button_login">Login</string>
+
+</resources>

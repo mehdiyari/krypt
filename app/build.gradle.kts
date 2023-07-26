@@ -41,15 +41,14 @@ dependencies {
     api(libs.composeActivity)
 
     implementation(libs.lifecycleViewModeKtx)
-    implementation(libs.lifecycleViewModelCompose)
+    implementation(libs.androidx.lifecycle.viewmodelCompose)
     ksp(libs.lifecycleCompiler)
 
     implementation(libs.room)
     ksp(libs.roomCompiler)
 
-    implementation(libs.hiltNavigationCompose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
-    implementation(libs.lifecycleViewModelCompose)
     implementation(libs.navigationCompose)
 
     implementation(libs.coroutinesAndroid)
@@ -70,7 +69,7 @@ dependencies {
     testImplementation(libs.coroutinesTest)
     testImplementation(libs.turbine)
 
-    implementation(libs.lifecycleRuntimeCompose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.splashscreen)
 
     implementation(project(":shared:dispatchers"))
@@ -83,4 +82,7 @@ dependencies {
     implementation(project(":shared:accounts:account-data"))
     implementation(project(":shared:designsystem:theme"))
     implementation(project(":shared:designsystem:components"))
+    implementation(project(":shared:designsystem:resources"))
+
+    implementation(project(":features:auth:login"))
 }

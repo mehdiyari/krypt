@@ -96,7 +96,7 @@ class AddTextViewModel @Inject constructor(
     private fun updateNote(title: String, content: String) {
         val textEntity = (argsTextViewState.value as? AddTextArgsViewState.TextArg)?.textEntity
         if (textEntity == null) {
-            _argsTextViewState.value = AddTextArgsViewState.Error(R.string.something_went_wrong)
+            _argsTextViewState.value = AddTextArgsViewState.Error(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong)
             return
         }
 

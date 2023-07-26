@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.data.navigateToData
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import ir.mehdiyari.krypt.ui.login.ROUTE_LOGIN
+import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
@@ -100,7 +100,7 @@ fun KryptApp(
                 KryptNaveHost(
                     kryptAppState = kryptAppState,
                     onStopLocker = onStopLocker,
-                    startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
+                    startDestination = if (hasAnyAccount) ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
                     sharedDataViewModel = sharedDataViewModel,
                     onShowSnackbar = { message, action ->
                         snackbarHostState.showSnackbar(

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.login
+package ir.mehdiyari.krypt.features.auth.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -36,7 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 
@@ -56,8 +55,8 @@ fun LoginFields(
     ) {
 
         Image(
-            painter = painterResource(R.drawable.krypt),
-            contentDescription = stringResource(id = R.string.splash_content_description),
+            painter = painterResource(ir.mehdiyari.krypt.shared.designsystem.resources.R.drawable.krypt),
+            contentDescription = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.appIcon_contentDescription),
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .size(100.dp)
@@ -74,7 +73,7 @@ fun LoginFields(
 
         PasswordTextField(
             password = password,
-            hint = stringResource(id = R.string.account_password),
+            hint = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.account_password),
             onPasswordChanged = onPasswordChanged,
             modifier = modifier
                 .fillMaxWidth()
@@ -151,7 +150,7 @@ fun DropDownTextField(
                     expanded = expanded
                 )
             },
-            label = { Text(text = stringResource(id = R.string.account_name)) },
+            label = { Text(text = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.account_name)) },
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
         )
 

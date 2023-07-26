@@ -78,7 +78,7 @@ fun ShowDeleteConfirmDialog(
                     )
                     PasswordTextField(
                         password = passwordValue,
-                        hint = stringResource(id = R.string.account_password),
+                        hint = stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.account_password),
                         onPasswordChanged = {
                             passwordValue = it
                         })

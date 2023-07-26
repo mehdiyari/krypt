@@ -304,7 +304,7 @@ class MediasViewModel @Inject constructor(
                 }
                 removeSelectedFromList(path, showMessage = false)
             } catch (t: Throwable) {
-                _messageFlow.emit(R.string.something_went_wrong)
+                _messageFlow.emit(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong)
             }
         }
     }
@@ -342,7 +342,7 @@ class MediasViewModel @Inject constructor(
                 }
             } catch (t: Throwable) {
                 t.printStackTrace()
-                _messageFlow.emit(R.string.something_went_wrong)
+                _messageFlow.emit(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong)
                 closeMedia()
             }
         }
