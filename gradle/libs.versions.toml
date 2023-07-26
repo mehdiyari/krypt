@@ -27,6 +27,7 @@ exoplayer = "1.1.0"
 mockk = "1.12.7"
 turbine = "0.9.0"
 splashscreen = "1.0.1"
+documentfile = "1.0.1"
 
 
 [libraries]
@@ -74,6 +75,7 @@ hiltAndroidGradleClassPath = { group = "com.google.dagger", name = "hilt-android
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinAndroidPlugin" }
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 
 
 [plugins]

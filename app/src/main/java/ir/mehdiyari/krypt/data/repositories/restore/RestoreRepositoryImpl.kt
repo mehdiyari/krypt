@@ -14,7 +14,7 @@ import ir.mehdiyari.krypt.data.repositories.backup.DBBackupModel
 import ir.mehdiyari.krypt.data.repositories.backup.DBBackupModelJsonAdapter
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
-import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException

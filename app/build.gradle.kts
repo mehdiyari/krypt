@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":shared:database"))
     implementation(project(":shared:files:files-data"))
     implementation(project(":shared:files:backup-data"))
+    implementation(project(":shared:files:files-logic"))
     implementation(project(":shared:accounts:account-data"))
     implementation(project(":shared:designsystem:theme"))
 }

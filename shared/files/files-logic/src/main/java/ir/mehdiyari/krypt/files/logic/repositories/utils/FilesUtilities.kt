@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.utils
+package ir.mehdiyari.krypt.files.logic.repositories.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,7 +7,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.documentfile.provider.DocumentFile
 import dagger.hilt.android.qualifiers.ApplicationContext
-import ir.mehdiyari.krypt.ui.media.utils.getRealPathBasedOnUri
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -70,16 +69,16 @@ class FilesUtilities @Inject constructor(
 
     fun generateEncryptedFilePathForMediaThumbnail(thumbnailPath: String): String =
         "${getFilesDir()}/${getNameOfFile(thumbnailPath)}.${
-            thumbnailPath.split(".").lastOrNull() ?: ".${KRYPT_EXT}"
+            thumbnailPath.split(".").lastOrNull() ?: ".$KRYPT_EXT"
         }"
 
     fun generateStableNameFilePathForMediaThumbnail(thumbnailPath: String): String =
         "${getCashDir()}/${getNameOfFile(thumbnailPath)}.${
-            thumbnailPath.split(".").lastOrNull() ?: ".${KRYPT_EXT}"
+            thumbnailPath.split(".").lastOrNull() ?: ".$KRYPT_EXT"
         }"
 
     fun createThumbnailPath(path: String): String =
-        "${getCashDir()}/${KRYPT_THUMBS_FILES_PREFIX}${
+        "${getCashDir()}/$KRYPT_THUMBS_FILES_PREFIX${
             getNameOfFile(path)
         }.jpg"
 
@@ -128,7 +127,7 @@ class FilesUtilities @Inject constructor(
         }
 
     fun generateTextFilePath(): String =
-        "${getFilesDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}.${KRYPT_EXT}"
+        "${getFilesDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}.$KRYPT_EXT"
 
     fun generateTextFileCachePath(): String =
         "${getCashDir()}/${KRYPT_FILES_PREFIX}file_${System.currentTimeMillis()}"
@@ -176,10 +175,10 @@ class FilesUtilities @Inject constructor(
     }
 
     fun generateBackupFilePath(accountName: String): String =
-        "${getFilesDir()}/krypt_backup_${accountName}_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+        "${getFilesDir()}/krypt_backup_${accountName}_${System.currentTimeMillis()}_${Random().nextInt()}.$KRYPT_EXT"
 
     fun generateRestoreFilePath(): String =
-        "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.${KRYPT_EXT}"
+        "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.$KRYPT_EXT"
 
     fun x(path: String) {
         val file = DocumentFile.fromFile(File(path))
@@ -205,13 +204,13 @@ class FilesUtilities @Inject constructor(
     }
 
     fun generateCacheVideoPath(name: String): String =
-        "${getFilesDir()}/${VIDEO_CACHE_FOLDER}/".apply {
+        "${getFilesDir()}/$VIDEO_CACHE_FOLDER/".apply {
             File(this).mkdirs()
         } + name
 
     fun deleteCachedVideoDIR() {
         try {
-            File("${getFilesDir()}/${VIDEO_CACHE_FOLDER}").deleteRecursively()
+            File("${getFilesDir()}/$VIDEO_CACHE_FOLDER").deleteRecursively()
         } catch (t: Throwable) {
             t.printStackTrace()
         }
@@ -219,7 +218,7 @@ class FilesUtilities @Inject constructor(
 
     fun deleteCachedAudioDIR() {
         try {
-            File("${getFilesDir()}/${AUDIO_CACHE_FOLDER}").deleteRecursively()
+            File("${getFilesDir()}/$AUDIO_CACHE_FOLDER").deleteRecursively()
         } catch (t: Throwable) {
             t.printStackTrace()
         }
@@ -241,10 +240,10 @@ class FilesUtilities @Inject constructor(
     fun getFilePathForVoiceRecord(): String = "${getCashDir()}/v_${System.nanoTime()}.enc"
 
     fun getRealFilePathForRecordedVoice(): String =
-        "${getFilesDir()}/v_${System.nanoTime()}.${AUDIO_EXT}"
+        "${getFilesDir()}/v_${System.nanoTime()}.$AUDIO_EXT"
 
     fun generateCacheAudioPath(name: String): String =
-        "${getFilesDir()}/${AUDIO_CACHE_FOLDER}/".apply {
+        "${getFilesDir()}/$AUDIO_CACHE_FOLDER/".apply {
             File(this).mkdirs()
         } + name
 }

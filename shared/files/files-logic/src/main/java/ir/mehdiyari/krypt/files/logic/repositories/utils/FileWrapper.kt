@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.files
+package ir.mehdiyari.krypt.files.logic.repositories.utils
 
 import java.io.File
 import javax.inject.Inject

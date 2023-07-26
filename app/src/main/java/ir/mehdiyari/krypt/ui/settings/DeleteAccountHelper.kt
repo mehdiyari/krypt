@@ -3,8 +3,8 @@ package ir.mehdiyari.krypt.ui.settings
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.data.repositories.backup.BackupRepository
-import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
-import ir.mehdiyari.krypt.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
+import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
 import javax.inject.Inject
 
 class DeleteAccountHelper @Inject constructor(

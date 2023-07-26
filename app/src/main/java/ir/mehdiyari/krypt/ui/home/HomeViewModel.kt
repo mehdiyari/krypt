@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
-import ir.mehdiyari.krypt.data.repositories.files.FilesRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
+import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
