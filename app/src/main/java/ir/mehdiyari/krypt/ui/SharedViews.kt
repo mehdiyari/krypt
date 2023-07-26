@@ -25,60 +25,6 @@ import androidx.compose.ui.unit.dp
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
-@Composable
-fun PasswordTextField(
-    password: String,
-    onPasswordChanged: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    hintString: Int = R.string.account_password,
-) {
-    TextField(
-        singleLine = true,
-        value = password,
-        onValueChange = onPasswordChanged,
-        label = { Text(stringResource(id = hintString)) },
-        modifier = modifier,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            autoCorrect = false,
-            imeAction = ImeAction.Go
-        ),
-        visualTransformation = PasswordVisualTransformation(),
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
-    )
-}
-
-@Preview
-@Composable
-fun PasswordTextFieldEmptyPreview() {
-    KryptTheme {
-        Surface {
-            PasswordTextField(
-                password = "",
-                onPasswordChanged = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(25.dp, 3.dp, 25.dp, 3.dp)
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun PasswordTextFieldFilledPreview() {
-    KryptTheme {
-        Surface {
-            PasswordTextField(
-                password = "123456",
-                onPasswordChanged = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(25.dp, 3.dp, 25.dp, 3.dp)
-            )
-        }
-    }
-}
 
 @Composable
 fun ManageExternalPermissionDialog(

@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.PasswordTextField
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,9 +76,12 @@ fun ShowDeleteConfirmDialog(
                         modifier = modifier.padding(bottom = 10.dp),
                         text = stringResource(id = R.string.settings_delete_account_description)
                     )
-                    PasswordTextField(password = passwordValue, onPasswordChanged = {
-                        passwordValue = it
-                    })
+                    PasswordTextField(
+                        password = passwordValue,
+                        hint = stringResource(id = R.string.account_password),
+                        onPasswordChanged = {
+                            passwordValue = it
+                        })
                 }
             },
             confirmButton = {
