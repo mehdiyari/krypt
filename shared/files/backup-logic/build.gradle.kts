@@ -2,7 +2,6 @@
 plugins {
     id("krypt.android.library")
     id("krypt.android.hilt")
-    alias(libs.plugins.kspPlugin)
 }
 
 android {
@@ -14,10 +13,17 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":shared:files:backup-data"))
+    implementation(project(":shared:accounts:account-data"))
+    implementation(project(":shared:accounts:account"))
+    implementation(project(":shared:files:files-logic"))
+    implementation(project(":shared:files:files-data"))
+    implementation(project(":shared:cryptography"))
+
     implementation(libs.coroutinesCore)
-    implementation(libs.room)
-    ksp(libs.room)
     implementation(libs.coreKtx)
+    implementation(libs.moshiKotlin)
     testImplementation(libs.junit)
     testImplementation(libs.coroutinesTest)
     androidTestImplementation(libs.testExt)

@@ -15,11 +15,14 @@ import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
 import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
+import ir.mehdiyari.krypt.backup.logic.backup.BackupRepository
+import ir.mehdiyari.krypt.backup.logic.backup.BackupRepositoryImpl
+import ir.mehdiyari.krypt.backup.logic.backup.DBBackupModelJsonAdapter
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.cryptography.utils.Base64Wrapper
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
-import ir.mehdiyari.krypt.data.repositories.Base64Wrapper
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
