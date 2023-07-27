@@ -1,7 +1,6 @@
 plugins {
     id("krypt.android.library")
     id("krypt.android.hilt")
-    alias(libs.plugins.kspPlugin)
 }
 
 android {

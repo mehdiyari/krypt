@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.backup
+package ir.mehdiyari.krypt.backup.logic.backup
 
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -16,10 +16,10 @@ import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.cryptography.utils.Base64Wrapper
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
-import ir.mehdiyari.krypt.data.repositories.Base64Wrapper
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
@@ -42,7 +42,7 @@ import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class BackupRepositoryTest {
+internal class BackupRepositoryTest {
 
     private lateinit var accountsDao: AccountsDao
     private lateinit var filesDao: FilesDao

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories
+package ir.mehdiyari.krypt.cryptography.utils
 
 import ir.mehdiyari.krypt.cryptography.utils.Base64
 import javax.inject.Inject

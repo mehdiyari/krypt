@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.backup
+package ir.mehdiyari.krypt.backup.logic.backup
 
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
@@ -7,6 +7,7 @@ import ir.mehdiyari.krypt.accounts.data.entity.AccountEntity
 import ir.mehdiyari.krypt.backup.data.dao.BackupDao
 import ir.mehdiyari.krypt.backup.data.entity.BackupEntity
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
+import ir.mehdiyari.krypt.cryptography.utils.Base64Wrapper
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
 import ir.mehdiyari.krypt.cryptography.utils.SymmetricHelper
 import ir.mehdiyari.krypt.cryptography.utils.combineWith
@@ -14,7 +15,6 @@ import ir.mehdiyari.krypt.cryptography.utils.getBestBufferSizeForFile
 import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
 import ir.mehdiyari.krypt.cryptography.utils.toByteArray
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
-import ir.mehdiyari.krypt.data.repositories.Base64Wrapper
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.files.logic.repositories.utils.FileWrapper
@@ -29,7 +29,7 @@ import javax.crypto.CipherOutputStream
 import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
 
-class BackupRepositoryImpl @Inject constructor(
+internal class BackupRepositoryImpl @Inject constructor(
     private val accountsDao: AccountsDao,
     private val filesDao: FilesDao,
     private val backupDao: BackupDao,

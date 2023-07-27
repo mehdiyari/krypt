@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.data.repositories.backup
+package ir.mehdiyari.krypt.backup.logic.backup
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
@@ -8,7 +8,7 @@ import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import javax.inject.Inject
 
-class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel>() {
+internal class DBBackupModelJsonAdapter @Inject constructor() : JsonAdapter<DBBackupModel>() {
 
     companion object {
         const val ACCOUNT = "account"
