@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.moshiKotlin)
     testImplementation(libs.junit)
     testImplementation(libs.coroutinesTest)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
 }
