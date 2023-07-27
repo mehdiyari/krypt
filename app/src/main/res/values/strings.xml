@@ -9,9 +9,9 @@
     <string name="add_audio">Audio</string>
     <string name="add_text">Text</string>
 
-    <string name="medias_library">Media Library</string>
-    <string name="audios_library">Audios Library</string>
-    <string name="texts_library">Texts Library</string>
+    <string name="medias_library">Media</string>
+    <string name="audios_library">Audios</string>
+    <string name="texts_library">Texts</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
     <string name="krypt_main_menu">Krypt Main Menu</string>
