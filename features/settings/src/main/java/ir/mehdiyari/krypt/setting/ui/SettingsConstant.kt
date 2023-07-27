@@ -1,16 +1,16 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.setting.R
 
 
-val SETTINGS_LIST = listOf<Pair<@DrawableRes Int, @StringRes Int>>(
+internal val SETTINGS_LIST = listOf<Pair<@DrawableRes Int, @StringRes Int>>(
     R.drawable.ic_lock_clock_24 to R.string.settings_lock_auto,
     R.drawable.ic_delete_account_24 to R.string.settings_delete_account_text
 )
 
-val AUTO_LOCK_CRYPT_ITEMS = listOf<Pair<AutoLockItemsEnum, Int>>(
+internal val AUTO_LOCK_CRYPT_ITEMS = listOf(
     AutoLockItemsEnum.Disabled to R.string.settings_lock_auto_disabled,
     AutoLockItemsEnum.ThirtySecond to R.string.settings_lock_auto_30_second,
     AutoLockItemsEnum.OneMinute to R.string.settings_lock_auto_1_min,

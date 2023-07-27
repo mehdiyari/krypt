@@ -215,7 +215,7 @@ fun DeleteBackupFileDialog(
                         deleteDialogState.value = false to -1
                     },
                 ) {
-                    Text(stringResource(id = R.string.YES))
+                    Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.YES))
                 }
 
             },
@@ -225,7 +225,7 @@ fun DeleteBackupFileDialog(
                         deleteDialogState.value = false to -1
                     }
                 ) {
-                    Text(stringResource(id = R.string.NO))
+                    Text(stringResource(id = ir.mehdiyari.krypt.shared.designsystem.resources.R.string.NO))
                 }
             }
         )

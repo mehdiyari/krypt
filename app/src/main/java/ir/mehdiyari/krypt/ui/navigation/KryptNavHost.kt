@@ -3,18 +3,18 @@ package ir.mehdiyari.krypt.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import ir.mehdiyari.krypt.features.auth.login.loginScreen
+import ir.mehdiyari.krypt.features.auth.login.navigateToLogin
+import ir.mehdiyari.krypt.setting.ui.settingsRoute
 import ir.mehdiyari.krypt.ui.KryptAppState
 import ir.mehdiyari.krypt.ui.data.dataScreen
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.home.homeScreen
 import ir.mehdiyari.krypt.ui.home.navigateToHome
-import ir.mehdiyari.krypt.features.auth.login.loginScreen
-import ir.mehdiyari.krypt.features.auth.login.navigateToLogin
 import ir.mehdiyari.krypt.ui.logout.createAccountScreen
 import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
-import ir.mehdiyari.krypt.ui.settings.settingsRoute
 import ir.mehdiyari.krypt.ui.text.add.addTextScreen
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
@@ -32,6 +32,7 @@ fun KryptNaveHost(
     modifier: Modifier = Modifier,
     sharedDataViewModel: ShareDataViewModel,
     onStopLocker: () -> Unit,
+    onRestartApp: () -> Unit,
 ) {
     val navController = kryptAppState.navController
     NavHost(
@@ -84,7 +85,7 @@ fun KryptNaveHost(
         dataScreen { navController.popBackStack() }
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
-        settingsRoute { navController.popBackStack() }
+        settingsRoute(onRestartApp) { navController.popBackStack() }
     }
 }
 

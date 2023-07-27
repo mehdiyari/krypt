@@ -1,12 +1,12 @@
-package ir.mehdiyari.krypt.data.repositories.settings
+package ir.mehdiyari.krypt.setting.data.repositories
 
 import android.content.SharedPreferences
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
-import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepositoryImpl.Companion.DEFAULT_VALUE
-import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
+import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepositoryImpl.Companion.DEFAULT_VALUE
+import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before

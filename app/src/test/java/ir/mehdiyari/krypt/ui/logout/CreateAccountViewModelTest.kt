@@ -115,7 +115,7 @@ class CreateAccountViewModelTest {
             launch {
                 coVerify(exactly = 1) {
                     collector.emit(
-                        CreateAccountViewState.FailureCreateAccount(R.string.password_not_match)
+                        CreateAccountViewState.FailureCreateAccount(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.password_not_match)
                     )
                 }
                 collectorJob.cancel()

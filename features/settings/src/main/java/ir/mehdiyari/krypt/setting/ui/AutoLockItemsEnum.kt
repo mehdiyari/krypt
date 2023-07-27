@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 enum class AutoLockItemsEnum(val value: Int) {
     Disabled(-1),

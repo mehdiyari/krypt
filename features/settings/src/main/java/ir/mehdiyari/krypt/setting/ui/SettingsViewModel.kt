@@ -1,12 +1,13 @@
-package ir.mehdiyari.krypt.ui.settings
+package ir.mehdiyari.krypt.setting.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
-import ir.mehdiyari.krypt.data.repositories.settings.SettingsRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import ir.mehdiyari.krypt.setting.data.DeleteAccountHelper
+import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+internal class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val accountRepository: AccountsRepository,
     private val deleteAccountHelper: DeleteAccountHelper,

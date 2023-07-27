@@ -1,12 +1,12 @@
-package ir.mehdiyari.krypt.data.repositories.settings
+package ir.mehdiyari.krypt.setting.data.repositories
 
 import android.content.SharedPreferences
-import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
+import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SettingsRepositoryImpl @Inject constructor(
+internal class SettingsRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : SettingsRepository {
     companion object {

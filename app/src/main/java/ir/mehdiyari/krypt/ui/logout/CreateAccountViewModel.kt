@@ -37,7 +37,7 @@ class CreateAccountViewModel @Inject constructor(
                     when (result.second) {
                         is PasswordLengthThrowable -> R.string.password_length_error
                         is BadAccountNameThrowable -> R.string.account_length_error
-                        is PasswordsNotMatchThrowable -> R.string.password_not_match
+                        is PasswordsNotMatchThrowable -> ir.mehdiyari.krypt.shared.designsystem.resources.R.string.password_not_match
                         else -> ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong
                     }.also {
                         _createAccountViewState.emit(
