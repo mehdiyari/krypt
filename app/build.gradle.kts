@@ -1,5 +1,6 @@
 import ir.mehdiyari.krypt.Versions
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("krypt.android.application")
     id("krypt.android.application.flavor")
@@ -79,6 +80,7 @@ dependencies {
     implementation(project(":shared:files:files-data"))
     implementation(project(":shared:files:backup-data"))
     implementation(project(":shared:files:files-logic"))
+    implementation(project(":shared:files:backup-logic"))
     implementation(project(":shared:accounts:account-data"))
     implementation(project(":shared:designsystem:theme"))
     implementation(project(":shared:designsystem:components"))
