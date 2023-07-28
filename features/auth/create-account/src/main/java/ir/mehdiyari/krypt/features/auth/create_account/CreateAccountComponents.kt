@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 

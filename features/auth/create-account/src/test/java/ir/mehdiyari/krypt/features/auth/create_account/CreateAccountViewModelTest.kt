@@ -1,9 +1,8 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable
@@ -17,16 +16,18 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CreateAccountViewModelTest {
 
     private val accountsRepository = mockk<AccountsRepository>(relaxed = true)
     private val dispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())
-    private val createAccountViewModel = CreateAccountViewModel(
-        accountsRepository,
-        dispatcher
-    )
+    private val createAccountViewModel =
+        CreateAccountViewModel(
+            accountsRepository,
+            dispatcher
+        )
 
     @Test
     fun `User wants to create account - when everything is okay - then state must be SuccessCreateAccount`() =
@@ -135,7 +136,7 @@ class CreateAccountViewModelTest {
             launch {
                 coVerify(exactly = 1) {
                     collector.emit(
-                        CreateAccountViewState.FailureCreateAccount(ir.mehdiyari.fallery.R.string.something_went_wrong)
+                        CreateAccountViewState.FailureCreateAccount(ResourcesR.string.something_went_wrong)
                     )
                 }
                 collectorJob.cancel()

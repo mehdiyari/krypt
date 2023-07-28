@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import androidx.annotation.StringRes
 

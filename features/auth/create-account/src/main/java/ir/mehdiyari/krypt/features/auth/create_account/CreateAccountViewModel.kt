@@ -1,9 +1,8 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable

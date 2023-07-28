@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
