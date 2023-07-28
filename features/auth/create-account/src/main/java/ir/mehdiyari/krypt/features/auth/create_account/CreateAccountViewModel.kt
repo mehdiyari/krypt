@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateAccountViewModel @Inject constructor(
+internal class CreateAccountViewModel @Inject constructor(
     private val accountsRepository: AccountsRepository,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {

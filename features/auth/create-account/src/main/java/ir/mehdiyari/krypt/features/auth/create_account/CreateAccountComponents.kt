@@ -29,7 +29,7 @@ import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
 
 @Composable
-fun CreateAccountItems(
+internal fun CreateAccountItems(
     userName: String,
     onUserNameChanged: (String) -> Unit,
     password: String,
@@ -96,7 +96,7 @@ fun CreateAccountItems(
 
 @Composable
 @Preview
-fun CreateAccountItemsPreview() {
+private fun CreateAccountItemsPreview() {
     KryptTheme {
         Surface {
             CreateAccountItems("Mohammad", {}, "123456", {}, "123456", {})

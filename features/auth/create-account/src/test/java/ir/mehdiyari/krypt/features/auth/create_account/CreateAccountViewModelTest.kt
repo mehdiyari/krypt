@@ -19,7 +19,7 @@ import org.junit.Test
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CreateAccountViewModelTest {
+internal class CreateAccountViewModelTest {
 
     private val accountsRepository = mockk<AccountsRepository>(relaxed = true)
     private val dispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())

@@ -33,7 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @Composable
-fun CreateAccountRoute(
+internal fun CreateAccountRoute(
     onLoginSuccess: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
@@ -72,7 +72,7 @@ fun CreateAccountRoute(
 }
 
 @Composable
-fun CreateAccountScreen(
+private fun CreateAccountScreen(
     onCreateAccountClicked: (userName: String, password: String, confirmPassword: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -124,7 +124,7 @@ fun CreateAccountScreen(
 
 @Preview
 @Composable
-fun CreateAccountScreenPreview() {
+private fun CreateAccountScreenPreview() {
     KryptTheme {
         Surface {
             CreateAccountScreen(
