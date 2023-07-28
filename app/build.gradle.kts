@@ -88,4 +88,5 @@ dependencies {
 
     implementation(project(":features:auth:login"))
     implementation(project(":features:settings"))
+    implementation(project(":features:backup"))
 }
