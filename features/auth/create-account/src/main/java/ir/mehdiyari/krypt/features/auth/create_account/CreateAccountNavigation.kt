@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier

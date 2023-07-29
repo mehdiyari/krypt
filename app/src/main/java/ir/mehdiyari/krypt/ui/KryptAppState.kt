@@ -10,7 +10,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ir.mehdiyari.krypt.ui.home.ROUTE_HOME
 import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
-import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
+import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
 import kotlinx.coroutines.CoroutineScope
 
 val authDestinations = setOf(ROUTE_LOGIN, ROUTE_CREATE_ACCOUNT)
