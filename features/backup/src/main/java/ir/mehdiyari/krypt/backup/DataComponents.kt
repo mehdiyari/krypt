@@ -236,7 +236,7 @@ internal fun DeleteBackupFileDialog(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-internal fun FileSizePreview() {
+private fun FileSizePreview() {
     KryptTheme {
         FileSizeView(modifier = Modifier, fileSizeState = mutableStateOf("500 MB"))
     }
@@ -245,7 +245,7 @@ internal fun FileSizePreview() {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-internal fun DeleteBackupFileDialogPreview() {
+private fun DeleteBackupFileDialogPreview() {
     KryptTheme {
         DeleteBackupFileDialog(
             modifier = Modifier,
@@ -258,7 +258,7 @@ internal fun DeleteBackupFileDialogPreview() {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-internal fun BackupViewPreview() {
+private fun BackupViewPreview() {
     KryptTheme {
         BackupView(
             modifier = Modifier,
@@ -271,7 +271,7 @@ internal fun BackupViewPreview() {
 
 @Composable
 @Preview
-internal fun DataScreenScaffoldPreview() {
+private fun DataScreenScaffoldPreview() {
     KryptTheme {
         DataScreenScaffold(
             modifier = Modifier,

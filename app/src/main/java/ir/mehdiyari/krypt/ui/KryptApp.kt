@@ -68,7 +68,7 @@ fun KryptApp(
             MainMenuBottomSheet(scope = kryptAppState.coroutineScope, onSelectMainMenuItem = {
                 when (it) {
                     DesignSystemR.string.menu_data_usage -> kryptAppState.navController.navigateToData()
-                    ir.mehdiyari.krypt.shared.designsystem.resources.R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
+                    DesignSystemR.string.menu_settings -> kryptAppState.navController.navigateToSettings()
                 }
             }, dismissBottomSheet = { openMenu = false })
         }
