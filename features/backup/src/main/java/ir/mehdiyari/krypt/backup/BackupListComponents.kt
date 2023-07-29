@@ -163,7 +163,7 @@ private fun BackupItemPreview(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-private fun BackupListPreview(
+internal fun BackupListPreview(
     @PreviewParameter(
         BackupsPreviewParameterProvider::class,
         limit = 5
@@ -179,7 +179,7 @@ private fun BackupListPreview(
     }
 }
 
-private class BackupsPreviewParameterProvider : PreviewParameterProvider<List<BackupViewData>> {
+internal class BackupsPreviewParameterProvider : PreviewParameterProvider<List<BackupViewData>> {
     override val values: Sequence<List<BackupViewData>> = sequenceOf(
         mutableListOf<BackupViewData>().apply {
             add(BackupViewData(1, "13/12/2014 13:20", "300 MB"))
