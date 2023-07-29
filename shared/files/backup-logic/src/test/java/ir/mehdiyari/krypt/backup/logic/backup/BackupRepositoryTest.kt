@@ -23,8 +23,8 @@ import ir.mehdiyari.krypt.cryptography.utils.getBytesBetweenIndexes
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FileWrapper
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.FileWrapper
+import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -14,7 +14,7 @@ import ir.mehdiyari.krypt.cryptography.utils.getBestBufferSizeForFile
 import ir.mehdiyari.krypt.cryptography.utils.toLong
 import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
