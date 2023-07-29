@@ -17,6 +17,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
+import ir.mehdiyari.krypt.createAccount.R
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CreateAccountViewModelTest {
