@@ -5,7 +5,6 @@
 
     <string name="medias_library">Media</string>
     <string name="audios_library">Audios</string>
-    <string name="texts_library">Texts</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
     <string name="krypt_main_menu">Krypt Main Menu</string>
@@ -37,7 +36,6 @@
     <string name="failed_to_encrypt_note">We failed to encrypt your note</string>
     <string name="title_must_not_empty">Title must not be empty</string>
     <string name="content_must_not_empty">Content must not be empty</string>
-    <string name="add_new_text">New Note</string>
     <string name="cant_find_these_text">We can\'t find these text</string>
     <string name="error_while_decrypting">Error while decrypting text file</string>
     <string name="must_decrypt_video_first">You must decrypt the video first.</string>

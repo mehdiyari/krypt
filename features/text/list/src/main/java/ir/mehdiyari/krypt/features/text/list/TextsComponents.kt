@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.list
+package ir.mehdiyari.krypt.features.text.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -25,8 +25,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.features.text.logic.TextEntity
+import ir.mehdiyari.krypt.textsList.R
 
 
 @Composable

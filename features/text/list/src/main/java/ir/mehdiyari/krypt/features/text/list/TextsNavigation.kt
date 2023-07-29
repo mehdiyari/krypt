@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.list
+package ir.mehdiyari.krypt.features.text.list
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier

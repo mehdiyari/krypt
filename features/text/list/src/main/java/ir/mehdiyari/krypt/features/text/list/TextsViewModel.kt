@@ -1,10 +1,11 @@
-package ir.mehdiyari.krypt.ui.text.list
+package ir.mehdiyari.krypt.features.text.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import ir.mehdiyari.krypt.features.text.logic.TextEntity
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import ir.mehdiyari.krypt.features.text.logic.TextFilesUtils
 import kotlinx.coroutines.CoroutineDispatcher

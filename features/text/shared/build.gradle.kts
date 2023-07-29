@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ir.mehdiyari.krypt.textLogic"
+    namespace = "ir.mehdiyari.krypt.textShared"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.list
+package ir.mehdiyari.krypt.features.text.logic
 
 data class TextEntity(
     val id: Long,

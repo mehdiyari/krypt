@@ -1,7 +1,7 @@
 package ir.mehdiyari.krypt.ui.text.add
 
 import androidx.annotation.StringRes
-import ir.mehdiyari.krypt.ui.text.list.TextEntity
+import ir.mehdiyari.krypt.features.text.logic.TextEntity
 
 sealed class AddTextArgsViewState {
 

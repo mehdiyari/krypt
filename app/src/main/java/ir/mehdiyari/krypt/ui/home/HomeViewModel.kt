@@ -9,6 +9,7 @@ import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,7 +48,7 @@ class HomeViewModel @Inject constructor(
                 FileTypeEnum.Text -> homeCardList.add(
                     HomeCardsModel(
                         R.drawable.ic_editor_50,
-                        R.string.texts_library,
+                        ResourcesR.string.texts_library,
                         it.second
                     )
                 )

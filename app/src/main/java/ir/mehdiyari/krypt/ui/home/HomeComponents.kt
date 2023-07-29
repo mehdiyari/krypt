@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 
@@ -115,6 +116,6 @@ class HomeCardsPreviewParameterProvider : PreviewParameterProvider<List<HomeCard
 private fun getFileTypeEnumBasedOnStringRes(name: Int): FileTypeEnum = when (name) {
     R.string.medias_library -> FileTypeEnum.Photo
     R.string.audios_library -> FileTypeEnum.Audio
-    R.string.texts_library -> FileTypeEnum.Text
+    ResourcesR.string.texts_library -> FileTypeEnum.Text
     else -> throw IllegalArgumentException()
 }

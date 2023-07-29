@@ -35,7 +35,6 @@ android {
 dependencies {
     implementation(libs.coreKtx)
     implementation(libs.appCompat)
-    implementation(project(":features:text:logic"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
@@ -91,4 +90,7 @@ dependencies {
     implementation(project(":features:auth:login"))
     implementation(project(":features:auth:create-account"))
     implementation(project(":features:settings"))
+    implementation(project(":features:text:list"))
+    implementation(project(":features:text:shared"))
+
 }

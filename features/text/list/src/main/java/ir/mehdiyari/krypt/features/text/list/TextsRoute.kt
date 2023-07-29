@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.list
+package ir.mehdiyari.krypt.features.text.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.features.text.logic.TextEntity
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 @Composable
 fun TextsRoute(
@@ -63,7 +64,7 @@ fun TextsScreen(
 ) {
     Column {
         TopAppBar(
-            title = { Text(text = stringResource(id = R.string.texts_library), fontSize = 16.sp) },
+            title = { Text(text = stringResource(id = ResourcesR.string.texts_library), fontSize = 16.sp) },
             modifier = Modifier,
             navigationIcon = {
                 Icon(
