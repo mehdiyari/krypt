@@ -13,4 +13,6 @@ android {
 
 dependencies {
 
+    implementation(project(":shared:cryptography"))
+    implementation(project(":shared:files:files-logic"))
 }

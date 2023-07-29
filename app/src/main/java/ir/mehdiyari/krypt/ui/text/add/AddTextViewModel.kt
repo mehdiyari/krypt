@@ -11,7 +11,7 @@ import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import ir.mehdiyari.krypt.ui.text.list.TextEntity
-import ir.mehdiyari.krypt.ui.text.utils.TextFilesUtils
+import ir.mehdiyari.krypt.features.text.logic.TextFilesUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

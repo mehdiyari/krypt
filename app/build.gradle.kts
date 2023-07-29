@@ -35,6 +35,7 @@ android {
 dependencies {
     implementation(libs.coreKtx)
     implementation(libs.appCompat)
+    implementation(project(":features:text:logic"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
