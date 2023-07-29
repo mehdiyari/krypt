@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.ui.data
+package ir.mehdiyari.krypt.backup
 
-sealed class BackupViewState {
+internal sealed class BackupViewState {
     object Started : BackupViewState()
     data class Failed(val reasonCode: Int) : BackupViewState()
     object Finished : BackupViewState()

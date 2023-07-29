@@ -25,10 +25,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
+import ir.mehdiyari.krypt.permission.checkIfAppIsStorageManager
+import ir.mehdiyari.krypt.permission.requestGrantManagerStoragePermission
+import ir.mehdiyari.krypt.shared.designsystem.components.ManageExternalPermissionDialog
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
-import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable

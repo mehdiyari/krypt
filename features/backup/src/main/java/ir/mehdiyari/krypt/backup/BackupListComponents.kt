@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.data
+package ir.mehdiyari.krypt.backup
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -37,11 +37,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
-fun BackupList(
+internal fun BackupList(
     modifier: Modifier,
     backupList: State<List<BackupViewData>>,
     onSaveClick: (Int) -> Unit,
@@ -69,7 +69,7 @@ fun BackupList(
 }
 
 @Composable
-fun BackupItem(
+internal fun BackupItem(
     modifier: Modifier,
     backupViewData: BackupViewData,
     onSaveClick: (Int) -> Unit,
@@ -115,7 +115,9 @@ fun BackupItem(
             Row(modifier = modifier.padding(bottom = 8.dp, top = 16.dp)) {
 
                 Icon(
-                    painter = painterResource(R.drawable.ic_save_as), "", modifier = modifier
+                    painter = painterResource(DesignSystemR.drawable.ic_save_as),
+                    "",
+                    modifier = modifier
                         .selectable(false, onClick = {
                             onSaveClick(backupViewData.id)
                         }, role = Role.Button, enabled = true)
@@ -141,7 +143,7 @@ fun BackupItem(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun BackupItemPreview(
+internal fun BackupItemPreview(
     @PreviewParameter(
         BackupsPreviewParameterProvider::class,
         limit = 1
@@ -161,7 +163,7 @@ fun BackupItemPreview(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun BackupListPreview(
+internal fun BackupListPreview(
     @PreviewParameter(
         BackupsPreviewParameterProvider::class,
         limit = 5

@@ -16,8 +16,6 @@
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
     <string name="krypt_main_menu">Krypt Main Menu</string>
     <string name="lock_app_content_description">Lock Krypt</string>
-
-    <string name="menu_data_usage">Data Usage</string>
     <string name="menu_change_password">Change Password</string>
     <string name="menu_help">Help</string>
     <string name="app_menu_subtitle">Safe house for your files</string>
@@ -56,22 +54,7 @@
     <string name="shared_media_not_found">We can\'t find selected media for encrypt.</string>
     <string name="navigation_error">Error while navigation</string>
     <string name="password_confirmation">Password Confirm</string>
-    <string name="krypt_file_sizes">App Storage Used</string>
-    <string name="last_backup_date">Last Backup </string>
-    <string name="no_backup_yet"> 00/00/00 00:00 </string>
-    <string name="backup">Backup now</string>
-    <string name="backup_card_title">Backup</string>
-    <string name="share_backup_file">Share</string>
-    <string name="all_backups">All Backups</string>
-    <string name="retry_backup">Retry Back up</string>
-    <string name="delete_backup_file">Are you sure you want to delete this backup file?</string>
-    <string name="delete_backup_file_title">Delete Backup</string>
-    <string name="delete_backup_file_failed">Failed to delete backup file. try again.</string>
-    <string name="delete_backup_file_successfully">Backup file successfully deleted.</string>
-    <string name="error_while_saving_backup_into_external_storage">Error while saving backup in krypt folder</string>
-    <string name="saving_backup_permission_error">Seem\'s app does not have access to storage.</string>
     <string name="grant">Grant</string>
-    <string name="save_backup_file_successfylly">"App successfully save backup file into Krypt official folder on your storage. "</string>
     <string name="cant_decrypt_video">Can\'t decrypt video</string>
     <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
     <string name="photos_folder_name">Photos</string>
@@ -97,6 +80,4 @@
     <string name="microphone_error">Unfortunately there is a problem with your microphone.</string>
     <string name="add_new_audio">Record</string>
     <string name="microphone_permission_error">"We need microphone permission to record audio."</string>
-    <string name="manager_external_permission">Manage Storage Permission</string>
-    <string name="manager_external_permission_description">Krypt needs access to the external storage to encrypt and decrypt, backup and restore files.</string>
 </resources>
