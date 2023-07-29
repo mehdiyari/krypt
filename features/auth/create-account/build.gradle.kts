@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "ir.mehdiyari.krypt.features.auth.create_account"
+    namespace = "ir.mehdiyari.krypt.createAccount"
 
     defaultConfig {
 

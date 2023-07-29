@@ -7,6 +7,7 @@ import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordsNotMatchThrowable
+import ir.mehdiyari.krypt.createAccount.R
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher
