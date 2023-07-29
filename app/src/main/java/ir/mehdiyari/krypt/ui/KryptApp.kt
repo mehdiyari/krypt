@@ -20,7 +20,8 @@ import ir.mehdiyari.krypt.backup.navigateToData
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.setting.ui.navigateToSettings
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
+import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
+import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
@@ -100,7 +101,7 @@ fun KryptApp(
                 KryptNaveHost(
                     kryptAppState = kryptAppState,
                     onStopLocker = onStopLocker,
-                    startDestination = if (hasAnyAccount) ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
+                    startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
                     sharedDataViewModel = sharedDataViewModel,
                     onRestartApp = onLockAppClicked,
                     onShowSnackbar = { message, action ->

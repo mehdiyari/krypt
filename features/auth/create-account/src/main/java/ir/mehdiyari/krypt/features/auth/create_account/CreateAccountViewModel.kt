@@ -1,13 +1,13 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.account.exeptions.BadAccountNameThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordLengthThrowable
 import ir.mehdiyari.krypt.account.exeptions.PasswordsNotMatchThrowable
+import ir.mehdiyari.krypt.createAccount.R
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateAccountViewModel @Inject constructor(
+internal class CreateAccountViewModel @Inject constructor(
     private val accountsRepository: AccountsRepository,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {

@@ -11,8 +11,8 @@ import ir.mehdiyari.krypt.ui.KryptAppState
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.home.homeScreen
 import ir.mehdiyari.krypt.ui.home.navigateToHome
-import ir.mehdiyari.krypt.ui.logout.createAccountScreen
-import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
+import ir.mehdiyari.krypt.features.auth.create_account.createAccountScreen
+import ir.mehdiyari.krypt.features.auth.create_account.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.text.add.addTextScreen

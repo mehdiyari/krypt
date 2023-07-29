@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.logout
+package ir.mehdiyari.krypt.features.auth.create_account
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -30,11 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.createAccount.R
 
 @Composable
-fun CreateAccountRoute(
+internal fun CreateAccountRoute(
     onLoginSuccess: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
@@ -73,7 +73,7 @@ fun CreateAccountRoute(
 }
 
 @Composable
-fun CreateAccountScreen(
+private fun CreateAccountScreen(
     onCreateAccountClicked: (userName: String, password: String, confirmPassword: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -125,7 +125,7 @@ fun CreateAccountScreen(
 
 @Preview
 @Composable
-fun CreateAccountScreenPreview() {
+private fun CreateAccountScreenPreview() {
     KryptTheme {
         Surface {
             CreateAccountScreen(
