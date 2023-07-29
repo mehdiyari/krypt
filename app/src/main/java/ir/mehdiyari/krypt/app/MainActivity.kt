@@ -18,7 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.ui.KryptApp
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private val viewModel: MainViewModel by viewModels()
-    private val shareDataViewModel by viewModels<ShareDataViewModel>()
+    private val shareDataViewModel by viewModels<ir.mehdiyari.krypt.shareContent.ShareDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()

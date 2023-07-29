@@ -26,7 +26,7 @@ import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
 import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
 
@@ -37,7 +37,7 @@ fun MediaRoute(
     viewModel: MediasViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
     onStopLocker: () -> Unit,
-    sharedDataViewModel: ShareDataViewModel,
+    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
 ) {
     viewModel.setSharedImages(sharedDataViewModel.getSharedImages())
     sharedDataViewModel.clearImages()

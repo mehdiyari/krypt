@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.home
+package ir.mehdiyari.krypt.shareContent
 
 import android.net.Uri
 

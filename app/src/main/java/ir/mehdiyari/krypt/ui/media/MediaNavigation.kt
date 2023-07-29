@@ -8,7 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 
 const val ROUTE_MEDIA = "media"
 const val KEY_MEDIA_ACTION = "key_action"
@@ -27,7 +27,7 @@ fun NavController.navigateToMedia(
 }
 
 fun NavGraphBuilder.mediaScreen(
-    sharedDataViewModel: ShareDataViewModel,
+    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
     onBackPressed: () -> Unit,
     onStopLocker: () -> Unit,
 ) {

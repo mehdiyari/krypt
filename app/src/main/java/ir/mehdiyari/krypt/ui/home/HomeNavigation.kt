@@ -20,7 +20,7 @@ fun NavGraphBuilder.homeScreen(
     openTextsScreen: () -> Unit,
     openMusicAndAudioScreen: () -> Unit,
     openMediaScreen: (MediaViewAction) -> Unit,
-    sharedDataViewModel: ShareDataViewModel,
+    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
 ) {
     composable(ROUTE_HOME) {
         HomeRoute(
