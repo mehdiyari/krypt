@@ -19,8 +19,6 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.backup.navigateToData
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.setting.ui.navigateToSettings
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import ir.mehdiyari.krypt.ui.data.navigateToData
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
