@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.data
+package ir.mehdiyari.krypt.backup
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -14,14 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.ManageExternalPermissionDialog
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
-import ir.mehdiyari.krypt.utils.checkIfAppIsStorageManager
-import ir.mehdiyari.krypt.utils.requestGrantManagerStoragePermission
+import ir.mehdiyari.krypt.permission.checkIfAppIsStorageManager
+import ir.mehdiyari.krypt.permission.requestGrantManagerStoragePermission
+import ir.mehdiyari.krypt.shared.designsystem.components.ManageExternalPermissionDialog
 
 @Composable
-fun DataRoute(
+internal fun DataRoute(
     viewModel: DataViewModel = hiltViewModel(),
     onNavigationClicked: () -> Unit,
     modifier: Modifier,
@@ -78,7 +77,7 @@ fun DataRoute(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun DataRoutePreview(
+internal fun DataRoutePreview(
     @PreviewParameter(
         BackupsPreviewParameterProvider::class,
         limit = 5

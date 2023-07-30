@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui
+package ir.mehdiyari.krypt.shared.designsystem.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 
 @Composable
@@ -30,13 +30,13 @@ fun ManageExternalPermissionDialog(
                 state.value = false
             },
             title = {
-                Text(text = stringResource(id = R.string.manager_external_permission))
+                Text(text = stringResource(id = DesignSystemR.string.manager_external_permission))
             },
             text = {
                 Column {
                     Text(
                         modifier = modifier.padding(bottom = 10.dp),
-                        text = stringResource(id = R.string.manager_external_permission_description)
+                        text = stringResource(id = DesignSystemR.string.manager_external_permission_description)
                     )
                 }
             },

@@ -36,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
 fun AddAudioScreenContent(
@@ -249,7 +250,7 @@ fun RecordControlsButtons(
                 RecordActionButton(
                     modifier,
                     recordActionButtonsModel.save.second,
-                    R.drawable.ic_save_as,
+                    DesignSystemR.drawable.ic_save_as,
                     R.string.record_save
                 )
             }

@@ -13,10 +13,10 @@ import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.MediaStoreManager
 import ir.mehdiyari.krypt.ui.media.data.FalleryBuilderProvider
 import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
-import ir.mehdiyari.krypt.utils.MediaStoreManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
