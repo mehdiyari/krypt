@@ -14,7 +14,7 @@ private const val KEY_TEXT_Id = "key_text_id"
 private const val KEY_SHARED_TEXT = "key_shared_text"
 
 
-class AddTextArgs(val textId: Long, val sharedText: String) {
+internal class AddTextArgs(val textId: Long, val sharedText: String) {
     constructor(savedStateHandle: SavedStateHandle) : this(
         savedStateHandle[KEY_TEXT_Id]!!, savedStateHandle[KEY_SHARED_TEXT]!!
     )

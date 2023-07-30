@@ -36,7 +36,7 @@ import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+internal fun TopBar(
     text: String,
     onTextChanged: (String) -> Unit,
     onNavigationClickIcon: () -> Unit,
@@ -82,7 +82,7 @@ fun TopBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentTextField(
+internal fun ContentTextField(
     text: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -111,7 +111,7 @@ fun ContentTextField(
 }
 
 @Composable
-fun EditAndDeleteButtons(
+internal fun EditAndDeleteButtons(
     deleteNote: () -> Unit,
     saveNote: () -> Unit,
     modifier: Modifier = Modifier
@@ -130,7 +130,7 @@ fun EditAndDeleteButtons(
 }
 
 @Composable
-fun SaveTextFab(
+internal fun SaveTextFab(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -148,7 +148,7 @@ fun SaveTextFab(
 
 
 @Composable
-fun DeleteTextFab(
+internal fun DeleteTextFab(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -168,7 +168,7 @@ fun DeleteTextFab(
 
 @Preview
 @Composable
-fun TopBarPreview() {
+private fun TopBarPreview() {
     KryptTheme {
         Surface {
             TopBar(text = "Title", onTextChanged = {}, onNavigationClickIcon = {})
@@ -178,7 +178,7 @@ fun TopBarPreview() {
 
 @Preview
 @Composable
-fun ContentTextFieldPreview() {
+private fun ContentTextFieldPreview() {
     KryptTheme {
         Surface {
             ContentTextField(
@@ -194,7 +194,7 @@ fun ContentTextFieldPreview() {
 
 @Preview
 @Composable
-fun EditAndDeleteButtonsPreview() {
+private fun EditAndDeleteButtonsPreview() {
     KryptTheme {
         Surface {
             EditAndDeleteButtons(deleteNote = { /*TODO*/ }, saveNote = { /*TODO*/ })

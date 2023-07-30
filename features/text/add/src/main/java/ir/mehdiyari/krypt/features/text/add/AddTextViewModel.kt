@@ -20,7 +20,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import javax.inject.Inject
 
 @HiltViewModel
-class AddTextViewModel @Inject constructor(
+internal class AddTextViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val textFilesUtils: TextFilesUtils,
     private val filesRepository: FilesRepository,

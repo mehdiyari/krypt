@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.addText.R
 
 @Composable
-fun AddTextRoute(
+internal fun AddTextRoute(
     modifier: Modifier = Modifier,
     viewModel: AddTextViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
@@ -110,7 +110,7 @@ fun AddTextRoute(
 }
 
 @Composable
-fun AddTextScreen(
+private fun AddTextScreen(
     title: String,
     onTitleChanged: (String) -> Unit,
     content: String,
