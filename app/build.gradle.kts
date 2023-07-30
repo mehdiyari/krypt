@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":features:settings"))
     implementation(project(":features:backup"))
     implementation(project(":features:text:list"))
+    implementation(project(":features:text:add"))
     implementation(project(":features:text:shared"))
 
 }

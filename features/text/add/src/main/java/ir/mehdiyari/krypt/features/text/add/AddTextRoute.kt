@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.add
+package ir.mehdiyari.krypt.features.text.add
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.addText.R
 
 @Composable
 fun AddTextRoute(

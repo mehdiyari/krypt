@@ -25,7 +25,7 @@ import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.ui.media.MediaViewAction
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
-import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
+import ir.mehdiyari.krypt.features.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 

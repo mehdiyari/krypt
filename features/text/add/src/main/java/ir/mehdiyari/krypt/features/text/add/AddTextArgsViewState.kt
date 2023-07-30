@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.add
+package ir.mehdiyari.krypt.features.text.add
 
 import androidx.annotation.StringRes
 import ir.mehdiyari.krypt.features.text.logic.TextEntity

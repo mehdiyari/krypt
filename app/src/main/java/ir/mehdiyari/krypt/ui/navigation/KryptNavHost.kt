@@ -14,8 +14,8 @@ import ir.mehdiyari.krypt.features.auth.create_account.createAccountScreen
 import ir.mehdiyari.krypt.features.auth.create_account.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
-import ir.mehdiyari.krypt.ui.text.add.addTextScreen
-import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
+import ir.mehdiyari.krypt.features.text.add.addTextScreen
+import ir.mehdiyari.krypt.features.text.add.navigateToAddText
 import ir.mehdiyari.krypt.features.text.list.navigateToTexts
 import ir.mehdiyari.krypt.features.text.list.textsScreen
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel

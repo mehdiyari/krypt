@@ -1,10 +1,10 @@
-package ir.mehdiyari.krypt.ui.text.add
+package ir.mehdiyari.krypt.features.text.add
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.addText.R
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.features.text.logic.TextEntity
@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import javax.inject.Inject
 
 @HiltViewModel
@@ -96,7 +97,8 @@ class AddTextViewModel @Inject constructor(
     private fun updateNote(title: String, content: String) {
         val textEntity = (argsTextViewState.value as? AddTextArgsViewState.TextArg)?.textEntity
         if (textEntity == null) {
-            _argsTextViewState.value = AddTextArgsViewState.Error(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong)
+            _argsTextViewState.value =
+                AddTextArgsViewState.Error(ResourcesR.string.something_went_wrong)
             return
         }
 
@@ -136,7 +138,7 @@ class AddTextViewModel @Inject constructor(
                 if (titleContentPair != null) {
                     _argsTextViewState.emit(
                         AddTextArgsViewState.TextArg(
-                           TextEntity(
+                            TextEntity(
                                 textId,
                                 titleContentPair.first,
                                 titleContentPair.second

@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.text.add
+package ir.mehdiyari.krypt.features.text.add
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.addText.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

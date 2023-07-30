@@ -27,20 +27,9 @@
     <string name="decrypt_failed">Failed to decrypt files</string>
     <string name="operation_failed">Operation failed</string>
     <string name="loading">Loading…</string>
-    <string name="text_title">Title</string>
-    <string name="save_text">Save</string>
-    <string name="text_content">Content</string>
-    <string name="successfully_encrypt_note">Your note was successfully encrypted</string>
-    <string name="failed_to_encrypt_note">We failed to encrypt your note</string>
-    <string name="title_must_not_empty">Title must not be empty</string>
-    <string name="content_must_not_empty">Content must not be empty</string>
-    <string name="cant_find_these_text">We can\'t find these text</string>
-    <string name="error_while_decrypting">Error while decrypting text file</string>
+
     <string name="must_decrypt_video_first">You must decrypt the video first.</string>
     <string name="notify_media_scanner">Notify Media Scanner</string>
-    <string name="delete_text">Delete</string>
-    <string name="delete_text_was_successfully">Text file successfully deleted</string>
-    <string name="delete_text_was_unsuccessfully">Error while removing text file</string>
 
 
     <string name="shared_media_not_found">We can\'t find selected media for encrypt.</string>
