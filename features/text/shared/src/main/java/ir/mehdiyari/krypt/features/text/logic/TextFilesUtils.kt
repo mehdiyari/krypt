@@ -7,7 +7,7 @@ import ir.mehdiyari.krypt.cryptography.utils.combineWith
 import ir.mehdiyari.krypt.cryptography.utils.getAfterIndex
 import ir.mehdiyari.krypt.cryptography.utils.getBeforeIndex
 import ir.mehdiyari.krypt.cryptography.utils.toUtf8Bytes
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
 import java.io.File
 import javax.inject.Inject
 

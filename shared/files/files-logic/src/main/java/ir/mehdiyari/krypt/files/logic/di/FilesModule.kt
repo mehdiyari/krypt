@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.files.logic.repositories.di
+package ir.mehdiyari.krypt.files.logic.di
 
 import dagger.Binds
 import dagger.Module

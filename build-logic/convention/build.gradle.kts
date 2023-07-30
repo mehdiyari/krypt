@@ -41,6 +41,11 @@ gradlePlugin {
             implementationClass = "AndroidHiltConventionPlugin"
         }
 
+        register("kryptAndroidFeature"){
+            id = "krypt.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
+
     }
 
 }

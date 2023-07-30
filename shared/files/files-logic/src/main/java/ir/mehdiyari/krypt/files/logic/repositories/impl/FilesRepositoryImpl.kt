@@ -8,8 +8,8 @@ import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FileWrapper
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.FileWrapper
+import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

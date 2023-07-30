@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("krypt.android.library")
     id("krypt.android.hilt")

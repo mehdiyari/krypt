@@ -75,6 +75,7 @@ dependencies {
 
     implementation(project(":shared:dispatchers"))
     implementation(project(":shared:cryptography"))
+    implementation(project(":shared:permissions"))
     implementation(project(":shared:accounts:account"))
     implementation(project(":shared:database"))
     implementation(project(":shared:files:files-data"))
@@ -90,6 +91,7 @@ dependencies {
     implementation(project(":features:auth:login"))
     implementation(project(":features:auth:create-account"))
     implementation(project(":features:settings"))
+    implementation(project(":features:backup"))
     implementation(project(":features:text:list"))
     implementation(project(":features:text:shared"))
 

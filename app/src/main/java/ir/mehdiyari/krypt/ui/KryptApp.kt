@@ -16,8 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.backup.navigateToData
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.setting.ui.navigateToSettings
+import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.data.navigateToData
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
@@ -27,6 +29,7 @@ import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
 fun KryptApp(
@@ -34,7 +37,7 @@ fun KryptApp(
     hasAnyAccount: Boolean,
     onLockAppClicked: () -> Unit,
     onStopLocker: () -> Unit,
-    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
+    sharedDataViewModel: ShareDataViewModel,
 ) {
     KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
@@ -67,8 +70,8 @@ fun KryptApp(
         if (openMenu) {
             MainMenuBottomSheet(scope = kryptAppState.coroutineScope, onSelectMainMenuItem = {
                 when (it) {
-                    R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
-                    ir.mehdiyari.krypt.shared.designsystem.resources.R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
+                    DesignSystemR.string.menu_data_usage -> kryptAppState.navController.navigateToData()
+                    DesignSystemR.string.menu_settings -> kryptAppState.navController.navigateToSettings()
                 }
             }, dismissBottomSheet = { openMenu = false })
         }

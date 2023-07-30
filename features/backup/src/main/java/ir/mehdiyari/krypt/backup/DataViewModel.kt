@@ -1,16 +1,14 @@
-package ir.mehdiyari.krypt.ui.data
+package ir.mehdiyari.krypt.backup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.backup.logic.backup.BackupRepository
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.files.logic.repositories.utils.FilesUtilities
-import ir.mehdiyari.krypt.utils.MediaStoreManager
-import ir.mehdiyari.krypt.utils.formatSize
+import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
+import ir.mehdiyari.krypt.files.logic.utils.MediaStoreManager
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -23,7 +21,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class DataViewModel @Inject constructor(
+internal class DataViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
     private val filesRepository: FilesRepository,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
@@ -160,5 +158,27 @@ class DataViewModel @Inject constructor(
         super.onCleared()
         backupJob?.cancel()
         backupJob = null
+    }
+
+    private fun formatSize(size: Long): String {
+        var internalSize = size
+        var suffix: String?
+        if (internalSize >= 1024) {
+            suffix = "KB"
+            internalSize /= 1024
+            if (internalSize >= 1024) {
+                suffix = "MB"
+                internalSize /= 1024
+                if (internalSize >= 1024) {
+                    suffix = "GB"
+                    internalSize /= 1024
+
+                }
+            }
+        } else {
+            suffix = "Bytes"
+        }
+
+        return "$internalSize $suffix"
     }
 }

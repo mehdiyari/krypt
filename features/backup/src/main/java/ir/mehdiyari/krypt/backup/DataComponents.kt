@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.data
+package ir.mehdiyari.krypt.backup
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -30,14 +30,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemResourceR
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DataScreenScaffold(
+internal fun DataScreenScaffold(
     modifier: Modifier,
     onNavigationClicked: () -> Unit = {},
     content: @Composable () -> Unit = {}
@@ -47,7 +47,7 @@ fun DataScreenScaffold(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.menu_data_usage),
+                        text = stringResource(id = DesignSystemResourceR.string.menu_data_usage),
                         textAlign = TextAlign.Start
                     )
                 },
@@ -103,7 +103,7 @@ fun FileSizeView(modifier: Modifier, fileSizeState: State<String>) {
 }
 
 @Composable
-fun BackupView(
+internal fun BackupView(
     modifier: Modifier,
     lastBackupState: State<String?>,
     backupState: State<BackupViewState?>,
@@ -181,14 +181,14 @@ fun BackupView(
 }
 
 @Composable
-fun DataBaseDivider(modifier: Modifier) {
+internal fun DataBaseDivider(modifier: Modifier) {
     Divider(
         modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 8.dp)
     )
 }
 
 @Composable
-fun DeleteBackupFileDialog(
+internal fun DeleteBackupFileDialog(
     modifier: Modifier,
     deleteDialogState: MutableState<Pair<Boolean, Int>> = mutableStateOf(true to -1),
     onDeleteBackUp: (Int) -> Unit,
@@ -236,7 +236,7 @@ fun DeleteBackupFileDialog(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun FileSizePreview() {
+internal fun FileSizePreview() {
     KryptTheme {
         FileSizeView(modifier = Modifier, fileSizeState = mutableStateOf("500 MB"))
     }
@@ -245,7 +245,7 @@ fun FileSizePreview() {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun DeleteBackupFileDialogPreview() {
+private fun DeleteBackupFileDialogPreview() {
     KryptTheme {
         DeleteBackupFileDialog(
             modifier = Modifier,
@@ -258,7 +258,7 @@ fun DeleteBackupFileDialogPreview() {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun BackupViewPreview() {
+internal fun BackupViewPreview() {
     KryptTheme {
         BackupView(
             modifier = Modifier,
@@ -271,7 +271,7 @@ fun BackupViewPreview() {
 
 @Composable
 @Preview
-fun DataScreenScaffoldPreview() {
+private fun DataScreenScaffoldPreview() {
     KryptTheme {
         DataScreenScaffold(
             modifier = Modifier,

@@ -37,7 +37,7 @@ fun MediaRoute(
     viewModel: MediasViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
     onStopLocker: () -> Unit,
-    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
+    sharedDataViewModel: ShareDataViewModel,
 ) {
     viewModel.setSharedImages(sharedDataViewModel.getSharedImages())
     sharedDataViewModel.clearImages()

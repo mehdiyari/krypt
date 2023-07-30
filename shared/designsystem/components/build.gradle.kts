@@ -14,4 +14,5 @@ android {
 
 dependencies {
     implementation(project(":shared:designsystem:theme"))
+    implementation(project(":shared:designsystem:resources"))
 }

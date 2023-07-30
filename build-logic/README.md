@@ -38,3 +38,4 @@ Current list of convention plugins:
   [`krypt.android.library.compose`](convention/src/main/kotlin/AndroidLibraryComposeConventionPlugin.kt):
   Configures Jetpack Compose options
 - [`krypt.android.hilt`](convention/src/main/kotlin/AndroidHiltConventionPlugin.kt)
+- [`krypt.android.feature`](convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt)
