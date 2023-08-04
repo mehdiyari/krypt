@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation(libs.coreKtx)
-    implementation(libs.appCompat)
+//    implementation(libs.appCompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
@@ -94,6 +94,6 @@ dependencies {
     implementation(project(":features:backup"))
     implementation(project(":features:text:list"))
     implementation(project(":features:text:add"))
-    implementation(project(":features:text:shared"))
+    implementation(project(":features:media:player"))
 
 }
