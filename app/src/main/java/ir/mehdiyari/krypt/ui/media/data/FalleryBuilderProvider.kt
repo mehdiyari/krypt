@@ -17,7 +17,6 @@ import ir.mehdiyari.krypt.app.imageloader.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.core.designsystem.theme.isInDarkTheme
 import ir.mehdiyari.krypt.permission.getFileProviderAuthority
 import ir.mehdiyari.krypt.ui.media.player.PlayerActivity
-import ir.mehdiyari.krypt.ui.media.player.addExtraForPlayerToIntent
 import javax.inject.Inject
 
 class FalleryBuilderProvider @Inject constructor(
@@ -76,3 +75,9 @@ class FalleryBuilderProvider @Inject constructor(
             .build()
     }
 }
+
+private fun Intent.addExtraForPlayerToIntent(videoPath: String, isEncryptedVideo: Boolean = false): Intent =
+    this.apply {
+        this.putExtra("video", videoPath)
+        this.putExtra("encrypted", isEncryptedVideo)
+    }

@@ -11,9 +11,3 @@ object PlayerFactory {
 
     fun getEncryptedStreamPlayer(activity: Context): ExoPlayer = TODO("Not Implemented YET")
 }
-
-fun Intent.addExtraForPlayerToIntent(videoPath: String, isEncryptedVideo: Boolean = false): Intent =
-    this.apply {
-        this.putExtra("video", videoPath)
-        this.putExtra("encrypted", isEncryptedVideo)
-    }
