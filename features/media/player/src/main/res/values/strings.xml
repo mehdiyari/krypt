@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cant_decrypt_video">Can\'t decrypt video</string>
+    <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
+
+</resources>

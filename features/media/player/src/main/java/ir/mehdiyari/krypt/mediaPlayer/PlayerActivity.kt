@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media.player
+package ir.mehdiyari.krypt.mediaPlayer
 
 import android.os.Bundle
 import android.view.View
@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.AndroidEntryPoint
-import ir.mehdiyari.krypt.R
 import kotlinx.coroutines.launch
 
 

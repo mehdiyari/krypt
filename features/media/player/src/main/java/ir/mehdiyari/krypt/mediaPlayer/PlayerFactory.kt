@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media.player
+package ir.mehdiyari.krypt.mediaPlayer
 
 import android.content.Context
 import android.content.Intent

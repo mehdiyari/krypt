@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation(libs.coreKtx)
-//    implementation(libs.appCompat)
+    implementation(libs.androidx.appCompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
@@ -63,8 +63,6 @@ dependencies {
 
     implementation(libs.moshiKotlin)
     implementation(libs.processPhoenix)
-    implementation(libs.exoplayer)
-    implementation(libs.media3UI)
 
     testImplementation(libs.mockk)
     testImplementation(libs.coroutinesTest)

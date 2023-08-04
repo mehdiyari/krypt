@@ -26,4 +26,7 @@ dependencies {
     // UI Tests
     androidTestApi(libs.androidx.compose.ui.test)
     debugApi(libs.androidx.compose.ui.testManifest)
+
+    implementation("com.google.android.material:material:1.9.0")
+
 }

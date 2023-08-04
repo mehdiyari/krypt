@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media.player
+package ir.mehdiyari.krypt.mediaPlayer
 
 sealed class PlayerState {
     data class NormalVideo(val path: String) : PlayerState()

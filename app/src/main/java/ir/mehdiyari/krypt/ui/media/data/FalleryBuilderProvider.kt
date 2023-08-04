@@ -16,7 +16,7 @@ import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.app.imageloader.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.core.designsystem.theme.isInDarkTheme
 import ir.mehdiyari.krypt.permission.getFileProviderAuthority
-import ir.mehdiyari.krypt.ui.media.player.PlayerActivity
+import ir.mehdiyari.krypt.mediaPlayer.PlayerActivity
 import javax.inject.Inject
 
 class FalleryBuilderProvider @Inject constructor(
