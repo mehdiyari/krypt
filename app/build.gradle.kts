@@ -86,9 +86,14 @@ dependencies {
     implementation(project(":shared:designsystem:theme"))
     implementation(project(":shared:designsystem:components"))
     implementation(project(":shared:designsystem:resources"))
+    implementation(project(":shared:share-content"))
 
     implementation(project(":features:auth:login"))
     implementation(project(":features:auth:create-account"))
     implementation(project(":features:settings"))
     implementation(project(":features:backup"))
+    implementation(project(":features:text:list"))
+    implementation(project(":features:text:add"))
+    implementation(project(":features:text:shared"))
+
 }

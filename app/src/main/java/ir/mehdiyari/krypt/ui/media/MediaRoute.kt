@@ -27,8 +27,8 @@ import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
 import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.permission.checkIfAppIsStorageManager
 import ir.mehdiyari.krypt.permission.requestGrantManagerStoragePermission
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.shared.designsystem.components.ManageExternalPermissionDialog
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
