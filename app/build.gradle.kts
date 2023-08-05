@@ -93,4 +93,5 @@ dependencies {
     implementation(project(":features:backup"))
     implementation(project(":features:voice:player"))
     implementation(project(":features:voice:shared"))
+    implementation(project(":features:voice:record"))
 }

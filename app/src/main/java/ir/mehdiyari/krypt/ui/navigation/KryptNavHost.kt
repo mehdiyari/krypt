@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import ir.mehdiyari.krypt.backup.dataScreen
+import ir.mehdiyari.krypt.features.auth.create_account.createAccountScreen
+import ir.mehdiyari.krypt.features.auth.create_account.navigateToCreateAccount
 import ir.mehdiyari.krypt.features.auth.login.loginScreen
 import ir.mehdiyari.krypt.features.auth.login.navigateToLogin
 import ir.mehdiyari.krypt.setting.ui.settingsRoute
@@ -11,8 +13,6 @@ import ir.mehdiyari.krypt.ui.KryptAppState
 import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.home.homeScreen
 import ir.mehdiyari.krypt.ui.home.navigateToHome
-import ir.mehdiyari.krypt.features.auth.create_account.createAccountScreen
-import ir.mehdiyari.krypt.features.auth.create_account.navigateToCreateAccount
 import ir.mehdiyari.krypt.ui.media.mediaScreen
 import ir.mehdiyari.krypt.ui.media.navigateToMedia
 import ir.mehdiyari.krypt.ui.text.add.addTextScreen
@@ -21,8 +21,8 @@ import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
 import ir.mehdiyari.krypt.ui.text.list.textsScreen
 import ir.mehdiyari.krypt.ui.voice.audios.audiosRoute
 import ir.mehdiyari.krypt.ui.voice.audios.navigateToAudios
-import ir.mehdiyari.krypt.ui.voice.record.addVoiceScreen
-import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
+import ir.mehdiyari.krypt.voice.record.record.addVoiceScreen
+import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
 
 @Composable
 fun KryptNaveHost(

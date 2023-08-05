@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.record
+package ir.mehdiyari.krypt.voice.record.record
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController

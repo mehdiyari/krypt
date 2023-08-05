@@ -1,5 +1,6 @@
-package ir.mehdiyari.krypt.ui.voice.record
+package ir.mehdiyari.krypt.voice.record.record
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.widget.Toast
@@ -22,13 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import ir.mehdiyari.krypt.R
+import ir.mehdiyari.krypt.voice.record.R
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RecordAudioRoute(
+internal fun RecordAudioRoute(
     modifier: Modifier,
     viewModel: RecordVoiceViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
@@ -69,7 +70,7 @@ fun RecordAudioRoute(
             recordTimerState = viewModel.recordTimer,
             actionButtonState = viewModel.actionsButtonState,
             startRecord = {
-                val recordPermission = android.Manifest.permission.RECORD_AUDIO
+                val recordPermission = Manifest.permission.RECORD_AUDIO
                 if (context.checkSelfPermission(recordPermission) == PackageManager.PERMISSION_GRANTED) {
                     viewModel.startRecord()
                 } else {

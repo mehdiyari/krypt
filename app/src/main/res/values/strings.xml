@@ -63,15 +63,6 @@
     <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
     <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
     <string name="all_media">All media</string>
-    <string name="record_audio">Record</string>
-    <string name="record_pause">Pause</string>
-    <string name="record_resume">Resume</string>
-    <string name="record_save">Save</string>
-    <string name="voice_recorded_successfully">"Voice recorded successfully. "</string>
-    <string name="voice_recorded_failed">"We can't save the voice right now, please try again. "</string>
-    <string name="voice_recorder_retry">Retry</string>
-    <string name="mic_permission_denied">Without access to microphone we can\'t record your voice.</string>
-    <string name="microphone_error">Unfortunately there is a problem with your microphone.</string>
     <string name="add_new_audio">Record</string>
-    <string name="microphone_permission_error">"We need microphone permission to record audio."</string>
+
 </resources>

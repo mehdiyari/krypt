@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.recorder
+package ir.mehdiyari.krypt.voice.record.recorder
 
 import android.content.Context
 import android.media.MediaRecorder
@@ -7,7 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
-class VoiceRecorderFactory @Inject constructor(
+internal class VoiceRecorderFactory @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 

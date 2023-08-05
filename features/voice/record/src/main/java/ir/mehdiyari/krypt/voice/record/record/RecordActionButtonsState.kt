@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.ui.voice.record
+package ir.mehdiyari.krypt.voice.record.record
 
-data class RecordActionButtonsState(
+internal data class RecordActionButtonsState(
     val stop: Pair<Boolean, (() -> Unit)?> = true to null,
     val resume: Pair<Boolean, (() -> Unit)?> = false to null,
     val save: Pair<Boolean, (() -> Unit)?> = true to null

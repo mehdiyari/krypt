@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.recorder
+package ir.mehdiyari.krypt.voice.record.recorder
 
 import android.media.MediaRecorder
 import android.os.Build
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
-class VoiceRecorder @Inject constructor(
+internal class VoiceRecorder @Inject constructor(
     private val mediaRecorderFactory: VoiceRecorderFactory,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher
 ) {

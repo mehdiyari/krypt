@@ -1,6 +1,6 @@
-package ir.mehdiyari.krypt.ui.voice.record
+package ir.mehdiyari.krypt.voice.record.record
 
-sealed class RecordVoiceViewState {
+internal sealed class RecordVoiceViewState {
 
     object Initialize : RecordVoiceViewState()
 

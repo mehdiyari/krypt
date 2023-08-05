@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.record
+package ir.mehdiyari.krypt.voice.record.record
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -30,8 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.voice.record.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
-fun AddAudioScreenContent(
+internal fun AddAudioScreenContent(
     modifier: Modifier,
     onBackPressed: () -> Unit,
     snackbarHostState: SnackbarHostState,
@@ -130,7 +130,7 @@ private fun HandleSuccessState(onBackPressed: () -> Unit) {
 }
 
 @Composable
-fun RotateAnimationForRecordImage(isPaused: Boolean) {
+private fun RotateAnimationForRecordImage(isPaused: Boolean) {
     var currentRotation by remember { mutableFloatStateOf(0f) }
     val rotation = remember { Animatable(currentRotation) }
     if (!isPaused) {
@@ -167,7 +167,7 @@ fun RotateAnimationForRecordImage(isPaused: Boolean) {
 }
 
 @Composable
-fun RecordVoiceViews(
+private fun RecordVoiceViews(
     modifier: Modifier,
     timerStateFlow: StateFlow<String>,
     recordButtonsState: StateFlow<RecordActionButtonsState>,
@@ -192,7 +192,7 @@ fun RecordVoiceViews(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun TimerText(
+private fun TimerText(
     modifier: Modifier,
     numberStateFlow: StateFlow<String>,
 ) {
@@ -213,7 +213,7 @@ fun TimerText(
 @SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun RecordControlsButtons(
+private fun RecordControlsButtons(
     modifier: Modifier,
     recordActionButtonsState: StateFlow<RecordActionButtonsState>,
 ) {
@@ -288,7 +288,7 @@ private fun RecordActionButton(
 
 
 @Composable
-fun RecordButton(
+private fun RecordButton(
     modifier: Modifier,
     startRecordCallback: () -> Unit,
     visibility: Boolean
@@ -329,7 +329,7 @@ private fun RecordRetrySnackbarPreview() {
 
 @Composable
 @Preview
-fun RotateAnimationForRecordImagePreview() {
+private fun RotateAnimationForRecordImagePreview() {
     KryptTheme {
         RotateAnimationForRecordImage(isPaused = false)
     }
@@ -337,7 +337,7 @@ fun RotateAnimationForRecordImagePreview() {
 
 @Composable
 @Preview
-fun RecordVoiceViewsPreview() {
+private fun RecordVoiceViewsPreview() {
     KryptTheme {
         RecordVoiceViews(
             modifier = Modifier,
@@ -352,7 +352,7 @@ fun RecordVoiceViewsPreview() {
 }
 
 @Composable
-fun TimerTextPreview() {
+private fun TimerTextPreview() {
     KryptTheme {
         TimerText(
             modifier = Modifier,
@@ -363,7 +363,7 @@ fun TimerTextPreview() {
 
 @Composable
 @Preview
-fun RecordControlsButtonsPreview() {
+private fun RecordControlsButtonsPreview() {
     KryptTheme {
         RecordControlsButtons(
             modifier = Modifier,
@@ -389,7 +389,7 @@ private fun RecordActionButtonPreview() {
 
 @Composable
 @Preview
-fun RecordButtonPreview() {
+private fun RecordButtonPreview() {
     KryptTheme {
         RecordButton(
             modifier = Modifier,
