@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.recorder.meta
+package ir.mehdiyari.krypt.voice.shared.entity.meta
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
