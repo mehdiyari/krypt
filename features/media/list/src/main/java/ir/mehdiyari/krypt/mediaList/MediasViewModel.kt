@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media
+package ir.mehdiyari.krypt.mediaList
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
@@ -15,8 +14,8 @@ import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
 import ir.mehdiyari.krypt.files.logic.utils.MediaStoreManager
-import ir.mehdiyari.krypt.ui.media.data.FalleryBuilderProvider
-import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
+import ir.mehdiyari.krypt.mediaList.data.FalleryBuilderProvider
+import ir.mehdiyari.krypt.mediaList.utils.ThumbsUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import javax.inject.Inject
 
 @HiltViewModel
@@ -304,7 +304,7 @@ class MediasViewModel @Inject constructor(
                 }
                 removeSelectedFromList(path, showMessage = false)
             } catch (t: Throwable) {
-                _messageFlow.emit(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong)
+                _messageFlow.emit(ResourcesR.string.something_went_wrong)
             }
         }
     }

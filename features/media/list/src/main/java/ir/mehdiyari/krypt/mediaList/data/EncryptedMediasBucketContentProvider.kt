@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media.data
+package ir.mehdiyari.krypt.mediaList.data
 
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.Media
@@ -7,7 +7,7 @@ import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
-import ir.mehdiyari.krypt.ui.media.utils.ThumbsUtils
+import ir.mehdiyari.krypt.mediaList.utils.ThumbsUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File

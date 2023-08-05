@@ -22,8 +22,8 @@ import ir.mehdiyari.krypt.setting.ui.navigateToSettings
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
-import ir.mehdiyari.krypt.ui.media.MediaViewAction
-import ir.mehdiyari.krypt.ui.media.navigateToMedia
+import ir.mehdiyari.krypt.mediaList.MediaViewAction
+import ir.mehdiyari.krypt.mediaList.navigateToMedia
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.features.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
@@ -48,7 +48,7 @@ fun KryptApp(
                 when (it) {
                     R.string.add_media -> {
                         kryptAppState.navController.navigateToMedia(
-                            MediaViewAction.PICK_MEDIA
+                            ir.mehdiyari.krypt.mediaList.MediaViewAction.PICK_MEDIA
                         )
                     }
 

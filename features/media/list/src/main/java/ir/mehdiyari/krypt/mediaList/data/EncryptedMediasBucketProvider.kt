@@ -1,13 +1,13 @@
-package ir.mehdiyari.krypt.ui.media.data
+package ir.mehdiyari.krypt.mediaList.data
 
 import android.app.Application
 import ir.mehdiyari.fallery.models.BucketType
 import ir.mehdiyari.fallery.models.MediaBucket
 import ir.mehdiyari.fallery.repo.AbstractMediaBucketProvider
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.cryptography.api.KryptCryptographyHelper
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
+import ir.mehdiyari.krypt.mediaList.R
 import java.io.File
 import javax.inject.Inject
 

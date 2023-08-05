@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
                     } else {
                         homeCardList.add(
                             HomeCardsModel(
-                                R.drawable.ic_gallery_50,
+                                ResourcesR.drawable.ic_gallery_50,
                                 R.string.medias_library,
                                 mediaCount + it.second
                             )

@@ -12,4 +12,6 @@
     <string name="manager_external_permission">Manage Storage Permission</string>
     <string name="manager_external_permission_description">Krypt needs access to the external storage to encrypt and decrypt, backup and restore files.</string>
     <string name="texts_library">Texts</string>
+    <string name="no_encrypted_file_found">No encrypted files found</string>
+
 </resources>

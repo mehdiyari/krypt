@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media
+package ir.mehdiyari.krypt.mediaList
 
 enum class MediaViewAction(val value: Int) {
     DEFAULT(0),

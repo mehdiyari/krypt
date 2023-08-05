@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media.data
+package ir.mehdiyari.krypt.mediaList.data
 
 import android.content.Context
 import android.content.Intent
@@ -12,9 +12,9 @@ import ir.mehdiyari.fallery.main.fallery.FalleryBucketsSpanCountMode
 import ir.mehdiyari.fallery.main.fallery.FalleryBuilder
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.models.BucketType
-import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.app.imageloader.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.core.designsystem.theme.isInDarkTheme
+import ir.mehdiyari.krypt.mediaList.R
+import ir.mehdiyari.krypt.mediaList.imageloader.DeviceGalleryImageLoader
 import ir.mehdiyari.krypt.permission.getFileProviderAuthority
 import ir.mehdiyari.krypt.mediaPlayer.PlayerActivity
 import javax.inject.Inject
@@ -31,7 +31,7 @@ class FalleryBuilderProvider @Inject constructor(
     ): FalleryBuilder = FalleryBuilder()
         .setImageLoader(deviceGalleryImageLoader)
         .mediaTypeFiltering(BucketType.VIDEO_PHOTO_BUCKETS)
-        .setFalleryToolbarTitleText(R.string.app_name)
+        .setFalleryToolbarTitleText(R.string.imagePicker_title)
         .setMediaCountEnabled(true)
         .setGrantExternalStoragePermission(true)
         .setMediaObserverEnabled(true)

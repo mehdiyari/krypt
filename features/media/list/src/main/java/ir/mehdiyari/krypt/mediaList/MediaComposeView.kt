@@ -1,5 +1,6 @@
-package ir.mehdiyari.krypt.ui.media
+package ir.mehdiyari.krypt.mediaList
 
+import android.app.AlertDialog
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -50,12 +51,12 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.glide.GlideImage
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
-import ir.mehdiyari.krypt.ui.media.MediaViewAction.DECRYPT_MEDIA
-import ir.mehdiyari.krypt.ui.media.MediaViewAction.ENCRYPT_MEDIA
-import ir.mehdiyari.krypt.ui.media.MediaViewAction.PICK_MEDIA
-import ir.mehdiyari.krypt.ui.media.MediaViewAction.SHARED_MEDIA
+import ir.mehdiyari.krypt.mediaList.MediaViewAction.DECRYPT_MEDIA
+import ir.mehdiyari.krypt.mediaList.MediaViewAction.ENCRYPT_MEDIA
+import ir.mehdiyari.krypt.mediaList.MediaViewAction.PICK_MEDIA
+import ir.mehdiyari.krypt.mediaList.MediaViewAction.SHARED_MEDIA
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 
 @Composable
@@ -152,7 +153,7 @@ fun ShowActionButton(
             modifier = modifier.padding(20.dp)
         ) {
             ActionFloatingButton(buttonTextAndDeleteText.first) {
-                androidx.appcompat.app.AlertDialog.Builder(context)
+                AlertDialog.Builder(context)
                     .setMessage(buttonTextAndDeleteText.second)
                     .setPositiveButton(context.getString(ir.mehdiyari.krypt.shared.designsystem.resources.R.string.YES)) { d, _ ->
                         d.dismiss()
@@ -346,7 +347,7 @@ fun FileItem(
                         .size(80.dp)
                         .clip(RoundedCornerShape(8.dp)),
                     contentDescription = "",
-                    painter = painterResource(id = R.drawable.ic_gallery_50),
+                    painter = painterResource(id = ResourcesR.drawable.ic_gallery_50),
                 )
             }
 

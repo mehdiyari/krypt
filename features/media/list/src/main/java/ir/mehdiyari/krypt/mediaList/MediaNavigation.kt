@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media
+package ir.mehdiyari.krypt.mediaList
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -27,7 +27,7 @@ fun NavController.navigateToMedia(
 }
 
 fun NavGraphBuilder.mediaScreen(
-    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
+    sharedDataViewModel: ShareDataViewModel,
     onBackPressed: () -> Unit,
     onStopLocker: () -> Unit,
 ) {

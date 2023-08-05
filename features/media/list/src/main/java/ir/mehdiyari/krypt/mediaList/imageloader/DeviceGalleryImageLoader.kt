@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.app.imageloader
+package ir.mehdiyari.krypt.mediaList.imageloader
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable

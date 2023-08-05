@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.media
+package ir.mehdiyari.krypt.mediaList
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -24,11 +24,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.fallery.main.fallery.FalleryOptions
 import ir.mehdiyari.fallery.main.fallery.getFalleryActivityResultContract
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.permission.checkIfAppIsStorageManager
 import ir.mehdiyari.krypt.permission.requestGrantManagerStoragePermission
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.shared.designsystem.components.ManageExternalPermissionDialog
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -213,7 +213,7 @@ fun MediaScreen(
                 val context = LocalContext.current
                 if (!checkForOpenPickerForDecryptMode()) {
                     Toast.makeText(
-                        context, R.string.no_encrypted_file_found, Toast.LENGTH_LONG
+                        context, ResourcesR.string.no_encrypted_file_found, Toast.LENGTH_LONG
                     ).show()
                     onBackPressed()
                 } else {

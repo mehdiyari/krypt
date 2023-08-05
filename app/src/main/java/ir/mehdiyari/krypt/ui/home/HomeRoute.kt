@@ -17,14 +17,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
-import ir.mehdiyari.krypt.ui.media.MediaViewAction
+import ir.mehdiyari.krypt.mediaList.MediaViewAction
 
 @Composable
 fun HomeRoute(
     openAddTextScreen: (String?) -> Unit,
     openTextsScreen: () -> Unit,
     openMusicAndAudioScreen: () -> Unit,
-    openMediaScreen: (MediaViewAction) -> Unit,
+    openMediaScreen: (ir.mehdiyari.krypt.mediaList.MediaViewAction) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel
@@ -38,7 +38,7 @@ fun HomeRoute(
                 openAddTextScreen((sharedData as ir.mehdiyari.krypt.shareContent.SharedDataState.SharedText).text)
             } else if (sharedData is ir.mehdiyari.krypt.shareContent.SharedDataState.SharedMedias) {
                 openMediaScreen(
-                    MediaViewAction.SHARED_MEDIA
+                    ir.mehdiyari.krypt.mediaList.MediaViewAction.SHARED_MEDIA
                 )
             }
             sharedDataViewModel.clearSharedData()
@@ -50,7 +50,7 @@ fun HomeRoute(
     HomeScreen(
         cards = cards, onItemClicked = {
             when (it) {
-                FileTypeEnum.Photo -> openMediaScreen(MediaViewAction.DECRYPT_MEDIA)
+                FileTypeEnum.Photo -> openMediaScreen(ir.mehdiyari.krypt.mediaList.MediaViewAction.DECRYPT_MEDIA)
                 FileTypeEnum.Audio -> openMusicAndAudioScreen()
                 FileTypeEnum.Text -> openTextsScreen()
                 else -> Unit

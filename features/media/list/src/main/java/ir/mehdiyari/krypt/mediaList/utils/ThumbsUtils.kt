@@ -1,6 +1,6 @@
 @file:JvmName("ThumbsUtils")
 
-package ir.mehdiyari.krypt.ui.media.utils
+package ir.mehdiyari.krypt.mediaList.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
