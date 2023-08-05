@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.player
+package ir.mehdiyari.krypt.voice.player.api
 
 import kotlinx.coroutines.flow.StateFlow
 

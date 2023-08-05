@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.player
+package ir.mehdiyari.krypt.voice.player.entity
 
 data class MusicPlayerEntity(
     val id: Long,

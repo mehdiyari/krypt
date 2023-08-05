@@ -1,6 +1,7 @@
-package ir.mehdiyari.krypt.ui.voice.player
+package ir.mehdiyari.krypt.voice.player.impl
 
 import android.media.MediaPlayer
+import ir.mehdiyari.krypt.voice.player.api.KryptMediaPlayer
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class KryptMediaPlayerImpl @Inject constructor(
+internal class KryptMediaPlayerImpl @Inject constructor(
     private val mediaPlayer: MediaPlayer,
 ) : KryptMediaPlayer {
 

@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-
     testImplementation(libs.mockk)
     testImplementation(libs.coroutinesTest)
     testImplementation(libs.junit)

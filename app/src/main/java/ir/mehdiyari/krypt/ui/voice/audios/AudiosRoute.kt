@@ -22,8 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerBottomSheet
-import ir.mehdiyari.krypt.ui.voice.player.MusicPlayerViewModel
+import ir.mehdiyari.krypt.voice.player.views.MusicPlayerBottomSheet
+import ir.mehdiyari.krypt.voice.player.views.MusicPlayerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

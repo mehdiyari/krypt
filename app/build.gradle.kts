@@ -91,4 +91,6 @@ dependencies {
     implementation(project(":features:auth:create-account"))
     implementation(project(":features:settings"))
     implementation(project(":features:backup"))
+    implementation(project(":features:voice:player"))
+    implementation(project(":features:voice:shared"))
 }

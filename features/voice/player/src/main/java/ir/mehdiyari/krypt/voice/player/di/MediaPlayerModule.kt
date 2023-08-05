@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.di
+package ir.mehdiyari.krypt.voice.player.di
 
 import android.media.MediaPlayer
 import dagger.Binds
@@ -6,12 +6,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
-import ir.mehdiyari.krypt.ui.voice.player.KryptMediaPlayer
-import ir.mehdiyari.krypt.ui.voice.player.KryptMediaPlayerImpl
+import ir.mehdiyari.krypt.voice.player.api.KryptMediaPlayer
+import ir.mehdiyari.krypt.voice.player.impl.KryptMediaPlayerImpl
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-abstract class MediaPlayerBindingModule {
+internal abstract class MediaPlayerBindingModule {
 
     @Binds
     abstract fun bindKryptMusicPlayer(
@@ -22,7 +22,7 @@ abstract class MediaPlayerBindingModule {
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class MediaPlayerModule {
+internal class MediaPlayerModule {
 
     @Provides
     fun provideMediaPlayer(): MediaPlayer = MediaPlayer()

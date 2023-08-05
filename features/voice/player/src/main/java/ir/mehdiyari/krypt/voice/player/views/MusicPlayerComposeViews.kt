@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.player
+package ir.mehdiyari.krypt.voice.player.views
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
@@ -44,9 +44,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
-import ir.mehdiyari.krypt.utils.convertToReadableTime
+import ir.mehdiyari.krypt.voice.player.R
+import ir.mehdiyari.krypt.voice.player.convertToReadableTime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -84,7 +84,7 @@ fun MusicPlayerBottomSheet(
 }
 
 @Composable
-fun MusicPlayerView(
+internal fun MusicPlayerView(
     modifier: Modifier,
     title: String,
     sliderState: StateFlow<Long>,
@@ -216,7 +216,7 @@ fun MusicPlayerView(
 }
 
 @Composable
-fun RotateAnimationForMusicPlayer(
+internal fun RotateAnimationForMusicPlayer(
     modifier: Modifier,
     isPaused: MutableState<Boolean> = mutableStateOf(false)
 ) {
@@ -250,7 +250,7 @@ fun RotateAnimationForMusicPlayer(
     }
 
     Image(
-        painter = painterResource(id = ir.mehdiyari.krypt.R.drawable.ic_music_logo),
+        painter = painterResource(id = R.drawable.ic_music_logo),
         contentDescription = "",
         modifier = modifier
             .size(100.dp)
@@ -262,7 +262,7 @@ fun RotateAnimationForMusicPlayer(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun MusicPlayerViewPreview() {
+private fun MusicPlayerViewPreview() {
     KryptTheme {
         MusicPlayerView(
             modifier = Modifier,

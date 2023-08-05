@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntity
 import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntityMapper
-import ir.mehdiyari.krypt.ui.voice.recorder.meta.AudioMetaDataJsonParser
+import ir.mehdiyari.krypt.voice.shared.entity.AudioEntity
+import ir.mehdiyari.krypt.voice.shared.entity.meta.AudioMetaDataJsonParser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
