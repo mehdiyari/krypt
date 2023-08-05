@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.audios
+package ir.mehdiyari.krypt.voice.collection
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -28,13 +28,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.voice.player.entity.MusicPlayerEntity
 import ir.mehdiyari.krypt.voice.shared.entity.AudioEntity
 
 @Composable
-fun AudioList(
+internal fun AudioList(
     modifier: Modifier,
     audios: State<List<AudioEntity>>,
     currentAudioPlaying: State<MusicPlayerEntity?>,
@@ -64,7 +63,7 @@ fun AudioList(
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun AudioItem(
+internal fun AudioItem(
     modifier: Modifier,
     audioEntity: AudioEntity,
     playingAudioState: State<MusicPlayerEntity?>,
@@ -130,7 +129,7 @@ fun AudioItem(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun AudioListPreview(
+internal fun AudioListPreview(
     @PreviewParameter(AudioPreviewParameterProvider::class) audios: List<AudioEntity>
 ) {
     KryptTheme {
@@ -157,7 +156,7 @@ fun AudioListPreview(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
-fun AudioItemPreview(
+internal fun AudioItemPreview(
     @PreviewParameter(AudioPreviewParameterProvider::class) audios: List<AudioEntity>
 ) {
     KryptTheme {

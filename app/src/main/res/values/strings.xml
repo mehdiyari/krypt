@@ -1,10 +1,8 @@
 <resources>
     <string name="add_media">Media(Photo, Video)</string>
-    <string name="add_audio">Audio</string>
     <string name="add_text">Text</string>
 
     <string name="medias_library">Media</string>
-    <string name="audios_library">Audios</string>
     <string name="texts_library">Texts</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
@@ -63,6 +61,5 @@
     <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
     <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
     <string name="all_media">All media</string>
-    <string name="add_new_audio">Record</string>
 
 </resources>

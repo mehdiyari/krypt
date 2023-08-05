@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.audios
+package ir.mehdiyari.krypt.voice.collection
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -10,12 +10,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 
 @Composable
-fun AddNewVoiceButton(
+internal fun AddNewVoiceButton(
     modifier: Modifier,
     onNavigateToRecordAudio: () -> Unit,
 ) {
@@ -26,7 +26,7 @@ fun AddNewVoiceButton(
         },
         icon = {
             Icon(
-                painter = painterResource(id = R.drawable.ic_add_audio_24),
+                painter = painterResource(id = DesignSystemR.drawable.ic_add_audio_24),
                 contentDescription = "",
             )
         },
@@ -40,7 +40,7 @@ fun AddNewVoiceButton(
 
 @Composable
 @Preview
-fun AddNewVoiceButtonPreview() {
+private fun AddNewVoiceButtonPreview() {
     KryptTheme {
         AddNewVoiceButton(Modifier) {
 

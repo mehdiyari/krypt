@@ -10,8 +10,8 @@ import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
 import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
-import ir.mehdiyari.krypt.voice.record.recorder.SecondToTimerMapper
 import ir.mehdiyari.krypt.voice.record.recorder.VoiceRecorder
+import ir.mehdiyari.krypt.voice.shared.SecondToTimerMapper
 import ir.mehdiyari.krypt.voice.shared.entity.meta.AudioMetaData
 import ir.mehdiyari.krypt.voice.shared.entity.meta.AudioMetaDataJsonParser
 import kotlinx.coroutines.CoroutineDispatcher

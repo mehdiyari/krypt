@@ -1,8 +1,7 @@
-package ir.mehdiyari.krypt.ui.voice.audios.entity
+package ir.mehdiyari.krypt.voice.collection
 
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
-import ir.mehdiyari.krypt.ui.voice.audios.AudioTimeMapper
-import ir.mehdiyari.krypt.voice.record.recorder.SecondToTimerMapper
+import ir.mehdiyari.krypt.voice.shared.SecondToTimerMapper
 import ir.mehdiyari.krypt.voice.shared.entity.AudioEntity
 import ir.mehdiyari.krypt.voice.shared.entity.meta.AudioMetaData
 import ir.mehdiyari.krypt.voice.shared.entity.meta.AudioMetaDataJsonParser

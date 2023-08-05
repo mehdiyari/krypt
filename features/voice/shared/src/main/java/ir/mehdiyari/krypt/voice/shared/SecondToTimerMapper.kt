@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.voice.record.recorder
+package ir.mehdiyari.krypt.voice.shared
 
 import javax.inject.Inject
 

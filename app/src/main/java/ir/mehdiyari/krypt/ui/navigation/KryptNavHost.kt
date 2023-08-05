@@ -19,8 +19,8 @@ import ir.mehdiyari.krypt.ui.text.add.addTextScreen
 import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
 import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
 import ir.mehdiyari.krypt.ui.text.list.textsScreen
-import ir.mehdiyari.krypt.ui.voice.audios.audiosRoute
-import ir.mehdiyari.krypt.ui.voice.audios.navigateToAudios
+import ir.mehdiyari.krypt.voice.collection.audiosRoute
+import ir.mehdiyari.krypt.voice.collection.navigateToAudios
 import ir.mehdiyari.krypt.voice.record.record.addVoiceScreen
 import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
 

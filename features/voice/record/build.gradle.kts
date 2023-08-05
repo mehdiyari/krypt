@@ -8,7 +8,6 @@ android {
 
 dependencies {
     implementation(project(":shared:designsystem:theme"))
-    implementation(project(":shared:designsystem:components"))
     implementation(project(":shared:designsystem:resources"))
 
     implementation(project(":shared:files:files-data"))

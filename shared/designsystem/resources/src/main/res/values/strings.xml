@@ -11,4 +11,6 @@
     <string name="menu_data_usage">Data Usage</string>
     <string name="manager_external_permission">Manage Storage Permission</string>
     <string name="manager_external_permission_description">Krypt needs access to the external storage to encrypt and decrypt, backup and restore files.</string>
+    <string name="audios_library">Audios</string>
+    <string name="add_audio">Audio</string>
 </resources>

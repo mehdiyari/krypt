@@ -52,7 +52,7 @@ fun KryptApp(
                         )
                     }
 
-                    R.string.add_audio -> {
+                    DesignSystemR.string.add_audio -> {
                         kryptAppState.navController.navigateToAddVoice()
                     }
 

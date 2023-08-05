@@ -1,7 +1,7 @@
-package ir.mehdiyari.krypt.ui.voice.audios
+package ir.mehdiyari.krypt.voice.collection
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 class AudioTimeMapper @Inject constructor() {

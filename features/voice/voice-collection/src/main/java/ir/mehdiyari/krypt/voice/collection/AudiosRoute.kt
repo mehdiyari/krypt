@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.voice.audios
+package ir.mehdiyari.krypt.voice.collection
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,13 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.voice.player.views.MusicPlayerBottomSheet
 import ir.mehdiyari.krypt.voice.player.views.MusicPlayerViewModel
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AudiosRoute(
+internal fun AudiosRoute(
     modifier: Modifier,
     audiosViewModel: AudiosViewModel = hiltViewModel(),
     musicPlayerViewModel: MusicPlayerViewModel = hiltViewModel(),
@@ -46,7 +46,7 @@ fun AudiosRoute(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(id = R.string.audios_library))
+                        Text(text = stringResource(id = DesignSystemR.string.audios_library))
                     },
                     navigationIcon = {
                         IconButton(onClick = {

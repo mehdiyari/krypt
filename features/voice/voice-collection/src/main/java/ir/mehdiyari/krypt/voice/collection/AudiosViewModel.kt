@@ -1,10 +1,9 @@
-package ir.mehdiyari.krypt.ui.voice.audios
+package ir.mehdiyari.krypt.voice.collection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.ui.voice.audios.entity.AudioEntityMapper
 import ir.mehdiyari.krypt.voice.shared.entity.AudioEntity
 import ir.mehdiyari.krypt.voice.shared.entity.meta.AudioMetaDataJsonParser
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AudiosViewModel @Inject constructor(
+internal class AudiosViewModel @Inject constructor(
     private val filesRepository: FilesRepository,
     private val audioEntityMapper: AudioEntityMapper,
     private val audioMetaDataJsonParser: AudioMetaDataJsonParser
