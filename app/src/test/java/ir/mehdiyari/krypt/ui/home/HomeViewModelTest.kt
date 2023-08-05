@@ -13,6 +13,8 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
@@ -52,7 +54,7 @@ class HomeViewModelTest {
             Assert.assertEquals(
                 HomeCardsModel(
                     R.drawable.ic_editor_50,
-                    R.string.texts_library,
+                    ResourcesR.string.texts_library,
                     100
                 ),
                 it[1]

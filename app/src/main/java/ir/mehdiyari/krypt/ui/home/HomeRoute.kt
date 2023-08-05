@@ -27,16 +27,16 @@ fun HomeRoute(
     openMediaScreen: (MediaViewAction) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    sharedDataViewModel: ShareDataViewModel
+    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 ) {
     viewModel.getHomeItems()
     val cards by viewModel.filesCounts.collectAsStateWithLifecycle()
     val sharedData by sharedDataViewModel.sharedData.collectAsStateWithLifecycle()
     DisposableEffect(sharedData) {
         if (sharedData != null) {
-            if (sharedData is SharedDataState.SharedText) {
-                openAddTextScreen((sharedData as SharedDataState.SharedText).text)
-            } else if (sharedData is SharedDataState.SharedMedias) {
+            if (sharedData is ir.mehdiyari.krypt.shareContent.SharedDataState.SharedText) {
+                openAddTextScreen((sharedData as ir.mehdiyari.krypt.shareContent.SharedDataState.SharedText).text)
+            } else if (sharedData is ir.mehdiyari.krypt.shareContent.SharedDataState.SharedMedias) {
                 openMediaScreen(
                     MediaViewAction.SHARED_MEDIA
                 )
