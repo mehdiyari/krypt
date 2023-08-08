@@ -27,6 +27,7 @@ dependencies {
     androidTestApi(libs.androidx.compose.ui.test)
     debugApi(libs.androidx.compose.ui.testManifest)
 
-    implementation("com.google.android.material:material:1.9.0")
+    //We need this dependency to use M2 themes in themes.xml
+    implementation(libs.material)
 
 }
