@@ -1,6 +1,6 @@
 plugins {
     id("krypt.android.feature")
-    id("dagger.hilt.android.plugin")
+    id("dagger.hilt.android.plugin") //We need this dependency because we used AndroidEntrypoint annotation
 }
 
 android {
