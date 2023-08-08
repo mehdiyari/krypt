@@ -1,9 +1,4 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.Krypt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/statusBar_color</item>
-    </style>
-
     <style name="Theme.Krypt.Splash" parent="Theme.SplashScreen">
         <item name="postSplashScreenTheme">@style/Theme.Krypt</item>
     </style>

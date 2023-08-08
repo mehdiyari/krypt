@@ -31,14 +31,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Krypt"
+        android:theme="@style/Theme.Krypt.Splash"
         tools:targetApi="31">
 
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.Krypt.Splash"
             android:windowSoftInputMode="stateHidden|adjustResize">
 
             <intent-filter>
