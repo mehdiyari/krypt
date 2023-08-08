@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.mediaPlayer
 
+import androidx.annotation.OptIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,14 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-fun PlayerComposeView(
+@OptIn(UnstableApi::class)
+internal fun PlayerComposeView(
     player: ExoPlayer? = null,
     decryptVideoPathState: StateFlow<PlayerState?>? = null
 ) {

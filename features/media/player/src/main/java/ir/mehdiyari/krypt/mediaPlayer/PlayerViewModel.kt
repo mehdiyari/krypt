@@ -15,7 +15,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class PlayerViewModel @Inject constructor(
+internal class PlayerViewModel @Inject constructor(
     private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val fileUtils: FilesUtilities,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher

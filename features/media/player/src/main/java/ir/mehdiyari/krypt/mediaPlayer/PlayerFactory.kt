@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.media3.exoplayer.ExoPlayer
 
-object PlayerFactory {
+internal object PlayerFactory {
 
     fun getNormalStreamPlayer(activity: Context): ExoPlayer = ExoPlayer.Builder(activity)
         .build()
