@@ -8,7 +8,7 @@ import ir.mehdiyari.fallery.imageLoader.FalleryImageLoader
 import ir.mehdiyari.fallery.imageLoader.PhotoDiminution
 import javax.inject.Inject
 
-class DeviceGalleryImageLoader @Inject constructor() : FalleryImageLoader {
+internal class DeviceGalleryImageLoader @Inject constructor() : FalleryImageLoader {
 
     override fun loadGif(
         context: Context,

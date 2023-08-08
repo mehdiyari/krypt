@@ -60,7 +60,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 
 @Composable
-fun MediaScreenContent(
+internal fun MediaScreenContent(
     selectedMediaItems: List<SelectedMediaItems>,
     actionState: MediaViewAction,
     notifyMediaScanner: Boolean,
@@ -100,7 +100,7 @@ fun MediaScreenContent(
 }
 
 @Composable
-fun ConfirmDeleteFileDialog(
+private fun ConfirmDeleteFileDialog(
     onDismiss: () -> Unit, onConfirmClicked: () -> Unit, @StringRes descriptionRes: Int
 ) {
     AlertDialog(onDismissRequest = onDismiss, title = {
@@ -124,7 +124,7 @@ fun ConfirmDeleteFileDialog(
 }
 
 @Composable
-fun ShowActionButton(
+internal fun ShowActionButton(
     viewState: MediaViewState,
     actionState: MediaViewAction,
     notifyMediaScanner: Boolean,
@@ -182,7 +182,7 @@ fun ShowActionButton(
 
 
 @Composable
-fun OperationResult(
+internal fun OperationResult(
     @DrawableRes imageRes: Int, @StringRes messageRes: Int, modifier: Modifier = Modifier
 ) {
     Column(
@@ -205,7 +205,7 @@ fun OperationResult(
 }
 
 @Composable
-fun OperationStart(modifier: Modifier = Modifier) {
+internal fun OperationStart(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -244,7 +244,7 @@ private fun NotifyMediaScannerCheckBox(
 
 @Composable
 @Preview
-fun ActionFloatingButton(
+private fun ActionFloatingButton(
     buttonText: String = stringResource(id = R.string.encrypt_action),
     onButtonClick: () -> Unit = {}
 ) {
@@ -266,7 +266,7 @@ fun ActionFloatingButton(
 
 
 @Composable
-fun DeleteAllFilesFloatingButton(
+private fun DeleteAllFilesFloatingButton(
     deleteAllSelectedFiles: () -> Unit
 ) {
     var showConfirmDeleteDialog by remember { mutableStateOf(false) }
@@ -296,7 +296,7 @@ fun DeleteAllFilesFloatingButton(
 }
 
 @Composable
-fun FileList(
+private fun FileList(
     selectedMediaItems: List<SelectedMediaItems>,
     onRemoveClicked: (String) -> Unit,
     onDeleteClicked: (String) -> Unit,
@@ -318,7 +318,7 @@ fun FileList(
 }
 
 @Composable
-fun FileItem(
+private fun FileItem(
     item: SelectedMediaItems,
     onRemoveClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
@@ -399,7 +399,7 @@ fun FileItem(
 
 @Preview
 @Composable
-fun OperationStartViewPreview() {
+private fun OperationStartViewPreview() {
     KryptTheme {
         Surface {
             OperationStart()
@@ -409,7 +409,7 @@ fun OperationStartViewPreview() {
 
 @Preview
 @Composable
-fun OperationSuccessPreview() {
+private fun OperationSuccessPreview() {
     KryptTheme {
         Surface {
             OperationResult(
@@ -421,7 +421,7 @@ fun OperationSuccessPreview() {
 
 @Preview
 @Composable
-fun OperationFailedPreview() {
+private fun OperationFailedPreview() {
     KryptTheme {
         Surface {
             OperationResult(
@@ -433,7 +433,7 @@ fun OperationFailedPreview() {
 
 @Preview
 @Composable
-fun FileItemPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider::class) items: List<SelectedMediaItems>) {
+private fun FileItemPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider::class) items: List<SelectedMediaItems>) {
     KryptTheme {
         Surface {
             FileItem(
@@ -448,7 +448,7 @@ fun FileItemPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider
 
 @Preview
 @Composable
-fun FileListPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider::class) items: List<SelectedMediaItems>) {
+private fun FileListPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider::class) items: List<SelectedMediaItems>) {
     KryptTheme {
         Surface {
             FileList(
@@ -463,7 +463,7 @@ fun FileListPreview(@PreviewParameter(SelectedMediaItemsPreviewParameterProvider
 
 @Preview
 @Composable
-fun ConfirmDeletePreview() {
+private fun ConfirmDeletePreview() {
     KryptTheme {
         Surface {
             ConfirmDeleteFileDialog(
@@ -475,7 +475,7 @@ fun ConfirmDeletePreview() {
     }
 }
 
-class SelectedMediaItemsPreviewParameterProvider :
+private class SelectedMediaItemsPreviewParameterProvider :
     PreviewParameterProvider<List<SelectedMediaItems>> {
     override val values: Sequence<List<SelectedMediaItems>>
         get() = sequenceOf(List(5) { SelectedMediaItems("", false) })

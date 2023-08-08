@@ -13,7 +13,7 @@ import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 const val ROUTE_MEDIA = "media"
 const val KEY_MEDIA_ACTION = "key_action"
 
-class MediaArgs(val action: MediaViewAction) {
+internal class MediaArgs(val action: MediaViewAction) {
     constructor(savedStateHandle: SavedStateHandle) : this(
         action = MediaViewAction.values()
             .first { it.value == savedStateHandle[KEY_MEDIA_ACTION] },

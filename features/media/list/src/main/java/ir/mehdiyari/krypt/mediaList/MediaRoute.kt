@@ -32,7 +32,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun MediaRoute(
+internal fun MediaRoute(
     modifier: Modifier = Modifier,
     viewModel: MediasViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
@@ -108,7 +108,7 @@ fun MediaRoute(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun MediaScreen(
+internal fun MediaScreen(
     modifier: Modifier,
     actionState: MediaViewAction,
     viewState: MediaViewState,

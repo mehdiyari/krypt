@@ -4,7 +4,7 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 
-data class SharedMediaListModel(
+internal data class SharedMediaListModel(
     val images: List<Uri>? = null
 ) : Parcelable {
 

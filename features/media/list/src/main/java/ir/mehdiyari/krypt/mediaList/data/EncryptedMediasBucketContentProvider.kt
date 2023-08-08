@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 import java.io.File
 import javax.inject.Inject
 
-class EncryptedMediasBucketContentProvider @Inject constructor(
+internal class EncryptedMediasBucketContentProvider @Inject constructor(
     private val filesRepository: FilesRepository,
     private val kryptCryptographyHelper: KryptCryptographyHelper,
     private val filesUtilities: FilesUtilities,

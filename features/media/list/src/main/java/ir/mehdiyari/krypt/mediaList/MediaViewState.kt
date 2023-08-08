@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.mediaList
 
-sealed class MediaViewState {
+internal sealed class MediaViewState {
 
     data class EncryptDecryptState(
         val selectedMediaItems: List<SelectedMediaItems>,

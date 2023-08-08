@@ -11,9 +11,9 @@ import java.io.FileOutputStream
 import javax.inject.Inject
 
 
-class ThumbsUtils @Inject constructor() {
+internal class ThumbsUtils @Inject constructor() {
 
-    companion object {
+    private companion object {
         const val THUMB_WIDTH = 1024
     }
 

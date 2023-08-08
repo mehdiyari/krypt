@@ -19,7 +19,7 @@ import ir.mehdiyari.krypt.permission.getFileProviderAuthority
 import ir.mehdiyari.krypt.mediaPlayer.PlayerActivity
 import javax.inject.Inject
 
-class FalleryBuilderProvider @Inject constructor(
+internal class FalleryBuilderProvider @Inject constructor(
     private val deviceGalleryImageLoader: DeviceGalleryImageLoader,
     @ApplicationContext private val context: Context,
     private val encryptedMediasBucketContentProvider: EncryptedMediasBucketContentProvider,

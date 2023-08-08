@@ -1,6 +1,6 @@
 package ir.mehdiyari.krypt.mediaList.utils
 
-fun formatSize(size: Long): String {
+internal fun formatSize(size: Long): String {
     var internalSize = size
     var suffix: String?
     if (internalSize >= 1024) {

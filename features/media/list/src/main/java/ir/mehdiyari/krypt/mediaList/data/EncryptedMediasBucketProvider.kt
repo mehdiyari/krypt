@@ -11,7 +11,7 @@ import ir.mehdiyari.krypt.mediaList.R
 import java.io.File
 import javax.inject.Inject
 
-class EncryptedMediasBucketProvider @Inject constructor(
+internal class EncryptedMediasBucketProvider @Inject constructor(
     private val filesRepository: FilesRepository,
     private val filesUtilities: FilesUtilities,
     private val kryptCryptographyHelper: KryptCryptographyHelper,

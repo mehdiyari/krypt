@@ -28,7 +28,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import javax.inject.Inject
 
 @HiltViewModel
-class MediasViewModel @Inject constructor(
+internal class MediasViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val kryptCryptographyHelper: KryptCryptographyHelper,
