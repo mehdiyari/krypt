@@ -96,4 +96,8 @@ dependencies {
     implementation(project(":features:text:add"))
     implementation(project(":features:text:shared"))
 
+    implementation(project(":features:voice:player"))
+    implementation(project(":features:voice:shared"))
+    implementation(project(":features:voice:record"))
+    implementation(project(":features:voice:voice-collection"))
 }
