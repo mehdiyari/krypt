@@ -44,11 +44,15 @@ fun KryptNaveHost(
             navController.navigateToCreateAccount()
         }, onLoginSuccess = {
             navController.navigateToHome()
-        }, showSnackBar = onShowSnackbar)
+        }, showSnackBar = onShowSnackbar, onRestoreClicked = {
+            TODO("Navigate To Restore")
+        })
 
         createAccountScreen(onCreateAccountSuccess = {
             navController.navigateToLogin()
-        }, onShowSnackbar = onShowSnackbar)
+        }, onShowSnackbar = onShowSnackbar, onRestoreClicked = {
+            TODO("Navigate to Restore")
+        })
 
         homeScreen(
             sharedDataViewModel = sharedDataViewModel,

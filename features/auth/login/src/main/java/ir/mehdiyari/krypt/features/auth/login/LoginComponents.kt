@@ -37,7 +37,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.components.ClickableTextView
 import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
 fun LoginFields(
@@ -46,7 +48,8 @@ fun LoginFields(
     onUserNameChanged: (String) -> Unit,
     password: String,
     onPasswordChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRestoreClicked: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -78,6 +81,12 @@ fun LoginFields(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
+        )
+
+        ClickableTextView(
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 20.dp, end = 20.dp),
+            text = stringResource(id = DesignSystemR.string.restore_entry_point_text),
+            onClick = onRestoreClicked
         )
 
         Spacer(modifier = modifier.size(100.dp))
@@ -178,11 +187,14 @@ fun DropDownTextField(
 fun LoginFieldsPreview() {
     KryptTheme {
         Surface {
-            LoginFields(usernames = List(5) { "UserName$it" },
+            LoginFields(
+                usernames = List(5) { "UserName$it" },
                 selectedUserName = "UserName0",
                 onUserNameChanged = {},
                 password = "12345",
-                onPasswordChanged = {})
+                onPasswordChanged = {},
+                onRestoreClicked = {},
+            )
         }
     }
 }
