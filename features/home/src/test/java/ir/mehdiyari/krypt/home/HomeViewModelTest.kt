@@ -1,14 +1,11 @@
-package ir.mehdiyari.krypt.ui.home
+package ir.mehdiyari.krypt.home
 
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.home.HomeCardsModel
-import ir.mehdiyari.krypt.home.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -46,7 +43,7 @@ class HomeViewModelTest {
             Assert.assertEquals(
                 HomeCardsModel(
                     ResourcesR.drawable.ic_gallery_50,
-                    R.string.medias_library,
+                    ResourcesR.string.medias_library,
                     20
                 ),
                 it.first()
