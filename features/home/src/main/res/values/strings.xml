@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="encrypted_file_found">Encrypted files found</string>
+    <string name="krypt_main_menu">Krypt Main Menu</string>
+    <string name="lock_app_content_description">Lock Krypt</string>
+    <string name="app_menu_subtitle">Safe house for your files</string>
+    <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
+</resources>

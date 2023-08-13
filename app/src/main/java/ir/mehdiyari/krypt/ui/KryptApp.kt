@@ -21,10 +21,14 @@ import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
 import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
 import ir.mehdiyari.krypt.features.text.add.navigateToAddText
-import ir.mehdiyari.krypt.setting.ui.navigateToSettings
-import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
+import ir.mehdiyari.krypt.home.AddBottomSheet
+import ir.mehdiyari.krypt.home.AddFab
+import ir.mehdiyari.krypt.home.KryptBottomAppBar
+import ir.mehdiyari.krypt.home.MainMenuBottomSheet
 import ir.mehdiyari.krypt.mediaList.MediaViewAction
 import ir.mehdiyari.krypt.mediaList.navigateToMedia
+import ir.mehdiyari.krypt.setting.ui.navigateToSettings
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
@@ -46,7 +50,7 @@ fun KryptApp(
         if (openAddItem) {
             AddBottomSheet(scope = kryptAppState.coroutineScope, onSelectAddItemMenuItem = {
                 when (it) {
-                    R.string.add_media -> {
+                    DesignSystemR.string.add_media -> {
                         kryptAppState.navController.navigateToMedia(
                             MediaViewAction.PICK_MEDIA
                         )
@@ -56,7 +60,7 @@ fun KryptApp(
                         kryptAppState.navController.navigateToAddVoice()
                     }
 
-                    R.string.add_text -> {
+                    DesignSystemR.string.add_text -> {
                         kryptAppState.navController.navigateToAddText()
                     }
                 }
@@ -71,7 +75,7 @@ fun KryptApp(
                     DesignSystemR.string.menu_data_usage -> kryptAppState.navController.navigateToData()
                     DesignSystemR.string.menu_settings -> kryptAppState.navController.navigateToSettings()
                 }
-            }, dismissBottomSheet = { openMenu = false })
+            }, dismissBottomSheet = { openMenu = false }, R.string.app_name)
         }
 
         Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) },

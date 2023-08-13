@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.home
+package ir.mehdiyari.krypt.home
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ir.mehdiyari.krypt.mediaList.MediaViewAction
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 
 const val ROUTE_HOME = "home"
 
@@ -19,8 +20,8 @@ fun NavGraphBuilder.homeScreen(
     openAddTextScreen: (String?) -> Unit,
     openTextsScreen: () -> Unit,
     openMusicAndAudioScreen: () -> Unit,
-    openMediaScreen: (ir.mehdiyari.krypt.mediaList.MediaViewAction) -> Unit,
-    sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel,
+    openMediaScreen: (MediaViewAction) -> Unit,
+    sharedDataViewModel: ShareDataViewModel,
 ) {
     composable(ROUTE_HOME) {
         HomeRoute(

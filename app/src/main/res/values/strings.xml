@@ -1,17 +1,5 @@
 <resources>
-    <string name="add_media">Media(Photo, Video)</string>
-    <string name="add_text">Text</string>
 
-    <string name="medias_library">Media</string>
-
-    <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
-    <string name="krypt_main_menu">Krypt Main Menu</string>
-    <string name="lock_app_content_description">Lock Krypt</string>
-    <string name="menu_change_password">Change Password</string>
-    <string name="menu_help">Help</string>
-    <string name="app_menu_subtitle">Safe house for your files</string>
-
-    <string name="encrypted_file_found">Encrypted files found</string>
     <string name="delete_files_after_encrypts">Delete medias after encryption</string>
 
     <string name="must_decrypt_video_first">You must decrypt the video first.</string>

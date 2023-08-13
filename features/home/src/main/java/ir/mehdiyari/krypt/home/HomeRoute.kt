@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.home
+package ir.mehdiyari.krypt.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,11 +20,11 @@ import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.mediaList.MediaViewAction
 
 @Composable
-fun HomeRoute(
+internal fun HomeRoute(
     openAddTextScreen: (String?) -> Unit,
     openTextsScreen: () -> Unit,
     openMusicAndAudioScreen: () -> Unit,
-    openMediaScreen: (ir.mehdiyari.krypt.mediaList.MediaViewAction) -> Unit,
+    openMediaScreen: (MediaViewAction) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     sharedDataViewModel: ir.mehdiyari.krypt.shareContent.ShareDataViewModel
@@ -38,7 +38,7 @@ fun HomeRoute(
                 openAddTextScreen((sharedData as ir.mehdiyari.krypt.shareContent.SharedDataState.SharedText).text)
             } else if (sharedData is ir.mehdiyari.krypt.shareContent.SharedDataState.SharedMedias) {
                 openMediaScreen(
-                    ir.mehdiyari.krypt.mediaList.MediaViewAction.SHARED_MEDIA
+                    MediaViewAction.SHARED_MEDIA
                 )
             }
             sharedDataViewModel.clearSharedData()
@@ -50,7 +50,7 @@ fun HomeRoute(
     HomeScreen(
         cards = cards, onItemClicked = {
             when (it) {
-                FileTypeEnum.Photo -> openMediaScreen(ir.mehdiyari.krypt.mediaList.MediaViewAction.DECRYPT_MEDIA)
+                FileTypeEnum.Photo -> openMediaScreen(MediaViewAction.DECRYPT_MEDIA)
                 FileTypeEnum.Audio -> openMusicAndAudioScreen()
                 FileTypeEnum.Text -> openTextsScreen()
                 else -> Unit
@@ -60,7 +60,7 @@ fun HomeRoute(
 }
 
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     cards: List<HomeCardsModel>,
     onItemClicked: (FileTypeEnum) -> Unit,
     modifier: Modifier = Modifier
@@ -81,7 +81,7 @@ fun HomeScreen(
 
 @Preview
 @Composable
-fun HomeScreenPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::class) cards: List<HomeCardsModel>) {
+private fun HomeScreenPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::class) cards: List<HomeCardsModel>) {
     KryptTheme {
         Surface {
             HomeScreen(cards = cards, onItemClicked = {})

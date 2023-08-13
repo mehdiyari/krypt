@@ -1,5 +1,6 @@
-package ir.mehdiyari.krypt.ui
+package ir.mehdiyari.krypt.home
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,9 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.home.ADD_ITEMS
-import ir.mehdiyari.krypt.ui.home.MAIN_MENU_ITEMS
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -97,7 +95,8 @@ fun AddFab(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuBottomSheet(
-    scope: CoroutineScope, onSelectMainMenuItem: (Int) -> Unit, dismissBottomSheet: () -> Unit
+    scope: CoroutineScope, onSelectMainMenuItem: (Int) -> Unit, dismissBottomSheet: () -> Unit,
+    @StringRes appName: Int,
 ) {
     val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
@@ -109,7 +108,7 @@ fun MainMenuBottomSheet(
                     .padding(14.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.app_name),
+                    text = stringResource(id = appName),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif
