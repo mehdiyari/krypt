@@ -68,7 +68,7 @@ fun HomeItemCard(
                 ) {
                     Text(text = stringResource(id = homeCardsModel.name))
                     Text(
-                        text = if (homeCardsModel.counts == 0L) stringResource(id = R.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${
+                        text = if (homeCardsModel.counts == 0L) stringResource(id = ResourcesR.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${
                             stringResource(
                                 id = R.string.encrypted_file_found
                             )
@@ -104,11 +104,11 @@ class HomeCardsPreviewParameterProvider : PreviewParameterProvider<List<HomeCard
         get() = sequenceOf(
             listOf(
                 HomeCardsModel(
-                    R.drawable.ic_gallery_50, R.string.medias_library, 10
+                   ResourcesR.drawable.ic_gallery_50, R.string.medias_library, 10
                 ), HomeCardsModel(
-                    R.drawable.ic_gallery_50, R.string.medias_library, 10
+                    ResourcesR.drawable.ic_gallery_50, R.string.medias_library, 10
                 ), HomeCardsModel(
-                    R.drawable.ic_gallery_50, R.string.medias_library, 10
+                    ResourcesR.drawable.ic_gallery_50, R.string.medias_library, 10
                 )
             )
         )

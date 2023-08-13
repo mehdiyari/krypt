@@ -43,7 +43,7 @@ class HomeViewModelTest {
             // media
             Assert.assertEquals(
                 HomeCardsModel(
-                    R.drawable.ic_gallery_50,
+                    ResourcesR.drawable.ic_gallery_50,
                     R.string.medias_library,
                     20
                 ),

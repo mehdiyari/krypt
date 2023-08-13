@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private val viewModel: MainViewModel by viewModels()
-    private val shareDataViewModel by viewModels<ir.mehdiyari.krypt.shareContent.ShareDataViewModel>()
+    private val shareDataViewModel by viewModels<ShareDataViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()

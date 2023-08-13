@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation(libs.coreKtx)
-    implementation(libs.appCompat)
+    implementation(libs.androidx.appCompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
@@ -55,16 +55,10 @@ dependencies {
     implementation(libs.coroutinesAndroid)
     implementation(libs.coroutinesCore)
 
-    implementation(libs.fallery)
-
-    implementation(libs.glide)
     ksp(libs.glideCompiler)
-    implementation(libs.landscapistGlide)
 
     implementation(libs.moshiKotlin)
     implementation(libs.processPhoenix)
-    implementation(libs.exoplayer)
-    implementation(libs.media3UI)
 
     testImplementation(libs.mockk)
     testImplementation(libs.coroutinesTest)
@@ -94,7 +88,8 @@ dependencies {
     implementation(project(":features:backup"))
     implementation(project(":features:text:list"))
     implementation(project(":features:text:add"))
-    implementation(project(":features:text:shared"))
+    implementation(project(":features:media:player"))
+    implementation(project(":features:media:list"))
 
     implementation(project(":features:voice:player"))
     implementation(project(":features:voice:shared"))

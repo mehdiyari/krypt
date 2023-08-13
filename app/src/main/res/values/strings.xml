@@ -3,7 +3,6 @@
     <string name="add_text">Text</string>
 
     <string name="medias_library">Media</string>
-    <string name="texts_library">Texts</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
     <string name="krypt_main_menu">Krypt Main Menu</string>
@@ -12,42 +11,9 @@
     <string name="menu_help">Help</string>
     <string name="app_menu_subtitle">Safe house for your files</string>
 
-    <string name="no_encrypted_file_found">No encrypted files found</string>
     <string name="encrypted_file_found">Encrypted files found</string>
-    <string name="encrypt_action">Encrypt</string>
     <string name="delete_files_after_encrypts">Delete medias after encryption</string>
-    <string name="decrypt_action">Decrypt</string>
-    <string name="delete_files_after_encrypt_dialog_message">Do you want to delete these selected files permanently after encrypting?</string>
-    <string name="delete_files_after_decrypt_dialog_message">Do you want to delete these selected encrypted files permanently after decrypting?</string>
-    <string name="encrypt_successfully">All files encrypted successfully</string>
-    <string name="decrypt_successfully">All files decrypted successfully</string>
-    <string name="operation_successfully">Operation finished successfully</string>
-    <string name="encrypt_failed">Failed to encrypt files</string>
-    <string name="decrypt_failed">Failed to decrypt files</string>
-    <string name="operation_failed">Operation failed</string>
-    <string name="loading">Loading…</string>
 
     <string name="must_decrypt_video_first">You must decrypt the video first.</string>
-    <string name="notify_media_scanner">Notify Media Scanner</string>
-
-
-    <string name="shared_media_not_found">We can\'t find selected media for encrypt.</string>
-    <string name="navigation_error">Error while navigation</string>
-    <string name="password_confirmation">Password Confirm</string>
-    <string name="grant">Grant</string>
-    <string name="cant_decrypt_video">Can\'t decrypt video</string>
-    <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
-    <string name="photos_folder_name">Photos</string>
-    <string name="videos_folder_name">Videos</string>
-    <string name="delete_file">Delete File</string>
-    <string name="delete_selected_file">Are you sure you want to delete this file from storage permanently?</string>
-    <string name="file_removed_from_list">File removed from the list</string>
-    <string name="file_deleted_from_external_storage">File deleted from external storage</string>
-    <string name="file_deleted_from_krypt_storage">Encrypted file deleted from krypt storage</string>
-    <string name="delete_all">Delete All</string>
-    <string name="delete_all_selected_files">Are you sure you want to delete ALL selected files from storage permanently?</string>
-    <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
-    <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
-    <string name="all_media">All media</string>
 
 </resources>

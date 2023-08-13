@@ -14,4 +14,6 @@
     <string name="audios_library">Audios</string>
     <string name="add_audio">Audio</string>
     <string name="texts_library">Texts</string>
+    <string name="no_encrypted_file_found">No encrypted files found</string>
+
 </resources>
