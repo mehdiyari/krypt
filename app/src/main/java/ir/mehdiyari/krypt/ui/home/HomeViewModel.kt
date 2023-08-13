@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -39,8 +40,8 @@ class HomeViewModel @Inject constructor(
             when (it.first) {
                 FileTypeEnum.Audio -> homeCardList.add(
                     HomeCardsModel(
-                        R.drawable.ic_add_audio_24,
-                        R.string.audios_library,
+                        DesignSystemR.drawable.ic_add_audio_24,
+                        DesignSystemR.string.audios_library,
                         it.second
                     )
                 )

@@ -63,8 +63,8 @@ class HomeViewModelTest {
             // audios
             Assert.assertEquals(
                 HomeCardsModel(
-                    R.drawable.ic_add_audio_24,
-                    R.string.audios_library,
+                    ResourcesR.drawable.ic_add_audio_24,
+                    ResourcesR.string.audios_library,
                     0
                 ),
                 it.last()

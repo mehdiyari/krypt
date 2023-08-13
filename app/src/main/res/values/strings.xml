@@ -1,10 +1,9 @@
 <resources>
     <string name="add_media">Media(Photo, Video)</string>
-    <string name="add_audio">Audio</string>
     <string name="add_text">Text</string>
 
     <string name="medias_library">Media</string>
-    <string name="audios_library">Audios</string>
+    <string name="texts_library">Texts</string>
 
     <string name="add_items">Add photos, videos, audios, texts and music to krypt</string>
     <string name="krypt_main_menu">Krypt Main Menu</string>
@@ -34,4 +33,19 @@
     <string name="microphone_error">Unfortunately there is a problem with your microphone.</string>
     <string name="add_new_audio">Record</string>
     <string name="microphone_permission_error">"We need microphone permission to record audio."</string>
+    <string name="cant_decrypt_video">Can\'t decrypt video</string>
+    <string name="decrypting_video_loading">Please wait until decrypt finished.</string>
+    <string name="photos_folder_name">Photos</string>
+    <string name="videos_folder_name">Videos</string>
+    <string name="delete_file">Delete File</string>
+    <string name="delete_selected_file">Are you sure you want to delete this file from storage permanently?</string>
+    <string name="file_removed_from_list">File removed from the list</string>
+    <string name="file_deleted_from_external_storage">File deleted from external storage</string>
+    <string name="file_deleted_from_krypt_storage">Encrypted file deleted from krypt storage</string>
+    <string name="delete_all">Delete All</string>
+    <string name="delete_all_selected_files">Are you sure you want to delete ALL selected files from storage permanently?</string>
+    <string name="all_selected_file_deleted">All selected files deleted from external storage</string>
+    <string name="all_selected_file_deleted_from_krypt">All selected encrypted files deleted from krypt storage</string>
+    <string name="all_media">All media</string>
+
 </resources>
