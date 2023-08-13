@@ -1,11 +1,12 @@
-package ir.mehdiyari.krypt.ui.restore
+package ir.mehdiyari.krypt.restore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ir.mehdiyari.krypt.backup.logic.restore.RestoreKeyGenerator
 import ir.mehdiyari.krypt.backup.logic.restore.RestoreRepository
 import ir.mehdiyari.krypt.cryptography.exceptions.DecryptException
 import kotlinx.coroutines.launch
-import okio.FileNotFoundException
+import java.io.FileNotFoundException
 
 class RestoreViewModel(
     private val restoreRepository: RestoreRepository,

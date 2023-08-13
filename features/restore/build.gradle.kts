@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":shared:designsystem:theme"))
     implementation(project(":shared:designsystem:components"))
     implementation(project(":shared:designsystem:resources"))
+    implementation(project(":shared:cryptography"))
 
     implementation(project(":shared:dispatchers"))
     implementation(project(":shared:files:backup-logic"))
