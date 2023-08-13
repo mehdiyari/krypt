@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.home
+package ir.mehdiyari.krypt.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
@@ -35,7 +33,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeItemCard(
+internal fun HomeItemCard(
     homeCardsModel: HomeCardsModel,
     onCardClicked: (FileTypeEnum) -> Unit,
     modifier: Modifier = Modifier
@@ -68,7 +66,7 @@ fun HomeItemCard(
                 ) {
                     Text(text = stringResource(id = homeCardsModel.name))
                     Text(
-                        text = if (homeCardsModel.counts == 0L) stringResource(id = ResourcesR.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${
+                        text = if (homeCardsModel.counts == 0L) stringResource(id = DesignSystemR.string.no_encrypted_file_found) else "${homeCardsModel.counts} ${
                             stringResource(
                                 id = R.string.encrypted_file_found
                             )
@@ -83,7 +81,7 @@ fun HomeItemCard(
 
 @Preview
 @Composable
-fun HomeItemCardPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::class) cards: List<HomeCardsModel>) {
+private fun HomeItemCardPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::class) cards: List<HomeCardsModel>) {
 
     KryptTheme {
         Surface {
@@ -99,24 +97,24 @@ fun HomeItemCardPreview(@PreviewParameter(HomeCardsPreviewParameterProvider::cla
 
 }
 
-class HomeCardsPreviewParameterProvider : PreviewParameterProvider<List<HomeCardsModel>> {
+internal class HomeCardsPreviewParameterProvider : PreviewParameterProvider<List<HomeCardsModel>> {
     override val values: Sequence<List<HomeCardsModel>>
         get() = sequenceOf(
             listOf(
                 HomeCardsModel(
-                   ResourcesR.drawable.ic_gallery_50, R.string.medias_library, 10
+                    DesignSystemR.drawable.ic_gallery_50, DesignSystemR.string.medias_library, 10
                 ), HomeCardsModel(
-                    ResourcesR.drawable.ic_gallery_50, R.string.medias_library, 10
+                    DesignSystemR.drawable.ic_gallery_50, DesignSystemR.string.medias_library, 10
                 ), HomeCardsModel(
-                    ResourcesR.drawable.ic_gallery_50, R.string.medias_library, 10
+                    DesignSystemR.drawable.ic_gallery_50, DesignSystemR.string.medias_library, 10
                 )
             )
         )
 }
 
 private fun getFileTypeEnumBasedOnStringRes(name: Int): FileTypeEnum = when (name) {
-    R.string.medias_library -> FileTypeEnum.Photo
+    DesignSystemR.string.medias_library -> FileTypeEnum.Photo
     DesignSystemR.string.audios_library -> FileTypeEnum.Audio
-    ResourcesR.string.texts_library -> FileTypeEnum.Text
+    DesignSystemR.string.texts_library -> FileTypeEnum.Text
     else -> throw IllegalArgumentException()
 }

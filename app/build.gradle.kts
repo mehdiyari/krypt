@@ -95,4 +95,6 @@ dependencies {
     implementation(project(":features:voice:shared"))
     implementation(project(":features:voice:record"))
     implementation(project(":features:voice:voice-collection"))
+
+    implementation(project(":features:home"))
 }

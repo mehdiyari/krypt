@@ -1,24 +1,23 @@
-package ir.mehdiyari.krypt.ui.home
+package ir.mehdiyari.krypt.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.R
 import ir.mehdiyari.krypt.account.api.CurrentUserManager
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
 import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.file.data.entity.FileTypeEnum
 import ir.mehdiyari.krypt.files.logic.repositories.api.FilesRepository
-import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as ResourcesR
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     private val filesRepository: FilesRepository,
     @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
     private val currentUserManager: CurrentUserManager
@@ -61,7 +60,7 @@ class HomeViewModel @Inject constructor(
                         homeCardList.add(
                             HomeCardsModel(
                                 ResourcesR.drawable.ic_gallery_50,
-                                R.string.medias_library,
+                                ResourcesR.string.medias_library,
                                 mediaCount + it.second
                             )
                         )
