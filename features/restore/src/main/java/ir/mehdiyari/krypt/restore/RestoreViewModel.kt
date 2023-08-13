@@ -8,7 +8,7 @@ import ir.mehdiyari.krypt.cryptography.exceptions.DecryptException
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 
-class RestoreViewModel(
+internal class RestoreViewModel(
     private val restoreRepository: RestoreRepository,
     private val restoreKeyGenerator: RestoreKeyGenerator,
 ) : ViewModel() {
