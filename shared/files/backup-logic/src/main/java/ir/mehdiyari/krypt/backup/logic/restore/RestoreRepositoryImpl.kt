@@ -20,8 +20,9 @@ import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import javax.crypto.SecretKey
+import javax.inject.Inject
 
-internal class RestoreRepositoryImpl(
+internal class RestoreRepositoryImpl @Inject constructor(
     private val fileUtils: FilesUtilities,
     private val fileCryptography: FileCryptography,
     private val bytesCryptography: ByteCryptography,

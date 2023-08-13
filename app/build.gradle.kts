@@ -97,4 +97,5 @@ dependencies {
     implementation(project(":features:voice:voice-collection"))
 
     implementation(project(":features:home"))
+    implementation(project(":features:restore"))
 }
