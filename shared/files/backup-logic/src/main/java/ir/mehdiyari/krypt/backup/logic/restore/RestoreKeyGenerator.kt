@@ -1,4 +1,4 @@
-package ir.mehdiyari.krypt.ui.restore
+package ir.mehdiyari.krypt.backup.logic.restore
 
 import ir.mehdiyari.krypt.cryptography.api.KryptKeyGenerator
 import ir.mehdiyari.krypt.cryptography.utils.HashingUtils
