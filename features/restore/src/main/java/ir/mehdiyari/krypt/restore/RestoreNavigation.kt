@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.restore
 
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -12,6 +13,6 @@ fun NavController.navigateToRestore() {
 
 fun NavGraphBuilder.restoreScreen(onBackPressed: () -> Unit) {
     composable(ROUTE_RESTORE) {
-        RestoreRoute(onBackPressed = onBackPressed)
+        RestoreRoute(modifier = Modifier, onBackPressed = onBackPressed)
     }
 }
