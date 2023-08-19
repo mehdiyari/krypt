@@ -6,6 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.backup.logic.restore.RestoreKeyGenerator
 import ir.mehdiyari.krypt.backup.logic.restore.RestoreRepository
 import ir.mehdiyari.krypt.cryptography.exceptions.DecryptException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import javax.inject.Inject
@@ -16,7 +19,12 @@ internal class RestoreViewModel @Inject constructor(
     private val restoreKeyGenerator: RestoreKeyGenerator,
 ) : ViewModel() {
 
-    fun restoreBackupFile(
+    private val _restoreViewState =
+        MutableStateFlow<RestoreViewState>(RestoreViewState.OpenBackupFile)
+    val restoreViewState: StateFlow<RestoreViewState> = _restoreViewState.asStateFlow()
+    private var selectedFilePath: String? = null
+
+    private fun restoreBackupFile(
         filePath: String,
         password: String,
     ) {
@@ -35,4 +43,8 @@ internal class RestoreViewModel @Inject constructor(
         }
     }
 
+    fun onFileSelected(realPathBasedOnUri: String?) {
+        selectedFilePath = realPathBasedOnUri
+        _restoreViewState.value = RestoreViewState.ReadyForRestoreState
+    }
 }

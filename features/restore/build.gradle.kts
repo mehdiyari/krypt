@@ -28,6 +28,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    implementation(libs.coroutinesAndroid)
+    implementation(libs.coroutinesCore)
+
     testImplementation(libs.mockk)
     testImplementation(libs.coroutinesTest)
     testImplementation(libs.junit)
