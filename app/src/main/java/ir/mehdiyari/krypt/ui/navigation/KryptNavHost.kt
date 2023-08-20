@@ -92,7 +92,7 @@ fun KryptNaveHost(
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
         settingsRoute(onRestartApp) { navController.popBackStack() }
-        restoreScreen { navController.popBackStack() }
+        restoreScreen(onBackPressed = { navController.popBackStack() }, onRestart = onRestartApp)
     }
 }
 

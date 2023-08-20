@@ -13,12 +13,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.permission.requestGrantManagerStoragePermission
 import ir.mehdiyari.krypt.restore.view.OpenBackupFile
 import ir.mehdiyari.krypt.restore.view.ReadyForRestore
+import ir.mehdiyari.krypt.restore.view.RestoreSuccessesScreen
 
 @Composable
 internal fun RestoreRoute(
     modifier: Modifier,
     viewModel: RestoreViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
+    onRestart: () -> Unit,
 ) {
     val viewState = viewModel.restoreViewState.collectAsStateWithLifecycle()
     val restoreLoadingState = viewModel.restoreLoadingState.collectAsStateWithLifecycle()
@@ -41,9 +43,10 @@ internal fun RestoreRoute(
             )
         }
 
-        is RestoreViewState.Success -> {
-            TODO()
-        }
+        is RestoreViewState.Success -> RestoreSuccessesScreen(
+            modifier = Modifier,
+            onRestart = onRestart,
+        )
     }
 
     DisposableEffect(lifeCycleOwner) {

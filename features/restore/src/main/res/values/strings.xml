@@ -10,4 +10,6 @@
     <string name="cant_find_restore_file">We can\'t find/access the backup file, please check permissions.</string>
     <string name="restore_loading_message">Please wait until the restore finished</string>
     <string name="restore_wait_button">Please Wait</string>
+    <string name="restore_successess_message">Backup file restored successfully. You can login to your restored account by clicking on below button.</string>
+    <string name="login">Login</string>
 </resources>

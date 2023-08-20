@@ -11,8 +11,11 @@ fun NavController.navigateToRestore() {
     this.navigate(ROUTE_RESTORE)
 }
 
-fun NavGraphBuilder.restoreScreen(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.restoreScreen(
+    onBackPressed: () -> Unit,
+    onRestart: () -> Unit,
+) {
     composable(ROUTE_RESTORE) {
-        RestoreRoute(modifier = Modifier, onBackPressed = onBackPressed)
+        RestoreRoute(modifier = Modifier, onBackPressed = onBackPressed, onRestart = onRestart)
     }
 }
