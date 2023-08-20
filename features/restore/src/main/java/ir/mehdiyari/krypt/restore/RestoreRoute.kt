@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.restore
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ internal fun RestoreRoute(
     onBackPressed: () -> Unit,
 ) {
     val viewState = viewModel.restoreViewState.collectAsStateWithLifecycle()
+    val restoreLoadingState = viewModel.restoreLoadingState.collectAsStateWithLifecycle()
     val lifeCycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     when (viewState.value) {
@@ -33,11 +35,14 @@ internal fun RestoreRoute(
                 onRequestPermission = {
                     context.requestGrantManagerStoragePermission()
                 },
-                onRestoreClicked = {
-                    viewModel.onRestoreClicked()
-                },
+                onRestoreClicked = viewModel::onRestoreClicked,
                 onBackPressed = onBackPressed,
+                loadingState = restoreLoadingState.value,
             )
+        }
+
+        is RestoreViewState.Success -> {
+            TODO()
         }
     }
 
@@ -53,4 +58,10 @@ internal fun RestoreRoute(
         onDispose { lifeCycleOwner.lifecycle.removeObserver(observer) }
     }
 
+    val restoreMessageState = viewModel.restoreMessageSharedFlow.collectAsStateWithLifecycle(
+        initialValue = null
+    )
+    if (restoreMessageState.value != null) {
+        Toast.makeText(LocalContext.current, restoreMessageState.value!!, Toast.LENGTH_SHORT).show()
+    }
 }

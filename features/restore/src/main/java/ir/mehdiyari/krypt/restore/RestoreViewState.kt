@@ -8,4 +8,5 @@ internal sealed class RestoreViewState {
     ) : RestoreViewState()
 
     object Close : RestoreViewState()
+    object Success : RestoreViewState()
 }

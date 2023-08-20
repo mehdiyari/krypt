@@ -23,8 +23,10 @@ fun PasswordTextField(
     hint: String,
     onPasswordChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
 ) {
     TextField(
+        enabled = isEnabled,
         singleLine = true,
         value = password,
         onValueChange = onPasswordChanged,

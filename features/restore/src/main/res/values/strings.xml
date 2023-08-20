@@ -5,4 +5,9 @@
     <string name="grant_access">Grant Access</string>
     <string name="restore_button">Restore</string>
     <string name="permission_required">Permissions</string>
+    <string name="backup_username">Username</string>
+    <string name="decryption_error_restore">Decryption Failed, this might happened because the password is not correct.</string>
+    <string name="cant_find_restore_file">We can\'t find/access the backup file, please check permissions.</string>
+    <string name="restore_loading_message">Please wait until the restore finished</string>
+    <string name="restore_wait_button">Please Wait</string>
 </resources>
