@@ -78,6 +78,8 @@ internal class EncryptedMediasBucketContentProvider @Inject constructor(
             flow {
                 this.emit(listOf())
             }
+        } finally {
+            filesUtilities.deleteCachedVideoDIR()
         }
     }
 
@@ -110,13 +112,13 @@ internal class EncryptedMediasBucketContentProvider @Inject constructor(
                     thumbnailPath = null
                 }
 
+                File(fileRealPath).delete()
                 val encryptedThumb = encryptThumbnail(thumbnailPath)
                 if (encryptedThumb != null) {
                     val finalPath =
                         filesUtilities.generateStableNameFilePathForMediaThumbnail(encryptedThumb)
                     val newFileEntity = it.copy(metaData = encryptedThumb)
                     filesRepository.updateFile(newFileEntity)
-                    File(fileRealPath).delete()
                     createThumbnailBasedOnEncryptedMetaData(
                         newFileEntity, finalPath
                     )
