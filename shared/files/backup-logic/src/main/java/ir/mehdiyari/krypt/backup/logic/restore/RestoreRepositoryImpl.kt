@@ -66,7 +66,6 @@ internal class RestoreRepositoryImpl @Inject constructor(
             )
 
             val fileList = mutableListOf<Pair<Long, String>>()
-            var nextFileReadedByteArray: ByteArray? = null
 
             repeat(dbBackupModel.files.size) {
                 val fileSize = ByteArray(Long.SIZE_BYTES)
@@ -109,9 +108,6 @@ internal class RestoreRepositoryImpl @Inject constructor(
                             if (readCount > fileSizeInLong) {
                                 val fullSize = (readCount - fileSizeInLong).toInt()
                                 currentOutputStream.write(buffer.getBeforeIndex(fullSize))
-                                nextFileReadedByteArray = buffer.getAfterIndex(
-                                    fullSize
-                                )
                             } else {
                                 currentOutputStream.write(buffer)
                             }
@@ -136,7 +132,21 @@ internal class RestoreRepositoryImpl @Inject constructor(
         dbBackupModel: DBBackupModel,
     ) {
         accountsDao.insert(dbBackupModel.account)
-        filesDao.insertFiles(dbBackupModel.files)
+        filesDao.insertFiles(dbBackupModel.files.map {
+            it.copy(
+                id = 0L,
+                accountName = dbBackupModel.account.name,
+                metaData = getMetaDataBasedOnType(it.metaData, it.type)
+            )
+        })
+    }
+
+    private fun getMetaDataBasedOnType(metaData: String, type: FileTypeEnum?): String {
+        return if (type == FileTypeEnum.Photo || type == FileTypeEnum.Video) {
+            ""
+        } else {
+            metaData
+        }
     }
 
     private fun getDataBaseModel(dpContent: String): DBBackupModel = dbBackupModelJsonAdapter
