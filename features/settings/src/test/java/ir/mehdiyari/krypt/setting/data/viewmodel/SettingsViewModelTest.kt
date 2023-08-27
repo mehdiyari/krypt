@@ -10,27 +10,19 @@ import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepositoryImpl
 import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import ir.mehdiyari.krypt.setting.ui.DeleteAccountViewState
 import ir.mehdiyari.krypt.setting.ui.SettingsViewModel
-import kotlinx.coroutines.Dispatchers
+import ir.mehdiyari.krypt.testing.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.currentTime
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class SettingsViewModelTest {
+internal class SettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
