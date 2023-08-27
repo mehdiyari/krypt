@@ -16,6 +16,7 @@ dependencies {
 
     testImplementation(libs.mockk)
     testImplementation(libs.coroutinesTest)
+    testImplementation(libs.turbine)
     testImplementation(libs.junit)
 
 }
