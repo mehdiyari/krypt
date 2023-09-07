@@ -14,6 +14,9 @@ android {
 dependencies {
     implementation(libs.room)
     implementation(libs.coreKtx)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutinesTest)
+    testImplementation(libs.turbine)
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)

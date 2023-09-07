@@ -13,5 +13,9 @@ dependencies {
     implementation(project(":shared:accounts:account"))
     implementation(project(":shared:files:files-logic"))
     implementation(project(":shared:files:files-data"))
-    testImplementation(project(":shared:testing"))
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutinesTest)
+    testImplementation(libs.turbine)
+    testImplementation(libs.junit)
 }

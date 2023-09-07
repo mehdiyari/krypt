@@ -10,16 +10,21 @@ import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepositoryImpl
 import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import ir.mehdiyari.krypt.setting.ui.DeleteAccountViewState
 import ir.mehdiyari.krypt.setting.ui.SettingsViewModel
-import ir.mehdiyari.krypt.testing.MainDispatcherRule
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
 internal class SettingsViewModelTest {
@@ -89,4 +94,17 @@ internal class SettingsViewModelTest {
             }
         }
 
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+open class MainDispatcherRule constructor(
+    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+) : TestWatcher() {
+    override fun starting(description: Description) {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    override fun finished(description: Description) {
+        Dispatchers.resetMain()
+    }
 }
