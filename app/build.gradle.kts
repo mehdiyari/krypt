@@ -30,6 +30,7 @@ android {
             )
         }
     }
+    namespace = "ir.mehdiyari.krypt"
 }
 
 dependencies {
