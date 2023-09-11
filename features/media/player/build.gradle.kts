@@ -15,4 +15,9 @@ dependencies {
     implementation(project(":shared:cryptography"))
     implementation(project(":shared:files:files-logic"))
 
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutinesTest)
+    testImplementation(libs.turbine)
+    testImplementation(libs.junit)
+
 }

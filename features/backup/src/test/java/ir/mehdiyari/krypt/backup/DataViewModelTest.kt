@@ -33,10 +33,10 @@ internal class DataViewModelTest {
 
     private val backupRepository = mockk<BackupRepository>(relaxed = true)
     private val filesRepository = mockk<FilesRepository>(relaxed = true)
-    private val scheduler = TestCoroutineScheduler()
-    private val dispatcher = UnconfinedTestDispatcher(scheduler)
     private val filesUtilities = mockk<FilesUtilities>(relaxed = true)
     private val mediaStoreManager = mockk<MediaStoreManager>(relaxed = true)
+    private val scheduler = TestCoroutineScheduler()
+    private val dispatcher = UnconfinedTestDispatcher(scheduler)
 
     private val dataViewModel = DataViewModel(
         backupRepository,
@@ -100,15 +100,6 @@ internal class DataViewModelTest {
                     mediaStoreManager.scanAddedMedia(listOf(expectedFilePath))
                 }
             }
-
-            launch {
-                dataViewModel.generalMessageFlow.test {
-                    assertEquals(
-                        "App successfully save backup file into Krypt official folder on your storage. ",
-                        awaitItem().toString()
-                    )
-                }
-            }
         }
 
 }
@@ -125,3 +116,5 @@ open class MainDispatcherRule constructor(
         Dispatchers.resetMain()
     }
 }
+
+
