@@ -21,9 +21,6 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.landscapistGlide)
 
-    testImplementation(libs.mockk)
-    testImplementation(libs.coroutinesTest)
-    testImplementation(libs.turbine)
-    testImplementation(libs.junit)
+    testImplementation(project(":shared:testing"))
 
 }

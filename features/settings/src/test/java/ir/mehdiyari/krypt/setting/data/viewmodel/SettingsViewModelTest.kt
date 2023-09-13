@@ -1,44 +1,50 @@
 package ir.mehdiyari.krypt.setting.data.viewmodel
 
 import app.cash.turbine.test
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
 import ir.mehdiyari.krypt.setting.data.DeleteAccountHelper
+import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepository
 import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepositoryImpl
 import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import ir.mehdiyari.krypt.setting.ui.DeleteAccountViewState
 import ir.mehdiyari.krypt.setting.ui.SettingsViewModel
-import kotlinx.coroutines.Dispatchers
+import ir.mehdiyari.krypt.testing.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScheduler
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
 internal class SettingsViewModelTest {
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
-    private val settingsRepository = mockk<SettingsRepositoryImpl>(relaxed = true)
-    private val accountRepository = mockk<AccountsRepository>(relaxed = true)
-    private val deleteAccountHelper = mockk<DeleteAccountHelper>(relaxed = true)
+    private lateinit var settingsRepository: SettingsRepository
+    private lateinit var accountRepository: AccountsRepository
+    private lateinit var deleteAccountHelper: DeleteAccountHelper
     private val dispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())
 
-    private val settingsViewModel: SettingsViewModel by lazy {
-        SettingsViewModel(
+    private lateinit var settingsViewModel: SettingsViewModel
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule(dispatcher)
+
+    @Before
+    fun setup() {
+        settingsRepository = mockk<SettingsRepositoryImpl>(relaxed = true)
+        accountRepository = mockk<AccountsRepository>(relaxed = true)
+        deleteAccountHelper = mockk<DeleteAccountHelper>(relaxed = true)
+
+        settingsViewModel = SettingsViewModel(
             settingsRepository,
             accountRepository,
             deleteAccountHelper,
@@ -46,23 +52,31 @@ internal class SettingsViewModelTest {
         )
     }
 
+    @After
+    fun tearDown() {
+        unmockkAll()
+        clearAllMocks()
+    }
+
     @Test
-    fun `onSelectAutoLockItem - verify work correctly`() = runTest(dispatcher) {
+    fun `onSelectAutoLockItem - verify work correctly`() = runTest {
         val autoLockItemsEnum = AutoLockItemsEnum.OneHour
         val collector = mockk<FlowCollector<AutoLockItemsEnum>>(relaxed = true)
         val collectorJob =
             launch { settingsViewModel.automaticallyLockSelectedItem.collect(collector) }
         settingsViewModel.onSelectAutoLockItem(autoLockItemsEnum)
 
-        coVerify(exactly = 1) {
-            settingsRepository.storeLockAutomatically(autoLockItemsEnum)
-            collector.emit(autoLockItemsEnum)
-            collectorJob.cancel()
+        launch {
+            coVerify(exactly = 1) {
+                settingsRepository.storeLockAutomatically(autoLockItemsEnum)
+                collector.emit(autoLockItemsEnum)
+                collectorJob.cancel()
+            }
         }
     }
 
     @Test
-    fun `onDeleteCurrentAccount - clear account with valid password`() = runTest(dispatcher) {
+    fun `onDeleteCurrentAccount - clear account with valid password`() = runTest {
         coEvery { accountRepository.validatePassword(any()) } returns true
         settingsViewModel.onDeleteCurrentAccount("password")
         settingsViewModel.deleteAccountState.test {
@@ -94,17 +108,4 @@ internal class SettingsViewModelTest {
             }
         }
 
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-open class MainDispatcherRule constructor(
-    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
-) : TestWatcher() {
-    override fun starting(description: Description) {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    override fun finished(description: Description) {
-        Dispatchers.resetMain()
-    }
 }
