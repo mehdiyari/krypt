@@ -23,13 +23,10 @@ dependencies {
     implementation(project(":shared:files:backup-data"))
     implementation(project(":shared:files:files-logic"))
     implementation(project(":shared:permissions"))
+    testImplementation(project(":shared:testing"))
 
     implementation(libs.androidx.lifecycle.viewmodelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.hilt.navigation.compose)
-
-    testImplementation(libs.mockk)
-    testImplementation(libs.coroutinesTest)
-    testImplementation(libs.junit)
 
 }
