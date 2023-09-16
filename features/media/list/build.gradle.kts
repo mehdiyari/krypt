@@ -21,4 +21,6 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.landscapistGlide)
 
+    testImplementation(project(":shared:testing"))
+
 }
