@@ -56,7 +56,6 @@ internal fun RestoreSuccessesScreen(
                 Text(text = stringResource(id = R.string.login))
             }
         }
-
     }
 }
 

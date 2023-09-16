@@ -132,7 +132,6 @@ fun UserCredentials(
     onPasswordChanged: (String) -> Unit,
     isEnabled: Boolean
 ) {
-
     Column(
         modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 8.dp)
     ) {
@@ -210,7 +209,6 @@ fun FileAndPermissionPreview(
             }
         }
     }
-
 }
 
 @Composable

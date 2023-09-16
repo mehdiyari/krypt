@@ -95,7 +95,6 @@ internal fun CreateAccountItems(
                 .padding(top = 8.dp)
         )
 
-
         ClickableTextView(
             modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 20.dp, end = 20.dp),
             text = stringResource(id = DesignSystemR.string.restore_entry_point_text),

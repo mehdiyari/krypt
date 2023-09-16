@@ -83,7 +83,7 @@ internal class EncryptedMediasBucketContentProvider @Inject constructor(
         }
     }
 
-    // TODO: We should refactor this login in future
+    // TODO: We should refactor this logic in future
     private suspend fun createThumbnailForMedia(it: FileEntity): Pair<FileEntity, String> {
         return try {
             val isPhoto = it.type == FileTypeEnum.Photo
