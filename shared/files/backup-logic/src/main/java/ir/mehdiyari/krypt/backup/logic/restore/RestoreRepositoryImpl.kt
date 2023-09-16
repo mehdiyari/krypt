@@ -126,8 +126,10 @@ internal class RestoreRepositoryImpl @Inject constructor(
                 }))
             }
         } catch (t: Throwable) {
-            fileUtils.deleteFiles(newBackupPath, *fileList.map { it.second }.toTypedArray())
+            fileUtils.deleteFiles(*fileList.map { it.second }.toTypedArray())
             return Result.failure(t)
+        } finally {
+            fileUtils.deleteFiles(newBackupPath)
         }
 
         return Result.success(Unit)
