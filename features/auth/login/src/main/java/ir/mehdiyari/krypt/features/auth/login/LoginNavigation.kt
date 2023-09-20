@@ -16,6 +16,7 @@ fun NavGraphBuilder.loginScreen(
     onCreateAccountClicked: () -> Unit,
     onLoginSuccess: () -> Unit,
     showSnackBar: suspend (message: String, action: String?) -> Boolean,
+    onRestoreClicked: () -> Unit,
 ) {
 
     composable(ROUTE_LOGIN) {
@@ -23,7 +24,8 @@ fun NavGraphBuilder.loginScreen(
             onCreateAccountClicked = onCreateAccountClicked,
             onLoginSuccess = onLoginSuccess,
             showSnackBar = showSnackBar,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onRestoreClicked = onRestoreClicked,
         )
     }
 

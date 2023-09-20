@@ -18,5 +18,6 @@
     <string name="texts_library">Texts</string>
     <string name="no_encrypted_file_found">No encrypted files found</string>
     <string name="medias_library">Media</string>
+    <string name="restore_entry_point_text">Do you want to restore your backup?</string>
 
 </resources>

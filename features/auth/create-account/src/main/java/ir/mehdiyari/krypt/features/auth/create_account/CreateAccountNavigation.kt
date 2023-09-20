@@ -16,13 +16,15 @@ fun NavController.navigateToCreateAccount() {
 
 fun NavGraphBuilder.createAccountScreen(
     onCreateAccountSuccess: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onRestoreClicked: () -> Unit,
 ) {
     composable(ROUTE_CREATE_ACCOUNT) {
         CreateAccountRoute(
             onLoginSuccess = onCreateAccountSuccess,
             onShowSnackbar = onShowSnackbar,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onRestoreClicked = onRestoreClicked,
         )
     }
 }

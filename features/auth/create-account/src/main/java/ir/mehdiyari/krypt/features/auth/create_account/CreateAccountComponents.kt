@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.createAccount.R
+import ir.mehdiyari.krypt.shared.designsystem.components.ClickableTextView
 import ir.mehdiyari.krypt.shared.designsystem.components.PasswordTextField
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
 internal fun CreateAccountItems(
@@ -37,7 +39,8 @@ internal fun CreateAccountItems(
     onPasswordChanged: (String) -> Unit,
     confirmPassword: String,
     onConfirmPasswordChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRestoreClicked: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,6 +94,13 @@ internal fun CreateAccountItems(
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
+
+        ClickableTextView(
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 20.dp, end = 20.dp),
+            text = stringResource(id = DesignSystemR.string.restore_entry_point_text),
+            onClick = onRestoreClicked
+        )
+
         Spacer(modifier = modifier.size(100.dp))
     }
 }
@@ -100,7 +110,15 @@ internal fun CreateAccountItems(
 private fun CreateAccountItemsPreview() {
     KryptTheme {
         Surface {
-            CreateAccountItems("Mohammad", {}, "123456", {}, "123456", {})
+            CreateAccountItems(
+                userName = "Batman",
+                onUserNameChanged = {},
+                password = "123456",
+                onPasswordChanged = {},
+                confirmPassword = "123456",
+                onConfirmPasswordChanged = {},
+                onRestoreClicked = {}
+            )
         }
     }
 }

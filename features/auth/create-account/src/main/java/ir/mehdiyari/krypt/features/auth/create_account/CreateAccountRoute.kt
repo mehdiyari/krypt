@@ -38,7 +38,8 @@ internal fun CreateAccountRoute(
     onLoginSuccess: () -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
-    viewModel: CreateAccountViewModel = hiltViewModel()
+    viewModel: CreateAccountViewModel = hiltViewModel(),
+    onRestoreClicked: () -> Unit,
 ) {
 
     val createAccountUiState by viewModel.createAccountViewState.collectAsStateWithLifecycle(null)
@@ -67,15 +68,20 @@ internal fun CreateAccountRoute(
     }
 
 
-    CreateAccountScreen(onCreateAccountClicked = { userName, password, confirmPassword ->
-        viewModel.addAccount(userName, password, confirmPassword)
-    }, modifier = modifier)
+    CreateAccountScreen(
+        onCreateAccountClicked = { userName, password, confirmPassword ->
+            viewModel.addAccount(userName, password, confirmPassword)
+        },
+        modifier = modifier,
+        onRestoreClicked = onRestoreClicked,
+    )
 }
 
 @Composable
 private fun CreateAccountScreen(
     onCreateAccountClicked: (userName: String, password: String, confirmPassword: String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRestoreClicked: () -> Unit,
 ) {
     var userName by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -99,7 +105,8 @@ private fun CreateAccountScreen(
             modifier = Modifier
                 .fillMaxHeight()
                 .align(Alignment.Center)
-                .padding(start = 20.dp, end = 20.dp)
+                .padding(start = 20.dp, end = 20.dp),
+            onRestoreClicked = onRestoreClicked,
         )
 
         ExtendedFloatingActionButton(
@@ -130,7 +137,8 @@ private fun CreateAccountScreenPreview() {
         Surface {
             CreateAccountScreen(
                 onCreateAccountClicked = { userName, password, confirmPassword -> },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onRestoreClicked = {},
             )
         }
     }

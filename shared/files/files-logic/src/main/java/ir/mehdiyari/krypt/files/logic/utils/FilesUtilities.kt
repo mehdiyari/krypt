@@ -7,6 +7,10 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.documentfile.provider.DocumentFile
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -15,7 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class FilesUtilities @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    @DispatchersType(dispatcher = DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
 ) {
     companion object {
         const val KRYPT_FILES_PREFIX = "krypt_"
@@ -246,4 +251,12 @@ class FilesUtilities @Inject constructor(
         "${getFilesDir()}/$AUDIO_CACHE_FOLDER/".apply {
             File(this).mkdirs()
         } + name
+
+    suspend fun deleteFiles(vararg path: String) {
+        withContext(ioDispatcher) {
+            for (filePath in path) {
+                File(filePath).delete()
+            }
+        }
+    }
 }

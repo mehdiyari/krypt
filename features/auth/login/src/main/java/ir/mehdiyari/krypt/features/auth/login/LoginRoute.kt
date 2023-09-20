@@ -26,6 +26,7 @@ fun LoginRoute(
     showSnackBar: suspend (message: String, action: String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
+    onRestoreClicked: () -> Unit,
 ) {
 
     val userNames by viewModel.allUserNamesState.collectAsStateWithLifecycle()
@@ -51,7 +52,8 @@ fun LoginRoute(
                 viewModel.login(userName, password)
             },
             onCreateAccountClicked = onCreateAccountClicked,
-            modifier = modifier
+            modifier = modifier,
+            onRestoreClicked = onRestoreClicked,
         )
     }
 
@@ -62,7 +64,8 @@ fun LoginScreen(
     accounts: List<String>,
     onLoginClicked: (userName: String, password: String) -> Unit,
     onCreateAccountClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRestoreClicked: () -> Unit,
 ) {
     var userName by remember { mutableStateOf(accounts.first()) }
     var password by remember { mutableStateOf("") }
@@ -75,7 +78,8 @@ fun LoginScreen(
             password = password,
             onPasswordChanged = { password = it },
             modifier = Modifier
-                .align(Alignment.Center)
+                .align(Alignment.Center),
+            onRestoreClicked = onRestoreClicked,
         )
 
         LoginButton(
@@ -103,7 +107,8 @@ private fun LoginScreenPreview() {
                 accounts = List(5) { "UserName$it" },
                 onLoginClicked = { _, _ -> },
                 onCreateAccountClicked = {},
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onRestoreClicked = { }
             )
         }
     }

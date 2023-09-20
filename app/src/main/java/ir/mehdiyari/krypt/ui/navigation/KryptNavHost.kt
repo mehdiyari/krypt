@@ -16,6 +16,8 @@ import ir.mehdiyari.krypt.home.homeScreen
 import ir.mehdiyari.krypt.home.navigateToHome
 import ir.mehdiyari.krypt.mediaList.mediaScreen
 import ir.mehdiyari.krypt.mediaList.navigateToMedia
+import ir.mehdiyari.krypt.restore.navigateToRestore
+import ir.mehdiyari.krypt.restore.restoreScreen
 import ir.mehdiyari.krypt.setting.ui.settingsRoute
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.KryptAppState
@@ -44,11 +46,15 @@ fun KryptNaveHost(
             navController.navigateToCreateAccount()
         }, onLoginSuccess = {
             navController.navigateToHome()
-        }, showSnackBar = onShowSnackbar)
+        }, showSnackBar = onShowSnackbar, onRestoreClicked = {
+            navController.navigateToRestore()
+        })
 
         createAccountScreen(onCreateAccountSuccess = {
             navController.navigateToLogin()
-        }, onShowSnackbar = onShowSnackbar)
+        }, onShowSnackbar = onShowSnackbar, onRestoreClicked = {
+            navController.navigateToRestore()
+        })
 
         homeScreen(
             sharedDataViewModel = sharedDataViewModel,
@@ -86,6 +92,7 @@ fun KryptNaveHost(
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
         settingsRoute(onRestartApp) { navController.popBackStack() }
+        restoreScreen(onBackPressed = { navController.popBackStack() }, onRestart = onRestartApp)
     }
 }
 
