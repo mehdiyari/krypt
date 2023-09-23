@@ -12,6 +12,7 @@ import ir.mehdiyari.krypt.features.text.add.addTextScreen
 import ir.mehdiyari.krypt.features.text.add.navigateToAddText
 import ir.mehdiyari.krypt.features.text.list.navigateToTexts
 import ir.mehdiyari.krypt.features.text.list.textsScreen
+import ir.mehdiyari.krypt.home.ROUTE_HOME
 import ir.mehdiyari.krypt.home.homeScreen
 import ir.mehdiyari.krypt.home.navigateToHome
 import ir.mehdiyari.krypt.mediaList.mediaScreen
@@ -85,7 +86,7 @@ fun KryptNaveHost(
         addTextScreen { navController.popBackStack() }
         mediaScreen(
             sharedDataViewModel = sharedDataViewModel,
-            { navController.popBackStack() },
+            { navController.popBackStack(ROUTE_HOME, false) },
             onStopLocker = onStopLocker
         )
         dataScreen { navController.popBackStack() }
