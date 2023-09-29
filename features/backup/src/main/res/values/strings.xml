@@ -16,7 +16,4 @@
     <string name="saving_backup_permission_error">Seem\'s app does not have access to storage.</string>
     <string name="save_backup_file_successfylly">"App successfully save backup file into Krypt official folder on your storage. "</string>
     <string name="choose_backup_directory_description">Choose directory to backup</string>
-    <string name="continue_backup">Continue</string>
-    <string name="ok">OK</string>
-    <string name="file_and_media_permisson_error">\"You should allow file and media access from setting\"</string>
 </resources>

@@ -60,7 +60,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemResourc
 internal fun DataScreenScaffold(
     modifier: Modifier,
     onNavigationClicked: () -> Unit = {},
-    content: @Composable () -> Unit = {},
+    content: @Composable () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -84,7 +84,7 @@ internal fun DataScreenScaffold(
                     }
                 }
             )
-        },
+        }
     ) { paddingValues ->
         Column(
             modifier = modifier
