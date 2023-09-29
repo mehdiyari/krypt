@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.backup.logic.backup
 
+import android.net.Uri
 import ir.mehdiyari.krypt.account.api.UserKeyProvider
 import ir.mehdiyari.krypt.account.api.UsernameProvider
 import ir.mehdiyari.krypt.accounts.data.dao.AccountsDao
@@ -19,6 +20,8 @@ import ir.mehdiyari.krypt.file.data.dao.FilesDao
 import ir.mehdiyari.krypt.file.data.entity.FileEntity
 import ir.mehdiyari.krypt.files.logic.utils.FileWrapper
 import ir.mehdiyari.krypt.files.logic.utils.FilesUtilities
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -28,6 +31,7 @@ import javax.crypto.Cipher
 import javax.crypto.CipherOutputStream
 import javax.crypto.spec.IvParameterSpec
 import javax.inject.Inject
+
 
 internal class BackupRepositoryImpl @Inject constructor(
     private val accountsDao: AccountsDao,
@@ -49,7 +53,7 @@ internal class BackupRepositoryImpl @Inject constructor(
      *  Output File Schema:
      *  [Salt[^IV[EN_PART:[^DB_SIZE, ^EN_DB, ^F_SIZE, ^EN_F_CONTENT, ^F_SIZE, ^EN_F_CONTENT]]]]
      */
-    override suspend fun backupAll(): Boolean {
+    override suspend fun backupAll(uri: Uri): Boolean {
         val user = accountsDao.getAccountWithName(usernameProvider.getUsername()!!)!!
         val salt =
             base64Wrapper.decode(user.encryptedName)
@@ -64,38 +68,47 @@ internal class BackupRepositoryImpl @Inject constructor(
             File(it.filePath).exists()
         }
 
-        val backupFilePath = fileUtils.generateBackupFilePath(usernameProvider.getUsername()!!)
+        if (fileUtils.getPathFromUri(uri) == null) return false
+        val backupFilePath = fileUtils.generateBackupFilePath(
+            fileUtils.getPathFromUri(uri)!!,
+            usernameProvider.getUsername()!!
+        )
         val backupFile = File(backupFilePath)
+        withContext(Dispatchers.IO) {
+            backupFile.createNewFile()
+        }
 
         val (cipher, initVector) = symmetricHelper.getAESCipher() to symmetricHelper.createInitVector()
         cipher.init(Cipher.ENCRYPT_MODE, userKeyProvider.getKey(), IvParameterSpec(initVector))
 
-        FileOutputStream(backupFile).use { backupStream ->
+        withContext(Dispatchers.IO) {
+            FileOutputStream(backupFile).use { backupStream ->
 
-            // write salt
-            backupStream.write(salt)
+                // write salt
+                backupStream.write(salt)
 
-            // write init vector to raw stream
-            backupStream.write(initVector)
+                // write init vector to raw stream
+                backupStream.write(initVector)
 
-            // create cipher stream in top of normal stream
-            CipherOutputStream(backupStream, cipher).use { encryptedBackupStream ->
+                // create cipher stream in top of normal stream
+                CipherOutputStream(backupStream, cipher).use { encryptedBackupStream ->
 
-                val encryptInitVector = symmetricHelper.createInitVector()
-                val dbEncryptedBytes =
-                    encryptInitVector.combineWith(
-                        kryptCryptographyHelper.encryptBytes(
-                            createDBBackupAsBytes(user, files),
-                            encryptInitVector
-                        ).getOrThrow()
-                    )
+                    val encryptInitVector = symmetricHelper.createInitVector()
+                    val dbEncryptedBytes =
+                        encryptInitVector.combineWith(
+                            kryptCryptographyHelper.encryptBytes(
+                                createDBBackupAsBytes(user, files),
+                                encryptInitVector
+                            ).getOrThrow()
+                        )
 
-                // write size and encrypted content of db backup to [encryptedBackupStream]
-                encryptedBackupStream.write(dbEncryptedBytes.size.toLong().toByteArray())
-                encryptedBackupStream.write(dbEncryptedBytes)
+                    // write size and encrypted content of db backup to [encryptedBackupStream]
+                    encryptedBackupStream.write(dbEncryptedBytes.size.toLong().toByteArray())
+                    encryptedBackupStream.write(dbEncryptedBytes)
 
-                // write files id, size and content to [encryptedBackupStream]
-                writeFilesToEncryptedStream(files, encryptedBackupStream)
+                    // write files id, size and content to [encryptedBackupStream]
+                    writeFilesToEncryptedStream(files, encryptedBackupStream)
+                }
             }
         }
 

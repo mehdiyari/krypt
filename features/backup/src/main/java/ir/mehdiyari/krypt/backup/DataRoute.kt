@@ -5,9 +5,11 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +28,15 @@ internal fun DataRoute(
     modifier: Modifier,
 ) {
     val managerStoragePermissionState = remember { mutableStateOf(false) }
-    DataScreenScaffold(modifier = modifier, onNavigationClicked = onNavigationClicked) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val showDirectoryChooser = remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    DataScreenScaffold(
+        modifier = modifier,
+        onNavigationClicked = onNavigationClicked,
+        snackbarHostState = snackbarHostState
+    ) {
         Column(
             modifier = modifier
                 .fillMaxHeight()
@@ -36,7 +46,17 @@ internal fun DataRoute(
             FileSizeView(modifier, fileSizeState)
             val lastBackupState = viewModel.lastBackupDateTime.collectAsStateWithLifecycle()
             val backupState = viewModel.backupViewState.collectAsStateWithLifecycle()
-            BackupView(modifier, lastBackupState, backupState, viewModel::backupNow)
+            BackupView(modifier, lastBackupState, backupState, backupNowClick = {
+                showDirectoryChooser.value = true
+            })
+            if (showDirectoryChooser.value) {
+                ChooseDirectoryView(
+                    coroutineScope = coroutineScope,
+                    snackbarHostState = snackbarHostState,
+                    onSelectDirectory = viewModel::backupNow
+                )
+            }
+
             val backupList = viewModel.backups.collectAsStateWithLifecycle()
 
             val deleteDialogState = remember { mutableStateOf(false to -1) }
@@ -84,7 +104,9 @@ internal fun DataRoutePreview(
     ) backupList: List<BackupViewData>
 ) {
     KryptTheme {
-        DataScreenScaffold(modifier = Modifier) {
+        DataScreenScaffold(modifier = Modifier, snackbarHostState = remember {
+            SnackbarHostState()
+        }) {
             Column {
                 FileSizePreview()
                 BackupViewPreview()

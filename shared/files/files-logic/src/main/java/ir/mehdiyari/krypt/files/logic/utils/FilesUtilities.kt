@@ -177,6 +177,8 @@ class FilesUtilities @Inject constructor(
     fun generateBackupFilePath(accountName: String): String =
         "${getFilesDir()}/krypt_backup_${accountName}_${System.currentTimeMillis()}_${Random().nextInt()}.$KRYPT_EXT"
 
+    fun generateBackupFilePath(directoryPath: String, accountName: String): String =
+        "${directoryPath}/krypt_backup_${accountName}_${System.currentTimeMillis()}_${Random().nextInt()}.$KRYPT_EXT"
     fun generateRestoreFilePath(): String =
         "${getFilesDir()}/krypt_restored_${System.currentTimeMillis()}_${Random().nextInt()}.$KRYPT_EXT"
 

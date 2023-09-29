@@ -1,6 +1,16 @@
 package ir.mehdiyari.krypt.backup
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,11 +28,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +45,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.documentfile.provider.DocumentFile
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemResourceR
 
 
@@ -40,7 +60,8 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemResourc
 internal fun DataScreenScaffold(
     modifier: Modifier,
     onNavigationClicked: () -> Unit = {},
-    content: @Composable () -> Unit = {}
+    snackbarHostState: SnackbarHostState,
+    content: @Composable () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -64,7 +85,8 @@ internal fun DataScreenScaffold(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = modifier
@@ -232,6 +254,84 @@ internal fun DeleteBackupFileDialog(
     }
 }
 
+@Composable
+internal fun ChooseDirectoryView(
+    coroutineScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+    onSelectDirectory: (uri: Uri) -> Unit
+) {
+    val chooseDirectorySnackbarMsg = stringResource(id = R.string.choose_backup_directory_description)
+    val chooseDirectorySnackbarAction = stringResource(id = R.string.ok)
+    val permissionErrorSnackbarMsg = stringResource(id = R.string.file_and_media_permisson_error)
+    val context = LocalContext.current
+
+    var selectedDirectory: DocumentFile? by remember { mutableStateOf(null) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri: Uri? = result.data?.data
+                uri?.let {
+                    selectedDirectory = DocumentFile.fromTreeUri(
+                        context, it
+                    )
+                }
+            }
+        }
+    )
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+            launcher.launch(intent)
+        } else {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = permissionErrorSnackbarMsg,
+                    withDismissAction = true,
+                    duration = SnackbarDuration.Indefinite
+                )
+            }
+        }
+    }
+    LaunchedEffect(true) {
+        coroutineScope.launch {
+            snackbarHostState.showSnackbar(
+                message = chooseDirectorySnackbarMsg,
+                actionLabel = chooseDirectorySnackbarAction,
+                withDismissAction = true,
+                duration = SnackbarDuration.Indefinite
+            ).apply {
+                if (this == SnackbarResult.ActionPerformed) {
+                    val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    if (ContextCompat.checkSelfPermission(
+                            context,
+                            permission
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        permissionLauncher.launch(permission)
+                    } else {
+                        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                        launcher.launch(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    selectedDirectory?.let {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                onSelectDirectory(it.uri)
+            } else {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(context, intent, null)
+            }
+        }
+    }
+}
+
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -276,8 +376,22 @@ private fun DataScreenScaffoldPreview() {
         DataScreenScaffold(
             modifier = Modifier,
             onNavigationClicked = {},
+            snackbarHostState = remember { SnackbarHostState() },
         ) {
 
         }
     }
 }
+
+@Composable
+@Preview
+private fun DirectoryChooserPreview() {
+    KryptTheme {
+        ChooseDirectoryView(
+            coroutineScope = rememberCoroutineScope(),
+            snackbarHostState = remember { SnackbarHostState() },
+            onSelectDirectory = {})
+    }
+}
+
+
