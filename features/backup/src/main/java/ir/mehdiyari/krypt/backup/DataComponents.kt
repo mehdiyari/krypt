@@ -260,7 +260,8 @@ internal fun ChooseDirectoryView(
     snackbarHostState: SnackbarHostState,
     onSelectDirectory: (uri: Uri) -> Unit
 ) {
-    val chooseDirectorySnackbarMsg = stringResource(id = R.string.choose_backup_directory_description)
+    val chooseDirectorySnackbarMsg =
+        stringResource(id = R.string.choose_backup_directory_description)
     val chooseDirectorySnackbarAction = stringResource(id = R.string.ok)
     val permissionErrorSnackbarMsg = stringResource(id = R.string.file_and_media_permisson_error)
     val context = LocalContext.current
@@ -321,14 +322,7 @@ internal fun ChooseDirectoryView(
     }
 
     selectedDirectory?.let {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                onSelectDirectory(it.uri)
-            } else {
-                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                startActivity(context, intent, null)
-            }
-        }
+        onSelectDirectory(it.uri)
     }
 }
 

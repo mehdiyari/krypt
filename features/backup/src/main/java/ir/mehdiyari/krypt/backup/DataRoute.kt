@@ -50,11 +50,16 @@ internal fun DataRoute(
                 showDirectoryChooser.value = true
             })
             if (showDirectoryChooser.value) {
-                ChooseDirectoryView(
-                    coroutineScope = coroutineScope,
-                    snackbarHostState = snackbarHostState,
-                    onSelectDirectory = viewModel::backupNow
-                )
+                if (!checkIfAppIsStorageManager()) {
+                    managerStoragePermissionState.value = true
+                } else {
+                    ChooseDirectoryView(
+                        coroutineScope = coroutineScope,
+                        snackbarHostState = snackbarHostState,
+                        onSelectDirectory = viewModel::backupNow
+                    )
+                }
+
             }
 
             val backupList = viewModel.backups.collectAsStateWithLifecycle()
