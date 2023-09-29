@@ -68,20 +68,17 @@ internal class BackupRepositoryImpl @Inject constructor(
             File(it.filePath).exists()
         }
 
-        if (fileUtils.getPathFromUri(uri) == null) return false
         val backupFilePath = fileUtils.generateBackupFilePath(
             fileUtils.getPathFromUri(uri)!!,
             usernameProvider.getUsername()!!
         )
         val backupFile = File(backupFilePath)
-        withContext(Dispatchers.IO) {
-            backupFile.createNewFile()
-        }
 
         val (cipher, initVector) = symmetricHelper.getAESCipher() to symmetricHelper.createInitVector()
         cipher.init(Cipher.ENCRYPT_MODE, userKeyProvider.getKey(), IvParameterSpec(initVector))
 
         withContext(Dispatchers.IO) {
+            backupFile.createNewFile()
             FileOutputStream(backupFile).use { backupStream ->
 
                 // write salt

@@ -60,7 +60,6 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemResourc
 internal fun DataScreenScaffold(
     modifier: Modifier,
     onNavigationClicked: () -> Unit = {},
-    snackbarHostState: SnackbarHostState,
     content: @Composable () -> Unit = {},
 ) {
     Scaffold(
@@ -86,7 +85,6 @@ internal fun DataScreenScaffold(
                 }
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = modifier
@@ -254,79 +252,6 @@ internal fun DeleteBackupFileDialog(
     }
 }
 
-@Composable
-internal fun ChooseDirectoryView(
-    coroutineScope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
-    onSelectDirectory: (uri: Uri) -> Unit
-) {
-    val chooseDirectorySnackbarMsg =
-        stringResource(id = R.string.choose_backup_directory_description)
-    val chooseDirectorySnackbarAction = stringResource(id = R.string.ok)
-    val permissionErrorSnackbarMsg = stringResource(id = R.string.file_and_media_permisson_error)
-    val context = LocalContext.current
-
-    var selectedDirectory: DocumentFile? by remember { mutableStateOf(null) }
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri: Uri? = result.data?.data
-                uri?.let {
-                    selectedDirectory = DocumentFile.fromTreeUri(
-                        context, it
-                    )
-                }
-            }
-        }
-    )
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-            launcher.launch(intent)
-        } else {
-            coroutineScope.launch {
-                snackbarHostState.showSnackbar(
-                    message = permissionErrorSnackbarMsg,
-                    withDismissAction = true,
-                    duration = SnackbarDuration.Indefinite
-                )
-            }
-        }
-    }
-    LaunchedEffect(true) {
-        coroutineScope.launch {
-            snackbarHostState.showSnackbar(
-                message = chooseDirectorySnackbarMsg,
-                actionLabel = chooseDirectorySnackbarAction,
-                withDismissAction = true,
-                duration = SnackbarDuration.Indefinite
-            ).apply {
-                if (this == SnackbarResult.ActionPerformed) {
-                    val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    if (ContextCompat.checkSelfPermission(
-                            context,
-                            permission
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        permissionLauncher.launch(permission)
-                    } else {
-                        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                        launcher.launch(intent)
-                    }
-                }
-            }
-        }
-    }
-
-    selectedDirectory?.let {
-        onSelectDirectory(it.uri)
-    }
-}
-
-
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview
@@ -370,22 +295,11 @@ private fun DataScreenScaffoldPreview() {
         DataScreenScaffold(
             modifier = Modifier,
             onNavigationClicked = {},
-            snackbarHostState = remember { SnackbarHostState() },
         ) {
 
         }
     }
 }
 
-@Composable
-@Preview
-private fun DirectoryChooserPreview() {
-    KryptTheme {
-        ChooseDirectoryView(
-            coroutineScope = rememberCoroutineScope(),
-            snackbarHostState = remember { SnackbarHostState() },
-            onSelectDirectory = {})
-    }
-}
 
 
