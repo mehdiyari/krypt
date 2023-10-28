@@ -63,7 +63,8 @@ internal class DataViewModel @Inject constructor(
             backupJob = viewModelScope.launch(ioDispatcher) {
                 _backupViewState.emit(BackupViewState.Started)
                 try {
-                    if (backupRepository.backupAll(uri)) {
+                    val directoryPath = filesUtilities.getPathFromUri(uri)
+                    if (!directoryPath.isNullOrEmpty() && backupRepository.backupAll(directoryPath)) {
                         _backupViewState.emit(BackupViewState.Finished)
                         refreshAllData()
                     } else {

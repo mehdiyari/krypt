@@ -41,7 +41,7 @@ internal fun DataRoute(
     val context = LocalContext.current
 
     var selectedDirectory: DocumentFile? by remember { mutableStateOf(null) }
-    val launcher = rememberLauncherForActivityResult(
+    val directoryChooserLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -80,7 +80,7 @@ internal fun DataRoute(
                         context, chooseDirectorySnackbarMsg, Toast.LENGTH_LONG
                     ).show()
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                    launcher.launch(intent)
+                    directoryChooserLauncher.launch(intent)
                 }
             })
 

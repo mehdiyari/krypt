@@ -53,7 +53,7 @@ internal class BackupRepositoryImpl @Inject constructor(
      *  Output File Schema:
      *  [Salt[^IV[EN_PART:[^DB_SIZE, ^EN_DB, ^F_SIZE, ^EN_F_CONTENT, ^F_SIZE, ^EN_F_CONTENT]]]]
      */
-    override suspend fun backupAll(uri: Uri): Boolean {
+    override suspend fun backupAll(path: String): Boolean {
         val user = accountsDao.getAccountWithName(usernameProvider.getUsername()!!)!!
         val salt =
             base64Wrapper.decode(user.encryptedName)
@@ -69,7 +69,7 @@ internal class BackupRepositoryImpl @Inject constructor(
         }
 
         val backupFilePath = fileUtils.generateBackupFilePath(
-            fileUtils.getPathFromUri(uri)!!,
+            path,
             usernameProvider.getUsername()!!
         )
         val backupFile = File(backupFilePath)
