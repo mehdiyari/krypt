@@ -3,26 +3,29 @@ package ir.mehdiyari.krypt.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import ir.mehdiyari.krypt.backup.dataScreen
+import ir.mehdiyari.krypt.features.auth.create_account.createAccountScreen
+import ir.mehdiyari.krypt.features.auth.create_account.navigateToCreateAccount
+import ir.mehdiyari.krypt.features.auth.login.loginScreen
+import ir.mehdiyari.krypt.features.auth.login.navigateToLogin
+import ir.mehdiyari.krypt.features.text.add.addTextScreen
+import ir.mehdiyari.krypt.features.text.add.navigateToAddText
+import ir.mehdiyari.krypt.features.text.list.navigateToTexts
+import ir.mehdiyari.krypt.features.text.list.textsScreen
+import ir.mehdiyari.krypt.home.ROUTE_HOME
+import ir.mehdiyari.krypt.home.homeScreen
+import ir.mehdiyari.krypt.home.navigateToHome
+import ir.mehdiyari.krypt.mediaList.mediaScreen
+import ir.mehdiyari.krypt.mediaList.navigateToMedia
+import ir.mehdiyari.krypt.restore.navigateToRestore
+import ir.mehdiyari.krypt.restore.restoreScreen
+import ir.mehdiyari.krypt.setting.ui.settingsRoute
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.KryptAppState
-import ir.mehdiyari.krypt.ui.data.dataScreen
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import ir.mehdiyari.krypt.ui.home.homeScreen
-import ir.mehdiyari.krypt.ui.home.navigateToHome
-import ir.mehdiyari.krypt.ui.login.loginScreen
-import ir.mehdiyari.krypt.ui.login.navigateToLogin
-import ir.mehdiyari.krypt.ui.logout.createAccountScreen
-import ir.mehdiyari.krypt.ui.logout.navigateToCreateAccount
-import ir.mehdiyari.krypt.ui.media.mediaScreen
-import ir.mehdiyari.krypt.ui.media.navigateToMedia
-import ir.mehdiyari.krypt.ui.settings.settingsRoute
-import ir.mehdiyari.krypt.ui.text.add.addTextScreen
-import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
-import ir.mehdiyari.krypt.ui.text.list.navigateToTexts
-import ir.mehdiyari.krypt.ui.text.list.textsScreen
-import ir.mehdiyari.krypt.ui.voice.audios.audiosRoute
-import ir.mehdiyari.krypt.ui.voice.audios.navigateToAudios
-import ir.mehdiyari.krypt.ui.voice.record.addVoiceScreen
-import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
+import ir.mehdiyari.krypt.voice.collection.audiosRoute
+import ir.mehdiyari.krypt.voice.collection.navigateToAudios
+import ir.mehdiyari.krypt.voice.record.record.addVoiceScreen
+import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
 
 @Composable
 fun KryptNaveHost(
@@ -32,6 +35,7 @@ fun KryptNaveHost(
     modifier: Modifier = Modifier,
     sharedDataViewModel: ShareDataViewModel,
     onStopLocker: () -> Unit,
+    onRestartApp: () -> Unit,
 ) {
     val navController = kryptAppState.navController
     NavHost(
@@ -43,11 +47,15 @@ fun KryptNaveHost(
             navController.navigateToCreateAccount()
         }, onLoginSuccess = {
             navController.navigateToHome()
-        }, showSnackBar = onShowSnackbar)
+        }, showSnackBar = onShowSnackbar, onRestoreClicked = {
+            navController.navigateToRestore()
+        })
 
         createAccountScreen(onCreateAccountSuccess = {
             navController.navigateToLogin()
-        }, onShowSnackbar = onShowSnackbar)
+        }, onShowSnackbar = onShowSnackbar, onRestoreClicked = {
+            navController.navigateToRestore()
+        })
 
         homeScreen(
             sharedDataViewModel = sharedDataViewModel,
@@ -78,13 +86,14 @@ fun KryptNaveHost(
         addTextScreen { navController.popBackStack() }
         mediaScreen(
             sharedDataViewModel = sharedDataViewModel,
-            { navController.popBackStack() },
+            { navController.popBackStack(ROUTE_HOME, false) },
             onStopLocker = onStopLocker
         )
         dataScreen { navController.popBackStack() }
         addVoiceScreen { navController.popBackStack() }
         audiosRoute({ navController.popBackStack() }, { navController.navigateToAddVoice() })
-        settingsRoute { navController.popBackStack() }
+        settingsRoute(onRestartApp) { navController.popBackStack() }
+        restoreScreen(onBackPressed = { navController.popBackStack() }, onRestart = onRestartApp)
     }
 }
 

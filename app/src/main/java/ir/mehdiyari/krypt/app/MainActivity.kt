@@ -18,7 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 import ir.mehdiyari.krypt.ui.KryptApp
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

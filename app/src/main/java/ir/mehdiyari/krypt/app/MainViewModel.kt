@@ -3,14 +3,14 @@ package ir.mehdiyari.krypt.app
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mehdiyari.krypt.app.user.CurrentUserManager
-import ir.mehdiyari.krypt.app.user.UserKeyProvider
-import ir.mehdiyari.krypt.app.user.UsernameProvider
-import ir.mehdiyari.krypt.data.repositories.AccountsRepository
-import ir.mehdiyari.krypt.data.repositories.SettingsRepository
-import ir.mehdiyari.krypt.di.qualifiers.DispatcherDefault
-import ir.mehdiyari.krypt.ui.settings.AutoLockItemsEnum
-import ir.mehdiyari.krypt.app.di.SplashDelay
+import ir.mehdiyari.krypt.account.api.CurrentUserManager
+import ir.mehdiyari.krypt.account.api.UserKeyProvider
+import ir.mehdiyari.krypt.account.api.UsernameProvider
+import ir.mehdiyari.krypt.account.data.repositories.AccountsRepository
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
+import ir.mehdiyari.krypt.setting.data.repositories.SettingsRepository
+import ir.mehdiyari.krypt.setting.ui.AutoLockItemsEnum
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val currentUserManager: CurrentUserManager,
-    @DispatcherDefault private val defaultDispatcher: CoroutineDispatcher,
+    @DispatchersType(DispatchersQualifierType.DEFAULT) private val defaultDispatcher: CoroutineDispatcher,
     private val usernameProvider: UsernameProvider,
     private val userKeyProvider: UserKeyProvider,
     accountsRepository: AccountsRepository

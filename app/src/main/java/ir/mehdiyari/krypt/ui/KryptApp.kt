@@ -16,17 +16,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
-import ir.mehdiyari.krypt.ui.data.navigateToData
-import ir.mehdiyari.krypt.ui.home.ShareDataViewModel
-import ir.mehdiyari.krypt.ui.login.ROUTE_LOGIN
-import ir.mehdiyari.krypt.ui.logout.ROUTE_CREATE_ACCOUNT
-import ir.mehdiyari.krypt.ui.media.MediaViewAction
-import ir.mehdiyari.krypt.ui.media.navigateToMedia
+import ir.mehdiyari.krypt.backup.navigateToData
+import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.features.auth.create_account.ROUTE_CREATE_ACCOUNT
+import ir.mehdiyari.krypt.features.auth.login.ROUTE_LOGIN
+import ir.mehdiyari.krypt.features.text.add.navigateToAddText
+import ir.mehdiyari.krypt.home.AddBottomSheet
+import ir.mehdiyari.krypt.home.AddFab
+import ir.mehdiyari.krypt.home.KryptBottomAppBar
+import ir.mehdiyari.krypt.home.MainMenuBottomSheet
+import ir.mehdiyari.krypt.mediaList.MediaViewAction
+import ir.mehdiyari.krypt.mediaList.navigateToMedia
+import ir.mehdiyari.krypt.setting.ui.navigateToSettings
+import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
-import ir.mehdiyari.krypt.ui.settings.navigateToSettings
-import ir.mehdiyari.krypt.ui.text.add.navigateToAddText
-import ir.mehdiyari.krypt.ui.voice.record.navigateToAddVoice
-import ir.mehdiyari.krypt.utils.KryptTheme
+import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
+import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
 fun KryptApp(
@@ -45,17 +50,17 @@ fun KryptApp(
         if (openAddItem) {
             AddBottomSheet(scope = kryptAppState.coroutineScope, onSelectAddItemMenuItem = {
                 when (it) {
-                    R.string.add_media -> {
+                    DesignSystemR.string.add_media -> {
                         kryptAppState.navController.navigateToMedia(
                             MediaViewAction.PICK_MEDIA
                         )
                     }
 
-                    R.string.add_audio -> {
+                    DesignSystemR.string.add_audio -> {
                         kryptAppState.navController.navigateToAddVoice()
                     }
 
-                    R.string.add_text -> {
+                    DesignSystemR.string.add_text -> {
                         kryptAppState.navController.navigateToAddText()
                     }
                 }
@@ -67,10 +72,10 @@ fun KryptApp(
         if (openMenu) {
             MainMenuBottomSheet(scope = kryptAppState.coroutineScope, onSelectMainMenuItem = {
                 when (it) {
-                    R.string.menu_data_usage -> kryptAppState.navController.navigateToData()
-                    R.string.menu_settings -> kryptAppState.navController.navigateToSettings()
+                    DesignSystemR.string.menu_data_usage -> kryptAppState.navController.navigateToData()
+                    DesignSystemR.string.menu_settings -> kryptAppState.navController.navigateToSettings()
                 }
-            }, dismissBottomSheet = { openMenu = false })
+            }, dismissBottomSheet = { openMenu = false }, R.string.app_name)
         }
 
         Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -102,6 +107,7 @@ fun KryptApp(
                     onStopLocker = onStopLocker,
                     startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
                     sharedDataViewModel = sharedDataViewModel,
+                    onRestartApp = onLockAppClicked,
                     onShowSnackbar = { message, action ->
                         snackbarHostState.showSnackbar(
                             message = message,

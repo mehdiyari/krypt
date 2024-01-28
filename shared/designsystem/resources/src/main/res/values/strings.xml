@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="appIcon_contentDescription">Krypt Icon</string>
+    <string name="account_password">Account Password</string>
+    <string name="account_name">Account Name</string>
+    <string name="NO">No</string>
+    <string name="YES">Yes</string>
+    <string name="menu_settings">Settings</string>
+    <string name="password_not_match">Passwords does not match</string>
+    <string name="menu_data_usage">Data Usage</string>
+    <string name="manager_external_permission">Manage Storage Permission</string>
+    <string name="manager_external_permission_description">Krypt needs access to the external storage to encrypt and decrypt, backup and restore files.</string>
+    <string name="audios_library">Audios</string>
+    <string name="add_audio">Audio</string>
+    <string name="add_media">Media(Photo, Video)</string>
+    <string name="add_text">Text</string>
+    <string name="texts_library">Texts</string>
+    <string name="no_encrypted_file_found">No encrypted files found</string>
+    <string name="medias_library">Media</string>
+    <string name="restore_entry_point_text">Do you want to restore your backup?</string>
+
+</resources>

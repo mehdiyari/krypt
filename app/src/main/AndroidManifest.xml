@@ -33,12 +33,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Krypt.Splash"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.media.player.PlayerActivity"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:screenOrientation="sensor"
-            android:theme="@style/Theme.Krypt" />
 
         <activity
             android:name=".app.MainActivity"
