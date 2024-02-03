@@ -25,8 +25,8 @@ enum class KryptFlavor(
 
 }
 
-fun configureFlavor(extension: CommonExtension<*, *, *, *>) {
-    with(extension){
+fun configureFlavor(extension: CommonExtension<*, *, *, *, *>) {
+    with(extension) {
         flavorDimensions += FlavorDimension.main.name
 
         productFlavors {
