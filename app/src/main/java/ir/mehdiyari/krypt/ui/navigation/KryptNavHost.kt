@@ -21,6 +21,7 @@ import ir.mehdiyari.krypt.restore.navigateToRestore
 import ir.mehdiyari.krypt.restore.restoreScreen
 import ir.mehdiyari.krypt.setting.ui.settingsRoute
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
+import ir.mehdiyari.krypt.shared.designsystem.components.snackbar.KryptSnackBar
 import ir.mehdiyari.krypt.ui.KryptAppState
 import ir.mehdiyari.krypt.voice.collection.audiosRoute
 import ir.mehdiyari.krypt.voice.collection.navigateToAudios
@@ -30,7 +31,7 @@ import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
 @Composable
 fun KryptNaveHost(
     kryptAppState: KryptAppState,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: (KryptSnackBar) -> Unit,
     startDestination: String,
     modifier: Modifier = Modifier,
     sharedDataViewModel: ShareDataViewModel,

@@ -3,6 +3,7 @@ package ir.mehdiyari.krypt.features.auth.login
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,12 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
+import ir.mehdiyari.krypt.shared.designsystem.components.snackbar.KryptSnackBar
 
 @Composable
 fun LoginRoute(
     onCreateAccountClicked: () -> Unit,
     onLoginSuccess: () -> Unit,
-    showSnackBar: suspend (message: String, action: String?) -> Boolean,
+    showSnackBar: (KryptSnackBar) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
     onRestoreClicked: () -> Unit,
@@ -38,7 +40,12 @@ fun LoginRoute(
             LoginViewState.SuccessfulLogin -> onLoginSuccess()
             is LoginViewState.FailureLogin -> {
                 val message = context.getString((loginState as LoginViewState.FailureLogin).errorId)
-                showSnackBar(message, null)
+                showSnackBar(
+                    KryptSnackBar.Message(
+                        message = message,
+                        duration = SnackbarDuration.Short,
+                    )
+                )
             }
 
             null -> Unit
