@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,11 +33,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 import ir.mehdiyari.krypt.createAccount.R
+import ir.mehdiyari.krypt.shared.designsystem.components.snackbar.KryptSnackBar
 
 @Composable
 internal fun CreateAccountRoute(
     onLoginSuccess: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: (KryptSnackBar) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateAccountViewModel = hiltViewModel(),
     onRestoreClicked: () -> Unit,
@@ -58,8 +60,10 @@ internal fun CreateAccountRoute(
 
             is CreateAccountViewState.FailureCreateAccount -> {
                 onShowSnackbar(
-                    context.getString((createAccountUiState as CreateAccountViewState.FailureCreateAccount).errorResId),
-                    null
+                    KryptSnackBar.Message(
+                        message = context.getString((createAccountUiState as CreateAccountViewState.FailureCreateAccount).errorResId),
+                        duration = SnackbarDuration.Short,
+                    )
                 )
             }
 

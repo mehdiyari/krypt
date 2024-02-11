@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import ir.mehdiyari.krypt.shared.designsystem.components.snackbar.KryptSnackBar
 
 const val ROUTE_CREATE_ACCOUNT = "create_account"
 
@@ -16,7 +17,7 @@ fun NavController.navigateToCreateAccount() {
 
 fun NavGraphBuilder.createAccountScreen(
     onCreateAccountSuccess: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onShowSnackbar: (KryptSnackBar) -> Unit,
     onRestoreClicked: () -> Unit,
 ) {
     composable(ROUTE_CREATE_ACCOUNT) {

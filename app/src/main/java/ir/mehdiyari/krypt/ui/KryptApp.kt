@@ -4,15 +4,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import ir.mehdiyari.krypt.R
@@ -29,8 +32,11 @@ import ir.mehdiyari.krypt.mediaList.MediaViewAction
 import ir.mehdiyari.krypt.mediaList.navigateToMedia
 import ir.mehdiyari.krypt.setting.ui.navigateToSettings
 import ir.mehdiyari.krypt.shareContent.ShareDataViewModel
+import ir.mehdiyari.krypt.shared.designsystem.components.snackbar.KryptSnackBar
 import ir.mehdiyari.krypt.ui.navigation.KryptNaveHost
 import ir.mehdiyari.krypt.voice.record.record.navigateToAddVoice
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
 @Composable
@@ -43,9 +49,10 @@ fun KryptApp(
 ) {
     KryptTheme {
         val snackbarHostState = remember { SnackbarHostState() }
-
+        val snackbarData = remember { MutableSharedFlow<KryptSnackBar?>() }
         var openAddItem by remember { mutableStateOf(false) }
         var openMenu by remember { mutableStateOf(false) }
+        val kryptAppCoroutineScope = rememberCoroutineScope()
 
         if (openAddItem) {
             AddBottomSheet(scope = kryptAppState.coroutineScope, onSelectAddItemMenuItem = {
@@ -78,7 +85,16 @@ fun KryptApp(
             }, dismissBottomSheet = { openMenu = false }, R.string.app_name)
         }
 
-        Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) },
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState, snackbar = {
+                    Snackbar(
+                        snackbarData = it,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                    )
+                })
+            },
             bottomBar = {
                 if (kryptAppState.isInHomeRoute) {
                     KryptBottomAppBar(openMenuSheet = {
@@ -108,13 +124,51 @@ fun KryptApp(
                     startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
                     sharedDataViewModel = sharedDataViewModel,
                     onRestartApp = onLockAppClicked,
-                    onShowSnackbar = { message, action ->
-                        snackbarHostState.showSnackbar(
-                            message = message,
-                            actionLabel = action,
-                            duration = SnackbarDuration.Short,
-                        ) == SnackbarResult.ActionPerformed
+                    onShowSnackbar = { kryptSnackBar ->
+                        kryptAppCoroutineScope.launch {
+                            snackbarData.emit(kryptSnackBar)
+                        }
                     })
+            }
+        }
+
+        ShowKryptSnackBar(
+            snackbarHostState = snackbarHostState,
+            snackbarData = snackbarData,
+        )
+    }
+}
+
+@Composable
+private fun ShowKryptSnackBar(
+    snackbarHostState: SnackbarHostState,
+    snackbarData: MutableSharedFlow<KryptSnackBar?>,
+) {
+    LaunchedEffect(Unit) {
+        snackbarData.collect {
+            when (it) {
+                is KryptSnackBar.Message -> {
+                    if (snackbarHostState.showSnackbar(
+                            message = it.message,
+                            duration = it.duration,
+                        ) == SnackbarResult.Dismissed
+                    ) {
+                        it.onDismiss()
+                    }
+                }
+
+                is KryptSnackBar.WithAction -> {
+                    when (snackbarHostState.showSnackbar(
+                        message = it.message,
+                        actionLabel = it.actionText,
+                        duration = it.duration,
+                    )) {
+                        SnackbarResult.Dismissed -> it.onDismiss()
+                        SnackbarResult.ActionPerformed -> it.onActionClicked()
+                    }
+                }
+
+                null -> Unit
             }
         }
     }
