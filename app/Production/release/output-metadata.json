@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "ir.mehdiyari.krypt",
+  "variantName": "ProductionRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 17,
+      "versionName": "3.0.2-alpha",
+      "outputFile": "app-Production-release.apk"
+    }
+  ],
+  "elementType": "File"
+}
