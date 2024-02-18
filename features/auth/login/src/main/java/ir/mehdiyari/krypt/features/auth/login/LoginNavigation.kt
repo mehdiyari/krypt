@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import ir.mehdiyari.krypt.shared.designsystem.components.snackbar.KryptSnackBar
 
 const val ROUTE_LOGIN = "login"
 
@@ -15,7 +16,7 @@ fun NavController.navigateToLogin() {
 fun NavGraphBuilder.loginScreen(
     onCreateAccountClicked: () -> Unit,
     onLoginSuccess: () -> Unit,
-    showSnackBar: suspend (message: String, action: String?) -> Boolean,
+    showSnackBar: (KryptSnackBar) -> Unit,
     onRestoreClicked: () -> Unit,
 ) {
 
