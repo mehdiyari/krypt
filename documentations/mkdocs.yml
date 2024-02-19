@@ -1,0 +1,32 @@
+site_name: Krypt Documents
+
+theme:
+  name: material
+  logo: assets/krypt_logo.png
+
+  features:
+    - navigation.expand
+    - navigation.expand.prefetch
+    - navigation.expand.preview
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+    - navigation.top
+  language: en
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: green
+      accent: darkblue
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+      primary: blue
+      accent: blue
