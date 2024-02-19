@@ -6,7 +6,7 @@ Krypt is a safe place on Android phones where we can store encrypted photos, vid
 and
 files without concern about privacy.
 
-![](../../assets/krypt.jpg)
+![](assets/krypt.jpg)
 
 ## Architecture
 
