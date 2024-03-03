@@ -41,7 +41,7 @@ jobs:
       - name: Build Development Release APK
         run: ./gradlew assembleDevelopmentRelease  -q --warning-mode=summary -Pandroid.injected.signing.store.file=${{ steps.write_file.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.SIGN_KEY_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.SIGN_KEY_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.SIGN_KEY_PASSWORD }} --scan
       - name: Upload Development Release APK
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: KryptDevelopmentRelease
           path: app/build/outputs/apk/Development/release/app-Development-release.apk
@@ -60,7 +60,7 @@ jobs:
       - name: Build Production Release APK
         run: ./gradlew assembleProductionRelease  -q --warning-mode=summary -Pandroid.injected.signing.store.file=${{ steps.write_file.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.SIGN_KEY_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.SIGN_KEY_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.SIGN_KEY_PASSWORD }} --scan
       - name: Upload Production Release APK
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: KryptProductionRelease
           path: app/build/outputs/apk/Production/release/app-Production-release.apk
