@@ -1,17 +1,26 @@
 package ir.mehdiyari.krypt.backup
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
@@ -26,7 +35,34 @@ internal fun DataRoute(
     modifier: Modifier,
 ) {
     val managerStoragePermissionState = remember { mutableStateOf(false) }
-    DataScreenScaffold(modifier = modifier, onNavigationClicked = onNavigationClicked) {
+
+    val chooseDirectorySnackbarMsg =
+        stringResource(id = R.string.choose_backup_directory_description)
+    val context = LocalContext.current
+
+    var selectedDirectory: DocumentFile? by remember { mutableStateOf(null) }
+    val directoryChooserLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri: Uri? = result.data?.data
+                uri?.let {
+                    selectedDirectory = DocumentFile.fromTreeUri(
+                        context, it
+                    )
+                }
+            }
+        }
+    )
+
+    selectedDirectory?.let {
+        viewModel.backupNow(it.uri)
+    }
+
+    DataScreenScaffold(
+        modifier = modifier,
+        onNavigationClicked = onNavigationClicked
+    ) {
         Column(
             modifier = modifier
                 .fillMaxHeight()
@@ -36,7 +72,18 @@ internal fun DataRoute(
             FileSizeView(modifier, fileSizeState)
             val lastBackupState = viewModel.lastBackupDateTime.collectAsStateWithLifecycle()
             val backupState = viewModel.backupViewState.collectAsStateWithLifecycle()
-            BackupView(modifier, lastBackupState, backupState, viewModel::backupNow)
+            BackupView(modifier, lastBackupState, backupState, backupNowClick = {
+                if (!checkIfAppIsStorageManager()) {
+                    managerStoragePermissionState.value = true
+                } else {
+                    Toast.makeText(
+                        context, chooseDirectorySnackbarMsg, Toast.LENGTH_LONG
+                    ).show()
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    directoryChooserLauncher.launch(intent)
+                }
+            })
+
             val backupList = viewModel.backups.collectAsStateWithLifecycle()
 
             val deleteDialogState = remember { mutableStateOf(false to -1) }
@@ -65,7 +112,6 @@ internal fun DataRoute(
         }
     }
 
-    val context = LocalContext.current
     if (managerStoragePermissionState.value) {
         ManageExternalPermissionDialog(modifier = modifier, state = managerStoragePermissionState) {
             managerStoragePermissionState.value = false

@@ -15,4 +15,5 @@
     <string name="error_while_saving_backup_into_external_storage">Error while saving backup in krypt folder</string>
     <string name="saving_backup_permission_error">Seem\'s app does not have access to storage.</string>
     <string name="save_backup_file_successfylly">"App successfully save backup file into Krypt official folder on your storage. "</string>
+    <string name="choose_backup_directory_description">Choose directory to backup</string>
 </resources>

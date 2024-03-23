@@ -1,5 +1,6 @@
 package ir.mehdiyari.krypt.backup
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,12 +58,13 @@ internal class DataViewModel @Inject constructor(
     }
 
 
-    fun backupNow() {
+    fun backupNow(uri: Uri) {
         if (backupJob == null) {
             backupJob = viewModelScope.launch(ioDispatcher) {
                 _backupViewState.emit(BackupViewState.Started)
                 try {
-                    if (backupRepository.backupAll()) {
+                    val directoryPath = filesUtilities.getPathFromUri(uri)
+                    if (!directoryPath.isNullOrEmpty() && backupRepository.backupAll(directoryPath)) {
                         _backupViewState.emit(BackupViewState.Finished)
                         refreshAllData()
                     } else {

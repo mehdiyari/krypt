@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":shared:files:files-logic"))
     implementation(project(":shared:permissions"))
     testImplementation(project(":shared:testing"))
+    implementation(libs.androidx.documentfile)
 
     implementation(libs.androidx.lifecycle.viewmodelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
