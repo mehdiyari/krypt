@@ -3,7 +3,7 @@ package ir.mehdiyari.krypt
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 
-fun Project.configureComposeAndroid(extension: CommonExtension<*, *, *, *, *>) {
+fun Project.configureComposeAndroid(extension: CommonExtension<*, *, *, *, *, *>) {
     with(extension) {
         buildFeatures {
             compose = true
