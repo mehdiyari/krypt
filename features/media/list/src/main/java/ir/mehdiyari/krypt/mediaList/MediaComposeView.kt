@@ -332,7 +332,9 @@ private fun FileItem(
         Row(modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)) {
             if (item.path.isNotBlank()) {
                 GlideImage(
-                    imageModel = item.path,
+                    imageModel = {
+                        item.path
+                    },
                     requestOptions = {
                         RequestOptions().override(80, 80).diskCacheStrategy(DiskCacheStrategy.ALL)
                             .centerCrop()
