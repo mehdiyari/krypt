@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "8.3.1"
 androidLibraryPlugin = "8.3.2"
-kspPlugin = "1.9.23-1.0.20"
+kspPlugin = "2.0.0-1.0.23"
 kotlinAndroidPlugin = "1.9.22"
 hiltAndroidGradlePlugin = "2.51.1"
 androidxComposeCompiler = "1.5.8"
