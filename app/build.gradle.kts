@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.kspPlugin)
     id("dagger.hilt.android.plugin")
     id("krypt.android.hilt")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -36,6 +38,7 @@ android {
 dependencies {
     implementation(libs.coreKtx)
     implementation(libs.androidx.appCompat)
+    implementation(libs.androidx.profileinstaller)
     testImplementation(libs.junit)
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
@@ -44,6 +47,7 @@ dependencies {
 
     implementation(libs.lifecycleViewModeKtx)
     implementation(libs.androidx.lifecycle.viewmodelCompose)
+    "baselineProfile"(project(":benchmark"))
     ksp(libs.lifecycleCompiler)
 
     implementation(libs.room)
