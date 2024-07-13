@@ -43,10 +43,7 @@ dependencies {
     androidTestImplementation(libs.testExt)
     androidTestImplementation(libs.espressoCore)
 
-    api(libs.composeActivity)
-
     implementation(libs.lifecycleViewModeKtx)
-    implementation(libs.androidx.lifecycle.viewmodelCompose)
     "baselineProfile"(project(":benchmark"))
     ksp(libs.lifecycleCompiler)
 
@@ -58,11 +55,9 @@ dependencies {
     implementation(libs.navigationCompose)
 
     implementation(libs.coroutinesAndroid)
-    implementation(libs.coroutinesCore)
 
     ksp(libs.glideCompiler)
 
-    implementation(libs.moshiKotlin)
     implementation(libs.processPhoenix)
 
     testImplementation(libs.mockk)
