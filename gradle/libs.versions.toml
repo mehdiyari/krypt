@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.3.1"
 androidLibraryPlugin = "8.3.2"
 kspPlugin = "1.9.23-1.0.20"
-kotlinAndroidPlugin = "1.9.22"
+kotlinAndroidPlugin = "2.0.0"
 hiltAndroidGradlePlugin = "2.51.1"
 androidxComposeCompiler = "1.5.8"
 hiltNavigationCompose = "1.2.0"
