@@ -1,11 +1,9 @@
 package ir.mehdiyari.krypt.setting.ui
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import ir.mehdiyari.krypt.setting.R
 
 
-internal val SETTINGS_LIST = listOf<Pair<@DrawableRes Int, @StringRes Int>>(
+internal val SETTINGS_LIST = listOf(
     R.drawable.ic_lock_clock_24 to R.string.settings_lock_auto,
     R.drawable.ic_delete_account_24 to R.string.settings_delete_account_text
 )

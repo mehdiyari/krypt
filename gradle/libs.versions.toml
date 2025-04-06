@@ -1,12 +1,11 @@
 [versions]
-androidGradlePlugin = "8.3.1"
-androidLibraryPlugin = "8.3.2"
-kspPlugin = "1.9.23-1.0.20"
-kotlinAndroidPlugin = "1.9.22"
+androidGradlePlugin = "8.9.1"
+androidLibraryPlugin = "8.9.1"
+kspPlugin = "2.1.20-1.0.32"
+kotlinAndroidPlugin = "2.1.20"
 hiltAndroidGradlePlugin = "2.51.1"
-androidxComposeCompiler = "1.5.8"
 hiltNavigationCompose = "1.2.0"
-ktx = "1.13.1"
+ktx = "1.15.0"
 androidXAppCompat = "1.7.0"
 junit = "4.13.2"
 testExt = "1.2.1"
@@ -14,9 +13,9 @@ espressoCore = "3.6.1"
 lifecycle = "2.8.7"
 room = "2.6.1"
 hilt = "2.52"
-composeBom = "2024.06.00"
-navigationCompose = "2.7.7"
-constraintlayoutCompose = "1.1.0-alpha13"
+composeBom = "2025.03.01"
+navigationCompose = "2.8.9"
+constraintlayoutCompose = "1.1.1"
 coroutines = "1.9.0"
 fallery = "1.0.4"
 glide = "4.16.0"
@@ -81,6 +80,7 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 
 [plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinAndroidPlugin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
