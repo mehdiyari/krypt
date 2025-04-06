@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import ir.mehdiyari.krypt.addText.R
 import ir.mehdiyari.krypt.core.designsystem.theme.KryptTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TopBar(
     text: String,
@@ -67,9 +66,13 @@ internal fun TopBar(
                     color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold
                 ),
                 shape = RectangleShape,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.Transparent,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
@@ -100,9 +103,13 @@ internal fun ContentTextField(
             fontFamily = FontFamily.SansSerif
         ),
         shape = RectangleShape,
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            disabledContainerColor = Color.Transparent,
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+            disabledTextColor = MaterialTheme.colorScheme.onSurface,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
