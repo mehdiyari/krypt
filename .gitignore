@@ -10,3 +10,8 @@
 local.properties
 buildSrc/build
 /venv/*
+/benchmark/build/*
+.kotlin/*
+*/.kotlin
+build/*
+*/build/*
