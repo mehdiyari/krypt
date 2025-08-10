@@ -15,7 +15,7 @@ class KryptStartupBenchmark {
 
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "ir.mehdiyari.krypt",
+        packageName = "ir.mehdiyari.krypt.dev",
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
         startupMode = StartupMode.COLD
