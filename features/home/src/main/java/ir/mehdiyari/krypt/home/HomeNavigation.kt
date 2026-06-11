@@ -22,6 +22,7 @@ fun NavGraphBuilder.homeScreen(
     openMusicAndAudioScreen: () -> Unit,
     openMediaScreen: (MediaViewAction) -> Unit,
     sharedDataViewModel: ShareDataViewModel,
+    modifier: Modifier = Modifier,
 ) {
     composable(ROUTE_HOME) {
         HomeRoute(
@@ -29,7 +30,7 @@ fun NavGraphBuilder.homeScreen(
             openTextsScreen = openTextsScreen,
             openMusicAndAudioScreen = openMusicAndAudioScreen,
             openMediaScreen = openMediaScreen,
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             sharedDataViewModel = sharedDataViewModel,
         )
     }

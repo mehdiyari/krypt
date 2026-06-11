@@ -1,5 +1,7 @@
 package ir.mehdiyari.krypt.ui.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -37,6 +39,7 @@ fun KryptNaveHost(
     sharedDataViewModel: ShareDataViewModel,
     onStopLocker: () -> Unit,
     onRestartApp: () -> Unit,
+    paddings: PaddingValues,
 ) {
     val navController = kryptAppState.navController
     NavHost(
@@ -59,6 +62,7 @@ fun KryptNaveHost(
         })
 
         homeScreen(
+            modifier = Modifier.padding(paddings),
             sharedDataViewModel = sharedDataViewModel,
             openAddTextScreen = {
                 navController.navigateToAddText(sharedText = it ?: "")
