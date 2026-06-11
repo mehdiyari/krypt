@@ -2,7 +2,7 @@
 androidGradlePlugin = "9.2.1"
 androidLibraryPlugin = "9.2.1"
 kspPlugin = "2.3.9"
-kotlinAndroidPlugin = "2.4.0"
+kotlinAndroidPlugin = "2.2.0"
 hiltAndroidGradlePlugin = "2.59.2"
 hiltNavigationCompose = "1.3.0"
 ktx = "1.15.0"
@@ -11,13 +11,13 @@ junit = "4.13.2"
 testExt = "1.2.1"
 espressoCore = "3.6.1"
 lifecycle = "2.8.7"
-room = "2.6.1"
+room = "2.8.4"
 hilt = "2.59.2"
 composeBom = "2025.03.01"
 navigationCompose = "2.8.9"
 constraintlayoutCompose = "1.1.1"
 coroutines = "1.9.0"
-fallery = "1.0.4"
+fallery = "1.0.5"
 glide = "4.16.0"
 landscapistGlide = "2.3.6"
 moshiKotlin = "1.15.2"
@@ -28,9 +28,11 @@ turbine = "1.2.0"
 splashscreen = "1.0.1"
 documentfile = "1.0.1"
 material = "1.12.0"
+kotlinMetadata = "0.9.0"
 
 
 [libraries]
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version.ref = "kotlinMetadata" }
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -71,6 +73,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 hiltAndroidGradleClassPath = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
+
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 

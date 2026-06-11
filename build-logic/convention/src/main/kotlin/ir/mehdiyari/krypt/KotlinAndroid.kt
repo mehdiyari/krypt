@@ -11,23 +11,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension,
 ) {
-
     commonExtension.apply {
         compileSdk = Versions.COMPILE_SDK
-
         defaultConfig.minSdk = Versions.MIN_SDK
-
-        compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
-        compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
-
-
-        // Use withType to workaround https://youtrack.jetbrains.com/issue/KT-55947
+        compileOptions.sourceCompatibility = JavaVersion.VERSION_21
+        compileOptions.targetCompatibility = JavaVersion.VERSION_21
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
-                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
             }
         }
-
     }
 
 }

@@ -1,8 +1,11 @@
 package ir.mehdiyari.krypt.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,6 +42,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun KryptApp(
     kryptAppState: KryptAppState = rememberKryptAppState(),
@@ -86,6 +90,7 @@ fun KryptApp(
         }
 
         Scaffold(
+            contentWindowInsets = WindowInsets.safeDrawing,
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState, snackbar = {
                     Snackbar(
@@ -111,25 +116,21 @@ fun KryptApp(
                         openAddItem = true
                     })
                 }
-            }) { padding ->
+            }) { paddings ->
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
-                KryptNaveHost(
-                    kryptAppState = kryptAppState,
-                    onStopLocker = onStopLocker,
-                    startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
-                    sharedDataViewModel = sharedDataViewModel,
-                    onRestartApp = onLockAppClicked,
-                    onShowSnackbar = { kryptSnackBar ->
-                        kryptAppCoroutineScope.launch {
-                            snackbarData.emit(kryptSnackBar)
-                        }
-                    })
-            }
+            KryptNaveHost(
+                paddings = paddings,
+                kryptAppState = kryptAppState,
+                onStopLocker = onStopLocker,
+                startDestination = if (hasAnyAccount) ROUTE_LOGIN else ROUTE_CREATE_ACCOUNT,
+                sharedDataViewModel = sharedDataViewModel,
+                onRestartApp = onLockAppClicked,
+                onShowSnackbar = { kryptSnackBar ->
+                    kryptAppCoroutineScope.launch {
+                        snackbarData.emit(kryptSnackBar)
+                    }
+                })
+
         }
 
         ShowKryptSnackBar(
