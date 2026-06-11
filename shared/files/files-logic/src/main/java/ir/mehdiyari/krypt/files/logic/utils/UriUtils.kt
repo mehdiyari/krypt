@@ -8,6 +8,7 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import java.net.URLDecoder
+import androidx.core.net.toUri
 
 
 val isExternalStorageDoc: ((authority: String) -> Boolean) =
@@ -34,12 +35,25 @@ fun Context.getRealPathBasedOnUri(uri: Uri): String? =
                                     null
                             }
                         }
-                        isDownloadsDoc(newUri.authority!!) -> this.contentResolver.getPathOfFileInMediaStore(
-                            uri = ContentUris.withAppendedId(
-                                Uri.parse("content://downloads/public_downloads"),
-                                DocumentsContract.getDocumentId(newUri).toLong()
-                            )
-                        )
+                        isDownloadsDoc(newUri.authority!!) -> {
+                            val documentId = DocumentsContract.getDocumentId(newUri)
+                            if (documentId.startsWith("raw:")) {
+                                documentId.replaceFirst("raw:", "")
+                            } else {
+                                try {
+                                    val id = documentId.toLong()
+                                    this.contentResolver.getPathOfFileInMediaStore(
+                                        uri = ContentUris.withAppendedId(
+                                            "content://downloads/public_downloads".toUri(),
+                                            id
+                                        )
+                                    )
+                                } catch (e: NumberFormatException) {
+                                    e.printStackTrace()
+                                    null
+                                }
+                            }
+                        }
                         isMediaDoc(newUri.authority!!) -> DocumentsContract.getDocumentId(newUri)
                             .split(":").let { split ->
                             this.contentResolver.getPathOfFileInMediaStore(
