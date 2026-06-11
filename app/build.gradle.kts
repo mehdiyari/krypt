@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    ksp(libs.kotlin.metadata.jvm)
     implementation(libs.coreKtx)
     implementation(libs.androidx.appCompat)
     testImplementation(libs.junit)

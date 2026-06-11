@@ -1,4 +1,4 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import ir.mehdiyari.krypt.applyAndroidLibraryPlugin
 import ir.mehdiyari.krypt.applyKotlinAndroidPlugin
 import ir.mehdiyari.krypt.configureFlavor

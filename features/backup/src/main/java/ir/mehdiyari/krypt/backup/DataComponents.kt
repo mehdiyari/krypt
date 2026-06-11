@@ -43,6 +43,7 @@ internal fun DataScreenScaffold(
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             TopAppBar(
                 title = {

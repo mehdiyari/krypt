@@ -65,7 +65,6 @@ internal fun HomeScreen(
     onItemClicked: (FileTypeEnum) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     LazyColumn(
         modifier = modifier.padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),

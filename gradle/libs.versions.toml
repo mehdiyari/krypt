@@ -1,37 +1,38 @@
 [versions]
-androidGradlePlugin = "8.2.2"
-androidLibraryPlugin = "8.2.2"
-kspPlugin = "1.9.22-1.0.17"
-kotlinAndroidPlugin = "1.9.22"
-hiltAndroidGradlePlugin = "2.46.1"
-androidxComposeCompiler = "1.5.8"
-hiltNavigationCompose = "1.1.0"
-ktx = "1.12.0"
-androidXAppCompat = "1.6.1"
+androidGradlePlugin = "9.2.1"
+androidLibraryPlugin = "9.2.1"
+kspPlugin = "2.3.9"
+kotlinAndroidPlugin = "2.2.0"
+hiltAndroidGradlePlugin = "2.59.2"
+hiltNavigationCompose = "1.3.0"
+ktx = "1.15.0"
+androidXAppCompat = "1.7.0"
 junit = "4.13.2"
-testExt = "1.1.5"
-espressoCore = "3.5.1"
-lifecycle = "2.7.0"
-room = "2.6.1"
-hilt = "2.48"
-composeBom = "2024.02.00"
-navigationCompose = "2.7.7"
-constraintlayoutCompose = "1.1.0-alpha13"
-coroutines = "1.7.3"
-fallery = "1.0.4"
+testExt = "1.2.1"
+espressoCore = "3.6.1"
+lifecycle = "2.8.7"
+room = "2.8.4"
+hilt = "2.59.2"
+composeBom = "2025.03.01"
+navigationCompose = "2.8.9"
+constraintlayoutCompose = "1.1.1"
+coroutines = "1.9.0"
+fallery = "1.0.5"
 glide = "4.16.0"
-landscapistGlide = "1.6.1"
-moshiKotlin = "1.14.0"
-processPhoenix = "2.1.2"
-exoplayer = "1.2.1"
-mockk = "1.13.9"
-turbine = "1.0.0"
+landscapistGlide = "2.3.6"
+moshiKotlin = "1.15.2"
+processPhoenix = "3.0.0"
+exoplayer = "1.6.0"
+mockk = "1.13.10"
+turbine = "1.2.0"
 splashscreen = "1.0.1"
 documentfile = "1.0.1"
-material = "1.11.0"
+material = "1.12.0"
+kotlinMetadata = "0.9.0"
 
 
 [libraries]
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version.ref = "kotlinMetadata" }
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -73,6 +74,7 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 hiltAndroidGradleClassPath = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 
+
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Dependencies of the included build-logic
@@ -81,6 +83,7 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 
 [plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinAndroidPlugin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidLibraryPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroidPlugin" }
