@@ -1,6 +1,11 @@
 package ir.mehdiyari.krypt.setting.ui
 
+import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.mehdiyari.krypt.setting.R
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsRoute(
@@ -39,6 +45,7 @@ internal fun SettingsRoute(
     val deleteDialogState = remember { mutableStateOf(false) }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             TopAppBar(
                 title = {
@@ -57,56 +64,58 @@ internal fun SettingsRoute(
             )
         }
     ) {
-        val deleteAccountViewState = viewModel.deleteAccountState.collectAsStateWithLifecycle()
-        when (deleteAccountViewState.value) {
-            DeleteAccountViewState.DeleteAccountFailed -> {
-                deleteDialogState.value = false
-                Toast.makeText(
-                    LocalContext.current,
-                    R.string.account_delete_error,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-
-            DeleteAccountViewState.DeleteAccountFinished -> {
-                deleteDialogState.value = false
-                Toast.makeText(
-                    LocalContext.current,
-                    R.string.your_account_deleted,
-                    Toast.LENGTH_LONG
-                ).show()
-
-                onRestartApp()
-            }
-
-            DeleteAccountViewState.DeleteAccountStarts -> {
-                deleteDialogState.value = false
-                CircularProgressIndicator(modifier = modifier.size(80.dp))
-            }
-
-            null, DeleteAccountViewState.PasswordsNotMatch -> {
-                if (deleteAccountViewState.value != null) {
+        Column(modifier = Modifier.padding(it)) {
+            val deleteAccountViewState = viewModel.deleteAccountState.collectAsStateWithLifecycle()
+            when (deleteAccountViewState.value) {
+                DeleteAccountViewState.DeleteAccountFailed -> {
+                    deleteDialogState.value = false
                     Toast.makeText(
                         LocalContext.current,
-                        ir.mehdiyari.krypt.shared.designsystem.resources.R.string.password_not_match,
-                        Toast.LENGTH_SHORT
+                        R.string.account_delete_error,
+                        Toast.LENGTH_LONG
                     ).show()
                 }
 
-                SettingsScreenContent(
-                    modifier,
-                    viewModel,
-                    deleteDialogState,
-                    topPadding = it.calculateTopPadding(),
-                    openAutoLockBottomSheet = {
-                        openAutoLockBottomSheet = true
+                DeleteAccountViewState.DeleteAccountFinished -> {
+                    deleteDialogState.value = false
+                    Toast.makeText(
+                        LocalContext.current,
+                        R.string.your_account_deleted,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    onRestartApp()
+                }
+
+                DeleteAccountViewState.DeleteAccountStarts -> {
+                    deleteDialogState.value = false
+                    CircularProgressIndicator(modifier = modifier.size(80.dp))
+                }
+
+                null, DeleteAccountViewState.PasswordsNotMatch -> {
+                    if (deleteAccountViewState.value != null) {
+                        Toast.makeText(
+                            LocalContext.current,
+                            ir.mehdiyari.krypt.shared.designsystem.resources.R.string.password_not_match,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                )
+
+                    SettingsScreenContent(
+                        modifier,
+                        viewModel,
+                        deleteDialogState,
+                        topPadding = 0.dp,
+                        openAutoLockBottomSheet = {
+                            openAutoLockBottomSheet = true
+                        }
+                    )
+                }
             }
         }
     }
 
-    if (openAutoLockBottomSheet){
+    if (openAutoLockBottomSheet) {
         AutomaticallyLockModalBottomSheet(
             modifier = modifier,
             viewModel.automaticallyLockSelectedItem,

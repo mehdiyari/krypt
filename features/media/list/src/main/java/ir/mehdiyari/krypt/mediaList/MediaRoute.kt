@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -52,7 +55,8 @@ internal fun MediaRoute(
         return
     }
 
-    MediaScreen(modifier = modifier,
+    MediaScreen(
+        modifier = modifier,
         actionState = actionState,
         viewState = (viewState as? MediaViewState.EncryptDecryptState)?.let {
             it.copy(onEncryptOrDecryptAction = { deleteAfterEncryption, notifyMediaScanner ->
@@ -93,7 +97,10 @@ internal fun MediaRoute(
     val messageState by viewModel.messageFlow.collectAsStateWithLifecycle(null)
     if (messageState != null) {
         Toast.makeText(
-            LocalContext.current, messageState ?: ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong, Toast.LENGTH_SHORT
+            LocalContext.current,
+            messageState
+                ?: ir.mehdiyari.krypt.shared.designsystem.resources.R.string.something_went_wrong,
+            Toast.LENGTH_SHORT
         ).show()
     }
 
@@ -132,72 +139,76 @@ internal fun MediaScreen(
         }
         onSelectMedia(it.mediaPathList ?: listOf())
     }
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-    ) {
-        when (viewState) {
-            MediaViewState.Default -> {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .align(Alignment.Center),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .align(Alignment.CenterHorizontally)
-                    )
-                }
-            }
 
-            MediaViewState.OperationStart -> OperationStart()
-            MediaViewState.OperationFinished -> {
-                val textRes = when (actionState) {
-                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA, MediaViewAction.SHARED_MEDIA -> R.string.encrypt_successfully
-                    MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_successfully
-                    else -> R.string.operation_successfully
-                }
-                OperationResult(imageRes = R.drawable.operation_done, messageRes = textRes)
-            }
-
-            MediaViewState.OperationFailed -> {
-                val textRes = when (actionState) {
-                    MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA, MediaViewAction.SHARED_MEDIA -> R.string.encrypt_failed
-                    MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_failed
-                    else -> R.string.operation_failed
-                }
-                OperationResult(imageRes = R.drawable.operation_failed, messageRes = textRes)
-            }
-
-            is MediaViewState.EncryptDecryptState -> {
-                if (viewState.selectedMediaItems.isEmpty()) {
-                    onBackPressed()
-                    return
-                } else {
-                    MediaScreenContent(
-                        selectedMediaItems = viewState.selectedMediaItems,
-                        actionState = actionState,
-                        notifyMediaScanner = notifyMediaScanner,
-                        removeItemFromList = removeItemFromList,
-                        deleteSelectedFromList = deleteSelectedFromList,
-                        onNotifyChanged = onNotifyChanged,
+    Scaffold(
+        modifier = modifier.fillMaxSize()
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            when (viewState) {
+                MediaViewState.Default -> {
+                    Column(
                         modifier = modifier
-                    )
+                            .fillMaxWidth()
+                            .align(Alignment.Center),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(60.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+                    }
                 }
+
+                MediaViewState.OperationStart -> OperationStart()
+                MediaViewState.OperationFinished -> {
+                    val textRes = when (actionState) {
+                        MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA, MediaViewAction.SHARED_MEDIA -> R.string.encrypt_successfully
+                        MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_successfully
+                        else -> R.string.operation_successfully
+                    }
+                    OperationResult(imageRes = R.drawable.operation_done, messageRes = textRes)
+                }
+
+                MediaViewState.OperationFailed -> {
+                    val textRes = when (actionState) {
+                        MediaViewAction.PICK_MEDIA, MediaViewAction.TAKE_MEDIA, MediaViewAction.ENCRYPT_MEDIA, MediaViewAction.SHARED_MEDIA -> R.string.encrypt_failed
+                        MediaViewAction.DECRYPT_MEDIA -> R.string.decrypt_failed
+                        else -> R.string.operation_failed
+                    }
+                    OperationResult(imageRes = R.drawable.operation_failed, messageRes = textRes)
+                }
+
+                is MediaViewState.EncryptDecryptState -> {
+                    if (viewState.selectedMediaItems.isEmpty()) {
+                        onBackPressed()
+                    } else {
+                        MediaScreenContent(
+                            selectedMediaItems = viewState.selectedMediaItems,
+                            actionState = actionState,
+                            notifyMediaScanner = notifyMediaScanner,
+                            removeItemFromList = removeItemFromList,
+                            deleteSelectedFromList = deleteSelectedFromList,
+                            onNotifyChanged = onNotifyChanged,
+                            modifier = modifier
+                        )
+                    }
+                }
+
             }
 
+            ShowActionButton(
+                viewState = viewState,
+                actionState = actionState,
+                notifyMediaScanner = notifyMediaScanner,
+                deleteAllSelectedFiles = deleteAllSelectedFiles,
+                modifier = modifier,
+            )
         }
-
-        ShowActionButton(
-            viewState = viewState,
-            actionState = actionState,
-            notifyMediaScanner = notifyMediaScanner,
-            deleteAllSelectedFiles = deleteAllSelectedFiles,
-            modifier = modifier,
-        )
     }
 
 

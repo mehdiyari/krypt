@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,19 +49,21 @@ internal fun RecordAudioRoute(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
-    Scaffold(topBar = {
-        TopAppBar(title = {
-            Text(text = stringResource(id = R.string.record_audio))
-        }, navigationIcon = {
-            IconButton(onClick = {
-                onBackPressed()
-            }) {
-                Icon(Icons.Filled.ArrowBack, "")
-            }
-        })
-    }, snackbarHost = {
-        SnackbarHost(hostState = snackbarHostState)
-    }) {
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
+        topBar = {
+            TopAppBar(title = {
+                Text(text = stringResource(id = R.string.record_audio))
+            }, navigationIcon = {
+                IconButton(onClick = {
+                    onBackPressed()
+                }) {
+                    Icon(Icons.Filled.ArrowBack, "")
+                }
+            })
+        }, snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }) { _ ->
         AddAudioScreenContent(
             modifier = modifier,
             onBackPressed = onBackPressed,

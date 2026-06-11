@@ -12,7 +12,7 @@
     base on official documents there is no problem for publishing on google play -->
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+        tools:ignore="AllFilesAccessPolicy,ScopedStorage" />
 
     <!-- Removing these kind of permissions if it's added by third-parties -->
     <uses-permission
