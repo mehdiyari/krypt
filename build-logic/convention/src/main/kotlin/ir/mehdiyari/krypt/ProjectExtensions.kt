@@ -20,5 +20,5 @@ fun Project.applyAndroidLibraryPlugin(){
 }
 
 fun Project.applyKotlinAndroidPlugin(){
-    pluginManager.apply(libs.findPlugin("kotlin.android").get().get().pluginId)
+    // pluginManager.apply(libs.findPlugin("kotlin.android").get().get().pluginId)
 }

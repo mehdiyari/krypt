@@ -25,24 +25,20 @@ enum class KryptFlavor(
 
 }
 
-fun configureFlavor(extension: CommonExtension<*, *, *, *, *, *>) {
-    with(extension) {
-        flavorDimensions += FlavorDimension.main.name
+fun configureFlavor(extension: CommonExtension) {
+    extension.flavorDimensions += FlavorDimension.main.name
 
-        productFlavors {
-            KryptFlavor.values().forEach {
-                create(it.name) {
-                    dimension = it.dimension.name
+    KryptFlavor.values().forEach { flavor ->
+        extension.productFlavors.create(flavor.name) {
+            dimension = flavor.dimension.name
 
-                    if (this@with is ApplicationExtension && this is ApplicationProductFlavor) {
-                        if (it.applicationIdSuffix != null) {
-                            applicationIdSuffix = it.applicationIdSuffix
-                        }
+            if (extension is ApplicationExtension && this is ApplicationProductFlavor) {
+                if (flavor.applicationIdSuffix != null) {
+                    applicationIdSuffix = flavor.applicationIdSuffix
+                }
 
-                        if (it.versionNameSuffix != null) {
-                            versionNameSuffix = it.versionNameSuffix
-                        }
-                    }
+                if (flavor.versionNameSuffix != null) {
+                    versionNameSuffix = flavor.versionNameSuffix
                 }
             }
         }
