@@ -6,7 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.mehdiyari.krypt.backup.logic.restore.RestoreKeyGenerator
 import ir.mehdiyari.krypt.backup.logic.restore.RestoreRepository
 import ir.mehdiyari.krypt.cryptography.exceptions.DecryptException
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersQualifierType
+import ir.mehdiyari.krypt.dispatchers.di.DispatchersType
 import ir.mehdiyari.krypt.permission.checkIfAppIsStorageManager
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +24,7 @@ import ir.mehdiyari.krypt.shared.designsystem.resources.R as DesignSystemR
 internal class RestoreViewModel @Inject constructor(
     private val restoreRepository: RestoreRepository,
     private val restoreKeyGenerator: RestoreKeyGenerator,
+    @DispatchersType(DispatchersQualifierType.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _restoreViewState =
@@ -40,21 +44,23 @@ internal class RestoreViewModel @Inject constructor(
         filePath: String,
         password: String,
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             _restoreLoadingState.value = true
             try {
                 val key = restoreKeyGenerator.generateKey(password, filePath)
                 restoreRepository.restoreAll(filePath, key).getOrThrow()
-                _restoreViewState.value = RestoreViewState.Success
+                _restoreViewState.emit(RestoreViewState.Success)
             } catch (decryptException: DecryptException) {
+                decryptException.printStackTrace()
                 _restoreMessageSharedFlow.emit(R.string.decryption_error_restore)
             } catch (fileNotFoundException: FileNotFoundException) {
+                fileNotFoundException.printStackTrace()
                 _restoreMessageSharedFlow.emit(R.string.cant_find_restore_file)
             } catch (t: Throwable) {
                 t.printStackTrace()
                 _restoreMessageSharedFlow.emit(DesignSystemR.string.something_went_wrong)
             } finally {
-                _restoreLoadingState.value = false
+                _restoreLoadingState.emit(false)
             }
         }
     }
